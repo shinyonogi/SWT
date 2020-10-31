@@ -1,0 +1,33 @@
+= Protokoll Gruppe 17
+
+Treffen am 27.10.2020
+
+Ort:      BigBlueButton +
+Beginn:   18:20 Uhr +
+Ende:     19:00 Uhr
+
+__Schriftführer:__ Sebastian Jaster
+
+*Nächstes Treffen:* +
+01.11.2020, 14:30 Uhr, Discord
+
+__Teilnehmer:__
+//Tabellarisch oder Aufzählung, Kennzeichnung von Teilnehmern mit besonderer Rolle (z.B. Kunde)
+
+- Markus Richter (Tutor)
+- David Schroth
+- Marc Albrecht
+- Sebastian Jaster
+- Edgar Wolfert
+- Johannes Kaufmann
+- Mitglieder Gruppe 18
+
+== Bemerkungen
+- oragnisatorische Hinweise und Einführung ins Praktikum durch Markus
+- Sebastian wird als Scrum-Master festgelegt
+- Kommunikationsweg wird festgelegt (Telegram und Discord)
+
+== Aufgaben diese Woche
+- Einarbeitung in GitHub Repo und einrichten persönlicher Entwicklungsumgebungen
+- Implementierung der Guestbook Erweiterungen
+- Einarbeitung in Technology Stack (Spring, Thymeleaf usw.)
