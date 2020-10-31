@@ -1,7 +1,12 @@
 // Hi there! We've already included some generally useful information in here.
 // Feel free to edit the first section to add a short description of your task and your project.
 
-= Kickstart
+= Möbelgeschäft
+
+== Task
+The complete task description can be found link:https://cloudstore.zih.tu-dresden.de/index.php/s/NKngr9QPsDA4d7A[here].
+
+== Information about kickstart module
 
 The kickstart module is a template project to bootstrap the Java project in the Software Engineering lab.
 Each group's repository is initialized with this template.
