@@ -1,0 +1,30 @@
+= Protokoll Gruppe 17
+
+Treffen am 01.11.2020
+
+Ort:      BigBlueButton +
+Beginn:   14:30 Uhr +
+Ende:     15:50 Uhr
+
+__Schriftführer:__ Sebastian Jaster
+
+*Nächstes Treffen:* +
+04.11.2020, 10:00Uhr, Discord
+
+__Teilnehmer:__
+//Tabellarisch oder Aufzählung, Kennzeichnung von Teilnehmern mit besonderer Rolle (z.B. Kunde)
+
+- David Schroth
+- Marc Albrecht
+- Sebastian Jaster
+- Edgar Wolfert
+- Johannes Kaufmann
+
+== Bemerkungen
+- Klärung von Fragen zu Guestbook Erweiterungen damit jedes Mitglied der Gruppe auf dem selben Stand
+- Durchsprechen der Aufgabenstellung um Unklarheiten zu sammeln, die mit dem Kunden durchgesprochen werden sollen
+
+
+== Aufgaben bis zum nächsten Treffen
+- Einarbeitung in SalePoints-Framework
+- Begin der Videoshop-Erweiterungen (pro Teammitglied)
