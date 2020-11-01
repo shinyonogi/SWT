@@ -1,4 +1,4 @@
-= Zeiterfassung für Gruppe XX
+= Zeiterfassung für Gruppe 17
 
 Notieren Sie die Zeit in Minuten für jeden Entwickler und – getrennt davon – für Team-Treffen pro Woche (Wochengranularität).
 Die individuell erfasste Zeit beinhaltet auch das Lesen von Dokumentationen, Besprechungen mit Teamkollegen und sonstige auf das Praktikum bezogene Aufgaben, jedoch *nicht* das Team-Treffen (= letzte Spalte).
@@ -6,8 +6,8 @@ Die individuell erfasste Zeit beinhaltet auch das Lesen von Dokumentationen, Bes
 // See http://asciidoctor.org/docs/user-manual/#tables
 [option="headers"]
 |===
-|Woche |Dev1 |Dev2 |Dev3 |Dev4 |Dev5 |Dev6 |Meeting
-|1  |…   |…    |…    |…    |…    |…    |…    
+|Woche |David Schroth |Marc Albrecht |Sebastian Jaster |Edgar Wolfert |Johannes Kaufmann |Shintaro Onogi |Meeting
+|1  |…   |…    |610    |…    |…    |…    |40
 |2  |…   |…    |…    |…    |…    |…    |…    
 |3  |…   |…    |…    |…    |…    |…    |…    
 |4  |…   |…    |…    |…    |…    |…    |…    
