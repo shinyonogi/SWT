@@ -4,7 +4,7 @@ Treffen am 01.11.2020
 
 Ort:      BigBlueButton +
 Beginn:   14:30 Uhr +
-Ende:     15:50 Uhr
+Ende:     15:50 Uhr +
 
 __Schriftführer:__ Sebastian Jaster
 
@@ -19,12 +19,13 @@ __Teilnehmer:__
 - Sebastian Jaster
 - Edgar Wolfert
 - Johannes Kaufmann
+- Shintaro Onogi
 
 == Bemerkungen
-- Klärung von Fragen zu Guestbook Erweiterungen damit jedes Mitglied der Gruppe auf dem selben Stand
-- Durchsprechen der Aufgabenstellung um Unklarheiten zu sammeln, die mit dem Kunden durchgesprochen werden sollen
+- Klärung von Fragen zu Guestbook Erweiterungen damit jedes Mitglied der Gruppe auf dem selben Stand ist
+- Durchsprechen der Aufgabenstellung um Unklarheiten zu sammeln, die mit dem Kunden besprochen werden sollen
 
 
 == Aufgaben bis zum nächsten Treffen
 - Einarbeitung in SalePoints-Framework
-- Begin der Videoshop-Erweiterungen (pro Teammitglied)
+- Beginn der Videoshop-Erweiterungen (pro Teammitglied)
