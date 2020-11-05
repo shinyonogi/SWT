@@ -1,0 +1,92 @@
+= Protokoll Gruppe 17
+
+Treffen am 05.11.2020
+
+Ort:      BigBlueButton +
+Beginn:   13:00 Uhr +
+Ende:     14:40 Uhr +
+
+__Schriftführer:__ Sebastian Jaster
+
+*Nächstes Treffen:* +
+06.11.2020, 14:50 Uhr, Discord
+
+__Teilnehmer:__
+//Tabellarisch oder Aufzählung, Kennzeichnung von Teilnehmern mit besonderer Rolle (z.B. Kunde)
+
+- Markus Richter (Kunde)
+- David Schroth
+- Marc Albrecht
+- Sebastian Jaster
+- Edgar Wolfert
+- Johannes Kaufmann
+- Shintaro Onogi
+
+== Bemerkungen
+
+- Vorstellung der Guestbook-Erweiterungen die von Gruppenmitgliedern durchgeführt wurden
+- Durchführung eines Kundengespräch bei welchem folgende Fragen geklärt wurden:
+[option="headers"]
+|===
+|Frage |Antwort
+|Wie verhält es sich mit den telefonischen Bestellungen? | Bestellungen werden ausschließlich über den Webshop aufgegeben.
+| Können Kunden als Gast bestellen oder soll jedem Kunden ein Kundenkonto zugeordnet werden mit entsprechenden Kontaktdaten für Benachrichtigungen | Kunden bestellen immer als Gast und erhalten eine Bestellnummer zu ihrem Vorgang. Weiterhin gibt der Kunde eine E-Mail für mögliche Benachrichtigungen an.
+| Woher kommen die Daten für Möbel, LKWs und Lieferanten | Es sollen Testdaten selbst angelegt werden.
+| Was passiert mit potentiellen Restmöbeln eines Lieferanten welcher aus dem System gelöscht wird? | Die Restbestände werden nicht weiter erfasst und auch von der Website genommen.
+| Wie berechnen sich die LKW-Kosten? | Jeder LKW hat einen Pauschalpreis und ein Maximalgewicht. Je nach Gewicht der bestellten Waren wird der günstigste verfügbare LKW ausgewählt. 
+| Sind Teillieferungen möglich? | Nein eine Bestellung wird immer im Gesamten zum Kunden geliefert, sobald alle Artikel im Hauptlager eingetroffen sind.
+| Wie berechnen sich Rücklieferungsgebühren? | Wenn der Kunde einen Teil der Bestellung oder die komplette Bestellung storniert und sich stornierte Artikel bereits im Hauptlager befinden, dann muss der Kunde eine Storniernugsgebühr (Rücklieferungsgebühren) in Höhe von 20% des Kaufpreises der Artikel bezahlen.
+| Können Bestellungen nach Beginn der Auslieferung storniert werden? | Nein nicht über das System, dass muss mit den Mitarbeitern von Möbel-Hunger geklärt werden.
+| Für welchen Zeitraum wird ein LKW gebucht? | Ein LKW wird immer für einen kompletten Tage gebucht. Wenn der LKW zur Auslieferung eingeplant ist, dann kann er an diesem Tag nicht vom Kunden gebucht werden.
+| Welche Priorisierung gibt es bei Vergabe der LKWs? Kommt der Kunde zuerst oder die Firma? | Die Auswahl erfolgt nach dem Prinzip first-come first-serve.
+| Kann ein LKW mehrere Lieferungen an einem Tag ausführen? | Ein LKW kann 4 Bestellungen pro Tag abarbeiten unabhängig von Größe und Gewicht des LKWs. Diese können entweder nacheinander abgearbeitet werden oder gleichzeitig.
+| Wenn ein Lieferant gelöscht wird im Zuge der Monatabrechnug, muss dieser Lieferant in der kommenden Monatsabrechnung auftauchen sofern noch Möbel vor der Löschung verkauft wurden? | Nein der Lieferant muss nicht mehr in der Abrechnung auftauchen.
+| Welches Format soll die Monatsabrechnung haben? (einfach html Seite oder csv usw.) | Es reicht eine einfach Darstellung auf der Webseite für die Mitarbeiter von Möbel-Hunger.
+| Soll es für die Mitarbeiter ein Admin-Interface geben? | Nein es reicht einfach ein neues Routing auf /admin was für die Mitarbeiter zugänglich ist. Es ist keine umfangreiche Loginverwaltung notwendig.
+| Wie soll die Datenverwaltung organisiert sein? | Über eine persistente Datenbank. (Spring stellt hier Möglichkeiten dafür bereit)
+| Wie laufen die Bezahlungen ab? | Bezahlungen laufen außerhalb des Systems ab. Der Kunde erhält z.B. die IBAN von Möbel-Hunger wenn er per Vorkasse bezahlen muss und die Mitarbeiter von Möbel-Hunger können dann bei Zahlungseingang den Status der Bestellung entsprechen ändern. Es muss also die Möglichkeit geben, dass die Mitarbeiter die Bestellung bearbeiten können.
+| Kann ein Kunde sich einen Teil der Bestellung liefern lassen und den anderen Teil abholen? | Nein die Bestellung wird entweder komplett geliefert oder komplett abgeholt.
+| Wie viel muss der Kunde bezahlen, wenn er einen Teil eines bestellten Sets abholt? | Der Kunde bezahlt den Einzelpreis des Möbelstückes. Er bezahlt aber nie mehr als den Set-Preis.
+|===
+
+- Markus stellt die Aufgaben für das Pflichtenheft für diese Woche vor:
+* Erstellen des Kontext-Diagramm
+* Erstellen des Use-Case Diagramm und ausformulieren von mindestens 5 Use Cases
+* Einpflegen von 5+ Muss-Kriterien
+* Anfertigen des GUI-Prototyp (soll erstmal eher funktionsorientiert sein)
+* Erstellen des Analyse-Klassen-Diagramm (kann mithilfe der CRC-Kartenmethode erstellt werden)
+* Einpflegen von 5 Test-Akzeptanzfällen
+
+- Videoshop-Erweiterungen werden vorgestellt (jedes Teammitglied soll eine Aufgabe implementieren)
+
+- MagicDraw Lizenzen werden von Markus zur Verfügung gestellt. Er empfiehlt weiterhin PlantUML als Alternative zu MagicDraw.
+
+== Deadlines für Sprints
+Die Deadline für Meilenstein Sprints wird auf Dienstags 23:59Uhr in der jeweiligen Woche festgelegt.
+
+== Planung des nächsten Sprints
+- Deadline: Di. 10.11.2020 23:59Uhr
+
+*Issue referenziert die Issue ID von GitHub*
+
+// See http://asciidoctor.org/docs/user-manual/=tables
+[option="headers"]
+|===
+|Issue |Titel |Beschreibung |Verantwortlicher |Status
+|…     |Erstellung Kontext-Diagramm    | Es soll ein Kontext-Diagramm für das 
+Pflichtenheft angefertigt werden.           | TBD              | in Arbeit
+|…     |Erstellung Use-Case Diagramm    | Es soll ein Use-Case Diagramm für das Pflichtenheft angefertigt werden.           | TBD              | in Arbeit
+|…     |Beschreibung Use-Cases   | Es für mindestens 5 Use-Cases die ausführlichen Beschreibung angefertigt werden.           | TBD              | in Arbeit
+|…     |Einpflegung Muss-Kriterien   | Es sollen mindestens 5 Muss-Kriterien in das Pflichtenheft eingepflegt werden.           | TBD              | in Arbeit
+|…     |Anfertigung GUI-Prototyp   | Es soll ein Prototyp/Mockup für die GUI der Website angefertigt werden.         | TBD              | in Arbeit
+|…     |Erstellung Analyse-Klassendiagramm   | Es sollen ein Analyse-Klassendiagramm angefertigt werden. Dazu soll im Vorfeld die CRC-Kartenmethode als Vorbereitung genutzt werden.           | TBD              | in Arbeit
+|…     |Einpflegung Test-Akzeptanzfällen   | Es sollen mindestens 5 Test-Akzeptanzfälle in das Pflichtenheft eingepflegt werden.           | TBD              | in Arbeit
+|…     |Videoshop Aufgabe 1   | TBD   | TBD              | in Arbeit
+|…     |Videoshop Aufgabe 2   | TBD   | TBD              | in Arbeit
+|…     |Videoshop Aufgabe 3   | TBD   | TBD              | in Arbeit
+|…     |Videoshop Aufgabe 4   | TBD   | TBD              | in Arbeit
+|…     |Videoshop Aufgabe 5   | TBD   | TBD              | in Arbeit
+|…     |Videoshop Aufgabe 6   | TBD   | TBD              | in Arbeit
+|===
+
+
