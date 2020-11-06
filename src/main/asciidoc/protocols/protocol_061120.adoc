@@ -1,0 +1,53 @@
+= Protokoll Gruppe 17
+
+Treffen am 06.11.2020
+
+Ort:      Discord +
+Beginn:   14:50 Uhr +
+Ende:     17:45 Uhr +
+
+__Schriftführer:__ Sebastian Jaster
+
+*Nächstes Treffen:* +
+09.11.2020, 14:50 Uhr, Discord
+
+__Teilnehmer:__
+//Tabellarisch oder Aufzählung, Kennzeichnung von Teilnehmern mit besonderer Rolle (z.B. Kunde)
+
+- David Schroth
+- Marc Albrecht
+- Sebastian Jaster
+- Edgar Wolfert
+- Johannes Kaufmann
+
+== Bemerkungen
+- Verteilung der Aufgaben des nächsten Sprints (s. unten)
+- Durchführung der CRC-Kartenmethode
+
+
+== Planung des nächsten Sprints
+- Deadline: Di. 10.11.2020 23:59Uhr
+
+*Issue referenziert die Issue ID von GitHub*
+
+// See http://asciidoctor.org/docs/user-manual/=tables
+[option="headers"]
+|===
+|Issue |Titel |Beschreibung |Verantwortlicher |Status
+|#1     |Erstellung Kontext-Diagramm    | Es soll ein Kontext-Diagramm für das 
+Pflichtenheft angefertigt werden.           | Shintaro              | in Arbeit
+|#2     |Erstellung Use-Case Diagramm    | Es soll ein Use-Case Diagramm für das Pflichtenheft angefertigt werden.           | Sebastian              | in Arbeit
+|#3     |Beschreibung Use-Cases   | Es soll für mindestens 5 Use-Cases eine ausführliche Beschreibung angefertigt werden.           | Sebastian              | in Arbeit
+|#4     |Einpflegung Muss-Kriterien   | Es sollen mindestens 5 Muss-Kriterien in das Pflichtenheft eingepflegt werden.           | Edgar              | in Arbeit
+|#5    |Anfertigung GUI-Prototyp   | Es soll ein Prototyp/Mockup für die GUI der Website angefertigt werden.         | David              | in Arbeit
+|#6    |Erstellung Analyse-Klassendiagramm   | Es sollen ein Analyse-Klassendiagramm angefertigt werden. Dazu soll im Vorfeld die CRC-Kartenmethode als Vorbereitung genutzt werden.           | Johannes              | in Arbeit
+|#7    |Einpflegung Test-Akzeptanzfällen   | Es sollen mindestens 5 Test-Akzeptanzfälle in das Pflichtenheft eingepflegt werden.           | Marc              | in Arbeit
+|#8     |Videoshop Aufgabe 1   | Feature Registrierung   | Johannes              | in Arbeit
+|#9    |Videoshop Aufgabe 2   | Feature Bewertungen   | David              | in Arbeit
+|#10     |Videoshop Aufgabe 3   | Feature Bestellungen   | Sebastian              | in Arbeit
+|#11     |Videoshop Aufgabe 4   | Feature Rechnung   | Edgar              | in Arbeit
+|#12     |Videoshop Aufgabe 5   | Feature Kategorien   | Shintaro              | in Arbeit
+|#13     |Videoshop Aufgabe 6   | Feature neuer Videotyp   | Marc              | in Arbeit
+|===
+
+

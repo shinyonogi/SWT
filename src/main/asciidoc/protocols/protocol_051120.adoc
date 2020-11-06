@@ -73,19 +73,19 @@ Die Deadline für Meilenstein Sprints wird auf Dienstags 23:59Uhr in der jeweili
 [option="headers"]
 |===
 |Issue |Titel |Beschreibung |Verantwortlicher |Status
-|…     |Erstellung Kontext-Diagramm    | Es soll ein Kontext-Diagramm für das 
+|#1     |Erstellung Kontext-Diagramm    | Es soll ein Kontext-Diagramm für das 
 Pflichtenheft angefertigt werden.           | TBD              | in Arbeit
-|…     |Erstellung Use-Case Diagramm    | Es soll ein Use-Case Diagramm für das Pflichtenheft angefertigt werden.           | TBD              | in Arbeit
-|…     |Beschreibung Use-Cases   | Es für mindestens 5 Use-Cases die ausführlichen Beschreibung angefertigt werden.           | TBD              | in Arbeit
-|…     |Einpflegung Muss-Kriterien   | Es sollen mindestens 5 Muss-Kriterien in das Pflichtenheft eingepflegt werden.           | TBD              | in Arbeit
-|…     |Anfertigung GUI-Prototyp   | Es soll ein Prototyp/Mockup für die GUI der Website angefertigt werden.         | TBD              | in Arbeit
-|…     |Erstellung Analyse-Klassendiagramm   | Es sollen ein Analyse-Klassendiagramm angefertigt werden. Dazu soll im Vorfeld die CRC-Kartenmethode als Vorbereitung genutzt werden.           | TBD              | in Arbeit
-|…     |Einpflegung Test-Akzeptanzfällen   | Es sollen mindestens 5 Test-Akzeptanzfälle in das Pflichtenheft eingepflegt werden.           | TBD              | in Arbeit
-|…     |Videoshop Aufgabe 1   | TBD   | TBD              | in Arbeit
-|…     |Videoshop Aufgabe 2   | TBD   | TBD              | in Arbeit
-|…     |Videoshop Aufgabe 3   | TBD   | TBD              | in Arbeit
-|…     |Videoshop Aufgabe 4   | TBD   | TBD              | in Arbeit
-|…     |Videoshop Aufgabe 5   | TBD   | TBD              | in Arbeit
+|#2     |Erstellung Use-Case Diagramm    | Es soll ein Use-Case Diagramm für das Pflichtenheft angefertigt werden.           | TBD              | in Arbeit
+|#3     |Beschreibung Use-Cases   | Es soll für mindestens 5 Use-Cases eine ausführliche Beschreibung angefertigt werden.           | TBD              | in Arbeit
+|#4     |Einpflegung Muss-Kriterien   | Es sollen mindestens 5 Muss-Kriterien in das Pflichtenheft eingepflegt werden.           | TBD              | in Arbeit
+|#5    |Anfertigung GUI-Prototyp   | Es soll ein Prototyp/Mockup für die GUI der Website angefertigt werden.         | TBD              | in Arbeit
+|#6    |Erstellung Analyse-Klassendiagramm   | Es sollen ein Analyse-Klassendiagramm angefertigt werden. Dazu soll im Vorfeld die CRC-Kartenmethode als Vorbereitung genutzt werden.           | TBD              | in Arbeit
+|#7    |Einpflegung Test-Akzeptanzfällen   | Es sollen mindestens 5 Test-Akzeptanzfälle in das Pflichtenheft eingepflegt werden.           | TBD              | in Arbeit
+|#8     |Videoshop Aufgabe 1   | Feature Registrierung   | TBD              | in Arbeit
+|#9    |Videoshop Aufgabe 2   | Feature Bewertungen   | TBD              | in Arbeit
+|#10     |Videoshop Aufgabe 3   | Feature Bestellungen   | TBD              | in Arbeit
+|#11     |Videoshop Aufgabe 4   | Feature Rechnung   | TBD              | in Arbeit
+|#12     |Videoshop Aufgabe 5   | Feature Kategorien   | TBD              | in Arbeit
 |…     |Videoshop Aufgabe 6   | TBD   | TBD              | in Arbeit
 |===
 
