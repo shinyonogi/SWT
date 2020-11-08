@@ -435,6 +435,283 @@ Dieser Abschnitt stellt eine Vereinigung von Glossar und der Beschreibung von Kl
 Mithilfe von Akzeptanztests wird geprüft, ob die Software die funktionalen Erwartungen und Anforderungen im Gebrauch erfüllt. Diese sollen und können aus den Anwendungsfallbeschreibungen und den UML-Sequenzdiagrammen abgeleitet werden. D.h., pro (komplexen) Anwendungsfall gibt es typischerweise mindestens ein Sequenzdiagramm (welches ein Szenarium beschreibt). Für jedes Szenarium sollte es einen Akzeptanztestfall geben. Listen Sie alle Akzeptanztestfälle in tabellarischer Form auf.
 Jeder Testfall soll mit einer ID versehen werde, um später zwischen den Dokumenten (z.B. im Test-Plan) referenzieren zu können.
 
+:Use: Anwendungsfall
+:Pre: Vorbedingung(en)
+:Event: Auslöser
+:Result: Erwartetes Ergebnis
+
+[cols="1h, 4"]
+[[AT010]]
+|===
+|ID        |**<<AT010>>**
+|{Use}     |**<<UC010>>**
+|{Pre}    a|Das System verfügt über Mitarbeiter-Anmeldungsdaten.
+|{Event}  a|Ein nicht authentifizierter Nutzer klickt auf "Login" in der Navigationsliste, gibt seine richten Mitarbeiter Daten ein (Name und Password) und klickt auf den "Login" Button.
+|{Result} a|
+- Der Nutzer wird als Mitarbeiter angemeldet.
+- Der Nutzer wird auf die Startseite weitergeleitet.
+- Der Nutzer hat nun die Möglichkeit auf weitere Funktionalitäten von der Rolle "Mitarbeiter" auf der Seite zuzugreifen.
+|===
+
+[cols="1h, 4"]
+[[AT011]]
+|===
+|ID        |**<<AT011>>**
+|{Use}     |**<<>>**
+|{Pre}    a|Der Nutzer ist als Mitarbeiter angemeldet.
+|{Event}  a|Ein Mitarbeiter klickt auf "Ausloggen" in der Navigationsleiste.
+|{Result} a|
+- Der Nutzer wird abgemeldet und hat nicht mehr die Rolle "Mitabeiter".
+- Der Nutzer verliert den Zugriff auf Funktionalitäten der Rolle "Mitarbeiter".
+|===
+
+[cols="1h, 4"]
+[[AT100]]
+|===
+|ID        |**<<AT100>>**
+|{Use}     |**<<UC100>>**
+|{Pre}    a|-
+|{Event}  a|Ein Nutzer klickt auf "Warenkorb" in der Navigationsleiste.
+|{Result} a|
+- Der Nutzer wird auf die Warenkorb Seite weitergeleitet.
+- Im Warenkorb werden alle Artikel angezeigt, die der Nutzer vorher hinzugefügt hat.
+|===
+
+[cols="1h, 4"]
+[[AT110]]
+|===
+|ID        |**<<AT110>>**
+|{Use}     |**<<UC110>>**
+|{Pre}    a|Ein Nutzer hat Artikel im Warenkorb.
+|{Event}  a|Ein Nutzer klickt auf den "Entfernen" Button neben dem Artikel im Warenkorb.
+|{Result} a|
+- Der Artikel wird aus dem Warenkorb entfernt.
+- Die Warenkorb Seite wird aktualisiert.
+|===
+
+[cols="1h, 4"]
+[[AT120]]
+|===
+|ID        |**<<AT120>>**
+|{Use}     |**<<UC120>>**
+|{Pre}    a|Ein Nutzer hat Artikel im Warenkorb.
+|{Event}  a|Ein Nutzer klickt auf den "Artikel bestellen" Button im Warenkorb.
+|{Result} a|
+- Der Nutzer wird auf eine Seite weitergeleitet, wo er seine persönlichen Daten eingeben und die Lieferoption auswählen muss.
+|===
+
+[cols="1h, 4"]
+[[AT121]]
+|===
+|ID        |**<<AT121>>**
+|{Use}     |**<<UC120>>**
+|{Pre}    a|Ein Nutzer hat Artikel im Warenkorb und hat <<AT120>> gemacht.
+|{Event}  a|Ein Nutzer klickt auf den "Bestellung abschließen" Button nachdem er seine Daten eingetragen hat.
+|{Result} a|
+- Seine Bestellung wird aufgegeben und der Nutzer erhällt weitere Informationen per E-Mail.
+|===
+
+[cols="1h, 4"]
+[[AT200]]
+|===
+|ID        |**<<AT200>>**
+|{Use}     |**<<UC200>>**
+|{Pre}    a|-
+|{Event}  a|Ein Nutzer klickt auf "Katalog" in der Navigationsleiste.
+|{Result} a|
+- Der Nutzer wird auf die Katalog Seite weitergeleitet.
+- Dem Nutzer werden alle verfügbaren Artikel angezeigt.
+|===
+
+[cols="1h, 4"]
+[[AT210]]
+|===
+|ID        |**<<AT210>>**
+|{Use}     |**<<UC210>>**
+|{Pre}    a|Ein Nutzer befindet sich auf der Katalog Seite.
+|{Event}  a|Ein Nutzer klickt auf einen Artikel im Katalog.
+|{Result} a|
+- Der Nutzer wird auf die Detailseite des Artikels weitergeleitet.
+|===
+
+[cols="1h, 4"]
+[[AT220]]
+|===
+|ID        |**<<AT220>>**
+|{Use}     |**<<UC220>>**
+|{Pre}    a|Ein Nutzer befindet sich auf der Detailseite eines Artikels.
+|{Event}  a|Ein Nutzer klickt auf eine andere Ausführung des Artikels.
+|{Result} a|
+- Der Nutzer wird auf die Detailseite des ausgewählten Artikels weitergeleitet.
+|===
+
+[cols="1h, 4"]
+[[AT230]]
+|===
+|ID        |**<<AT230>>**
+|{Use}     |**<<UC230>>**
+|{Pre}    a|Ein Nutzer befindet sich auf der Detailseite eines Artikels.
+|{Event}  a|Ein Nutzer klickt auf den "Zum Warenkorb hinzufügen" Button.
+|{Result} a|
+- Der Artikel wird zu dem persönlichen Warenkorb des Nutzers hinzugefügt.
+|===
+
+[cols="1h, 4"]
+[[AT300]]
+|===
+|ID        |**<<AT300>>**
+|{Use}     |**<<UC300>>**
+|{Pre}    a|Ein Kunde besitzt eine Bestellnummer.
+|{Event}  a|Ein Nutzer klickt auf "Bestellung einsehen" in der Navigationsleiste.
+|{Result} a|
+- Der Kunde wird auf deine Seite weitergeleitet, wo er seine Bestellnummer eingeben muss.
+|===
+
+[cols="1h, 4"]
+[[AT301]]
+|===
+|ID        |**<<AT301>>**
+|{Use}     |**<<UC300>>**
+|{Pre}    a|Ein Kunde besitzt eine Bestellnummer und hat <<AT300>> ausgeführt.
+|{Event}  a|Ein Nutzer klickt auf "Bestätigen" nachdem er seine Bestellnummer eingetragen hat.
+|{Result} a|
+- Der Kunde wird auf deine Seite weitergeleitet, wo seine Bestellung aufgelistet ist.
+|===
+
+[cols="1h, 4"]
+[[AT302]]
+|===
+|ID        |**<<AT302>>**
+|{Use}     |**<<UC300>>**
+|{Pre}    a|Ein Mitarbeiter befindet sich auf der Kundenbestellungsseite.
+|{Event}  a|Ein Mitarbeiter klickt eine Bestellung in der Liste an.
+|{Result} a|
+- Der Mitarbeiter wird auf deine Seite weitergeleitet, wo die Bestellung aufgelistet ist.
+|===
+
+[cols="1h, 4"]
+[[AT310]]
+|===
+|ID        |**<<AT310>>**
+|{Use}     |**<<UC310>>**
+|{Pre}    a|Ein Kunde befindet sich auf der Bestellübersicht.
+|{Event}  a|Der Kunde klickt den "Bestellung stonieren" Button und anschließen auf den "Bestätigen" Button.
+|{Result} a|
+- Die gesamte Bestellung wird storniert.
+|===
+
+[cols="1h, 4"]
+[[AT320]]
+|===
+|ID        |**<<AT320>>**
+|{Use}     |**<<UC320>>**
+|{Pre}    a|Ein Kunde befindet sich auf der Bestellübersicht.
+|{Event}  a|Der Kunde klickt den "Artikel stonieren" Button und anschließen auf den "Bestätigen" Button.
+|{Result} a|
+- Der Artikel wird storniert.
+|===
+
+[cols="1h, 4"]
+[[AT330]]
+|===
+|ID        |**<<AT330>>**
+|{Use}     |**<<UC330>>**
+|{Pre}    a|Ein Mitarbeiter befindet sich auf einer Bestellübersicht.
+|{Event}  a|Der Mitarbeiter klickt den "Bestellstatus ändern" Button, wählt einen neuen Status aus und klickt anschließen auf den "Bestätigen" Button.
+|{Result} a|
+- Der Status der gesamten Bestellung ändert sich zum neuen Status.
+|===
+
+[cols="1h, 4"]
+[[AT400]]
+|===
+|ID        |**<<AT400>>**
+|{Use}     |**<<UC400>>**
+|{Pre}    a|Ein Mitarbeiter ist eingeloggt.
+|{Event}  a|Der Mitarbeiter klickt auf "Admin-Interface" in der Navigationsleiste.
+|{Result} a|
+- Der Mitarbeiter wird auf die Admin Seite weitergeleitet.
+|===
+
+[cols="1h, 4"]
+[[AT410]]
+|===
+|ID        |**<<AT410>>**
+|{Use}     |**<<UC410>>**
+|{Pre}    a|Ein Mitarbeiter befindet sich auf der Admin Seite.
+|{Event}  a|Der Mitarbeiter klickt auf den "Kundenbestellung auflisten" Button.
+|{Result} a|
+- Der Mitarbeiter wird auf die Kundenbestellungen Seite weitergeleitet.
+|===
+
+[cols="1h, 4"]
+[[AT420]]
+|===
+|ID        |**<<AT420>>**
+|{Use}     |**<<UC420>>**
+|{Pre}    a|Ein Mitarbeiter befindet sich auf der Admin Seite.
+|{Event}  a|Der Mitarbeiter klickt auf den "Monatsstatistik einsehen" Button.
+|{Result} a|
+- Der Mitarbeiter wird auf die Monatsstatistik Seite weitergeleitet.
+|===
+
+[cols="1h, 4"]
+[[AT430]]
+|===
+|ID        |**<<AT430>>**
+|{Use}     |**<<UC430>>**
+|{Pre}    a|Ein Mitarbeiter befindet sich auf der Admin Seite.
+|{Event}  a|Der Mitarbeiter klickt auf "Lieferanten verwalten" Button.
+|{Result} a|
+- Der Mitarbeiter wird auf die Lieferanten Seite weitergeleitet.
+|===
+
+[cols="1h, 4"]
+[[AT431]]
+|===
+|ID        |**<<AT431>>**
+|{Use}     |**<<UC430>>**
+|{Pre}    a|Ein Mitarbeiter befindet sich auf der Lieferanten Seite.
+|{Event}  a|Der Mitarbeiter klickt auf den "Lieferant löschen" Button und anschließend auf den "Bestätigen" Button.
+|{Result} a|
+- Der Lieferant mit allen Artikeln und Verkäufen wird aus dem System gelöscht.
+|===
+
+[cols="1h, 4"]
+[[AT432]]
+|===
+|ID        |**<<AT432>>**
+|{Use}     |**<<UC430>>**
+|{Pre}    a|Ein Mitarbeiter befindet sich auf der Lieferanten Seite.
+|{Event}  a|Der Mitarbeiter klickt auf "Lieferant hinzufügen" Button.
+|{Result} a|
+- Der Mitarbeiter wird auf eine Seite weitergeleitet, wo er die Daten des neuen Liefernaten eingeben muss.
+|===
+
+[cols="1h, 4"]
+[[AT433]]
+|===
+|ID        |**<<AT433>>**
+|{Use}     |**<<UC430>>**
+|{Pre}    a|Ein Mitarbeiter befindet sich auf der Lieferanten hinzufügen Seite, nach <<AT432>>.
+|{Event}  a|Der Mitarbeiter klickt auf "Lieferant hinzufügen" Button, nachdem er die neuen Daten eingetragen hat.
+|{Result} a|
+- Der Mitarbeiter wird auf die Lieferanten Seite weitergeleitet.
+|===
+
+
+[cols="1h, 4"]
+[[AT500]]
+|===
+|ID        |**<<AT500>>**
+|{Use}     |**<<UC500>>**
+|{Pre}    a|Ein Kunde befindet sich auf seiner Bestellübersicht.
+|{Event}  a|Der Kunde klickt auf den "LKW stonieren" Button und anschließend auf den "Bestätigen" Button.
+|{Result} a|
+- Der LKW wird stoniert und die Bestellung aus dem System gelöscht.
+|===
+
+
 == Glossar
 Sämtliche Begriffe, die innerhalb des Projektes verwendet werden und deren gemeinsames Verständnis aller beteiligten Stakeholder essentiell ist, sollten hier aufgeführt werden.
 Insbesondere Begriffe der zu implementierenden Domäne wurden bereits beschrieben, jedoch gibt es meist mehr Begriffe, die einer Beschreibung bedürfen. +
