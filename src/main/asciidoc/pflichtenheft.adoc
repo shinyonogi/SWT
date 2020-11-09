@@ -68,19 +68,47 @@ Die typischen Anwendungsfälle (Anlegen, Ändern, Löschen) können zu einem ein
 [[UC010]]
 |===
 |ID                         |**<<UC010>>**
-|Name                       |Einloggen
-|Beschreibung               |Ein Nutzer der Seite kann sich mithilfe von notwendigen Logindaten gegenüber dem System authentifizieren um die Rolle des Mitarbeiters zu erhalten.
-|Akteur                     |Nutzer
-|Auslöser                   |Der Nutzer möchte die Rolle Mitarbeiter erhalten.
-|Bedingungen               a| Der Nutzer besitzt gültige Logindaten für das System.
+|Name                       |Einloggen/Ausloggen.
+|Beschreibung               |
+_Einloggen:_
+
+Ein Nutzer der Seite kann sich mithilfe von notwendigen Logindaten gegenüber dem System authentifizieren um die Rolle des Mitarbeiters zu erhalten.
+
+_Ausloggen:_
+
+Ein Mitarbeiter kann sich aus dem System ausloggen.
+
+|Akteur                     |Nutzer, Mitarbeiter
+|Auslöser                   |
+_Einloggen:_
+
+Der Nutzer möchte die Rolle Mitarbeiter erhalten.
+
+_Ausloggen:_
+
+Der Mitarbeiter möchte nicht mehr die Rolle des Mitarbeiters im System haben.
+
+|Bedingungen               a|
+_Einloggen:_
+
+Der Nutzer besitzt gültige Logindaten für das System.
+
+_Ausloggen:_
+
+Der Mitarbeiter hat sich mithilfe von <<UC010>> gegenüber dem System authentifiziert.
 |Notwendige Schritte       a|
+_Einloggen:_
+
   1. Nutzer klickt auf den Login Button in der Navigationsleiste.
   2. Nutzer gibt seine gültigen Logindaten an.
   3. Nutzer bestätigt seine Eingaben mit einem Klick auf den "Login" Button.
+
+_Ausloggen:_
+
+Der Mitarbeiter klickt auf den Logout Button in der Navigationsleiste und wird auf die Startseite zurückgeleitet.
 |Erweiterungen              |-
 |Funktionale Anforderung    | TBD
 |===
-
 
 [cols="1h, 3"]
 [[UC100]]
@@ -93,7 +121,7 @@ Die typischen Anwendungsfälle (Anlegen, Ändern, Löschen) können zu einem ein
 |Bedingungen               a| -
 |Notwendige Schritte        | Nutzer klickt auf den Warenkorb in der Navigationsleiste.
 |Erweiterungen              |-
-|Funktionale Anforderung    | TBD
+|Funktionale Anforderung    |<<F0008>>
 |===
 
 [cols="1h, 3"]
@@ -107,7 +135,7 @@ Die typischen Anwendungsfälle (Anlegen, Ändern, Löschen) können zu einem ein
 |Bedingungen               a| Der Nutzer befindet sich im Warenkorb <<UC100>>.
 |Notwendige Schritte        | Nutzer klickt auf "Entfernen" am jeweiligen Artikel im Warenkorb um den Artikel zu löschen.
 |Erweiterungen              |-
-|Funktionale Anforderung    | TBD
+|Funktionale Anforderung    |<<F0007>>
 |===
 
 [cols="1h, 3"]
@@ -124,7 +152,7 @@ Die typischen Anwendungsfälle (Anlegen, Ändern, Löschen) können zu einem ein
   2. Nutzer gibt persönliche Daten (Adresse, E-Mail) an und wählt die Versandoption aus (Lieferung oder Abholung).
   3. Nutzer bestätigt die Eingaben und die Bestellung mithilfe des Buttons "Bestellung abschließen".
 |Erweiterungen              |-
-|Funktionale Anforderung    | TBD
+|Funktionale Anforderung    |<<F0010>>
 |===
 
 [cols="1h, 3"]
@@ -138,7 +166,7 @@ Die typischen Anwendungsfälle (Anlegen, Ändern, Löschen) können zu einem ein
 |Bedingungen               a| -
 |Notwendige Schritte       a| Der Nutzer klickt auf "Katalog" in der Navigationsleiste.
 |Erweiterungen              |-
-|Funktionale Anforderung    | TBD
+|Funktionale Anforderung    |<<F0003>>
 |===
 
 [cols="1h, 3"]
@@ -152,7 +180,7 @@ Die typischen Anwendungsfälle (Anlegen, Ändern, Löschen) können zu einem ein
 |Bedingungen               a| Der Nutzer schaut sich derzeit den Artikel-Katalog <<UC200>> an.
 |Notwendige Schritte       a| Der Nutzer klickt auf den Namen des gewünschten Artikel.
 |Erweiterungen              |-
-|Funktionale Anforderung    | TBD
+|Funktionale Anforderung    |<<F0005>>
 |===
 
 [cols="1h, 3"]
@@ -306,7 +334,7 @@ _Kunde:_
 |Notwendige Schritte       a|
     Der Mitarbeiter wählt den Punkt "Monatsstatistik einsehen" aus und wird auf die Seite der Statistik weitergeleitet.
 |Erweiterungen              |
-|Funktionale Anforderung    | TBD
+|Funktionale Anforderung    |<<F0015>>
 |===
 
 [cols="1h, 3"]
@@ -335,27 +363,42 @@ _Hinzufügen:_
 |Funktionale Anforderung    | TBD
 |===
 
+
 [cols="1h, 3"]
 [[UC500]]
 |===
 |ID                         |**<<UC500>>**
-|Name                       |LKW stornieren
-|Beschreibung               |Ein Kunde soll in der Lage sein, seinen gebuchten LKW wieder zu stornieren.
+|Name                       |LKW-Bestellungen einsehen
+|Beschreibung               |Ein Kunde soll in der Lage sein, seinen gebuchten LKWs einzusehen.
 |Akteur                     |Kunde
-|Auslöser                   |Der Kunde benötigt seinen gebuchten LKW nicht mehr.
+|Auslöser                   |Der Kunde möchte die Informationen zu seinem gebuchten LKW einsehen.
 |Bedingungen               a|Der Kunde hat einen LKW gebucht und eine gültige Buchungsnummer.
 |Notwendige Schritte       a|
     1. Der Kunde drückt auf den Reiter "Bestellung einsehen" und gibt die Nummer seiner LKW Buchung ein.
     2. Der Kunde drückt auf "Bestätigen" und wird auf die Detailseite der Buchung weitergeleitet
-    3. Der Kunde drückt auf "Lkw stornieren" und anschließend auf "Bestätigen" um die Aktion auszuführen.
 |Erweiterungen              |
 |Funktionale Anforderung    | TBD
+|===
+
+
+[cols="1h, 3"]
+[[UC500]]
+|===
+|ID                         |**<<UC510>>**
+|Name                       |LKW stornieren
+|Beschreibung               |Ein Kunde soll in der Lage sein, seinen gebuchten LKW wieder zu stornieren.
+|Akteur                     |Kunde
+|Auslöser                   |Der Kunde benötigt seinen gebuchten LKW nicht mehr.
+|Bedingungen               a|Der Kunde hat einen LKW gebucht und eine gültige Buchungsnummer und befindet sich auf der Detailseite seiner LKW-Bestellung <<UC500>>.
+|Notwendige Schritte       a| Der Kunde drückt auf "Lkw stornieren" und anschließend auf "Bestätigen" um die Aktion auszuführen.
+|Erweiterungen              |
+|Funktionale Anforderung    |<<F0014>>
 |===
 
 [cols="1h, 3"]
 [[UC510]]
 |===
-|ID                         |**<<UC510>>**
+|ID                         |**<<UC520>>**
 |Name                       |LKW buchen
 |Beschreibung               |Ein Kunde soll in der Lage sein einen LKW für ein bestimmtes Datum unabhängig von einer Bestellung zu buchen.
 |Auslöser                   |Der Kunde benötigt einen LKW.
@@ -365,7 +408,7 @@ _Hinzufügen:_
     2. Der Kunde gibt das Datum auf der Bestellseite ein.
     3. Das System weist dem Kunden automatisch einen LKW zu und teilt dem Kunden die Bestellnummer mit.
 |Erweiterungen              |
-|Funktionale Anforderung    | TBD
+|Funktionale Anforderung    |<<F0014>>
 |===
 
 == Funktionale Anforderungen
