@@ -371,7 +371,118 @@ _Hinzufügen:_
 == Funktionale Anforderungen
 
 === Muss-Kriterien
-Was das zu erstellende Programm auf alle Fälle leisten muss.
+[options="header", cols="2h, 1, 3, 12"]
+|===
+|ID
+|Version
+|Name
+|Description
+
+|[[F0001]]<<F0001>>
+|v1.0
+|Sortiment 
+a|
+Das System muss Artikel dauerhaft in einer Datenbank, welche das Sortiment repräsentiert, speichern.
+
+
+|[[F0002]]<<F0002>>
+|v1.0
+|Sortiment verwalten 
+a|
+Das System muss Mitarbeitern die Möglichkeit bieten, Artikel dem Sortiment hinzuzufügen und Artikel aus dem Sortiment zu entfernen.
+
+
+|[[F0003]]<<F0003>>
+|v1.0
+|Sortiment anzeigen 
+a|
+Das System muss Benutzern die Möglichkeit bieten, alle Artikel des Sortiments anzuzeigen.
+
+
+|[[F0004]]<<F0004>>
+|v1.0
+|Sortiment filtern
+a|
+Das System sollte Benutzern die Möglichkeit bieten, das Sortiment zu filtern.
+
+
+|[[F0005]]<<F0005>>
+|v1.0
+|Artikel anzeigen 
+a|
+Das System muss Benutzern die Möglichkeit bieten, einen ausgewählten Artikel anzuzeigen.
+
+
+|[[F0006]]<<F0006>>
+|v1.0
+|Warenkorb
+a|
+Das System muss einem Benutzer einen Warenkorb zur Verfügung stellen, in dem er Artikel vorübergehend speichern kann.
+
+
+|[[F0007]]<<F0007>>
+|v1.0
+|Warenkorb verwalten
+a|
+Das System muss Benutzern die Möglichkeit bieten, ausgewählte Artikel dem Warenkorb hinzuzufügen oder zu entfernen.
+
+
+|[[F0008]]<<F0008>>
+|v1.0
+|Warenkorb anzeigen
+a|
+Das System muss Benutzern die Möglichkeit bieten, ihren Warenkorb anzuzeigen.
+
+
+|[[F0009]]<<F0009>>
+|v1.0
+|Bestellung
+a|
+Das System muss Bestellungen in einer Datenbank speichern.
+
+
+|[[F0010]]<<F0010>>
+|v1.0
+|Bestellung entgegennehmen
+a|
+Das System muss die Möglichkeit bieten, vom Benutzer eine neue Bestellung in Form eines Warenkorbes entgegenzunehmen.
+
+
+|[[F0011]]<<F0011>>
+|v1.0
+|Kunden benachrichtigen
+a|
+Das System muss fähig sein, Kunden zu benachrichtigen, wenn ihre bestellte Ware im Hauptlager angekommen ist.
+
+
+|[[F0012]]<<F0012>>
+|v1.0
+|Statusabfrage anzeigen
+a|
+Das System muss die Möglichkeit bieten, Kunden anzuzeigen, welche Möbel bereits geliefert wurden.
+
+
+|[[F0013]]<<F0013>>
+|v1.0
+|LKW Park
+a|
+Das System muss LKWs dauerhaft in einer LKW-Park Datenbank speichern.
+
+
+|[[F0014]]<<F0014>>
+|v1.0
+|LKW Buchung/Stornierung
+a|
+Das System muss dem Kunden die Möglichkeit bieten, LKWs aus dem LKW-Park zu buchen oder zu stornieren.
+
+
+|[[F0015]]<<F0015>>
+|v1.0
+|monatliche Statistik
+a|
+Das System muss der Geschäftsführung die Möglichkeit bieten, Statistiken über Verkäufe des letzten Monats mit Vergleich zum Vormonat und nach Großlieferanten aufgegliedert anzuzeigen.
+
+|===
 
 === Kann-Kriterien
 Anforderungen die das Programm leisten können soll, aber für den korrekten Betrieb entbehrlich sind.
