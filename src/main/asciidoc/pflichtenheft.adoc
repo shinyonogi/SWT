@@ -340,13 +340,14 @@ _Hinzufügen:_
 |===
 |ID                         |**<<UC500>>**
 |Name                       |LKW stornieren
-|Beschreibung               |Ein Kunde soll in der Lage sein, seinen für die Abholung gebuchten LKW wieder zu stornieren.
+|Beschreibung               |Ein Kunde soll in der Lage sein, seinen gebuchten LKW wieder zu stornieren.
 |Akteur                     |Kunde
 |Auslöser                   |Der Kunde benötigt seinen gebuchten LKW nicht mehr.
-|Bedingungen               a|Der Kunde befindet sich in der Übersicht seiner Bestellung <<UC300>> und hat zu seiner Bestellung einen LKW bei der Bestellaufgabe gebucht <<UC510>>.
+|Bedingungen               a|Der Kunde hat einen LKW gebucht und eine gültige Buchungsnummer.
 |Notwendige Schritte       a|
-    1. Der Kunde drückt den Button "LKW stornieren" am Anfang der Seite.
-    2. Der Kunde bestätigt die Stornierung mithilfe des Buttons "Bestätigen".
+    1. Der Kunde drückt auf den Reiter "Bestellung einsehen" und gibt die Nummer seiner LKW Buchung ein.
+    2. Der Kunde drückt auf "Bestätigen" und wird auf die Detailseite der Buchung weitergeleitet
+    3. Der Kunde drückt auf "Lkw stornieren" und anschließend auf "Bestätigen" um die Aktion auszuführen.
 |Erweiterungen              |
 |Funktionale Anforderung    | TBD
 |===
@@ -356,28 +357,14 @@ _Hinzufügen:_
 |===
 |ID                         |**<<UC510>>**
 |Name                       |LKW buchen
-|Beschreibung               |Ein Kunde soll in der Lage sein bei der Bestellaufgabe oder nachträglich zur Bestellung einen LKW zu buchen.
-|Auslöser                   |Der Kunde benötigt einen LKW zur Abholung.
+|Beschreibung               |Ein Kunde soll in der Lage sein einen LKW für ein bestimmtes Datum unabhängig von einer Bestellung zu buchen.
+|Auslöser                   |Der Kunde benötigt einen LKW.
 |Bedingungen               a|
-_Bei Bestellung:_
-
-Der Kunde gibt bei <<UC120>> an die Lieferung abzuholen.
-
-_Nachträglich:_
-
-Der Kunde besitzt eine gültige Bestellnummer und befindet sich in der Bestellungsübersicht <<UC300>> und hat bisher keinen LKW gebucht <<UC510>>.
-
-|Notwendige Schritte       a|
-_Bei Bestellung:_
-
-1. Der Kunde wählt eine Checkbox aus, ob er einen LKW buchen möchte oder nicht.
-2. Gibt der Kunde an, dass er einen LKW buchen möchte, weißt ihn das System automatisch den günstigen LKW für seine Bestellung zu.
-
-_Nachträglich:_
-
-1. Der Kunde wählt den Knopf "LKW buchen" in der Bestellübersicht aus.
-2. Dem Kunde wird ein LKW vom System zugewiesen und der Kunde bestätigt diesen mit einem Klick auf den Button "Bestätigen".
-|Erweiterungen              | Ein Kunde darf nur einen LKW buchen sofern er dies noch nicht getan hat.
+|Notwendige Schritte       a| 
+    1. Der Kunde wählt in der Navigationsleiste den Reiter "LKW buchen" aus.
+    2. Der Kunde gibt das Datum auf der Bestellseite ein.
+    3. Das System weist dem Kunden automatisch einen LKW zu und teilt dem Kunden die Bestellnummer mit.
+|Erweiterungen              |
 |Funktionale Anforderung    | TBD
 |===
 
