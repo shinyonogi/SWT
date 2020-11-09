@@ -519,7 +519,8 @@ Für jeden Dialog:
 == Datenmodell
 
 === Überblick: Klassendiagramm
-UML-Analyseklassendiagramm
+[[analyseclass_diagram]]
+image::./models/analysis/Model.png[Analyseklassendiagramm, 100%, 100%, pdfwidth=100%, title= "Analyseklassendiagramms des Projektes {project_name}", align=center]
 
 === Klassen und Enumerationen
 Dieser Abschnitt stellt eine Vereinigung von Glossar und der Beschreibung von Klassen/Enumerationen dar. Jede Klasse und Enumeration wird in Form eines Glossars textuell beschrieben. Zusätzlich werden eventuellen Konsistenz- und Formatierungsregeln aufgeführt.
