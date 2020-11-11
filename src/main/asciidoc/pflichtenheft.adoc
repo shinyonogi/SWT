@@ -577,8 +577,8 @@ Der Kalendar enthält Kalendareinträge, welche ein Datum haben und einen Mietei
 |LKW buchen
 a|
 Das System muss Nutzern die Möglichkeit bieten, LKWs aus dem LKW-Park zu buchen.
-Bei der Buchung wird zunächst die LKW Bestellung validiert nach [[F0021]].
-Wenn die Bestellung valide ist, wird der Kalendar des LKWs bearbeitet nach [[F0041]].
+Bei der Buchung wird zunächst die LKW Bestellung validiert nach <<F0021>>.
+Wenn die Bestellung valide ist, wird der Kalendar des LKWs bearbeitet nach <<F0041>>.
 
 
 |[[F0043]]<<F0043>>
