@@ -433,101 +433,218 @@ _Hinzufügen:_
 
 === Muss-Kriterien
 
-[options="header",cols="2, 1, 3, 12a"]
+[options="header", cols="2h, 1, 3, 12"]
 |===
 |ID
 |Version
 |Name
 |Description
 
-|[[F0001]]**<<F0001>>**
+|[[F0001]]<<F0001>>
 |v1.0
-|Sortiment
-|Das System muss Artikel dauerhaft in einer Datenbank, welche das Sortiment repräsentiert, speichern.
+|Artikel-Katalog speichern
+a|
+Das System muss eine Liste von Artikeln, welche den Artikel-Katalog repräsentiert, dauerhaft in einer Datenbank speichern.
 
 
-|[[F0002]]**<<F0002>>**
+|[[F0002]]<<F0002>>
 |v1.0
-|Sortiment verwalten
-|Das System muss Mitarbeitern die Möglichkeit bieten, Artikel dem Sortiment hinzuzufügen und Artikel aus dem Sortiment zu entfernen.
+|Artikel-Katalog anzeigen 
+a|
+Das System muss Nutzern die Möglichkeit bieten, alle Artikel des Artikel-Katalogs anzuzeigen.
+Dabei wird für jeden Artikel nur der Name, der Preis und ein Bild des Artikels angezeigt.
 
 
-|[[F0003]]**<<F0003>>**
+|[[F0003]]<<F0003>>
 |v1.0
-|Sortiment anzeigen
-|Das System muss Benutzern die Möglichkeit bieten, alle Artikel des Sortiments anzuzeigen.
+|Artikel-Katalog bearbeiten 
+a|
+Das System muss Mitarbeitern die Möglichkeit bieten, Artikel dem Artikel-Katalog hinzuzufügen und Artikel aus dem Artikel-Katalog zu entfernen.
 
-
-|[[F0004]]**<<F0004>>**
+|[[F0004]]<<F0004>>
 |v1.0
-|Sortiment filtern
-|Das System sollte Benutzern die Möglichkeit bieten, das Sortiment zu filtern.
+|Artikel-Katalog filtern
+a|
+Das System muss Nutzern die Möglichkeit bieten, den Artikel-Katalog zu filtern.
 
 
-|[[F0005]]**<<F0005>>**
+|[[F0005]]<<F0005>>
 |v1.0
-|Artikel anzeigen
-|Das System muss Benutzern die Möglichkeit bieten, einen ausgewählten Artikel anzuzeigen.
+|Artikel anzeigen 
+a|
+Das System muss Nutzern die Möglichkeit bieten einen ausgewählten Artikel anzuzeigen.
+Dabei wird ein Bild, der Name, der Preis, die Kategorie und die Variante des Artikels angezeigt.
 
 
-|[[F0006]]**<<F0006>>**
+|[[F0010]]<<F0010>>
 |v1.0
 |Warenkorb
-|Das System muss einem Benutzer einen Warenkorb zur Verfügung stellen, in dem er Artikel vorübergehend speichern kann.
+a|
+Das System muss jedem Nutzer einen eigenen Warenkorb zur Verfügung stellen, in dem er mehrere unterschiedliche Artikel vorübergehend speichern kann.
 
 
-|[[F0007]]**<<F0007>>**
-|v1.0
-|Warenkorb verwalten
-|Das System muss Benutzern die Möglichkeit bieten, ausgewählte Artikel dem Warenkorb hinzuzufügen oder zu entfernen.
-
-
-|[[F0008]]**<<F0008>>**
+|[[F0011]]<<F0011>>
 |v1.0
 |Warenkorb anzeigen
-|Das System muss Benutzern die Möglichkeit bieten, ihren Warenkorb anzuzeigen.
+a|
+Das System muss Nutzern die Möglichkeit bieten, ihren Warenkorb anzuschauen.
+Dabei werden die einzelnen Artikel des Warenkorbes aufgelistet mit Name, Preis und Variante.
+Außerdem wird der Gesamtpreis des Warenkorbes angezeigt.
 
 
-|[[F0009]]**<<F0009>>**
+|[[F0012]]<<F0012>>
 |v1.0
-|Bestellung
-|Das System muss Bestellungen in einer Datenbank speichern.
+|Warenkorb bearbeiten
+a|
+Das System muss Nutzern die Möglichkeit bieten, ausgewählte Artikel ihrem Warenkorb hinzuzufügen oder zu entfernen.´
 
 
-|[[F0010]]**<<F0010>>**
+|[[F0020]]<<F0020>>
 |v1.0
-|Bestellung entgegennehmen
-|Das System muss die Möglichkeit bieten, vom Benutzer eine neue Bestellung in Form eines Warenkorbes entgegenzunehmen.
+|Bestellung speichern
+a|
+Das System muss Bestellungen in einer Datenbank speichern.
+Eine Bestellung besteht aus ein oder mehreren Bestelleinträgen, den Kontaktinformationen des Kunden, einer eindeutigen ID und einem Abholdatum oder alternativ einem LKW Lieferdatum.
+Ein Bestelleintrag besteht aus einem Item, der Anzahl des ausgewählten Items und dem Bestellstatus.
 
 
-|[[F0011]]**<<F0011>>**
+|[[F0021]]<<F0021>>
+|v1.0
+|Bestellung validieren
+a|
+Das System muss fähig sein eine Bestellung zu validieren.
+Eine Bestellung ist valide, wenn es die des Objekt aufgezählten Eigenschaften hat.
+
+
+|[[F0022]]<<F0022>>
+|v1.0
+|Bestellung aufgeben
+a|
+Das System muss dem Nutzer die Möglichkeit bieten, eine neue Bestellung in Auftrag zu geben, insofern der Warenkorb nicht leer ist.
+
+
+|[[F0023]]<<F0023>>
+|v1.0
+|Bestellung erstellen
+a|
+Das System muss fähig sein eine neue Bestellung zu erstellen, nachdem der Kunde eine Bestellung aufgegeben hat.
+
+
+|[[F0024]]<<F0024>>
+|v1.0
+|Bestellung stornieren
+a|
+Das System muss einem Kunden die Möglichkeit bieten, seine gesamte Bestellung oder einzelne Artikel der Bestellung zu stornieren.
+
+
+|[[F0025]]<<F0025>>
+|v1.0
+|Bestellung anzeigen
+a|
+Das System muss dem Nutzer die Möglichkeit bieten, über die Bestell-ID, seine Bestellung anzuzeigen.
+
+
+|[[F0026]]<<F0026>>
+|v1.0
+|Bestellstatus bearbeiten
+a|
+Das System muss Mitarbeitern die Möglichkeit bieten, den Status einer Bestellung zu ändern.
+
+
+|[[F0030]]<<F0030>>
 |v1.0
 |Kunden benachrichtigen
-|Das System muss fähig sein, Kunden zu benachrichtigen, wenn ihre bestellte Ware im Hauptlager angekommen ist.
+a|
+Das System muss fähig sein, Kunden zu benachrichtigen, wenn ihre bestellte Ware im Hauptlager angekommen ist, bzw. wenn das Abholdatum erreicht ist.
 
 
-|[[F0012]]**<<F0012>>**
+|[[F0040]]<<F0040>>
 |v1.0
-|Statusabfrage anzeigen
-|Das System muss die Möglichkeit bieten, Kunden anzuzeigen, welche Möbel bereits geliefert wurden.
+|LKW Park speichern
+a|
+Das System muss eine Liste von LKWS dauerhaft in einer Datenbank speichern.
 
 
-|[[F0013]]**<<F0013>>**
+|[[F0041]]<<F0041>>
 |v1.0
-|LKW Park
-|Das System muss LKWs dauerhaft in einer LKW-Park Datenbank speichern.
+|LKW bearbeiten
+a|
+Das System muss fähig sein den Kalendar eines LKWs zu bearbeiten.
+Der Kalendar enthält Kalendareinträge, welche ein Datum haben und einen Mieteintrag oder Liefereintrag.
 
-
-|[[F0014]]**<<F0014>>**
+|[[F0042]]<<F0042>>
 |v1.0
-|LKW Buchung/Stornierung
-|Das System muss dem Kunden die Möglichkeit bieten, LKWs aus dem LKW-Park zu buchen oder zu stornieren.
+|LKW buchen
+a|
+Das System muss Nutzern die Möglichkeit bieten, LKWs aus dem LKW-Park zu buchen.
+Bei der Buchung wird zunächst die LKW Bestellung validiert nach [[F0021]].
+Wenn die Bestellung valide ist, wird der Kalendar des LKWs bearbeitet nach [[F0041]].
 
 
-|[[F0015]]**<<F0015>>**
+|[[F0043]]<<F0043>>
+|v1.0
+|LKW stornieren
+a|
+Das System muss einem Kunden mit einer gültigen Bestell-ID, die Möglichkeit bieten, von ihm gebuchte LKWs zu stornieren.
+Dabei wird der Kalendareintrag gelöscht.
+
+
+|[[F0050]]<<F0050>>
+|v1.0
+|Mitarbeiter speichern
+a|
+Das System muss Mitarbeiter und deren Logindaten dauerhaft in einer Datenbank speichern.
+
+
+|[[F0051]]<<F0051>>
+|v1.0
+|Admin Interface
+a|
+Das System muss ein Admin Interface besitzen.
+Das Admin Interface beinhaltet eine monatliche Statistik und die Möglichkeit Lieferanten und Bestellungen zu verwalten.
+
+
+|[[F0052]]<<F0052>>
+|v1.0
+|Admin Interface anzeigen
+a|
+Das System muss Mitarbeitern die Möglichkeit bieten das Admin Interface anzuzeigen.
+
+
+|[[F0053]]<<F0053>>
 |v1.0
 |monatliche Statistik
-|Das System muss der Geschäftsführung die Möglichkeit bieten, Statistiken über Verkäufe des letzten Monats mit Vergleich zum Vormonat und nach Großlieferanten aufgegliedert anzuzeigen.
+a|
+Das System muss fähig sein eine monatliche Statistik zu erstellen, welche die Daten über die Verkäufe des Monats, nach Großlieferant sortiert, zusammenfasst.
+
+
+|[[F0054]]<<F0054>>
+|v1.0
+|monatliche Statistik anzeigen
+a|
+Das System muss Mitarbeitern, welche sich im Admin Interface befinden, die Möglichkeit bieten, die monatliche Statistik mit Vergleich der vorherigen monatlichen Statistik anzuzeigen.
+
+
+|[[F0055]]<<F0055>>
+|v1.0
+|Bestellungen anzeigen
+a|
+Das System muss Mitarbeitern, welche sich im Admin Interface befinden, die Möglichkeit bieten, alle Bestellungen mit Bestelldatum und Bestellnummer aufzulisten.
+
+
+|[[F0056]]<<F0056>>
+|v1.0
+|Lieferanten anzeigen
+a|
+Das System muss Mitarbeitern, welche sich im Admin Interface befinden, die Möglichkeit bieten, alle Lieferanten anzuzeigen.
+
+
+|[[F0057]]<<F0057>>
+|v1.0
+|Lieferanten verwalten
+a|
+Das System muss Mitarbeitern, welche sich im Admin Interface befinden, die Möglichkeit bieten, Lieferanten zu löschen oder hinzuzufügen.
+
 
 |===
 
