@@ -461,12 +461,6 @@ Dabei wird für jeden Artikel nur der Name, der Preis und ein Bild des Artikels 
 a|
 Das System muss Mitarbeitern die Möglichkeit bieten, Artikel dem Artikel-Katalog hinzuzufügen und Artikel aus dem Artikel-Katalog zu entfernen.
 
-|[[F0004]]<<F0004>>
-|v1.0
-|Artikel-Katalog filtern
-a|
-Das System muss Nutzern die Möglichkeit bieten, den Artikel-Katalog zu filtern.
-
 
 |[[F0005]]<<F0005>>
 |v1.0
@@ -474,6 +468,7 @@ Das System muss Nutzern die Möglichkeit bieten, den Artikel-Katalog zu filtern.
 a|
 Das System muss Nutzern die Möglichkeit bieten einen ausgewählten Artikel anzuzeigen.
 Dabei wird ein Bild, der Name, der Preis, die Kategorie und die Variante des Artikels angezeigt.
+Die Variante kann dabei geändert werden.
 
 
 |[[F0010]]<<F0010>>
@@ -496,7 +491,7 @@ Außerdem wird der Gesamtpreis des Warenkorbes angezeigt.
 |v1.0
 |Warenkorb bearbeiten
 a|
-Das System muss Nutzern die Möglichkeit bieten, ausgewählte Artikel ihrem Warenkorb hinzuzufügen oder zu entfernen.´
+Das System muss Nutzern die Möglichkeit bieten, ausgewählte Artikel ihrem Warenkorb hinzuzufügen oder zu entfernen.
 
 
 |[[F0020]]<<F0020>>
@@ -542,6 +537,7 @@ Das System muss einem Kunden die Möglichkeit bieten, seine gesamte Bestellung o
 |Bestellung anzeigen
 a|
 Das System muss dem Nutzer die Möglichkeit bieten, über die Bestell-ID, seine Bestellung anzuzeigen.
+Dazu gehören Möbel- und LKW-Bestellungen.
 
 
 |[[F0026]]<<F0026>>
@@ -598,59 +594,86 @@ Das System muss Mitarbeiter und deren Logindaten dauerhaft in einer Datenbank sp
 
 |[[F0051]]<<F0051>>
 |v1.0
+|Login
+a|
+Das System muss die Möglichkeit bieten sich einzuloggen.
+Ein Mitarbeiter ist ein eingeloggter Nutzer.
+
+
+|[[F0052]]<<F0052>>
+|v1.0
+|Logout
+a|
+Das System muss die Möglichkeit bieten sich als Mitarbeiter auszuloggen.
+
+
+|[[F0053]]<<F0053>>
+|v1.0
 |Admin Interface
 a|
 Das System muss ein Admin Interface besitzen.
 Das Admin Interface beinhaltet eine monatliche Statistik und die Möglichkeit Lieferanten und Bestellungen zu verwalten.
 
 
-|[[F0052]]<<F0052>>
+|[[F0054]]<<F0054>>
 |v1.0
 |Admin Interface anzeigen
 a|
 Das System muss Mitarbeitern die Möglichkeit bieten das Admin Interface anzuzeigen.
 
 
-|[[F0053]]<<F0053>>
+|[[F0055]]<<F0055>>
 |v1.0
 |monatliche Statistik
 a|
 Das System muss fähig sein eine monatliche Statistik zu erstellen, welche die Daten über die Verkäufe des Monats, nach Großlieferant sortiert, zusammenfasst.
 
 
-|[[F0054]]<<F0054>>
+|[[F0056]]<<F0056>>
 |v1.0
 |monatliche Statistik anzeigen
 a|
 Das System muss Mitarbeitern, welche sich im Admin Interface befinden, die Möglichkeit bieten, die monatliche Statistik mit Vergleich der vorherigen monatlichen Statistik anzuzeigen.
 
 
-|[[F0055]]<<F0055>>
+|[[F0057]]<<F0057>>
 |v1.0
 |Bestellungen anzeigen
 a|
 Das System muss Mitarbeitern, welche sich im Admin Interface befinden, die Möglichkeit bieten, alle Bestellungen mit Bestelldatum und Bestellnummer aufzulisten.
 
 
-|[[F0056]]<<F0056>>
+|[[F0058]]<<F0058>>
 |v1.0
 |Lieferanten anzeigen
 a|
 Das System muss Mitarbeitern, welche sich im Admin Interface befinden, die Möglichkeit bieten, alle Lieferanten anzuzeigen.
 
 
-|[[F0057]]<<F0057>>
+|[[F0059]]<<F0059>>
 |v1.0
 |Lieferanten verwalten
 a|
 Das System muss Mitarbeitern, welche sich im Admin Interface befinden, die Möglichkeit bieten, Lieferanten zu löschen oder hinzuzufügen.
-
 
 |===
 
 === Kann-Kriterien
 
 Anforderungen, die das Programm leisten können soll, aber für den korrekten Betrieb entbehrlich sind.
+
+[options="header", cols="2h, 1, 3, 12"]
+|===
+|ID
+|Version
+|Name
+|Description
+
+|[[F0004]]<<F0004>>
+|v1.0
+|Artikel-Katalog filtern
+a|
+Das System sollte Nutzern die Möglichkeit bieten, den Artikel-Katalog zu filtern.
 
 == Nicht-Funktionale Anforderungen
 
