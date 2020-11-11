@@ -675,6 +675,8 @@ Anforderungen, die das Programm leisten können soll, aber für den korrekten Be
 a|
 Das System sollte Nutzern die Möglichkeit bieten, den Artikel-Katalog zu filtern.
 
+|===
+
 == Nicht-Funktionale Anforderungen
 
 === Qualitätsziele
