@@ -43,7 +43,7 @@ Die Grafik kann auch informell gehalten sein.
 Die Grafik kann beispielsweise mit Visio erstellt werden.
 Wenn nötig, erläutern Sie diese Grafik.
 
-image::./images/context diagram.png[Kontextdiagramm,100%,100%,pdfwidth=100%,title= "Kontextdiagramm des Projektes {project_name}",align=center]
+image::./images/context_diagram_2.png[Kontextdiagramm,100%,100%,pdfwidth=100%,title= "Kontextdiagramm des Projektes {project_name}",align=center]
 
 === Top-Level-Architektur
 
