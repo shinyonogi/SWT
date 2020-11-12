@@ -1053,7 +1053,7 @@ Jeder Testfall soll mit einer ID versehen werde, um später zwischen den Dokumen
 - Der LKW wird stoniert und die Bestellung aus dem System gelöscht.
 |===
 
-cols="1h, 4a"]
+[cols="1h, 4a"]
 [[AT520]]
 |===
 |ID        |**<<AT520>>**
@@ -1064,7 +1064,7 @@ cols="1h, 4a"]
 - Der Nutzer wird auf eine Seite weitergeleitet, wo er einen LKW-Typen auswählen kann
 |===
 
-cols="1h, 4a"]
+[cols="1h, 4a"]
 [[AT521]]
 |===
 |ID        |**<<AT521>>**
