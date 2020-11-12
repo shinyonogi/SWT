@@ -1,0 +1,68 @@
+= Protokoll Gruppe 17
+
+Treffen am 12.11.2020
+
+Ort:      BigBlueButton +
+Beginn:   13:00 Uhr +
+Ende:     14:11 Uhr +
+
+__Schriftführer:__ David Schroth
+
+*Nächstes Treffen:* +
+16.11.2020, 15:45 Uhr, Discord
+
+__Teilnehmer:__
+//Tabellarisch oder Aufzählung, Kennzeichnung von Teilnehmern mit besonderer Rolle (z.B. Kunde)
+
+- Markus Richter (Tutor)
+- David Schroth
+- Marc Albrecht
+- Sebastian Jaster
+- Johannes Kaufmann
+- Shintaro Onogi (ab ~14:00)
+
+== Bemerkungen
+
+- Vorstellung der Videoshop Aufgaben
+- Durchsprechung der erledigten Abschnitte des Pflichtenhefts
+
+- Aufgaben für das Pflichtenheft für diese Woche:
+* Videoshop funktionsfähig auf den mainbranch bringen
+* Überarbeitung bzw. Fehlerkorrektur der bisherigen Abschnitte im Pflichtenheft
+* Fertigstellung der restlichen Abschnitte im Pflichtenheft
+
+
+== Planung des nächsten Sprints
+- Deadline: Di. 17.11.2020 23:59Uhr
+
+*Issue referenziert die Issue ID von GitHub*
+
+// See http://asciidoctor.org/docs/user-manual/=tables
+[option="headers"]
+|===
+|Issue |Titel |Beschreibung |Verantwortlicher |Status
+|#1   | Erstellung Kontext-Diagramm        | Es soll ein Kontext-Diagramm für das Pflichtenheft angefertigt werden.                 | Shintaro    | Fertig
+|#2   | Erstellung Use-Case Diagramm       | Es soll ein Use-Case Diagramm für das Pflichtenheft angefertigt werden.                | Sebastian   | in Arbeit (v1.0 fertig)
+|#3   | Beschreibung Use-Cases             | Es soll für mindestens 5 Use-Cases eine ausführliche Beschreibung angefertigt werden.  | Sebastian   | in Arbeit (v1.0 fertig)
+|#4   | Einpflegung Muss-Kriterien         | Es sollen mindestens 5 Muss-Kriterien in das Pflichtenheft eingepflegt werden.         | Edgar       | in Arbeit (v1.0 fertig)
+|#5   | Anfertigung GUI-Prototyp           | Es soll ein Prototyp/Mockup für die GUI der Website angefertigt werden.                | David       | in Arbeit (v1.0 fertig)
+|#6   | Erstellung Analyse-Klassendiagramm | Es sollen ein Analyse-Klassendiagramm angefertigt werden.                              | Johannes    | in Arbeit (v1.0 fertig)
+|#7   | Einpflegung Test-Akzeptanzfällen   | Es sollen mindestens 5 Test-Akzeptanzfälle in das Pflichtenheft eingepflegt werden.    | Marc        | in Arbeit (v1.0 fertig)
+|#8   | Videoshop Aufgabe 1                | Feature Registrierung                                                                  | Johannes    | in Arbeit
+|#9   | Videoshop Aufgabe 2                | Feature Bewertungen                                                                    | David       | Fertig
+|#10  | Videoshop Aufgabe 3                | Feature Bestellungen                                                                   | Sebastian   | Fertig (bis auf Anzahl im Warenkorb fertig)
+|#11  | Videoshop Aufgabe 4                | Feature Rechnung                                                                       | Edgar       | Fertig
+|#12  | Videoshop Aufgabe 5                | Feature Kategorien                                                                     | Shintaro    | Fertig
+|#13  | Videoshop Aufgabe 6                | Feature neuer Videotyp                                                                 | Marc        | Fertig
+|#14  | Pflichtenheft Zusammenfassung                             | -                                                               | Marc        | in Arbeit
+|#15  | Pflichtenheft Aufgabenstellung und Zielsetzung            | die Aufgabenstellung soll überarbeitet dargestellt werden       | Marc        | in Arbeit
+|#16  | Pflichtenheft Top-Level-Architektur                       | -                                                               | Shintaro    | in Arbeit
+|#17  | Pflichtenheft Produktnutzung/Interessensgruppen           | -                                                               | David       | in Arbeit
+|#18  | Pflichtenheft Nicht Funktionale Anforderungen             | -                                                               | Edgar       | in Arbeit
+|#19  | Pflichtenheft GUI-Prototyp Dialogbeschreibung             | jedes Bild soll mit einer Tabelle beschrieben werden            | David       | in Arbeit
+|#20  | Pflichtenheft Klassenbeschreibung/Analysenklassendiagramm | -                                                               | Johannes    | in Arbeit
+|#21  | Pflichtenheft Glossar                                     | -                                                               | Shintaro    | in Arbeit
+|#22  | Pflichtenheft Sequenzdiagramme für Anwendugsfälle         | -                                                               | Sebastian   | in Arbeit
+|===
+
+
