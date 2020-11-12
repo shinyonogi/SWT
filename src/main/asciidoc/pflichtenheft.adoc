@@ -744,6 +744,7 @@ Zusätzlich werden eventuellen Konsistenz- und Formatierungsregeln aufgeführt.
 // See http://asciidoctor.org/docs/user-manual/#tables
 [options="header"]
 |===
+[[classes_enumerations]]
 |Klasse/Enumeration |Beschreibung |
 |…                  |…            |
 |===
@@ -1082,6 +1083,38 @@ Insbesondere Begriffe der zu implementierenden Domäne wurden bereits beschriebe
 Beispiel: Was bedeutet "Kunde"?
 Ein Nutzer des Systems?
 Der Kunde des Projektes (Auftraggeber)?
+
+:domain_ref: Siehe <<classes_enumerations, domain overview>>
+
+[options="header", cols="1h, 4"]
+[[glossar]]
+|===
+|Term                   |Description
+|Abholung               | {domain_ref}
+|Bestellung             | {domain_ref}
+|Bestelleintrag         | {domain_ref}
+|Bestellmanager         | {domain_ref}
+|Bestellstatus          | {domain_ref}
+|Inventar               | {domain_ref}
+|Item                   | {domain_ref}
+|Itembestellung         | {domain_ref}
+|Kategorie              | {domain_ref}
+|Kalendar               | {domain_ref}
+|Kalendareintrag        | {domain_ref}
+|Kontaktinformationen   | {domain_ref}
+|Lieferung              | {domain_ref}
+|Lieferant              | {domain_ref}
+|Lieferantmanager       | {domain_ref}
+|Liefereintrag          | {domain_ref}
+|LKW                    | {domain_ref}
+|LKWMietung             | {domain_ref}
+|LKWManager             | {domain_ref}
+|Mieteintrag            | {domain_ref}
+|Set                    | {domain_ref}
+|Teil                   | {domain_ref}
+|Warenkorb              | {domain_ref}
+|Warenkorbeintrag       | {domain_ref}
+|===
 
 == Offene Punkte
 
