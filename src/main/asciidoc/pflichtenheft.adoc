@@ -694,6 +694,22 @@ In diesem Kapitel soll ein Entwurf der Navigationsmöglichkeiten und Dialoge des
 Idealerweise entsteht auch ein grafischer Prototyp, welcher dem Kunden zeigt, wie sein System visuell umgesetzt werden soll.
 Konkrete Absprachen - beispielsweise ob der grafische Prototyp oder die Dialoglandkarte höhere Priorität hat - sind mit dem Kunden zu treffen.
 
+image::./images/GUI/catalog.png[catalog,100%,100%,pdfwidth=100%,title= "Katalog auf der Website",align=center]
+
+image::./images/GUI/itemView.png[itemView,100%,100%,pdfwidth=100%,title= "Ansicht eines Möbelstücks auf der Website",align=center]
+
+image::./images/GUI/cart.png[cart,100%,100%,pdfwidth=100%,title= "Warenkorb auf der Website",align=center]
+
+image::./images/GUI/orders.png[orders,100%,100%,pdfwidth=100%,title= "Bestellungssuche auf der Website",align=center]
+
+image::./images/GUI/orderItems.png[orderItems,100%,100%,pdfwidth=100%,title= "Bestellungen auf der Website",align=center]
+
+image::./images/GUI/lkw.png[lkw,100%,100%,pdfwidth=100%,title= "LKW-Mietung auf der Website",align=center]
+
+image::./images/GUI/adminLogin.png[adminLogin,100%,100%,pdfwidth=100%,title= "Administrator-Login auf der Website",align=center]
+
+image::./images/GUI/admin.png[cart,100%,100%,pdfwidth=100%,title= "Administrator-Bereich auf der Website",align=center]
+
 === Überblick: Dialoglandkarte
 
 Erstellen Sie ein Übersichtsdiagramm, das das Zusammenspiel Ihrer Masken zur Laufzeit darstellt.
