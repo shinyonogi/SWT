@@ -1089,7 +1089,7 @@ Der Kunde des Projektes (Auftraggeber)?
 [options="header", cols="1h, 4"]
 [[glossar]]
 |===
-|Term                   |Description
+|Begriff                |Beschreibung
 |Abholung               | {domain_ref}
 |Bestellung             | {domain_ref}
 |Bestelleintrag         | {domain_ref}
