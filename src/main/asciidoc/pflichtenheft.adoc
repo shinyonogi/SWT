@@ -743,8 +743,8 @@ Zusätzlich werden eventuellen Konsistenz- und Formatierungsregeln aufgeführt.
 
 // See http://asciidoctor.org/docs/user-manual/#tables
 [options="header"]
-|===
 [[classes_enumerations]]
+|===
 |Klasse/Enumeration |Beschreibung |
 |…                  |…            |
 |===
