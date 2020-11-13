@@ -153,7 +153,7 @@ _Ausloggen:_
 
 Der Mitarbeiter klickt auf den Logout Button in der Navigationsleiste und wird auf die Startseite zurückgeleitet.
 |Erweiterungen              |-
-|Funktionale Anforderung    | TBD
+|Funktionale Anforderung    |<<F0051>>, <<F0052>>
 |===
 
 [cols="1h, 3a"]
@@ -167,7 +167,7 @@ Der Mitarbeiter klickt auf den Logout Button in der Navigationsleiste und wird a
 |Bedingungen                |-
 |Notwendige Schritte        |Nutzer klickt auf den Warenkorb in der Navigationsleiste.
 |Erweiterungen              |-
-|Funktionale Anforderung    |<<F0008>>
+|Funktionale Anforderung    |<<F0011>>
 |===
 
 [cols="1h, 3a"]
@@ -181,7 +181,7 @@ Der Mitarbeiter klickt auf den Logout Button in der Navigationsleiste und wird a
 |Bedingungen                |Der Nutzer befindet sich im Warenkorb <<UC100>>.
 |Notwendige Schritte        |Nutzer klickt auf "Entfernen" am jeweiligen Artikel im Warenkorb um den Artikel zu löschen.
 |Erweiterungen              |-
-|Funktionale Anforderung    |<<F0007>>
+|Funktionale Anforderung    |<<F0012>>
 |===
 
 [cols="1h, 3a"]
@@ -198,7 +198,7 @@ Der Mitarbeiter klickt auf den Logout Button in der Navigationsleiste und wird a
 2. Nutzer gibt persönliche Daten (Adresse, E-Mail) an und wählt die Versandoption aus (Lieferung oder Abholung).
 3. Nutzer bestätigt die Eingaben und die Bestellung mithilfe des Buttons "Bestellung abschließen".
 |Erweiterungen              |-
-|Funktionale Anforderung    |<<F0010>>
+|Funktionale Anforderung    |<<F0021>>
 |===
 [[sequence_uc120]]
 image::./images/sequence_usecases/sequence_uc120.png[sequence_uc120,90%,100%,pdfwidth=100%,title= "Sequenzdiagramm für <<UC120>> Bestellung durchführen",align=center]
@@ -214,7 +214,7 @@ image::./images/sequence_usecases/sequence_uc120.png[sequence_uc120,90%,100%,pdf
 |Bedingungen                |-
 |Notwendige Schritte        |Der Nutzer klickt auf "Katalog" in der Navigationsleiste.
 |Erweiterungen              |-
-|Funktionale Anforderung    |<<F0003>>
+|Funktionale Anforderung    |<<F0002>>
 |===
 
 [cols="1h, 3a"]
@@ -258,7 +258,7 @@ image::./images/sequence_usecases/sequence_uc220.png[sequence_uc220,60%,100%,pdf
 |Bedingungen                |Der Nutzer schaut sich derzeit den Artikel oder das Artikel-Set <<UC210>> an.
 |Notwendige Schritte        |Der Nutzer klickt auf den Button "Zum Warenkorb hinzufügen"
 |Erweiterungen              |-
-|Funktionale Anforderung    |TBD
+|Funktionale Anforderung    |<<F0012>>
 |===
 
 [cols="1h, 3a"]
@@ -288,7 +288,7 @@ _Kunde:_
 1. Kunde wählt den Reiter "Bestellung einsehen" in der Navigationsleiste.
 2. Kunde gibt seine Bestellnummer in das Eingabefeld ein und drückt auf den Button "Bestätigen".
 |Erweiterungen              |-
-|Funktionale Anforderung    |TBD
+|Funktionale Anforderung    |<<F0025>>
 |===
 
 [cols="1h, 3a"]
@@ -304,7 +304,7 @@ _Kunde:_
 1. Der Kunde klickt den Button "Bestellung stornieren".
 2. Der Kunde bestätigt die Stornierung mit einen Klick auf den Button "Bestätigen".
 |Erweiterungen              |-
-|Funktionale Anforderung    |TBD
+|Funktionale Anforderung    |<<F0024>>
 |===
 
 [cols="1h, 3a"]
@@ -339,7 +339,7 @@ _Kunde:_
 3. Der Mitarbeiter wählt den neuen Status aus dem Dropdown aus.
 4. Der Mitarbeiter klickt auf den Button "Bestätigen" um den Status zu ändern.
 |Erweiterungen              |-
-|Funktionale Anforderung    |TBD
+|Funktionale Anforderung    |<<F0026>>
 |===
 [[sequence_uc330]]
 image::./images/sequence_usecases/sequence_uc330.png[sequence_uc330,80%,100%,pdfwidth=100%,title= "Sequenzdiagramm für <<UC330>> Bestellstatus bearbeiten",align=center]
@@ -355,7 +355,7 @@ image::./images/sequence_usecases/sequence_uc330.png[sequence_uc330,80%,100%,pdf
 |Bedingungen                |Der Mitarbeiter hat sich zuvor mithilfe von <<UC010>> gegenüber dem System authetifiziert.
 |Notwendige Schritte        |Der Mitarbeiter drückt auf den Reiter "Admin-Interface" in der Navigatonsleiste.
 |Erweiterungen              |Der Reiter "Admin-Interface" erscheint nur wenn der Nutzer im System die Rolle Mitarbeiter erhalten hat.
-|Funktionale Anforderung    |TBD
+|Funktionale Anforderung    |<<F0054>>
 |===
 
 [cols="1h, 3a"]
@@ -369,7 +369,7 @@ image::./images/sequence_usecases/sequence_uc330.png[sequence_uc330,80%,100%,pdf
 |Bedingungen                |Der Mitarbeiter befindet sich im Admin-Interface <<UC400>>.
 |Notwendige Schritte        |Der Mitarbeiter wählt den Punkt "Kundenbestellungen auflisten" aus und wird dadurch auf die Seite mit allen Bestellungen weitergeleitet.
 |Erweiterungen              |-
-|Funktionale Anforderung    |TBD
+|Funktionale Anforderung    |<<F0057>>
 |===
 
 [cols="1h, 3a"]
@@ -383,7 +383,7 @@ image::./images/sequence_usecases/sequence_uc330.png[sequence_uc330,80%,100%,pdf
 |Bedingungen                |Der Mitarbeiter befindet sich im Admin-Interface <<UC400>>.
 |Notwendige Schritte        |Der Mitarbeiter wählt den Punkt "Monatsstatistik einsehen" aus und wird auf die Seite der Statistik weitergeleitet.
 |Erweiterungen              |-
-|Funktionale Anforderung    |<<F0015>>
+|Funktionale Anforderung    |<<F0056>>
 |===
 [[sequence_uc420]]
 image::./images/sequence_usecases/sequence_uc420.png[sequence_uc420,90%,100%,pdfwidth=100%,title= "Sequenzdiagramm für <<UC420>> Monatsstatistik einsehen",align=center]
@@ -411,7 +411,7 @@ _Hinzufügen:_
 3. Der Mitarbeiter gibt die Daten des neuen Lieferanten ein.
 4. Der Mitarbeiter bestätigt die Eingaben mithilfe des Buttons "Lieferant hinzufügen".
 |Erweiterungen              |-
-|Funktionale Anforderung    |TBD
+|Funktionale Anforderung    |<<F0059>>
 |===
 
 [cols="1h, 3a"]
@@ -441,7 +441,7 @@ _Hinzufügen:_
 |Bedingungen                |Der Kunde hat einen LKW gebucht und eine gültige Buchungsnummer und befindet sich auf der Detailseite seiner LKW-Bestellung <<UC500>>.
 |Notwendige Schritte        |Der Kunde drückt auf "Lkw stornieren" und anschließend auf "Bestätigen" um die Aktion auszuführen.
 |Erweiterungen              |-
-|Funktionale Anforderung    |<<F0014>>
+|Funktionale Anforderung    |<<F0043>>
 |===
 
 [cols="1h, 3a"]
@@ -458,7 +458,7 @@ _Hinzufügen:_
 3. Der Nutzer gibt seine persönlichen Daten sowie das Datum auf der Bestellseite ein.
 4. Das System weist dem Nutzer automatisch einen LKW zu und teilt dem Kunden die Bestellnummer mit.
 |Erweiterungen              |-
-|Funktionale Anforderung    |<<F0014>>
+|Funktionale Anforderung    |<<F0042>>
 |===
 [[sequence_uc520]]
 image::./images/sequence_usecases/sequence_uc520.png[sequence_uc520,80%,100%,pdfwidth=100%,title= "Sequenzdiagramm für <<UC520>> LKW buchen",align=center]
