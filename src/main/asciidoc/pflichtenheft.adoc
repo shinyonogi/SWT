@@ -94,17 +94,17 @@ Die typischen Anwendungsfälle (Anlegen, Ändern, Löschen) können zu einem ein
 |Beschreibung               |
 _Einloggen:_
 
-Ein Nutzer der Seite kann sich mithilfe von notwendigen Logindaten gegenüber dem System authentifizieren, um die Rolle des Mitarbeiters zu erhalten.
+Ein Mitarbeiter der Firma kann sich mithilfe von notwendigen Logindaten gegenüber dem System authentifizieren, um die Rolle des Mitarbeiters im System zu erhalten.
 
 _Ausloggen:_
 
-Ein Mitarbeiter kann sich aus dem System ausloggen.
+Ein Mitarbeiter kann sich wieder aus dem System ausloggen.
 
-|Akteur                     |Nutzer, Mitarbeiter
+|Akteur                     |Mitarbeiter
 |Auslöser                   |
 _Einloggen:_
 
-Der Nutzer möchte die Rolle Mitarbeiter erhalten.
+Der Mitarbeiter möchte die Rolle Mitarbeiter im System erhalten um auf die restlichen Admin-Komponenten zuzugreifen.
 
 _Ausloggen:_
 
@@ -113,7 +113,7 @@ Der Mitarbeiter möchte nicht mehr die Rolle des Mitarbeiters im System haben.
 |Bedingungen                |
 _Einloggen:_
 
-Der Nutzer besitzt gültige Logindaten für das System.
+Der Mitarbeiter besitzt gültige Logindaten für das System.
 
 _Ausloggen:_
 
@@ -121,9 +121,9 @@ Der Mitarbeiter hat sich mithilfe von <<UC010>> gegenüber dem System authentifi
 |Notwendige Schritte        |
 _Einloggen:_
 
-1. Nutzer klickt auf den Login Button in der Navigationsleiste.
-2. Nutzer gibt seine gültigen Logindaten an.
-3. Nutzer bestätigt seine Eingaben mit einem Klick auf den "Login" Button.
+1. Mitarbeiter klickt auf den Login Button in der Navigationsleiste.
+2. Mitarbeiter gibt seine gültigen Logindaten an.
+3. Mitarbeiter bestätigt seine Eingaben mit einem Klick auf den "Login" Button.
 
 _Ausloggen:_
 
