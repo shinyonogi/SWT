@@ -228,7 +228,7 @@ image::./images/sequence_usecases/sequence_uc120.png[sequence_uc120,90%,100%,pdf
 |Bedingungen                |Der Nutzer schaut sich derzeit den Artikel-Katalog <<UC200>> an.
 |Notwendige Schritte        |Der Nutzer klickt auf den Namen des gewünschten Artikel.
 |Erweiterungen              |-
-|Funktionale Anforderung    |<<F0005>>
+|Funktionale Anforderung    |<<F0004>>
 |===
 
 [cols="1h, 3a"]
@@ -288,7 +288,7 @@ _Kunde:_
 1. Kunde wählt den Reiter "Bestellung einsehen" in der Navigationsleiste.
 2. Kunde gibt seine Bestellnummer in das Eingabefeld ein und drückt auf den Button "Bestätigen".
 |Erweiterungen              |-
-|Funktionale Anforderung    |<<F0025>>
+|Funktionale Anforderung    |<<F0023>>
 |===
 
 [cols="1h, 3a"]
@@ -304,7 +304,7 @@ _Kunde:_
 1. Der Kunde klickt den Button "Bestellung stornieren".
 2. Der Kunde bestätigt die Stornierung mit einen Klick auf den Button "Bestätigen".
 |Erweiterungen              |-
-|Funktionale Anforderung    |<<F0024>>
+|Funktionale Anforderung    |<<F0022>>
 |===
 
 [cols="1h, 3a"]
@@ -339,7 +339,7 @@ _Kunde:_
 3. Der Mitarbeiter wählt den neuen Status aus dem Dropdown aus.
 4. Der Mitarbeiter klickt auf den Button "Bestätigen" um den Status zu ändern.
 |Erweiterungen              |-
-|Funktionale Anforderung    |<<F0026>>
+|Funktionale Anforderung    |<<F0024>>
 |===
 [[sequence_uc330]]
 image::./images/sequence_usecases/sequence_uc330.png[sequence_uc330,80%,100%,pdfwidth=100%,title= "Sequenzdiagramm für <<UC330>> Bestellstatus bearbeiten",align=center]
@@ -476,7 +476,7 @@ image::./images/sequence_usecases/sequence_uc520.png[sequence_uc520,80%,100%,pdf
 
 |[[F0001]]<<F0001>>
 |v1.0
-|Artikel-Katalog speichern
+|Artikel-Katalog
 a|
 Das System muss eine Liste von Artikeln, welche den Artikel-Katalog repräsentiert, dauerhaft in einer Datenbank speichern.
 
@@ -496,7 +496,7 @@ a|
 Das System muss Mitarbeitern die Möglichkeit bieten, Artikel dem Artikel-Katalog hinzuzufügen und Artikel aus dem Artikel-Katalog zu entfernen.
 
 
-|[[F0005]]<<F0005>>
+|[[F0004]]<<F0004>>
 |v1.0
 |Artikel anzeigen 
 a|
@@ -539,34 +539,19 @@ Ein Bestelleintrag besteht aus einem Item, der Anzahl des ausgewählten Items un
 
 |[[F0021]]<<F0021>>
 |v1.0
-|Bestellung validieren
+|Bestellung erstellen
 a|
-Das System muss fähig sein eine Bestellung zu validieren.
-Eine Bestellung ist valide, wenn es die des Objekt aufgezählten Eigenschaften hat.
+Das System muss fähig sein eine Bestellung zu erstellen, nachdem der Kunde eine Bestellung aufgegeben hat
 
 
 |[[F0022]]<<F0022>>
-|v1.0
-|Bestellung aufgeben
-a|
-Das System muss dem Nutzer die Möglichkeit bieten, eine neue Bestellung in Auftrag zu geben, insofern der Warenkorb nicht leer ist.
-
-
-|[[F0023]]<<F0023>>
-|v1.0
-|Bestellung erstellen
-a|
-Das System muss fähig sein eine neue Bestellung zu erstellen, nachdem der Kunde eine Bestellung aufgegeben hat.
-
-
-|[[F0024]]<<F0024>>
 |v1.0
 |Bestellung stornieren
 a|
 Das System muss einem Kunden die Möglichkeit bieten, seine gesamte Bestellung oder einzelne Artikel der Bestellung zu stornieren.
 
 
-|[[F0025]]<<F0025>>
+|[[F0023]]<<F0023>>
 |v1.0
 |Bestellung anzeigen
 a|
@@ -574,18 +559,11 @@ Das System muss dem Nutzer die Möglichkeit bieten, über die Bestell-ID, seine 
 Dazu gehören Möbel- und LKW-Bestellungen.
 
 
-|[[F0026]]<<F0026>>
+|[[F0024]]<<F0024>>
 |v1.0
 |Bestellstatus bearbeiten
 a|
 Das System muss Mitarbeitern die Möglichkeit bieten, den Status einer Bestellung zu ändern.
-
-
-|[[F0030]]<<F0030>>
-|v1.0
-|Kunden benachrichtigen
-a|
-Das System muss fähig sein, Kunden zu benachrichtigen, wenn ihre bestellte Ware im Hauptlager angekommen ist, bzw. wenn das Abholdatum erreicht ist.
 
 
 |[[F0040]]<<F0040>>
@@ -683,13 +661,6 @@ Das System muss Mitarbeitern, welche sich im Admin Interface befinden, die Mögl
 a|
 Das System muss Mitarbeitern, welche sich im Admin Interface befinden, die Möglichkeit bieten, alle Lieferanten anzuzeigen.
 
-
-|[[F0059]]<<F0059>>
-|v1.0
-|Lieferanten verwalten
-a|
-Das System muss Mitarbeitern, welche sich im Admin Interface befinden, die Möglichkeit bieten, Lieferanten zu löschen oder hinzuzufügen.
-
 |===
 
 === Kann-Kriterien
@@ -703,11 +674,18 @@ Anforderungen, die das Programm leisten können soll, aber für den korrekten Be
 |Name
 |Description
 
-|[[F0004]]<<F0004>>
+|[[F0030]]<<F0030>>
 |v1.0
-|Artikel-Katalog filtern
+|Kunden benachrichtigen
 a|
-Das System sollte Nutzern die Möglichkeit bieten, den Artikel-Katalog zu filtern.
+Das System sollte fähig sein, Kunden zu benachrichtigen, wenn ihre bestellte Ware im Hauptlager angekommen ist, bzw. wenn das Abholdatum erreicht ist.
+
+
+|[[F0059]]<<F0059>>
+|v1.0
+|Lieferanten verwalten
+a|
+Das System sollte Mitarbeitern, welche sich im Admin Interface befinden, die Möglichkeit bieten, Lieferanten zu löschen oder hinzuzufügen.
 
 |===
 
