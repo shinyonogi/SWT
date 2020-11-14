@@ -6,28 +6,28 @@ __
 :toc-title: Inhaltsverzeichnis
 
 [options="header"]
-[cols="1, 1, 6"]
+[cols="1, 1, 6, 6"]
 |===
-|Version | Bearbeitungsdatum | Autoren(en)
-|1.0     | 10.10.2020        | David Schroth, Marc Albrecht, Sebastian Jaster, Edgar Wolfert, Johannes Kaufmann, Shintaro Onogi
-|2.0     | 17.10.2020        | David Schroth, Marc Albrecht, Sebastian Jaster, Edgar Wolfert, Johannes Kaufmann, Shintaro Onogi
+|Version | Bearbeitungsdatum | Autoren(en) | Vermerk
+|1.0     | 10.10.2020        | David Schroth, Marc Albrecht, Sebastian Jaster, Edgar Wolfert, Johannes Kaufmann, Shintaro Onogi | Kontextdiagramm, Anwendungsfälle, Funktionale Anforderungen, GUI Prototyp, Klassendiagramm, Akzeptanztestfälle
+|1.1     | 17.10.2020        | David Schroth, Marc Albrecht, Sebastian Jaster, Edgar Wolfert, Johannes Kaufmann, Shintaro Onogi | Zusammenfassung, Aufgabenstellung, Produktnutzung, Interessensgruppen, Top-Level-Architektur, Nicht-Funktionale Anforderungen, Gloassar, Ergänzungen zu 1.0
 |===
 
 == Zusammenfassung
 
-Dieses Dokument beschreibt das Pflichtenheft für das Möbelgeschäft-Projekt im Zusammenhang mit dem Softwaretechnologie-Projekt 2020/21.
+Dieses Dokument beschreibt das Pflichtenheft für das Möbelgeschäft-Projekt im Zusammenhang mit dem Softwaretechnologie-Projekt 2020/21. Dabei soll eine Kundensoftware für ein Möbelgeschäft entwickelt werden, welche für die Bestellverwaltung, das Warenlager und den Auslieferungsservice verantwortlich ist.
 
-Im Pflichtenheft sind Informationen bezüglich des Aufbaus des Softwareproduktes zu finden, welche sich in verschiedene Teilbereiche untergliedern.
-Das Dokument beinhaltet die Projektanforderungen mit den entsprechenden Zielen für eine gute und einfache Kommunikation zwischen dem Kunden und den Entwicklern.
-Das Pflichtenheft stellt die Anforderungen, Funktionalitäten sowie Umsetzungen der Software dar und beschreibt welchen Nutzen individuelle Akteure an der Software fordern.
-Der Grundaufbau der Software wird im Pflichtenheft durch das Kontextdiagramm, Anwendungsfalldiagramm, Klassendiagramm sowie dem GUI-Prototype sowohl aus Sicht des Kunden als auch für Nutzer der Software beschreiben.
-Des Weiteren beinhaltet es eine detaillierte Beschreibung der Software-Architektur und grafischen Oberfläche sowie den Anforderungen der Software und Nutzung.
+Im Pflichtenheft sind Informationen bezüglich des Aufbaus des Softwareproduktes zu finden, welche in verschiedene Teilbereiche untergliedert sind.
+Das Dokument beinhaltet die Projektanforderungen mit den entsprechenden Zielen für eine gute und einfache Kommunikation zwischen dem Auftraggeber und den Entwicklern.
+Die Anforderungen, Funktionalitäten sowie die grundlegende Implementierung der Software wird im Pflichtenheft dargestellt. Es beschreibt zudem welche Funktionen bestimmte Akteure von der Software fordern.
+Der Grundaufbau der Software wird im Pflichtenheft durch die Top-Level-Architektur, die Anwendungsfälle mit Akzeptanztestfällen und das Datenmodell für unterschiedliche Nutzer der Software beschrieben.
+Des Weiteren beinhaltet es eine detaillierte Beschreibung des Prototyps der grafischen Oberfläche und der Ziele der Software und des Projektes.
 
 == Aufgabenstellung und Zielsetzung
 
 Das von der Moebel-Hunger-Kette übernommene Geschäft Möbel-Hier wird von Ihrer Firma mit einer neuen Kundensoftware ausgestattet. Im Leistungsumfang sind die Bestellverwaltung, das Warenlager und der Auslieferungsservice enthalten. Besonderes Augenmerk soll auf die Warenbestellung, -zwischenlagerung und -auslieferung gelegt werden.
 
-Den Kunden liegt ein Sortiment im Internet vor, aus dem sie Möbel bestellen können. Die Lieferung erfolgt entweder in das Hauptlager oder direkt an den Kunden.
+Den Kunden liegt ein Sortiment im Internet vor, aus dem sie Möbel bestellen können, dafür ist keine Anmeldung nötig. Die Lieferung erfolgt entweder in das Hauptlager oder direkt an den Kunden.
 
 Weiterhin soll eine Statusabfrage über die bereits gelieferten Möbelteile der Bestellungen möglich sein. Wenn der Kunde unbedingt will, kann er die bereits gelieferte Ware in Teilen abholen, muss dann aber auch diese Teile sofort bezahlen.
 
@@ -37,14 +37,13 @@ Die Auslieferung erfolgt mit dem firmeneigenen LKW-Park. Alternativ können sich
 
 Die Software soll auch das Abbestellung der Ware berücksichtigen. Je nach Bearbeitungsstand einer Lieferung errechnet sich eine Rücklieferungs- und Bearbeitungsgebühr. Die Stornierung eines LKW ist kostenlos.
 
-Das Angebotsspektrum von Möbel-Hier ergibt sich aus den Katalogen der angegliederten Großlieferanten. Die Geschäftsbeziehungen zu diesen Firmen soll entsprechend verwaltet werden.
-
-Die Preiskalkulation für die Waren findet gruppiert nach den Großlieferanten statt, so ergeben bspw. die Kundenpreise der Waren des Lieferanten Großmöbel 205% des Lieferpreises.
+Das Angebotsspektrum von Möbel-Hier ergibt sich aus den Katalogen der angegliederten Großlieferanten. Die Geschäftsbeziehungen zu diesen Firmen soll entsprechend verwaltet werden. Die Preiskalkulation für die Waren findet gruppiert nach den Großlieferanten statt, so ergeben bspw. die Kundenpreise der Waren des Lieferanten Großmöbel 205% des Lieferpreises.
 
 Die Mitarbeiter haben durch eine Anmeldung die Möglichkeit haben, Bestellungen einzusehen oder zu bearbeiten sowie das Möbelgeschäft zu verwalten. Um die Attraktivität des Angebotes steigern zu können, möchte die Geschäftsführung von Möbel-Hier eine monatliche Abrechnung (mit Vergleich zum Vormonat) haben, in der die Möbelverkäufe nach Großlieferanten aufgegliedert aufgeführt sind.
 
 
-Das Projekt dient dazu Studenten den Prozess der professionellen Softwareentwicklung heranzubringen und auf das spätere Berufsleben vorzubereiten.
+Das Projekt dient dazu Studenten an den Prozess der professionellen Softwareentwicklung heranzubringen und auf das spätere Berufsleben vorzubereiten.
+Am Ende des Projektes soll eine Software vorliegen, welche den gegebenen Anforderungen entspricht und eine realitätsgetreue Kundensoftware für ein Möbelgeschäft beschreibt.
 
 == Produktnutzung
 
