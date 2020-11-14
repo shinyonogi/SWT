@@ -1,5 +1,4 @@
-= Pflichtenheft __{project_name}
-__
+= Pflichtenheft __{project_name}__
 :project_name: Möbelgeschäft
 :numbered:
 :toc:
@@ -9,8 +8,8 @@ __
 [cols="1, 1, 6, 6"]
 |===
 |Version | Bearbeitungsdatum | Autoren(en) | Vermerk
-|1.0     | 10.10.2020        | David Schroth, Marc Albrecht, Sebastian Jaster, Edgar Wolfert, Johannes Kaufmann, Shintaro Onogi | Kontextdiagramm, Anwendungsfälle, Funktionale Anforderungen, GUI Prototyp, Klassendiagramm, Akzeptanztestfälle
-|1.1     | 17.10.2020        | David Schroth, Marc Albrecht, Sebastian Jaster, Edgar Wolfert, Johannes Kaufmann, Shintaro Onogi | Zusammenfassung, Aufgabenstellung, Produktnutzung, Interessensgruppen, Top-Level-Architektur, Nicht-Funktionale Anforderungen, Gloassar, Ergänzungen zu 1.0
+|0.1     | 10.11.2020        | David Schroth, Marc Albrecht, Sebastian Jaster, Edgar Wolfert, Johannes Kaufmann, Shintaro Onogi | Kontextdiagramm, Anwendungsfälle, Funktionale Anforderungen, GUI Prototyp, Klassendiagramm, Akzeptanztestfälle
+|1.0     | 17.11.2020        | David Schroth, Marc Albrecht, Sebastian Jaster, Edgar Wolfert, Johannes Kaufmann, Shintaro Onogi | Zusammenfassung, Aufgabenstellung, Produktnutzung, Interessensgruppen, Top-Level-Architektur, Nicht-Funktionale Anforderungen, Gloassar, Ergänzungen zu 0.1
 |===
 
 == Zusammenfassung
@@ -35,11 +34,11 @@ Ein Grundsatz des Möbelhauses heißt Modularität. Der Kunde kann sich die meis
 
 Die Auslieferung erfolgt mit dem firmeneigenen LKW-Park. Alternativ können sich Kunden auch diese LKW's für einen Tag mieten. Je nach Gewicht der Lieferung soll immer der nächstgünstigere LKW von der Firma zum Ausliefern genutzt werden.
 
-Die Software soll auch das Abbestellung der Ware berücksichtigen. Je nach Bearbeitungsstand einer Lieferung errechnet sich eine Rücklieferungs- und Bearbeitungsgebühr. Die Stornierung eines LKW ist kostenlos.
+Die Software soll auch das Abbestellung der Ware berücksichtigen. Je nach Bearbeitungsstand einer Lieferung errechnet sich eine Rücklieferungsgebühr. Die Stornierung eines LKW ist kostenlos.
 
 Das Angebotsspektrum von Möbel-Hier ergibt sich aus den Katalogen der angegliederten Großlieferanten. Die Geschäftsbeziehungen zu diesen Firmen soll entsprechend verwaltet werden. Die Preiskalkulation für die Waren findet gruppiert nach den Großlieferanten statt, so ergeben bspw. die Kundenpreise der Waren des Lieferanten Großmöbel 205% des Lieferpreises.
 
-Die Mitarbeiter haben durch eine Anmeldung die Möglichkeit haben, Bestellungen einzusehen oder zu bearbeiten sowie das Möbelgeschäft zu verwalten. Um die Attraktivität des Angebotes steigern zu können, möchte die Geschäftsführung von Möbel-Hier eine monatliche Abrechnung (mit Vergleich zum Vormonat) haben, in der die Möbelverkäufe nach Großlieferanten aufgegliedert aufgeführt sind.
+Die Mitarbeiter sollten durch eine Anmeldung die Möglichkeit haben, Bestellungen einzusehen oder zu bearbeiten sowie das Möbelgeschäft zu verwalten. Um die Attraktivität des Angebotes steigern zu können, möchte die Geschäftsführung von Möbel-Hier eine monatliche Abrechnung (mit Vergleich zum Vormonat) haben, in der die Möbelverkäufe nach Großlieferanten aufgegliedert aufgeführt sind.
 
 
 Das Projekt dient dazu Studenten an den Prozess der professionellen Softwareentwicklung heranzubringen und auf das spätere Berufsleben vorzubereiten.
@@ -482,7 +481,7 @@ Das System muss eine Liste von Artikeln, welche den Artikel-Katalog repräsentie
 
 |[[F0002]]<<F0002>>
 |v1.0
-|Artikel-Katalog anzeigen 
+|Artikel-Katalog anzeigen
 a|
 Das System muss Nutzern die Möglichkeit bieten, alle Artikel des Artikel-Katalogs anzuzeigen.
 Dabei wird für jeden Artikel nur der Name, der Preis und ein Bild des Artikels angezeigt.
@@ -490,14 +489,14 @@ Dabei wird für jeden Artikel nur der Name, der Preis und ein Bild des Artikels 
 
 |[[F0003]]<<F0003>>
 |v1.0
-|Artikel-Katalog bearbeiten 
+|Artikel-Katalog bearbeiten
 a|
 Das System muss Mitarbeitern die Möglichkeit bieten, Artikel dem Artikel-Katalog hinzuzufügen und Artikel aus dem Artikel-Katalog zu entfernen.
 
 
 |[[F0004]]<<F0004>>
 |v1.0
-|Artikel anzeigen 
+|Artikel anzeigen
 a|
 Das System muss Nutzern die Möglichkeit bieten einen ausgewählten Artikel anzuzeigen.
 Dabei wird ein Bild, der Name, der Preis, die Kategorie und die Variante des Artikels angezeigt.
