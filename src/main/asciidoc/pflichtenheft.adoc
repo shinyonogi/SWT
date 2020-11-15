@@ -1198,6 +1198,8 @@ Der Kunde des Projektes (Auftraggeber)?
 |===
 |Begriff                |Beschreibung
 |Abholung               | {domain_ref}
+|Abrechnung             | Monatliche Verkaufszahlen/Statistik.
+|Admin                  | Synonym für Chef/Boss.
 |Bestellung             | {domain_ref}
 |Bestelleintrag         | {domain_ref}
 |Bestellmanager         | {domain_ref}
@@ -1216,8 +1218,14 @@ Der Kunde des Projektes (Auftraggeber)?
 |LKW                    | {domain_ref}
 |LKWMietung             | {domain_ref}
 |LKWManager             | {domain_ref}
+|Login                  | Mitarbeiter/Admin haben die Möglichkeit sich einzuloggen und Bestellungen bearbeiten, Möbelgeschäft verwalten etc.
 |Mieteintrag            | {domain_ref}
+|Mitarbeiter            | Mitarbeiter der Firma "Möbel-Hier".
+|Möbelgeschäft          | Zentrale Klasse des Systems.
 |Set                    | {domain_ref}
+|System                 | Allgemeiner Begriff für das Softwaresystem, das während dieses Projekts implementiert werden muss.
+|Set                    | {domain_ref}   
+|Set                    | {domain_ref}      
 |Teil                   | {domain_ref}
 |Warenkorb              | {domain_ref}
 |Warenkorbeintrag       | {domain_ref}
