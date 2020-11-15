@@ -76,7 +76,7 @@ image::./images/top_level_architecture.png[Top-Level-Architektur,100%,100%,pdfwi
 == Anwendungsfälle
 
 === Akteure
-
+[[actors]]
 Akteure sind die Benutzer des Software-Systems oder Nachbarsysteme, welche darauf zugreifen.
 Dokumentieren Sie die Akteure in einer Tabelle.
 Diese Tabelle gibt einen Überblick über die Akteure und beschreibt sie kurz.
@@ -1231,7 +1231,8 @@ Beispiel: Was bedeutet "Kunde"?
 Ein Nutzer des Systems?
 Der Kunde des Projektes (Auftraggeber)?
 
-:domain_ref: Siehe <<classes_enumerations, domain overview>>
+:domain_ref: Siehe <<classes_enumerations, Domänenübersicht>>
+:actors_ref: Siehe <<actors, Akteure>>
 
 [options="header"]
 [cols="1a, 4a"]
@@ -1240,7 +1241,6 @@ Der Kunde des Projektes (Auftraggeber)?
 |Begriff                |Beschreibung
 |Abholung               | {domain_ref}
 |Abrechnung             | Monatliche Verkaufszahlen/Statistik.
-|Admin                  | Synonym für Chef/Boss.
 |Bestellung             | {domain_ref}
 |Bestelleintrag         | {domain_ref}
 |Bestellmanager         | {domain_ref}
@@ -1252,6 +1252,7 @@ Der Kunde des Projektes (Auftraggeber)?
 |Kalendar               | {domain_ref}
 |Kalendareintrag        | {domain_ref}
 |Kontaktinformationen   | {domain_ref}
+|Kunde                  | {actors_ref}
 |Lieferung              | {domain_ref}
 |Lieferant              | {domain_ref}
 |Lieferantmanager       | {domain_ref}
@@ -1259,10 +1260,11 @@ Der Kunde des Projektes (Auftraggeber)?
 |LKW                    | {domain_ref}
 |LKWMietung             | {domain_ref}
 |LKWManager             | {domain_ref}
-|Login                  | Mitarbeiter/Admin haben die Möglichkeit sich einzuloggen und Bestellungen bearbeiten, Möbelgeschäft verwalten etc.
+|Login                  | Mitarbeiter haben die Möglichkeit sich einzuloggen und Bestellungen bearbeiten, sowie dass Möbelgeschäft zu verwalten.
 |Mieteintrag            | {domain_ref}
-|Mitarbeiter            | Mitarbeiter der Firma "Möbel-Hier".
-|Möbelgeschäft          | Zentrale Klasse des Systems.
+|Mitarbeiter            | {actors_ref}
+|Möbelgeschäft          | {domain_ref}
+|Nutzer                 | {actors_ref}
 |Set                    | {domain_ref}
 |System                 | Allgemeiner Begriff für das Softwaresystem, das während dieses Projekts implementiert werden muss.
 |Set                    | {domain_ref}   
