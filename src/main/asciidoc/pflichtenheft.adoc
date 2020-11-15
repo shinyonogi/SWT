@@ -9,7 +9,7 @@
 |===
 |Version | Bearbeitungsdatum | Autoren(en) | Vermerk
 |0.1     | 10.11.2020        | David Schroth, Marc Albrecht, Sebastian Jaster, Edgar Wolfert, Johannes Kaufmann, Shintaro Onogi | Kontextdiagramm, Anwendungsfälle, Funktionale Anforderungen, GUI Prototyp, Klassendiagramm, Akzeptanztestfälle
-|1.0     | 17.11.2020        | David Schroth, Marc Albrecht, Sebastian Jaster, Edgar Wolfert, Johannes Kaufmann, Shintaro Onogi | Zusammenfassung, Aufgabenstellung, Produktnutzung, Interessensgruppen, Top-Level-Architektur, Nicht-Funktionale Anforderungen, Gloassar, Ergänzungen zu 0.1
+|1.0     | 17.11.2020        | David Schroth, Marc Albrecht, Sebastian Jaster, Edgar Wolfert, Johannes Kaufmann, Shintaro Onogi | Zusammenfassung, Aufgabenstellung, Produktnutzung, Interessensgruppen, Top-Level-Architektur, Nicht-Funktionale Anforderungen, Glossar, Ergänzungen zu 0.1
 |===
 
 == Zusammenfassung
@@ -158,7 +158,7 @@ Der Mitarbeiter klickt auf den Logout Button in der Navigationsleiste und wird a
 |===
 |ID                         |**<<UC110>>**
 |Name                       |Produkte entfernen
-|Beschreibung               |Ein Nutzer kann gegebenfalls Artikel aus seinem Warenkorb entfernen, wenn er sie z.B. nicht mehr benötigt oder bestellen möchte.
+|Beschreibung               |Ein Nutzer kann gegeben Falls Artikel aus seinem Warenkorb entfernen, wenn er sie z.B. nicht mehr benötigt oder bestellen möchte.
 |Akteur                     |Nutzer
 |Auslöser                   |Der Nutzer möchte einen bestimmten Artikel nicht mehr bestellen.
 |Bedingungen                |Der Nutzer befindet sich im Warenkorb <<UC100>>.
@@ -209,7 +209,7 @@ image::./images/sequence_usecases/sequence_uc120.png[sequence_uc120,90%,100%,pdf
 |Akteur                     |Nutzer
 |Auslöser                   |Der Nutzer interessiert sich für einen Artikel genauer und möchte auf die zugehörige Artikelseite gelangen.
 |Bedingungen                |Der Nutzer schaut sich derzeit den Artikel-Katalog <<UC200>> an.
-|Notwendige Schritte        |Der Nutzer klickt auf den Namen des gewünschten Artikel.
+|Notwendige Schritte        |Der Nutzer klickt auf den Namen des gewünschten Artikels.
 |Erweiterungen              |-
 |Funktionale Anforderung    |<<F0004>>
 |===
@@ -285,7 +285,7 @@ _Kunde:_
 |Bedingungen                |Der Kunde sieht seine Bestellung derzeit ein <<UC300>>.
 |Notwendige Schritte        |
 1. Der Kunde klickt den Button "Bestellung stornieren".
-2. Der Kunde bestätigt die Stornierung mit einen Klick auf den Button "Bestätigen".
+2. Der Kunde bestätigt die Stornierung mit einem Klick auf den Button "Bestätigen".
 |Erweiterungen              |-
 |Funktionale Anforderung    |<<F0022>>
 |===
@@ -302,7 +302,7 @@ _Kunde:_
 |Notwendige Schritte        |
 1. Der Kunde sucht den Artikel aus der Artikel-Liste innerhalb der Bestellung.
 2. Der Kunde drückt den zum Artikel zugehörigen Knopf "Artikel stornieren".
-3. Der Kunde bestätigt die Stornierung mit einen Klick auf den Button "Bestätigen".
+3. Der Kunde bestätigt die Stornierung mit einem Klick auf den Button "Bestätigen".
 |Erweiterungen              |-
 |Funktionale Anforderung    |<<F0022>>
 |===
@@ -335,8 +335,8 @@ image::./images/sequence_usecases/sequence_uc330.png[sequence_uc330,80%,100%,pdf
 |Beschreibung               |Ein Mitarbeiter ist in der Lage auf das Admin-Interface der Seite zuzugreifen.
 |Akteur                     |Mitarbeiter
 |Auslöser                   |Ein Mitarbeiter möchte firmeninterne Daten abrufen.
-|Bedingungen                |Der Mitarbeiter hat sich zuvor mithilfe von <<UC010>> gegenüber dem System authetifiziert.
-|Notwendige Schritte        |Der Mitarbeiter drückt auf den Reiter "Admin-Interface" in der Navigatonsleiste.
+|Bedingungen                |Der Mitarbeiter hat sich zuvor mithilfe von <<UC010>> gegenüber dem System authentifiziert.
+|Notwendige Schritte        |Der Mitarbeiter drückt auf den Reiter "Admin-Interface" in der Navigationsleiste.
 |Erweiterungen              |Der Reiter "Admin-Interface" erscheint nur wenn der Nutzer im System die Rolle Mitarbeiter erhalten hat.
 |Funktionale Anforderung    |<<F0053>>, <<F0054>>
 |===
@@ -501,7 +501,7 @@ Das System muss jedem Nutzer einen eigenen Warenkorb zur Verfügung stellen, in 
 |Warenkorb anzeigen
 |
 Das System muss Nutzern die Möglichkeit bieten, ihren Warenkorb anzuschauen.
-Dabei werden die einzelnen Artikel des Warenkorbes aufgelistet mit Name, Preis und Variante.
+Dabei werden die einzelnen Artikel des Warenkorbes mit Namen, Preis und Variante aufgelistet.
 Außerdem wird der Gesamtpreis des Warenkorbes angezeigt.
 
 
@@ -561,8 +561,8 @@ Das System muss eine Liste von LKWS dauerhaft in einer Datenbank speichern.
 |v1.0
 |LKW bearbeiten
 |
-Das System muss fähig sein den Kalendar eines LKWs zu bearbeiten.
-Der Kalendar enthält Kalendareinträge, welche ein Datum haben und einen Mieteintrag oder Liefereintrag.
+Das System muss fähig sein den Kalender eines LKWs zu bearbeiten.
+Der Kalender enthält Kalendereinträge, welche ein Datum haben und einen Mieteintrag oder Liefereintrag.
 
 |[[F0042]]<<F0042>>
 |v1.0
@@ -570,7 +570,7 @@ Der Kalendar enthält Kalendareinträge, welche ein Datum haben und einen Mietei
 |
 Das System muss Nutzern die Möglichkeit bieten, LKWs aus dem LKW-Park zu buchen.
 Bei der Buchung wird zunächst die LKW Bestellung validiert nach <<F0021>>.
-Wenn die Bestellung valide ist, wird der Kalendar des LKWs bearbeitet nach <<F0041>>.
+Wenn die Bestellung valide ist, wird der Kalender des LKWs bearbeitet nach <<F0041>>.
 
 
 |[[F0043]]<<F0043>>
@@ -578,7 +578,7 @@ Wenn die Bestellung valide ist, wird der Kalendar des LKWs bearbeitet nach <<F00
 |LKW stornieren
 |
 Das System muss einem Kunden mit einer gültigen Bestell-ID, die Möglichkeit bieten, von ihm gebuchte LKWs zu stornieren.
-Dabei wird der Kalendareintrag gelöscht.
+Dabei wird der Kalendereintrag gelöscht.
 
 
 |[[F0050]]<<F0050>>
@@ -844,7 +844,7 @@ Dieser Abschnitt beinhaltet die Beschreibung von Klassen/Enumerationen.
 |Bestellung                       |Ist eine abstrakte Modellierung aller Bestellungen und beinhaltet alle BestellEinträge
 |BestellEintrag                   |Erfasst einen bestellten Artikel mit der Anzahl und dem Bestellstatus
 |BestellStatus                    |Ist eine Enumeration und modelliert alle verschiedenen Staten in denen sich ein BestellEintrag befinden kann
-|Kontaktinformationen             |Beinhaltet alle relavanten Kontaktinformationen eines Kunden
+|Kontaktinformationen             |Beinhaltet alle relevanten Kontaktinformationen eines Kunden
 |ItemBestellung                   |Ist die abstrakte Modellierung für alle physischen Verkaufsartikel
 |LKWMietung                       |Modelliert alle benötigten Informationen für die LKWMietung
 |Abholung                         |Ist die konkrete Implementierung der ItemBestellung für Items, die aus dem Lager abgeholt werden
@@ -872,7 +872,7 @@ Mithilfe von Akzeptanztests wird geprüft, ob die Software die funktionalen Erwa
 |ID        |**<<AT010>>**
 |{Use}     |<<UC010>>
 |{Pre}     |Das System verfügt über Mitarbeiter-Anmeldungsdaten.
-|{Event}   |Ein nicht authentifizierter Nutzer klickt auf "Login" in der Navigationsliste, gibt seine richten Mitarbeiter Daten ein (Name und Password) und klickt auf den "Login" Button.
+|{Event}   |Ein nicht authentifizierter Nutzer klickt auf "Login" in der Navigationsliste, gibt seine richtigen Mitarbeiter Daten ein (Name und Password) und klickt auf den "Login" Button.
 |{Result}  |
 - Der Nutzer wird als Mitarbeiter angemeldet.
 - Der Nutzer wird auf die Admin Seite weitergeleitet.
@@ -887,7 +887,7 @@ Mithilfe von Akzeptanztests wird geprüft, ob die Software die funktionalen Erwa
 |{Pre}     |Der Nutzer ist als Mitarbeiter angemeldet.
 |{Event}   |Ein Mitarbeiter klickt auf "Ausloggen" in der Navigationsleiste.
 |{Result}  |
-- Der Nutzer wird abgemeldet und hat nicht mehr die Rolle "Mitabeiter".
+- Der Nutzer wird abgemeldet und hat nicht mehr die Rolle "Mitarbeiter".
 - Der Nutzer verliert den Zugriff auf Funktionalitäten der Rolle "Mitarbeiter".
 |===
 
@@ -1021,7 +1021,7 @@ Mithilfe von Akzeptanztests wird geprüft, ob die Software die funktionalen Erwa
 |ID        |**<<AT310>>**
 |{Use}     |<<UC310>>
 |{Pre}     |Ein Kunde befindet sich auf der Bestellübersicht.
-|{Event}   |Der Kunde klickt den "Bestellung stonieren" Button und anschließen auf den "Bestätigen" Button.
+|{Event}   |Der Kunde klickt den "Bestellung stornieren" Button und anschließen auf den "Bestätigen" Button.
 |{Result}  |
 - Die gesamte Bestellung wird storniert.
 |===
@@ -1032,7 +1032,7 @@ Mithilfe von Akzeptanztests wird geprüft, ob die Software die funktionalen Erwa
 |ID        |**<<AT320>>**
 |{Use}     |<<UC320>>
 |{Pre}     |Ein Kunde befindet sich auf der Bestellübersicht.
-|{Event}   |Der Kunde klickt den "Artikel stonieren" Button und anschließen auf den "Bestätigen" Button.
+|{Event}   |Der Kunde klickt den "Artikel stornieren" Button und anschließen auf den "Bestätigen" Button.
 |{Result}  |
 - Der Artikel wird storniert.
 |===
@@ -1111,7 +1111,7 @@ Mithilfe von Akzeptanztests wird geprüft, ob die Software die funktionalen Erwa
 |{Pre}     |Ein Mitarbeiter befindet sich auf der Lieferanten Seite.
 |{Event}   |Der Mitarbeiter klickt auf "Lieferant hinzufügen" Button.
 |{Result}  |
-- Der Mitarbeiter wird auf eine Seite weitergeleitet, wo er die Daten des neuen Liefernaten eingeben muss.
+- Der Mitarbeiter wird auf eine Seite weitergeleitet, wo er die Daten des neuen Lieferanten eingeben muss.
 |===
 
 [cols="1h, 4a"]
@@ -1142,7 +1142,7 @@ Mithilfe von Akzeptanztests wird geprüft, ob die Software die funktionalen Erwa
 |ID        |**<<AT501>>**
 |{Use}     |<<UC500>>
 |{Pre}     |Ein Kunde besitzt eine LKW-Bestellnummer und hat <<AT500>> ausgeführt.
-|{Event}   |Ein Nutzer klickt auf deb "Bestätigen" Button, nachdem er seine Bestellnummer eingetragen hat.
+|{Event}   |Ein Nutzer klickt auf den "Bestätigen" Button, nachdem er seine Bestellnummer eingetragen hat.
 |{Result}  |
 - Der Kunde wird auf deine Seite weitergeleitet, wo seine LKW-Bestellung aufgelistet ist.
 |===
@@ -1150,12 +1150,12 @@ Mithilfe von Akzeptanztests wird geprüft, ob die Software die funktionalen Erwa
 [cols="1h, 4a"]
 [[AT510]]
 |===
-|ID        |**<<AT500>>**
-|{Use}     |<<UC500>>
+|ID        |**<<AT510>>**
+|{Use}     |<<UC510>>
 |{Pre}     |Ein Kunde befindet sich auf seiner Bestellübersicht.
-|{Event}   |Der Kunde klickt auf den "LKW stonieren" Button und anschließend auf den "Bestätigen" Button.
+|{Event}   |Der Kunde klickt auf den "LKW stornieren" Button und anschließend auf den "Bestätigen" Button.
 |{Result}  |
-- Der LKW wird stoniert und die Bestellung aus dem System gelöscht.
+- Der LKW wird storniert und die Bestellung aus dem System gelöscht.
 |===
 
 [cols="1h, 4a"]
@@ -1213,7 +1213,7 @@ Sämtliche Begriffe, die innerhalb des Projektes verwendet werden und deren geme
 |LKW                    | {domain_ref}
 |LKWMietung             | {domain_ref}
 |LKWManager             | {domain_ref}
-|Login                  | Mitarbeiter haben die Möglichkeit sich einzuloggen und Bestellungen bearbeiten, sowie dass Möbelgeschäft zu verwalten.
+|Login                  | Mitarbeiter haben die Möglichkeit sich einzuloggen und Bestellungen bearbeiten, sowie das Möbelgeschäft zu verwalten.
 |Mieteintrag            | {domain_ref}
 |Mitarbeiter            | {actors_ref}
 |Möbelgeschäft          | {domain_ref}
