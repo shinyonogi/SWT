@@ -695,12 +695,52 @@ Das System sollte Mitarbeitern, welche sich im Admin Interface befinden, die Mö
 
 === Qualitätsziele
 
-Dokumentieren Sie in einer Tabelle die Qualitätsziele, welche das System erreichen soll, sowie deren Priorität.
+1 = Nicht wichtig | 5 = Sehr wichtig
+
+[options="header", cols="3h, ^1, ^1, ^1, ^1, ^1"]
+|===
+|Qualitätsanspruch        | 1 | 2 | 3 | 4 | 5
+|Zuverlässigkeit          |   |   |   |   | x
+|Sicherheit               |   |   |   | x |
+|Benutzerfreundlichkeit   |   |   |   | x |
+|Wartbarkeit              |   |   | x |   |
+
+|===
 
 === Konkrete Nicht-Funktionale Anforderungen
 
-Beschreiben Sie Nicht-Funktionale Anforderungen, welche dazu dienen, die zuvor definierten Qualitätsziele zu erreichen.
-Achten Sie darauf, dass deren Erfüllung (mindestens theoretisch) messbar sein muss.
+[options="header", cols="2h, 1, 3, 12"]
+|===
+|ID
+|Version
+|Name
+|Description
+
+|[[NF0001]]<<NF0001>>
+|v1.0
+|Zuverlässigkeit
+a|
+Die Erreichbarkeit des Systems muss größer als 99 % pro Jahr sein.
+
+|[[NF0002]]<<NF0002>>
+|v1.0
+|Sicherheit
+a|
+Das System muss Passwörter und Kundendaten verschlüsselt speichern.
+
+|[[NF0003]]<<NF0003>>
+|v1.0
+|Benutzerfreundlichkeit
+a|
+Ein Nutzer, der nach einem bestimmten Artikel aus dem Artikel-Katalog sucht, sollte weniger als 5 Minuten brauchen, um diesen zu finden.
+
+|[[NF0004]]<<NF0004>>
+|v1.0
+|Wartbarkeit
+a|
+Die Integration von Erweiterungen muss kleiner gleich 7 Tage sein.
+
+|===
 
 == GUI Prototyp
 
