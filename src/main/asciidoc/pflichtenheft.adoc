@@ -71,6 +71,8 @@ image::./images/context_diagram_2.png[Kontextdiagramm,100%,100%,pdfwidth=100%,ti
 
 Dokumentieren Sie ihre Top-Level-Architektur mit Hilfe eines Komponentendiagramm.
 
+image::./images/top_level_architecture.png[Top-Level-Architektur,100%,100%,pdfwidth=100%,title= "Tpp-Level-Architektur des Projektes {project_name}",align=center]
+
 == Anwendungsfälle
 
 === Akteure
