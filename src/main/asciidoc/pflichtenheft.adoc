@@ -705,20 +705,74 @@ Idealerweise entsteht auch ein grafischer Prototyp, welcher dem Kunden zeigt, wi
 Konkrete Absprachen - beispielsweise ob der grafische Prototyp oder die Dialoglandkarte höhere Priorität hat - sind mit dem Kunden zu treffen.
 
 image::./images/GUI/catalog.png[catalog,100%,100%,pdfwidth=100%,title= "Katalog auf der Website",align=center]
+[options="header"]
+|===
+|Nr.  |Beschreibung
+|1    |Weiterleitung zum Katalog (catalog.html)
+|2    |Weiterleitung zum Warenkorb (cart.html)
+|3    |Weiterleitung zu den Bestellungen (orders.html)
+|4    |Weiterleitung zur LKW-Vermietung (lkw.html)
+|5    |Weiterleitung zum Administrator-Bereich (adminLogin.html)
+|6    |Name, Preis und Beschreibung eines Möbelstücks und Weiterleitung zur Großansicht (itemView.html)
+|===
 
-image::./images/GUI/itemView.png[itemView,100%,100%,pdfwidth=100%,title= "Ansicht eines Möbelstücks auf der Website",align=center]
+image::./images/GUI/itemView.png[itemView,100%,100%,pdfwidth=100%,title= "Ansicht eines Möbelstücks auf der Website",align=center] 
+[options="header"]
+|===
+|Nr.  |Beschreibung
+|1    |Name, Preis und Beschreibung eines Möbelstücks.
+|2    |Auswahl einer Variante des Möbelstücks (z.B. Farbe) über ein Dropdown-Menü
+|3    |Schaltfläche, über die das Möbelstück dem Warenkorb hinzugefügt wird
+|===
 
 image::./images/GUI/cart.png[cart,100%,100%,pdfwidth=100%,title= "Warenkorb auf der Website",align=center]
+|===
+|Nr.  |Beschreibung
+|1    |Name des Möbelstücks
+|2    |Preis des Möbelstücks
+|3    |Änderung der Anzahl des Möbelstücks im Warenkorb (min. 1)
+|4    |Schaltfläche zur Entfernung des Möbelstücks aus dem Warenkorb
+|===
 
 image::./images/GUI/orders.png[orders,100%,100%,pdfwidth=100%,title= "Bestellungssuche auf der Website",align=center]
+|===
+|Nr.  |Beschreibung
+|1    |Feld zur Eingabe der Bestellnummer
+|2    |Weiterleitung zur Ansicht der Bestellung (orderItems.html)
+|===
 
 image::./images/GUI/orderItems.png[orderItems,100%,100%,pdfwidth=100%,title= "Bestellungen auf der Website",align=center]
+|===
+|Nr.  |Beschreibung
+|1    |Name des Möbelstücks
+|2    |Preis des Möbelstücks
+|3    |Lieferdatum des Möbelstücks
+|4    |Schaltfläche zur Stornierung der Bestellung
+|===
 
-image::./images/GUI/lkw.png[lkw,100%,100%,pdfwidth=100%,title= "LKW-Mietung auf der Website",align=center]
+image::./images/GUI/lkw.png[lkw,100%,100%,pdfwidth=100%,title= "LKW-Vermietung auf der Website",align=center]
+|===
+|Nr.  |Beschreibung
+|1    |Gewichtsklasse des LKW 
+|2    |Mietpreis für einen Tag
+|3    |Schaltfläche zum Mieten des LKW
+|===
 
 image::./images/GUI/adminLogin.png[adminLogin,100%,100%,pdfwidth=100%,title= "Administrator-Login auf der Website",align=center]
+|===
+|Nr.  |Beschreibung
+|1    |Feld zur Eingabe des Nutzernamens 
+|2    |Feld zur Eingabe des Passworts
+|3    |Schaltfläche zum Einloggen
+|===
 
 image::./images/GUI/admin.png[cart,100%,100%,pdfwidth=100%,title= "Administrator-Bereich auf der Website",align=center]
+|===
+|Nr.  |Beschreibung
+|1    |Schaltfläche zur Ansicht der Kundenbestellungen (customerOrders.html)
+|2    |Schaltfläche zur Ansicht der Monatsstatistik (monthlyStatistic.html)
+|3    |Schaltfläche zur Ansicht der Lieferanten (suppliers.html)
+|===
 
 === Überblick: Dialoglandkarte
 
