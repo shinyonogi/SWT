@@ -71,7 +71,7 @@ image::./images/context_diagram_2.png[Kontextdiagramm,100%,100%,pdfwidth=100%,ti
 
 Dokumentieren Sie ihre Top-Level-Architektur mit Hilfe eines Komponentendiagramm.
 
-image::./images/top_level_architecture.png[Top-Level-Architektur,100%,100%,pdfwidth=100%,title= "Tpp-Level-Architektur des Projektes {project_name}",align=center]
+image::./images/top_level_architecture.png[Top-Level-Architektur,100%,100%,pdfwidth=100%,title= "Top-Level-Architektur des Projektes {project_name}",align=center]
 
 == Anwendungsfälle
 
@@ -855,7 +855,7 @@ Maskendetails, spezielle Widgets
 === Überblick: Klassendiagramm
 
 [[analyseclass_diagram]]
-image::./models/analysis/Model.png[Analyseklassendiagramm,100%,100%,pdfwidth=100%,title= "Analyseklassendiagramms des Projektes {project_name}",align=center]
+image::./models/analysis/analyseklassendiagramm.png[Analyseklassendiagramm,100%,100%,pdfwidth=100%,title= "Analyseklassendiagramm des Projektes {project_name}",align=center]
 
 === Klassen und Enumerationen
 
@@ -865,34 +865,35 @@ Zusätzlich werden eventuellen Konsistenz- und Formatierungsregeln aufgeführt.
 
 // See http://asciidoctor.org/docs/user-manual/#tables
 [options="header"]
-[cols="2a, 7a, 4a"]
+[cols="2a, 7a"]
 [[classes_enumerations]]
 |===
-|Klasse/Enumeration |Beschreibung |
-|WarenkorbEintrag                 |Erfasst einen zu kaufenden Artikel im Warenkorb und deren gewünschte Anzahl            |
-|Warenkorb                        |Beinhaltet alle gewünschten WarenkorbEinträge des Kunden|
-|Item                             |Modelliert alle Möbelstücke in unserem Inventar|
-|Set                              |Ein Set stellt eine Sammlung aus verschiedenen Items dar und modelliert vorgefertigte Sätze an Möbelstücken zu einem Angebotspreis |
-|Teil                             |Ist die konkrete Implementierung eines Items|
-|Inventar                         |Erfasst die Sammlung aller Items und modelliert so ein physisches Inventar|
-|Kategorie                        |Ist eine Enumeration über alle Kategorien die ein Möbelstück haben kann|
-|Lieferant                        |Stellt alle unsere registrierten Lieferanten dar|
-|LieferantManager                 |Verwaltet alle Lieferanten und ermöglicht das Hinzufügen und Entfernen von Lieferanten und ermöglicht das Erstellen einer Lieferantenstatistik|
-|BestellManager                   |Verwaltet alle aktiven und vergangenen Bestellungen und implementiert das Erstellen und Stornieren jener|
-|Bestellung                       |Ist eine abstrakte Modellierung aller Bestellungen und beinhaltet alle BestellEinträge|
-|BestellEintrag                   |Erfasst einen bestellten Artikel mit der Anzahl und dem Bestellstatus|
-|BestellStatus                    |Ist eine Enumeration und modelliert alle verschiedenen Staten in denen sich ein BestellEintrag befinden kann|
-|Kontaktinformationen             |Beinhaltet alle relavanten Kontaktinformationen eines Kunden|
-|ItemBestellung                   |Ist die abstrakte Modellierung für alle physischen Verkaufsartikel|
-|LKWMietung                       |Modelliert alle benötigten Informationen für die LKWMietung|
-|Abholung                         |Ist die konkrete Implementierung der ItemBestellung für Items, die aus dem Lager abgeholt werden|
-|Liefertung                       |Ist die konkrete Implementierung der ItemBestellung für Items, die zum Kunden geliefert werden|
-|LKWManager                       |Verwaltet alle LKWs und regelt deren Buchung und Stornierung|
-|LKW                              |Modelliert einen physischen LKW, der entweder gemietet werden kann oder zur Lieferung genutzt wird|
-|Kalender                         |Erfasst alle Buchungen für alle LKWs und deren Zeitfenster|
-|KalenderEintrag                  |Stellt als abstrakte Klasse einen Eintrag mit einer Buchung für einen bestimmten Tag und einen bestimmten LKW dar|
-|Mieteintrag                      |Modelliert die Mietung eines LKWs an einem spezifischen Tag|
-|Liefereintrag                    |Modelliert die Lieferung einer Bestellung mit einem LKW an einem spezifischen Tag|
+|Klasse/Enumeration |Beschreibung 
+|Möbelgeschäft | Repräsentiert das Geschäft selbst
+|WarenkorbEintrag                 |Erfasst einen zu kaufenden Artikel im Warenkorb und deren gewünschte Anzahl            
+|Warenkorb                        |Beinhaltet alle gewünschten WarenkorbEinträge des Kunden
+|Item                             |Modelliert alle Möbelstücke in unserem Inventar
+|Set                              |Ein Set stellt eine Sammlung aus verschiedenen Items dar und modelliert vorgefertigte Sätze an Möbelstücken zu einem Angebotspreis 
+|Teil                             |Ist die konkrete Implementierung eines Items
+|Inventar                         |Erfasst die Sammlung aller Items und modelliert so ein physisches Inventar
+|Kategorie                        |Ist eine Enumeration über alle Kategorien die ein Möbelstück haben kann
+|Lieferant                        |Stellt alle unsere registrierten Lieferanten dar
+|LieferantManager                 |Verwaltet alle Lieferanten und ermöglicht das Hinzufügen und Entfernen von Lieferanten und ermöglicht das Erstellen einer Lieferantenstatistik
+|BestellManager                   |Verwaltet alle aktiven und vergangenen Bestellungen und implementiert das Erstellen und Stornieren jener
+|Bestellung                       |Ist eine abstrakte Modellierung aller Bestellungen und beinhaltet alle BestellEinträge
+|BestellEintrag                   |Erfasst einen bestellten Artikel mit der Anzahl und dem Bestellstatus
+|BestellStatus                    |Ist eine Enumeration und modelliert alle verschiedenen Staten in denen sich ein BestellEintrag befinden kann
+|Kontaktinformationen             |Beinhaltet alle relavanten Kontaktinformationen eines Kunden
+|ItemBestellung                   |Ist die abstrakte Modellierung für alle physischen Verkaufsartikel
+|LKWMietung                       |Modelliert alle benötigten Informationen für die LKWMietung
+|Abholung                         |Ist die konkrete Implementierung der ItemBestellung für Items, die aus dem Lager abgeholt werden
+|Liefertung                       |Ist die konkrete Implementierung der ItemBestellung für Items, die zum Kunden geliefert werden
+|LKWManager                       |Verwaltet alle LKWs und regelt deren Buchung und Stornierung
+|LKW                              |Modelliert einen physischen LKW, der entweder gemietet werden kann oder zur Lieferung genutzt wird
+|Kalender                         |Erfasst alle Buchungen für alle LKWs und deren Zeitfenster
+|KalenderEintrag                  |Stellt als abstrakte Klasse einen Eintrag mit einer Buchung für einen bestimmten Tag und einen bestimmten LKW dar
+|Mieteintrag                      |Modelliert die Mietung eines LKWs an einem spezifischen Tag
+|Liefereintrag                    |Modelliert die Lieferung einer Bestellung mit einem LKW an einem spezifischen Tag
 |===
 
 == Akzeptanztestfälle
