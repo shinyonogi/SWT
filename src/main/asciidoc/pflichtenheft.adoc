@@ -5,7 +5,7 @@
 :toc-title: Inhaltsverzeichnis
 
 [options="header"]
-[cols="1, 1, 6, 6"]
+[cols="1a, 1a, 6a, 7a"]
 |===
 |Version | Bearbeitungsdatum | Autoren(en) | Vermerk
 |0.1     | 10.11.2020        | David Schroth, Marc Albrecht, Sebastian Jaster, Edgar Wolfert, Johannes Kaufmann, Shintaro Onogi | Kontextdiagramm, Anwendungsfälle, Funktionale Anforderungen, GUI Prototyp, Klassendiagramm, Akzeptanztestfälle
@@ -83,9 +83,9 @@ Weitere relevante Spalten können bei Bedarf ergänzt werden.
 
 // See http://asciidoctor.org/docs/user-manual/#tables
 [options="header"]
-[cols="1,4"]
+[cols="1,4a"]
 |===
-|**Name** | **Beschreibung**
+|**Name**      | **Beschreibung**
 |_Nutzer_      |Ein Nutzer repräsentiert jede Person die mit der Seite interagiert.
 |_Kunde_       |Ein Kunde repräsentiert jeder Person, die auf der Seite ihre Bestellnummer angegeben hat um mit ihrer Bestellung zu interagieren.
 |_Mitarbeiter_ |Ein Mitarbeiter repräsentiert die Mitarbeiter der Möbel-Hunger Kette, welche im System die Rolle "Mitarbeiter" erhalten, nachdem Sie sich entsprechend eingeloggt haben.
@@ -465,7 +465,8 @@ image::./images/sequence_usecases/sequence_uc520.png[sequence_uc520,80%,100%,pdf
 
 === Muss-Kriterien
 
-[options="header", cols="2h, 1, 3, 12"]
+[options="header"]
+[cols="2a, 1a, 3a, 12a"]
 |===
 |ID
 |Version
@@ -475,14 +476,14 @@ image::./images/sequence_usecases/sequence_uc520.png[sequence_uc520,80%,100%,pdf
 |[[F0001]]<<F0001>>
 |v1.0
 |Artikel-Katalog
-a|
+|
 Das System muss eine Liste von Artikeln, welche den Artikel-Katalog repräsentiert, dauerhaft in einer Datenbank speichern.
 
 
 |[[F0002]]<<F0002>>
 |v1.0
 |Artikel-Katalog anzeigen
-a|
+|
 Das System muss Nutzern die Möglichkeit bieten, alle Artikel des Artikel-Katalogs anzuzeigen.
 Dabei wird für jeden Artikel nur der Name, der Preis und ein Bild des Artikels angezeigt.
 
@@ -490,14 +491,14 @@ Dabei wird für jeden Artikel nur der Name, der Preis und ein Bild des Artikels 
 |[[F0003]]<<F0003>>
 |v1.0
 |Artikel-Katalog bearbeiten
-a|
+|
 Das System muss Mitarbeitern die Möglichkeit bieten, Artikel dem Artikel-Katalog hinzuzufügen und Artikel aus dem Artikel-Katalog zu entfernen.
 
 
 |[[F0004]]<<F0004>>
 |v1.0
 |Artikel anzeigen
-a|
+|
 Das System muss Nutzern die Möglichkeit bieten einen ausgewählten Artikel anzuzeigen.
 Dabei wird ein Bild, der Name, der Preis, die Kategorie und die Variante des Artikels angezeigt.
 Die Variante kann dabei geändert werden.
@@ -506,14 +507,14 @@ Die Variante kann dabei geändert werden.
 |[[F0010]]<<F0010>>
 |v1.0
 |Warenkorb
-a|
+|
 Das System muss jedem Nutzer einen eigenen Warenkorb zur Verfügung stellen, in dem er mehrere unterschiedliche Artikel vorübergehend speichern kann.
 
 
 |[[F0011]]<<F0011>>
 |v1.0
 |Warenkorb anzeigen
-a|
+|
 Das System muss Nutzern die Möglichkeit bieten, ihren Warenkorb anzuschauen.
 Dabei werden die einzelnen Artikel des Warenkorbes aufgelistet mit Name, Preis und Variante.
 Außerdem wird der Gesamtpreis des Warenkorbes angezeigt.
@@ -522,14 +523,14 @@ Außerdem wird der Gesamtpreis des Warenkorbes angezeigt.
 |[[F0012]]<<F0012>>
 |v1.0
 |Warenkorb bearbeiten
-a|
+|
 Das System muss Nutzern die Möglichkeit bieten, ausgewählte Artikel ihrem Warenkorb hinzuzufügen oder zu entfernen.
 
 
 |[[F0020]]<<F0020>>
 |v1.0
 |Bestellung speichern
-a|
+|
 Das System muss Bestellungen in einer Datenbank speichern.
 Eine Bestellung besteht aus ein oder mehreren Bestelleinträgen, den Kontaktinformationen des Kunden, einer eindeutigen ID und einem Abholdatum oder alternativ einem LKW Lieferdatum.
 Ein Bestelleintrag besteht aus einem Item, der Anzahl des ausgewählten Items und dem Bestellstatus.
@@ -538,21 +539,21 @@ Ein Bestelleintrag besteht aus einem Item, der Anzahl des ausgewählten Items un
 |[[F0021]]<<F0021>>
 |v1.0
 |Bestellung erstellen
-a|
+|
 Das System muss fähig sein eine Bestellung zu erstellen, nachdem der Kunde eine Bestellung aufgegeben hat
 
 
 |[[F0022]]<<F0022>>
 |v1.0
 |Bestellung stornieren
-a|
+|
 Das System muss einem Kunden die Möglichkeit bieten, seine gesamte Bestellung oder einzelne Artikel der Bestellung zu stornieren.
 
 
 |[[F0023]]<<F0023>>
 |v1.0
 |Bestellung anzeigen
-a|
+|
 Das System muss dem Nutzer die Möglichkeit bieten, über die Bestell-ID, seine Bestellung anzuzeigen.
 Dazu gehören Möbel- und LKW-Bestellungen.
 
@@ -560,28 +561,28 @@ Dazu gehören Möbel- und LKW-Bestellungen.
 |[[F0024]]<<F0024>>
 |v1.0
 |Bestellstatus bearbeiten
-a|
+|
 Das System muss Mitarbeitern die Möglichkeit bieten, den Status einer Bestellung zu ändern.
 
 
 |[[F0040]]<<F0040>>
 |v1.0
 |LKW Park speichern
-a|
+|
 Das System muss eine Liste von LKWS dauerhaft in einer Datenbank speichern.
 
 
 |[[F0041]]<<F0041>>
 |v1.0
 |LKW bearbeiten
-a|
+|
 Das System muss fähig sein den Kalendar eines LKWs zu bearbeiten.
 Der Kalendar enthält Kalendareinträge, welche ein Datum haben und einen Mieteintrag oder Liefereintrag.
 
 |[[F0042]]<<F0042>>
 |v1.0
 |LKW buchen
-a|
+|
 Das System muss Nutzern die Möglichkeit bieten, LKWs aus dem LKW-Park zu buchen.
 Bei der Buchung wird zunächst die LKW Bestellung validiert nach <<F0021>>.
 Wenn die Bestellung valide ist, wird der Kalendar des LKWs bearbeitet nach <<F0041>>.
@@ -590,7 +591,7 @@ Wenn die Bestellung valide ist, wird der Kalendar des LKWs bearbeitet nach <<F00
 |[[F0043]]<<F0043>>
 |v1.0
 |LKW stornieren
-a|
+|
 Das System muss einem Kunden mit einer gültigen Bestell-ID, die Möglichkeit bieten, von ihm gebuchte LKWs zu stornieren.
 Dabei wird der Kalendareintrag gelöscht.
 
@@ -598,14 +599,14 @@ Dabei wird der Kalendareintrag gelöscht.
 |[[F0050]]<<F0050>>
 |v1.0
 |Mitarbeiter speichern
-a|
+|
 Das System muss Mitarbeiter und deren Logindaten dauerhaft in einer Datenbank speichern.
 
 
 |[[F0051]]<<F0051>>
 |v1.0
 |Login
-a|
+|
 Das System muss die Möglichkeit bieten sich einzuloggen.
 Ein Mitarbeiter ist ein eingeloggter Nutzer.
 
@@ -613,14 +614,14 @@ Ein Mitarbeiter ist ein eingeloggter Nutzer.
 |[[F0052]]<<F0052>>
 |v1.0
 |Logout
-a|
+|
 Das System muss die Möglichkeit bieten sich als Mitarbeiter auszuloggen.
 
 
 |[[F0053]]<<F0053>>
 |v1.0
 |Admin Interface
-a|
+|
 Das System muss ein Admin Interface besitzen.
 Das Admin Interface beinhaltet eine monatliche Statistik und die Möglichkeit Lieferanten und Bestellungen zu verwalten.
 
@@ -628,35 +629,35 @@ Das Admin Interface beinhaltet eine monatliche Statistik und die Möglichkeit Li
 |[[F0054]]<<F0054>>
 |v1.0
 |Admin Interface anzeigen
-a|
+|
 Das System muss Mitarbeitern die Möglichkeit bieten das Admin Interface anzuzeigen.
 
 
 |[[F0055]]<<F0055>>
 |v1.0
 |monatliche Statistik
-a|
+|
 Das System muss fähig sein eine monatliche Statistik zu erstellen, welche die Daten über die Verkäufe des Monats, nach Großlieferant sortiert, zusammenfasst.
 
 
 |[[F0056]]<<F0056>>
 |v1.0
 |monatliche Statistik anzeigen
-a|
+|
 Das System muss Mitarbeitern, welche sich im Admin Interface befinden, die Möglichkeit bieten, die monatliche Statistik mit Vergleich der vorherigen monatlichen Statistik anzuzeigen.
 
 
 |[[F0057]]<<F0057>>
 |v1.0
 |Bestellungen anzeigen
-a|
+|
 Das System muss Mitarbeitern, welche sich im Admin Interface befinden, die Möglichkeit bieten, alle Bestellungen mit Bestelldatum und Bestellnummer aufzulisten.
 
 
 |[[F0058]]<<F0058>>
 |v1.0
 |Lieferanten anzeigen
-a|
+|
 Das System muss Mitarbeitern, welche sich im Admin Interface befinden, die Möglichkeit bieten, alle Lieferanten anzuzeigen.
 
 |===
@@ -665,7 +666,8 @@ Das System muss Mitarbeitern, welche sich im Admin Interface befinden, die Mögl
 
 Anforderungen, die das Programm leisten können soll, aber für den korrekten Betrieb entbehrlich sind.
 
-[options="header", cols="2h, 1, 3, 12"]
+[options="header"]
+[cols="2a, 1a, 3a, 12a"]
 |===
 |ID
 |Version
@@ -675,14 +677,14 @@ Anforderungen, die das Programm leisten können soll, aber für den korrekten Be
 |[[F0030]]<<F0030>>
 |v1.0
 |Kunden benachrichtigen
-a|
+|
 Das System sollte fähig sein, Kunden zu benachrichtigen, wenn ihre bestellte Ware im Hauptlager angekommen ist, bzw. wenn das Abholdatum erreicht ist.
 
 
 |[[F0059]]<<F0059>>
 |v1.0
 |Lieferanten verwalten
-a|
+|
 Das System sollte Mitarbeitern, welche sich im Admin Interface befinden, die Möglichkeit bieten, Lieferanten zu löschen oder hinzuzufügen.
 
 |===
@@ -706,6 +708,7 @@ Konkrete Absprachen - beispielsweise ob der grafische Prototyp oder die Dialogla
 
 image::./images/GUI/catalog.png[catalog,100%,100%,pdfwidth=100%,title= "Katalog auf der Website",align=center]
 [options="header"]
+[cols="1a, 8a"]
 |===
 |Nr.  |Beschreibung
 |1    |Weiterleitung zum Katalog (catalog.html)
@@ -716,8 +719,9 @@ image::./images/GUI/catalog.png[catalog,100%,100%,pdfwidth=100%,title= "Katalog 
 |6    |Name, Preis und Beschreibung eines Möbelstücks und Weiterleitung zur Großansicht (itemView.html)
 |===
 
-image::./images/GUI/itemView.png[itemView,100%,100%,pdfwidth=100%,title= "Ansicht eines Möbelstücks auf der Website",align=center] 
+image::./images/GUI/itemView.png[itemView,100%,100%,pdfwidth=100%,title= "Ansicht eines Möbelstücks auf der Website",align=center]
 [options="header"]
+[cols="1a, 8a"]
 |===
 |Nr.  |Beschreibung
 |1    |Name, Preis und Beschreibung eines Möbelstücks.
@@ -726,6 +730,8 @@ image::./images/GUI/itemView.png[itemView,100%,100%,pdfwidth=100%,title= "Ansich
 |===
 
 image::./images/GUI/cart.png[cart,100%,100%,pdfwidth=100%,title= "Warenkorb auf der Website",align=center]
+[options="header"]
+[cols="1a, 8a"]
 |===
 |Nr.  |Beschreibung
 |1    |Name des Möbelstücks
@@ -735,6 +741,8 @@ image::./images/GUI/cart.png[cart,100%,100%,pdfwidth=100%,title= "Warenkorb auf 
 |===
 
 image::./images/GUI/orders.png[orders,100%,100%,pdfwidth=100%,title= "Bestellungssuche auf der Website",align=center]
+[options="header"]
+[cols="1a, 8a"]
 |===
 |Nr.  |Beschreibung
 |1    |Feld zur Eingabe der Bestellnummer
@@ -742,6 +750,8 @@ image::./images/GUI/orders.png[orders,100%,100%,pdfwidth=100%,title= "Bestellung
 |===
 
 image::./images/GUI/orderItems.png[orderItems,100%,100%,pdfwidth=100%,title= "Bestellungen auf der Website",align=center]
+[options="header"]
+[cols="1a, 8a"]
 |===
 |Nr.  |Beschreibung
 |1    |Name des Möbelstücks
@@ -751,6 +761,8 @@ image::./images/GUI/orderItems.png[orderItems,100%,100%,pdfwidth=100%,title= "Be
 |===
 
 image::./images/GUI/lkw.png[lkw,100%,100%,pdfwidth=100%,title= "LKW-Vermietung auf der Website",align=center]
+[options="header"]
+[cols="1a, 8a"]
 |===
 |Nr.  |Beschreibung
 |1    |Gewichtsklasse des LKW 
@@ -759,6 +771,8 @@ image::./images/GUI/lkw.png[lkw,100%,100%,pdfwidth=100%,title= "LKW-Vermietung a
 |===
 
 image::./images/GUI/adminLogin.png[adminLogin,100%,100%,pdfwidth=100%,title= "Administrator-Login auf der Website",align=center]
+[options="header"]
+[cols="1a, 8a"]
 |===
 |Nr.  |Beschreibung
 |1    |Feld zur Eingabe des Nutzernamens 
@@ -767,6 +781,8 @@ image::./images/GUI/adminLogin.png[adminLogin,100%,100%,pdfwidth=100%,title= "Ad
 |===
 
 image::./images/GUI/admin.png[cart,100%,100%,pdfwidth=100%,title= "Administrator-Bereich auf der Website",align=center]
+[options="header"]
+[cols="1a, 8a"]
 |===
 |Nr.  |Beschreibung
 |1    |Schaltfläche zur Ansicht der Kundenbestellungen (customerOrders.html)
@@ -807,6 +823,7 @@ Zusätzlich werden eventuellen Konsistenz- und Formatierungsregeln aufgeführt.
 
 // See http://asciidoctor.org/docs/user-manual/#tables
 [options="header"]
+[cols="2a, 7a, 4a"]
 [[classes_enumerations]]
 |===
 |Klasse/Enumeration |Beschreibung |
@@ -894,7 +911,7 @@ Jeder Testfall soll mit einer ID versehen werde, um später zwischen den Dokumen
 |{Pre}     |Ein Nutzer hat Artikel im Warenkorb und hat <<AT120>> gemacht.
 |{Event}   |Ein Nutzer klickt auf den "Bestellung abschließen" Button, nachdem er seine persönlichen Daten eingetragen hat.
 |{Result}  |
-- Seine Bestellung wird aufgegeben und der Nutzer erhält weitere Informationen per E-Mail.
+- Seine Bestellung wird aufgegeben und dem Nutzer wird seine Bestellnummer angezeigt.
 |===
 
 [cols="1h, 4a"]
@@ -1137,7 +1154,7 @@ Jeder Testfall soll mit einer ID versehen werde, um später zwischen den Dokumen
 |{Pre}     |Der Nutzer hat einen LKW nach <<AT520>> ausgewählt
 |{Event}   |Der Nutzer gibt klickt auf den "Bestellen" Button, nachdem er seine persönlichen Daten und das Datum eingegeben hat
 |{Result}  |
-- Seine Bestellung wird aufgegeben und der Nutzer erhält weitere Informationen per E-Mail.
+- Seine Bestellung wird aufgegeben und dem Nutzer wird seine Bestellnummer angezeigt.
 |===
 
 == Glossar
@@ -1150,7 +1167,8 @@ Der Kunde des Projektes (Auftraggeber)?
 
 :domain_ref: Siehe <<classes_enumerations, domain overview>>
 
-[options="header", cols="1h, 4"]
+[options="header"]
+[cols="1a, 4a"]
 [[glossar]]
 |===
 |Begriff                |Beschreibung
