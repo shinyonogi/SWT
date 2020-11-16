@@ -57,7 +57,7 @@ Das System ist für folgende Browser aufrufbar und optimiert:
 - Google Chrome
 - Safari
 
-Die Hauptnutzer des Webshops sind Kunden, die bereits mit der üblichen Webseite-Navigation vertraut sind. Administratoren der Website haben erweiterten Zugriff auf Bestellungsrelevante Informationen, brauchen dafür jedoch kein technisches Sachverständnis. Alle für sie relevanten Daten sind in einer Datenbank abgespeichert und mithilfe einer grafischen Oberfläche direkt auf der Webseite aufrufbar.
+Die Hauptnutzer des Webshops sind Kunden, die bereits mit der üblichen Webseite-Navigation vertraut sind. Mitarbeiter der Moebel-Hunger-Kette haben erweiterten Zugriff auf Bestellungsrelevante Informationen, brauchen dafür jedoch kein technisches Sachverständnis. Alle für sie relevanten Daten sind in einer Datenbank abgespeichert und mithilfe einer grafischen Oberfläche direkt auf der Webseite aufrufbar.
 
 == Interessensgruppen (Stakeholders)
 
@@ -86,7 +86,7 @@ a|
 - einfaches Durchstöbern des Katalogs
 - schnelle Bestellungsverarbeitung
 
-|Administratoren
+|Mitarbeiter der Moebel-Hunger-Kette
 |2
 |Nutzer des Systems, die alles Bestellungsrelevante verwalten
 a|
