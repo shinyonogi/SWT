@@ -4,8 +4,7 @@
 :toc:
 :toc-title: Inhaltsverzeichnis
 
-[options="header"]
-[cols="1a, 1a, 6a, 7a"]
+[options="header", cols="1a, 1a, 6a, 7a", width="100%"]
 |===
 |Version | Bearbeitungsdatum | Autoren(en) | Vermerk
 |0.1     | 10.11.2020        | David Schroth, Marc Albrecht, Sebastian Jaster, Edgar Wolfert, Johannes Kaufmann, Shintaro Onogi | Kontextdiagramm, Anwendungsfälle, Funktionale Anforderungen, GUI Prototyp, Klassendiagramm, Akzeptanztestfälle
@@ -48,22 +47,21 @@ Am Ende des Projektes soll eine Software vorliegen, welche den gegebenen Anforde
 
 Dieser Abschnitt gibt einen kurzen Überblick über die geplante Verwendung des Produkts.
 
-Das System soll als Webshop von Möbel-hier verwendet werden, um Möbel und Möbel-Sets zu verkaufen und auszuliefern. Einige dieser Möbel-Sets können von den Kunden noch vor der Bestellung individuell angepasst werden. Außerdem beinhaltet das System einen LKW-Verleih, über den die Liefer-LKWs direkt and die Kunden vermietet werden können. 
+Das System soll als Webshop von Möbel-hier verwendet werden, um Möbel und Möbel-Sets zu verkaufen und auszuliefern. Einige dieser Möbel-Sets können von den Kunden noch vor der Bestellung individuell angepasst werden. Außerdem beinhaltet das System einen LKW-Verleih, über den die Liefer-LKWs direkt an die Kunden vermietet werden können.
 Die Kunden sollen mithilfe eines Browsers jederzeit Zugriff auf den Webshop haben.
 
 Das System ist für folgende Browser aufrufbar und optimiert:
 
-- Mozilla Firefox
-- Google Chrome
-- Safari
+- Mozilla Firefox, Version 82.0.1+
+- Chromium basierende Browser, Version 86.0.4240.1+
 
-Die Hauptnutzer des Webshops sind Kunden, die bereits mit der üblichen Webseite-Navigation vertraut sind. Mitarbeiter der Moebel-Hunger-Kette haben erweiterten Zugriff auf Bestellungsrelevante Informationen, brauchen dafür jedoch kein technisches Sachverständnis. Alle für sie relevanten Daten sind in einer Datenbank abgespeichert und mithilfe einer grafischen Oberfläche direkt auf der Webseite aufrufbar.
+Die Hauptnutzer des Webshops sind Kunden, die bereits mit der üblichen Webseite-Navigation vertraut sind. Mitarbeiter der Moebel-Hunger-Kette haben erweiterten Zugriff auf bestellungsrelevante Informationen, brauchen dafür jedoch kein technisches Sachverständnis. Alle für sie relevanten Daten sind in einer Datenbank abgespeichert und mithilfe einer grafischen Oberfläche direkt auf der Webseite aufrufbar.
 
 == Interessensgruppen (Stakeholders)
 
 Hier ist eine Auflistung aller realen und juristischen Personengruppen, die einen Einfluss auf die Anforderungen des Systems haben. Jeder Personengruppe ist neben ihren Hauptzielen auch eine Priorität von eins bis fünf zugeordnet, welche bei Interessenkonflikten für eine einfachere Entscheidung sorgt.
 
-[options="header", cols="2, ^1, 4, 4"]
+[options="header", cols="2a, 1a, 4a, 4a", width="100%"]
 |===
 |Name
 |Priorität (1..5)
@@ -73,23 +71,24 @@ Hier ist eine Auflistung aller realen und juristischen Personengruppen, die eine
 |Vorsitzende der Moebel-Hunger-Kette
 |5
 |Der Auftraggeber dieses Projekts.
-a|
+|
 - mehr Möbel verkaufen
 - mehr LKWs vermieten
 - Abläufe automatisieren
-- effiziente Organisation von Lager und Lieferung
-|Kunden
-|4
+- effiziente Organisation von Bestellungen
+
+|Nutzer
+|3
 |Hauptnutzer des Systems, sollen Gewinn einbringen
-a|
+|
 - gute Nutzererfahrung
 - einfaches Durchstöbern des Katalogs
 - schnelle Bestellungsverarbeitung
 
 |Mitarbeiter der Moebel-Hunger-Kette
-|2
+|4
 |Nutzer des Systems, die alles Bestellungsrelevante verwalten
-a|
+|
 - Bestellungen verwalten
 - Zugriff auf monatliche Statistiken
 - Verwaltung der Lieferanten
@@ -97,11 +96,10 @@ a|
 |Entwickler
 |3
 |Implementierer und Verwalter des Systems
-a|
+|
 - ein einfach erweiterbares System
 - wenig Verwaltungsaufwand
 - gute Debug-Möglichkeiten
-
 |===
 
 == Systemgrenze und Top-Level-Architektur
@@ -123,12 +121,11 @@ image::./images/top_level_architecture.png[Top-Level-Architektur,100%,100%,pdfwi
 Akteure sind die Benutzer des Software-Systems oder Nachbarsysteme, welche darauf zugreifen.
 
 // See http://asciidoctor.org/docs/user-manual/#tables
-[options="header"]
-[cols="1,4a"]
+[options="header", cols="1a, 4a", width="100%"]
 |===
 |**Name**      | **Beschreibung**
 |_Nutzer_      |Ein Nutzer repräsentiert jede Person die mit der Seite interagiert.
-|_Kunde_       |Ein Kunde repräsentiert jeder Person, die auf der Seite ihre Bestellnummer angegeben hat um mit ihrer Bestellung zu interagieren.
+|_Kunde_       |Ein Kunde repräsentiert jede Person, die auf der Seite ihre Bestellnummer angegeben hat um mit ihrer Bestellung zu interagieren.
 |_Mitarbeiter_ |Ein Mitarbeiter repräsentiert die Mitarbeiter der Möbel-Hunger Kette, welche im System die Rolle "Mitarbeiter" erhalten, nachdem Sie sich entsprechend eingeloggt haben.
 |===
 
@@ -143,7 +140,7 @@ image::./images/usecase.png[Anwendungsfalldiagramm,100%,100%,pdfwidth=100%,title
 
 Dieser Unterabschnitt beschreibt die Anwendungsfälle.
 
-[cols="1h, 3a"]
+[cols="1h, 3a", width="100%"]
 [[UC010]]
 |===
 |ID                         |**<<UC010>>**
@@ -161,7 +158,7 @@ Ein Mitarbeiter kann sich wieder aus dem System ausloggen.
 |Auslöser                   |
 _Einloggen:_
 
-Der Mitarbeiter möchte die Rolle Mitarbeiter im System erhalten um auf die restlichen Admin-Komponenten zuzugreifen.
+Der Mitarbeiter möchte die Rolle Mitarbeiter im System erhalten, um auf die restlichen Admin-Komponenten zuzugreifen.
 
 _Ausloggen:_
 
@@ -189,7 +186,7 @@ Der Mitarbeiter klickt auf den Logout Button in der Navigationsleiste und wird a
 |Funktionale Anforderung    |<<F0050>>, <<F0051>>, <<F0052>>
 |===
 
-[cols="1h, 3a"]
+[cols="1h, 3a", width="100%"]
 [[UC100]]
 |===
 |ID                         |**<<UC100>>**
@@ -203,7 +200,7 @@ Der Mitarbeiter klickt auf den Logout Button in der Navigationsleiste und wird a
 |Funktionale Anforderung    |<<F0010>>, <<F0011>>
 |===
 
-[cols="1h, 3a"]
+[cols="1h, 3a", width="100%"]
 [[UC110]]
 |===
 |ID                         |**<<UC110>>**
@@ -217,7 +214,7 @@ Der Mitarbeiter klickt auf den Logout Button in der Navigationsleiste und wird a
 |Funktionale Anforderung    |<<F0010>>, <<F0012>>
 |===
 
-[cols="1h, 3a"]
+[cols="1h, 3a", width="100%"]
 [[UC120]]
 |===
 |ID                         |**<<UC120>>**
@@ -236,7 +233,7 @@ Der Mitarbeiter klickt auf den Logout Button in der Navigationsleiste und wird a
 [[sequence_uc120]]
 image::./images/sequence_usecases/sequence_uc120.png[sequence_uc120,90%,100%,pdfwidth=100%,title= "Sequenzdiagramm für <<UC120>> Bestellung durchführen",align=center]
 
-[cols="1h, 3a"]
+[cols="1h, 3a", width="100%"]
 [[UC200]]
 |===
 |ID                         |**<<UC200>>**
@@ -250,7 +247,7 @@ image::./images/sequence_usecases/sequence_uc120.png[sequence_uc120,90%,100%,pdf
 |Funktionale Anforderung    |<<F0002>>
 |===
 
-[cols="1h, 3a"]
+[cols="1h, 3a", width="100%"]
 [[UC210]]
 |===
 |ID                         |**<<UC210>>**
@@ -264,7 +261,7 @@ image::./images/sequence_usecases/sequence_uc120.png[sequence_uc120,90%,100%,pdf
 |Funktionale Anforderung    |<<F0004>>
 |===
 
-[cols="1h, 3a"]
+[cols="1h, 3a", width="100%"]
 [[UC220]]
 |===
 |ID                         |**<<UC220>>**
@@ -280,7 +277,7 @@ image::./images/sequence_usecases/sequence_uc120.png[sequence_uc120,90%,100%,pdf
 [[sequence_uc220]]
 image::./images/sequence_usecases/sequence_uc220.png[sequence_uc220,60%,100%,pdfwidth=50%,title= "Sequenzdiagramm für <<UC220>> Artikel Ausführung ändern.",align=center]
 
-[cols="1h, 3a"]
+[cols="1h, 3a", width="100%"]
 [[UC230]]
 |===
 |ID                         |**<<UC230>>**
@@ -294,7 +291,7 @@ image::./images/sequence_usecases/sequence_uc220.png[sequence_uc220,60%,100%,pdf
 |Funktionale Anforderung    |<<F0010>>, <<F0012>>
 |===
 
-[cols="1h, 3a"]
+[cols="1h, 3a", width="100%"]
 [[UC300]]
 |===
 |ID                         |**<<UC300>>**
@@ -324,7 +321,7 @@ _Kunde:_
 |Funktionale Anforderung    |<<F0023>>
 |===
 
-[cols="1h, 3a"]
+[cols="1h, 3a", width="100%"]
 [[UC310]]
 |===
 |ID                         |**<<UC310>>**
@@ -340,7 +337,7 @@ _Kunde:_
 |Funktionale Anforderung    |<<F0022>>
 |===
 
-[cols="1h, 3a"]
+[cols="1h, 3a", width="100%"]
 [[UC320]]
 |===
 |ID                         |**<<UC320>>**
@@ -357,7 +354,7 @@ _Kunde:_
 |Funktionale Anforderung    |<<F0022>>
 |===
 
-[cols="1h, 3a"]
+[cols="1h, 3a", width="100%"]
 [[UC330]]
 |===
 |ID                         |**<<UC330>>**
@@ -377,7 +374,7 @@ _Kunde:_
 [[sequence_uc330]]
 image::./images/sequence_usecases/sequence_uc330.png[sequence_uc330,80%,100%,pdfwidth=100%,title= "Sequenzdiagramm für <<UC330>> Bestellstatus bearbeiten",align=center]
 
-[cols="1h, 3a"]
+[cols="1h, 3a", width="100%"]
 [[UC400]]
 |===
 |ID                         |**<<UC400>>**
@@ -391,7 +388,7 @@ image::./images/sequence_usecases/sequence_uc330.png[sequence_uc330,80%,100%,pdf
 |Funktionale Anforderung    |<<F0053>>, <<F0054>>
 |===
 
-[cols="1h, 3a"]
+[cols="1h, 3a", width="100%"]
 [[UC410]]
 |===
 |ID                         |**<<UC410>>**
@@ -405,7 +402,7 @@ image::./images/sequence_usecases/sequence_uc330.png[sequence_uc330,80%,100%,pdf
 |Funktionale Anforderung    |<<F0057>>
 |===
 
-[cols="1h, 3a"]
+[cols="1h, 3a", width="100%"]
 [[UC420]]
 |===
 |ID                         |**<<UC420>>**
@@ -421,7 +418,7 @@ image::./images/sequence_usecases/sequence_uc330.png[sequence_uc330,80%,100%,pdf
 [[sequence_uc420]]
 image::./images/sequence_usecases/sequence_uc420.png[sequence_uc420,90%,100%,pdfwidth=100%,title= "Sequenzdiagramm für <<UC420>> Monatsstatistik einsehen",align=center]
 
-[cols="1h, 3a"]
+[cols="1h, 3a", width="100%"]
 [[UC430]]
 |===
 |ID                         |**<<UC430>>**
@@ -447,7 +444,7 @@ _Hinzufügen:_
 |Funktionale Anforderung    |<<F0058>>, <<F0059>>
 |===
 
-[cols="1h, 3a"]
+[cols="1h, 3a", width="100%"]
 [[UC500]]
 |===
 |ID                         |**<<UC500>>**
@@ -463,7 +460,7 @@ _Hinzufügen:_
 |Funktionale Anforderung    |<<F0023>>
 |===
 
-[cols="1h, 3a"]
+[cols="1h, 3a", width="100%"]
 [[UC510]]
 |===
 |ID                         |**<<UC510>>**
@@ -477,7 +474,7 @@ _Hinzufügen:_
 |Funktionale Anforderung    |<<F0043>>
 |===
 
-[cols="1h, 3a"]
+[cols="1h, 3a", width="100%"]
 [[UC520]]
 |===
 |ID                         |**<<UC520>>**
@@ -494,14 +491,13 @@ _Hinzufügen:_
 |Funktionale Anforderung    |<<F0042>>
 |===
 [[sequence_uc520]]
-image::./images/sequence_usecases/sequence_uc520.png[sequence_uc520,80%,100%,pdfwidth=100%,title= "Sequenzdiagramm für <<UC520>> LKW buchen",align=center]
+image::./images/sequence_usecases/sequence_uc520.png[sequence_uc520,100%,100%,pdfwidth=100%,title= "Sequenzdiagramm für <<UC520>> LKW buchen",align=center]
 
 == Funktionale Anforderungen
 
 === Muss-Kriterien
 
-[options="header"]
-[cols="2a, 1a, 3a, 12a"]
+[options="header", cols="2h, 1a, 3a, 12a", width="100%"]
 |===
 |ID
 |Version
@@ -604,7 +600,7 @@ Das System muss Mitarbeitern die Möglichkeit bieten, den Status einer Bestellun
 |v1.0
 |LKW Park speichern
 |
-Das System muss eine Liste von LKWS dauerhaft in einer Datenbank speichern.
+Das System muss eine Liste von LKWs dauerhaft in einer Datenbank speichern.
 
 
 |[[F0041]]<<F0041>>
@@ -701,8 +697,7 @@ Das System muss Mitarbeitern, welche sich im Admin Interface befinden, die Mögl
 
 Anforderungen, die das Programm leisten können soll, aber für den korrekten Betrieb entbehrlich sind.
 
-[options="header"]
-[cols="2a, 1a, 3a, 12a"]
+[options="header", cols="2h, 1a, 3a, 12a", width="100%"]
 |===
 |ID
 |Version
@@ -730,7 +725,7 @@ Das System sollte Mitarbeitern, welche sich im Admin Interface befinden, die Mö
 
 1 = Nicht wichtig | 5 = Sehr wichtig
 
-[options="header", cols="3h, ^1, ^1, ^1, ^1, ^1"]
+[options="header", cols="3h, 1, 1, 1, 1, 1"]
 |===
 |Qualitätsanspruch        | 1 | 2 | 3 | 4 | 5
 |Zuverlässigkeit          |   |   |   |   | x
@@ -742,7 +737,7 @@ Das System sollte Mitarbeitern, welche sich im Admin Interface befinden, die Mö
 
 === Konkrete Nicht-Funktionale Anforderungen
 
-[options="header", cols="2h, 1, 3, 12"]
+[options="header", cols="2h, 1a, 3a, 12a", width="100%"]
 |===
 |ID
 |Version
@@ -752,25 +747,25 @@ Das System sollte Mitarbeitern, welche sich im Admin Interface befinden, die Mö
 |[[NF0001]]<<NF0001>>
 |v1.0
 |Zuverlässigkeit
-a|
+|
 Die Erreichbarkeit des Systems muss größer als 99 % pro Jahr sein.
 
 |[[NF0002]]<<NF0002>>
 |v1.0
 |Sicherheit
-a|
-Das System muss Passwörter und Kundendaten verschlüsselt speichern.
+|
+Das System muss Kundendaten verschlüsselt speichern.
 
 |[[NF0003]]<<NF0003>>
 |v1.0
 |Benutzerfreundlichkeit
-a|
+|
 Ein Nutzer, der nach einem bestimmten Artikel aus dem Artikel-Katalog sucht, sollte weniger als 5 Minuten brauchen, um diesen zu finden.
 
 |[[NF0004]]<<NF0004>>
 |v1.0
 |Wartbarkeit
-a|
+|
 Die Integration von Erweiterungen muss kleiner gleich 7 Tage sein.
 
 |===
@@ -780,8 +775,7 @@ Die Integration von Erweiterungen muss kleiner gleich 7 Tage sein.
 In diesem Kapitel soll ein Entwurf der Navigationsmöglichkeiten und Dialoge des Systems erstellt werden.
 
 image::./images/GUI/catalog.png[catalog,100%,100%,pdfwidth=100%,title= "Katalog auf der Website",align=center]
-[options="header"]
-[cols="1a, 8a"]
+[options="header", cols="1h, 12a", width="100%"]
 |===
 |Nr.  |Beschreibung
 |1    |Weiterleitung zum Katalog (catalog.html)
@@ -793,8 +787,7 @@ image::./images/GUI/catalog.png[catalog,100%,100%,pdfwidth=100%,title= "Katalog 
 |===
 
 image::./images/GUI/itemView.png[itemView,100%,100%,pdfwidth=100%,title= "Ansicht eines Möbelstücks auf der Website",align=center]
-[options="header"]
-[cols="1a, 8a"]
+[options="header", cols="1h, 12a", width="100%"]
 |===
 |Nr.  |Beschreibung
 |1    |Name, Preis und Beschreibung eines Möbelstücks.
@@ -803,19 +796,18 @@ image::./images/GUI/itemView.png[itemView,100%,100%,pdfwidth=100%,title= "Ansich
 |===
 
 image::./images/GUI/cart.png[cart,100%,100%,pdfwidth=100%,title= "Warenkorb auf der Website",align=center]
-[options="header"]
-[cols="1a, 8a"]
+[options="header", cols="1h, 12a", width="100%"]
 |===
 |Nr.  |Beschreibung
 |1    |Name des Möbelstücks
 |2    |Preis des Möbelstücks
 |3    |Änderung der Anzahl des Möbelstücks im Warenkorb (min. 1)
 |4    |Schaltfläche zur Entfernung des Möbelstücks aus dem Warenkorb
+|5    |Schaltfläche zum Bestellen der Artikel
 |===
 
 image::./images/GUI/orders.png[orders,100%,100%,pdfwidth=100%,title= "Bestellungssuche auf der Website",align=center]
-[options="header"]
-[cols="1a, 8a"]
+[options="header", cols="1h, 12a", width="100%"]
 |===
 |Nr.  |Beschreibung
 |1    |Feld zur Eingabe der Bestellnummer
@@ -823,8 +815,7 @@ image::./images/GUI/orders.png[orders,100%,100%,pdfwidth=100%,title= "Bestellung
 |===
 
 image::./images/GUI/orderItems.png[orderItems,100%,100%,pdfwidth=100%,title= "Bestellungen auf der Website",align=center]
-[options="header"]
-[cols="1a, 8a"]
+[options="header", cols="1h, 12a", width="100%"]
 |===
 |Nr.  |Beschreibung
 |1    |Name des Möbelstücks
@@ -834,8 +825,7 @@ image::./images/GUI/orderItems.png[orderItems,100%,100%,pdfwidth=100%,title= "Be
 |===
 
 image::./images/GUI/lkw.png[lkw,100%,100%,pdfwidth=100%,title= "LKW-Vermietung auf der Website",align=center]
-[options="header"]
-[cols="1a, 8a"]
+[options="header", cols="1h, 12a", width="100%"]
 |===
 |Nr.  |Beschreibung
 |1    |Gewichtsklasse des LKW 
@@ -844,8 +834,7 @@ image::./images/GUI/lkw.png[lkw,100%,100%,pdfwidth=100%,title= "LKW-Vermietung a
 |===
 
 image::./images/GUI/adminLogin.png[adminLogin,100%,100%,pdfwidth=100%,title= "Administrator-Login auf der Website",align=center]
-[options="header"]
-[cols="1a, 8a"]
+[options="header", cols="1h, 12a", width="100%"]
 |===
 |Nr.  |Beschreibung
 |1    |Feld zur Eingabe des Nutzernamens 
@@ -854,8 +843,7 @@ image::./images/GUI/adminLogin.png[adminLogin,100%,100%,pdfwidth=100%,title= "Ad
 |===
 
 image::./images/GUI/admin.png[cart,100%,100%,pdfwidth=100%,title= "Administrator-Bereich auf der Website",align=center]
-[options="header"]
-[cols="1a, 8a"]
+[options="header", cols="1h, 12a", width="100%"]
 |===
 |Nr.  |Beschreibung
 |1    |Schaltfläche zur Ansicht der Kundenbestellungen (customerOrders.html)
@@ -875,12 +863,11 @@ image::./models/analysis/analyseklassendiagramm.png[Analyseklassendiagramm,100%,
 Dieser Abschnitt beinhaltet die Beschreibung von Klassen/Enumerationen.
 
 // See http://asciidoctor.org/docs/user-manual/#tables
-[options="header"]
-[cols="2a, 7a"]
+[options="header", cols="2h, 6a", width="100%"]
 [[classes_enumerations]]
 |===
-|Klasse/Enumeration |Beschreibung 
-|Möbelgeschäft | Repräsentiert das Geschäft selbst
+|Klasse/Enumeration               |Beschreibung
+|Möbelgeschäft                    |Repräsentiert das Geschäft selbst
 |WarenkorbEintrag                 |Erfasst einen zu kaufenden Artikel im Warenkorb und deren gewünschte Anzahl            
 |Warenkorb                        |Beinhaltet alle gewünschten WarenkorbEinträge des Kunden
 |Item                             |Modelliert alle Möbelstücke in unserem Inventar
@@ -898,7 +885,7 @@ Dieser Abschnitt beinhaltet die Beschreibung von Klassen/Enumerationen.
 |ItemBestellung                   |Ist die abstrakte Modellierung für alle physischen Verkaufsartikel
 |LKWMietung                       |Modelliert alle benötigten Informationen für die LKWMietung
 |Abholung                         |Ist die konkrete Implementierung der ItemBestellung für Items, die aus dem Lager abgeholt werden
-|Liefertung                       |Ist die konkrete Implementierung der ItemBestellung für Items, die zum Kunden geliefert werden
+|Lieferung                        |Ist die konkrete Implementierung der ItemBestellung für Items, die zum Kunden geliefert werden
 |LKWManager                       |Verwaltet alle LKWs und regelt deren Buchung und Stornierung
 |LKW                              |Modelliert einen physischen LKW, der entweder gemietet werden kann oder zur Lieferung genutzt wird
 |Kalender                         |Erfasst alle Buchungen für alle LKWs und deren Zeitfenster
@@ -916,7 +903,7 @@ Mithilfe von Akzeptanztests wird geprüft, ob die Software die funktionalen Erwa
 :Event: Auslöser
 :Result: Erwartetes Ergebnis
 
-[cols="1h, 4a"]
+[cols="1h, 4a", width="100%"]
 [[AT010]]
 |===
 |ID        |**<<AT010>>**
@@ -929,7 +916,7 @@ Mithilfe von Akzeptanztests wird geprüft, ob die Software die funktionalen Erwa
 - Der Nutzer hat nun die Möglichkeit auf weitere Funktionalitäten von der Rolle "Mitarbeiter" auf der Seite zuzugreifen.
 |===
 
-[cols="1h, 4a"]
+[cols="1h, 4a", width="100%"]
 [[AT011]]
 |===
 |ID        |**<<AT011>>**
@@ -941,7 +928,7 @@ Mithilfe von Akzeptanztests wird geprüft, ob die Software die funktionalen Erwa
 - Der Nutzer verliert den Zugriff auf Funktionalitäten der Rolle "Mitarbeiter".
 |===
 
-[cols="1h, 4a"]
+[cols="1h, 4a", width="100%"]
 [[AT100]]
 |===
 |ID        |**<<AT100>>**
@@ -953,7 +940,7 @@ Mithilfe von Akzeptanztests wird geprüft, ob die Software die funktionalen Erwa
 - Im Warenkorb werden alle Artikel angezeigt, die der Nutzer vorher hinzugefügt hat.
 |===
 
-[cols="1h, 4a"]
+[cols="1h, 4a", width="100%"]
 [[AT110]]
 |===
 |ID        |**<<AT110>>**
@@ -965,7 +952,7 @@ Mithilfe von Akzeptanztests wird geprüft, ob die Software die funktionalen Erwa
 - Die Warenkorb Seite wird aktualisiert.
 |===
 
-[cols="1h, 4a"]
+[cols="1h, 4a", width="100%"]
 [[AT120]]
 |===
 |ID        |**<<AT120>>**
@@ -976,7 +963,7 @@ Mithilfe von Akzeptanztests wird geprüft, ob die Software die funktionalen Erwa
 - Der Nutzer wird auf eine Seite weitergeleitet, wo er seine persönlichen Daten eingeben und die Lieferoption auswählen muss.
 |===
 
-[cols="1h, 4a"]
+[cols="1h, 4a", width="100%"]
 [[AT121]]
 |===
 |ID        |**<<AT121>>**
@@ -987,7 +974,7 @@ Mithilfe von Akzeptanztests wird geprüft, ob die Software die funktionalen Erwa
 - Seine Bestellung wird aufgegeben und dem Nutzer wird seine Bestellnummer angezeigt.
 |===
 
-[cols="1h, 4a"]
+[cols="1h, 4a", width="100%"]
 [[AT200]]
 |===
 |ID        |**<<AT200>>**
@@ -999,7 +986,7 @@ Mithilfe von Akzeptanztests wird geprüft, ob die Software die funktionalen Erwa
 - Dem Nutzer werden alle verfügbaren Artikel angezeigt.
 |===
 
-[cols="1h, 4a"]
+[cols="1h, 4a", width="100%"]
 [[AT210]]
 |===
 |ID        |**<<AT210>>**
@@ -1010,7 +997,7 @@ Mithilfe von Akzeptanztests wird geprüft, ob die Software die funktionalen Erwa
 - Der Nutzer wird auf die Detailseite des Artikels weitergeleitet.
 |===
 
-[cols="1h, 4a"]
+[cols="1h, 4a", width="100%"]
 [[AT220]]
 |===
 |ID        |**<<AT220>>**
@@ -1021,7 +1008,7 @@ Mithilfe von Akzeptanztests wird geprüft, ob die Software die funktionalen Erwa
 - Der Nutzer wird auf die Detailseite des ausgewählten Artikels weitergeleitet.
 |===
 
-[cols="1h, 4a"]
+[cols="1h, 4a", width="100%"]
 [[AT230]]
 |===
 |ID        |**<<AT230>>**
@@ -1032,7 +1019,7 @@ Mithilfe von Akzeptanztests wird geprüft, ob die Software die funktionalen Erwa
 - Der Artikel wird zu dem persönlichen Warenkorb des Nutzers hinzugefügt.
 |===
 
-[cols="1h, 4a"]
+[cols="1h, 4a", width="100%"]
 [[AT300]]
 |===
 |ID        |**<<AT300>>**
@@ -1043,7 +1030,7 @@ Mithilfe von Akzeptanztests wird geprüft, ob die Software die funktionalen Erwa
 - Der Kunde wird auf deine Seite weitergeleitet, wo er seine Bestellnummer eingeben muss.
 |===
 
-[cols="1h, 4a"]
+[cols="1h, 4a", width="100%"]
 [[AT301]]
 |===
 |ID        |**<<AT301>>**
@@ -1054,7 +1041,7 @@ Mithilfe von Akzeptanztests wird geprüft, ob die Software die funktionalen Erwa
 - Der Kunde wird auf deine Seite weitergeleitet, wo seine Bestellung aufgelistet ist.
 |===
 
-[cols="1h, 4a"]
+[cols="1h, 4a", width="100%"]
 [[AT302]]
 |===
 |ID        |**<<AT302>>**
@@ -1065,7 +1052,7 @@ Mithilfe von Akzeptanztests wird geprüft, ob die Software die funktionalen Erwa
 - Der Mitarbeiter wird auf deine Seite weitergeleitet, wo die Bestellung aufgelistet ist.
 |===
 
-[cols="1h, 4a"]
+[cols="1h, 4a", width="100%"]
 [[AT310]]
 |===
 |ID        |**<<AT310>>**
@@ -1076,7 +1063,7 @@ Mithilfe von Akzeptanztests wird geprüft, ob die Software die funktionalen Erwa
 - Die gesamte Bestellung wird storniert.
 |===
 
-[cols="1h, 4a"]
+[cols="1h, 4a", width="100%"]
 [[AT320]]
 |===
 |ID        |**<<AT320>>**
@@ -1087,7 +1074,7 @@ Mithilfe von Akzeptanztests wird geprüft, ob die Software die funktionalen Erwa
 - Der Artikel wird storniert.
 |===
 
-[cols="1h, 4a"]
+[cols="1h, 4a", width="100%"]
 [[AT330]]
 |===
 |ID        |**<<AT330>>**
@@ -1098,7 +1085,7 @@ Mithilfe von Akzeptanztests wird geprüft, ob die Software die funktionalen Erwa
 - Der Status der gesamten Bestellung ändert sich zum neuen Status.
 |===
 
-[cols="1h, 4a"]
+[cols="1h, 4a", width="100%"]
 [[AT400]]
 |===
 |ID        |**<<AT400>>**
@@ -1109,7 +1096,7 @@ Mithilfe von Akzeptanztests wird geprüft, ob die Software die funktionalen Erwa
 - Der Mitarbeiter wird auf die Admin Seite weitergeleitet.
 |===
 
-[cols="1h, 4a"]
+[cols="1h, 4a", width="100%"]
 [[AT410]]
 |===
 |ID        |**<<AT410>>**
@@ -1120,7 +1107,7 @@ Mithilfe von Akzeptanztests wird geprüft, ob die Software die funktionalen Erwa
 - Der Mitarbeiter wird auf die Kundenbestellungen Seite weitergeleitet.
 |===
 
-[cols="1h, 4a"]
+[cols="1h, 4a", width="100%"]
 [[AT420]]
 |===
 |ID        |**<<AT420>>**
@@ -1131,7 +1118,7 @@ Mithilfe von Akzeptanztests wird geprüft, ob die Software die funktionalen Erwa
 - Der Mitarbeiter wird auf die Monatsstatistik Seite weitergeleitet.
 |===
 
-[cols="1h, 4a"]
+[cols="1h, 4a", width="100%"]
 [[AT430]]
 |===
 |ID        |**<<AT430>>**
@@ -1142,7 +1129,7 @@ Mithilfe von Akzeptanztests wird geprüft, ob die Software die funktionalen Erwa
 - Der Mitarbeiter wird auf die Lieferanten Seite weitergeleitet.
 |===
 
-[cols="1h, 4a"]
+[cols="1h, 4a", width="100%"]
 [[AT431]]
 |===
 |ID        |**<<AT431>>**
@@ -1153,7 +1140,7 @@ Mithilfe von Akzeptanztests wird geprüft, ob die Software die funktionalen Erwa
 - Der Lieferant mit allen Artikeln und Verkäufen wird aus dem System gelöscht.
 |===
 
-[cols="1h, 4a"]
+[cols="1h, 4a", width="100%"]
 [[AT432]]
 |===
 |ID        |**<<AT432>>**
@@ -1164,7 +1151,7 @@ Mithilfe von Akzeptanztests wird geprüft, ob die Software die funktionalen Erwa
 - Der Mitarbeiter wird auf eine Seite weitergeleitet, wo er die Daten des neuen Lieferanten eingeben muss.
 |===
 
-[cols="1h, 4a"]
+[cols="1h, 4a", width="100%"]
 [[AT433]]
 |===
 |ID        |**<<AT433>>**
@@ -1175,7 +1162,7 @@ Mithilfe von Akzeptanztests wird geprüft, ob die Software die funktionalen Erwa
 - Der Mitarbeiter wird auf die Lieferanten Seite weitergeleitet.
 |===
 
-[cols="1h, 4a"]
+[cols="1h, 4a", width="100%"]
 [[AT500]]
 |===
 |ID        |**<<AT500>>**
@@ -1186,7 +1173,7 @@ Mithilfe von Akzeptanztests wird geprüft, ob die Software die funktionalen Erwa
 - Der Kunde wird auf deine Seite weitergeleitet, wo er seine LKW-Bestellnummer eingeben muss.
 |===
 
-[cols="1h, 4a"]
+[cols="1h, 4a", width="100%"]
 [[AT501]]
 |===
 |ID        |**<<AT501>>**
@@ -1197,7 +1184,7 @@ Mithilfe von Akzeptanztests wird geprüft, ob die Software die funktionalen Erwa
 - Der Kunde wird auf deine Seite weitergeleitet, wo seine LKW-Bestellung aufgelistet ist.
 |===
 
-[cols="1h, 4a"]
+[cols="1h, 4a", width="100%"]
 [[AT510]]
 |===
 |ID        |**<<AT510>>**
@@ -1208,7 +1195,7 @@ Mithilfe von Akzeptanztests wird geprüft, ob die Software die funktionalen Erwa
 - Der LKW wird storniert und die Bestellung aus dem System gelöscht.
 |===
 
-[cols="1h, 4a"]
+[cols="1h, 4a", width="100%"]
 [[AT520]]
 |===
 |ID        |**<<AT520>>**
@@ -1219,7 +1206,7 @@ Mithilfe von Akzeptanztests wird geprüft, ob die Software die funktionalen Erwa
 - Der Nutzer wird auf eine Seite weitergeleitet, wo er einen LKW-Typen auswählen kann
 |===
 
-[cols="1h, 4a"]
+[cols="1h, 4a", width="100%"]
 [[AT521]]
 |===
 |ID        |**<<AT521>>**
@@ -1237,8 +1224,7 @@ Sämtliche Begriffe, die innerhalb des Projektes verwendet werden und deren geme
 :domain_ref: Siehe <<classes_enumerations, Domänenübersicht>>
 :actors_ref: Siehe <<actors, Akteure>>
 
-[options="header"]
-[cols="1a, 4a"]
+[options="header", cols="1a, 4a", width="100%"]
 [[glossar]]
 |===
 |Begriff                |Beschreibung
