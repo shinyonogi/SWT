@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Großansicht</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+
+	<div class="jumbotron">
+	  <h1>Möbel-Hier</h1>
+	  <p>Die besten Möbel.</p>
+	</div>
+			
+	<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+		<ul class="navbar-nav">
+			<li class="nav-item">
+				<a class="nav-link" href="catalog.html">Katalog</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="cart.html">Warenkorb</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="orders.html">Bestellungen</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="lkw.html">LKW mieten</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="adminLogin.html">Admin</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="#">Logout</a>
+			</li>
+		</ul>
+	</nav>
+	
+	<div class="card mt-4 mb-5">
+		<img class="card-img-top img-fluid" src="../pics/sofa.png" alt="">
+		<div class="card-body">
+			<h3 class="card-title">Sofa</h3>
+			<h4>999,99€</h4>
+			<p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+								<br>Sapiente dicta fugit fugiat hic aliquam itaque facere, soluta.
+								<br>Totam id dolores, sint aperiam sequi pariatur praesentium animi perspiciatis molestias iure, ducimus!</p>
+			<form class="form-inline">
+				<div class="dropdown mr-2">
+					<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown">
+						Ausführung
+					</button>
+					<div class="dropdown-menu">
+						<a class="dropdown-item" href="#">grau</a>
+						<a class="dropdown-item" href="#">blau</a>
+						<a class="dropdown-item" href="#">rot</a>
+					</div>
+				</div>
+				<input type="number" class="form-control mr-2" min="1" max="99" value="1" style="width: 60px">
+				<a href="catalog.html" class="btn btn-info" role="button">zum Warenkorb hinzufügen</a>
+			</form>
+		</div>
+	</div>
+</div>
+
+</body>
+</html> 
