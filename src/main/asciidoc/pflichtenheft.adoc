@@ -773,7 +773,7 @@ Die Integration von Erweiterungen muss kleiner gleich 7 Tage sein.
 
 In diesem Kapitel soll ein Entwurf der Navigationsmöglichkeiten und Dialoge des Systems erstellt werden.
 
-image::./images/GUI/catalog.png[catalog,100%,100%,pdfwidth=100%,title= "Katalog auf der Website",align=center]
+image::./images/GUI/catalog.png[catalog,100%,100%,pdfwidth=100%,title= "Katalog auf der Webseite",align=center]
 [options="header", cols="1h, 12a", width="100%"]
 |===
 |Nr.  |Beschreibung
@@ -782,72 +782,116 @@ image::./images/GUI/catalog.png[catalog,100%,100%,pdfwidth=100%,title= "Katalog 
 |3    |Weiterleitung zu den Bestellungen (orders.html)
 |4    |Weiterleitung zur LKW-Vermietung (lkw.html)
 |5    |Weiterleitung zum Administrator-Bereich (adminLogin.html)
-|6    |Name, Preis und Beschreibung eines Möbelstücks und Weiterleitung zur Großansicht (itemView.html)
+|6    |Logout Button (nur für eingeloggte Administratoren sichtbar)
+|7    |Name, Preis und Beschreibung eines Möbelstücks und Weiterleitung zur Großansicht (itemView.html)
 |===
 
-image::./images/GUI/itemView.png[itemView,100%,100%,pdfwidth=100%,title= "Ansicht eines Möbelstücks auf der Website",align=center]
+image::./images/GUI/itemView.png[itemView,100%,100%,pdfwidth=100%,title= "Ansicht eines Möbelstücks auf der Webseite",align=center]
 [options="header", cols="1h, 12a", width="100%"]
 |===
 |Nr.  |Beschreibung
-|1    |Name, Preis und Beschreibung eines Möbelstücks.
-|2    |Auswahl einer Variante des Möbelstücks (z.B. Farbe) über ein Dropdown-Menü
-|3    |Schaltfläche, über die das Möbelstück dem Warenkorb hinzugefügt wird
+|1    |Beschreibung des Möbelstücks
+|2    |Auswahl einer Ausführung des Möbelstücks (z.B. in anderer Farbe) über ein Dropdown-Menü
+|3    |Auswahl der Anzahl, die dem Warenkorb hinzugefügt werden soll
+|4    |Schaltfläche, über die das Möbelstück dem Warenkorb hinzugefügt wird
 |===
 
-image::./images/GUI/cart.png[cart,100%,100%,pdfwidth=100%,title= "Warenkorb auf der Website",align=center]
+image::./images/GUI/cart.png[cart,100%,100%,pdfwidth=100%,title= "Warenkorb auf der Webseite",align=center]
 [options="header", cols="1h, 12a", width="100%"]
 |===
 |Nr.  |Beschreibung
-|1    |Name des Möbelstücks
-|2    |Preis des Möbelstücks
-|3    |Änderung der Anzahl des Möbelstücks im Warenkorb (min. 1)
-|4    |Schaltfläche zur Entfernung des Möbelstücks aus dem Warenkorb
-|5    |Schaltfläche zum Bestellen der Artikel
+|1    |Änderung der Anzahl des Artikels im Warenkorb (min. 1)
+|2    |Schaltfläche zur Entfernung des Artikels aus dem Warenkorb
+|3    |Schaltfläche zur zur Weiterleitung zum Bestellformular (orderCheckout.html)
 |===
 
-image::./images/GUI/orders.png[orders,100%,100%,pdfwidth=100%,title= "Bestellungssuche auf der Website",align=center]
+image::./images/GUI/orderCheckout.png[orders,100%,100%,pdfwidth=100%,title= "Bestellformular auf der Webseite",align=center]
 [options="header", cols="1h, 12a", width="100%"]
 |===
 |Nr.  |Beschreibung
-|1    |Feld zur Eingabe der Bestellnummer
+|1    |Textfeld zur Eingabe des Namens
+|2    |Textfeld zur Eingabe der E-Mail
+|3    |Textfeld zur Eingabe der Adresse
+|4    |Auswahl zwischen Lieferung und Abholung der Möbel
+|5    |Schaltfläche zum Abschicken der Bestellung
+|===
+
+image::./images/GUI/orders.png[orders,100%,100%,pdfwidth=100%,title= "Bestellungssuche auf der Webseite",align=center]
+[options="header", cols="1h, 12a", width="100%"]
+|===
+|Nr.  |Beschreibung
+|1    |Textfeld zur Eingabe der Bestellnummer
 |2    |Weiterleitung zur Ansicht der Bestellung (orderItems.html)
 |===
 
-image::./images/GUI/orderItems.png[orderItems,100%,100%,pdfwidth=100%,title= "Bestellungen auf der Website",align=center]
+image::./images/GUI/orderItems.png[orderItems,100%,100%,pdfwidth=100%,title= "Bestellungen auf der Webseite",align=center]
 [options="header", cols="1h, 12a", width="100%"]
 |===
 |Nr.  |Beschreibung
-|1    |Name des Möbelstücks
-|2    |Preis des Möbelstücks
-|3    |Lieferdatum des Möbelstücks
-|4    |Schaltfläche zur Stornierung der Bestellung
+|1    |Änderung des Bestellstatus in einem Dropdown-Menü (nur für eingeloggte Administratoren sichtbar)
+|2    |Schaltfläche zur Stornierung des Artikels
+|3    |Schaltfläche zur Stornierung der gesamten Bestellung
 |===
 
-image::./images/GUI/lkw.png[lkw,100%,100%,pdfwidth=100%,title= "LKW-Vermietung auf der Website",align=center]
+image::./images/GUI/lkw.png[lkw,100%,100%,pdfwidth=100%,title= "LKW-Vermietung auf der Webseite",align=center]
 [options="header", cols="1h, 12a", width="100%"]
 |===
 |Nr.  |Beschreibung
-|1    |Gewichtsklasse des LKW 
+|1    |Gewichtsklasse des LKW
 |2    |Mietpreis für einen Tag
-|3    |Schaltfläche zum Mieten des LKW
+|3    |Weiterleitung zum Ausfüllen des Mietformulars (lkwCheckout.html)
 |===
 
-image::./images/GUI/adminLogin.png[adminLogin,100%,100%,pdfwidth=100%,title= "Administrator-Login auf der Website",align=center]
+image::./images/GUI/lkwCheckout.png[lkw,100%,100%,pdfwidth=100%,title= "Mietformular für LKWs auf der Webseite",align=center]
+[options="header", cols="1h, 12a", width="100%"]
+|===
+|Nr.  |Beschreibung
+|1    |Textfeld zur Eingabe des Namens
+|2    |Textfeld zur Eingabe der E-Mail
+|3    |Textfeld zur Eingabe des Datums, an dem der LKW gemietet werden soll
+|4    |Schaltfläche zum Mieten des LKW 
+|===
+
+image::./images/GUI/adminLogin.png[adminLogin,100%,100%,pdfwidth=100%,title= "Administrator-Login auf der Webseite",align=center]
 [options="header", cols="1h, 12a", width="100%"]
 |===
 |Nr.  |Beschreibung
 |1    |Feld zur Eingabe des Nutzernamens 
 |2    |Feld zur Eingabe des Passworts
-|3    |Schaltfläche zum Einloggen
+|3    |Schaltfläche zum Einloggen (hierdurch wird die Logout-Schaltfläche sichtbar)
 |===
 
-image::./images/GUI/admin.png[cart,100%,100%,pdfwidth=100%,title= "Administrator-Bereich auf der Website",align=center]
+image::./images/GUI/admin.png[cart,100%,100%,pdfwidth=100%,title= "Administrator-Bereich auf der Webseite",align=center]
 [options="header", cols="1h, 12a", width="100%"]
 |===
 |Nr.  |Beschreibung
 |1    |Schaltfläche zur Ansicht der Kundenbestellungen (customerOrders.html)
 |2    |Schaltfläche zur Ansicht der Monatsstatistik (monthlyStatistic.html)
 |3    |Schaltfläche zur Ansicht der Lieferanten (suppliers.html)
+|===
+
+image::./images/GUI/customerOrders.png[cart,100%,100%,pdfwidth=100%,title= "Administrator-Ansicht von Kundenbestellungen auf der Webseite",align=center]
+[options="header", cols="1h, 12a", width="100%"]
+|===
+|Nr.  |Beschreibung
+|1    |Weiterleitung zur Ansicht der Bestellung (orderItems.html)
+|===
+
+image::./images/GUI/monthlyStatistic.png[cart,100%,100%,pdfwidth=100%,title= "Administrator-Ansicht der Monatsstatistik auf der Webseite",align=center]
+[options="header", cols="1h, 12a", width="100%"]
+|===
+|Nr.  |Beschreibung
+|1    |Der Betrag, für den diesen Monat Möbel gekauft wurden
+|2    |Differenz des Betrags zum vorherigen Monat
+|===
+
+image::./images/GUI/suppliers.png[cart,100%,100%,pdfwidth=100%,title= "Administrator-Ansicht zur Verwaltung der Lieferanten auf der Webseite",align=center]
+[options="header", cols="1h, 12a", width="100%"]
+|===
+|Nr.  |Beschreibung
+|1    |Schaltfläche zum Entfernen des Lieferanten
+|2    |Textfeld für den Namen des neuen Lieferanten
+|3    |Schaltfläche zum Hinzufügen des Lieferanten
 |===
 
 == Datenmodell
