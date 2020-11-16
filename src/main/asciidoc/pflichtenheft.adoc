@@ -48,9 +48,11 @@ Am Ende des Projektes soll eine Software vorliegen, welche den gegebenen Anforde
 
 Dieser Abschnitt gibt einen kurzen Überblick über die geplante Verwendung des Produkts.
 
-Das System soll als Webshop von Möbel-hier verwendet werden, um Möbel und Möbel-Sets zu verkaufen und auszuliefern. Einige dieser Möbel-Sets können von den Kunden noch vor der Bestellung individuell angepasst werden. Außerdem beinhaltet das System einen LKW-Verleih, über den die Liefer-LKWs direkt and die Kunden vermietet werden können. Die Kunden sollen mithilfe eines Browsers jederzeit Zugriff auf den Webshop haben.
+Das System soll als Webshop von Möbel-hier verwendet werden, um Möbel und Möbel-Sets zu verkaufen und auszuliefern. Einige dieser Möbel-Sets können von den Kunden noch vor der Bestellung individuell angepasst werden. Außerdem beinhaltet das System einen LKW-Verleih, über den die Liefer-LKWs direkt and die Kunden vermietet werden können. 
+Die Kunden sollen mithilfe eines Browsers jederzeit Zugriff auf den Webshop haben.
 
 Das System ist für folgende Browser aufrufbar und optimiert:
+
 - Mozilla Firefox
 - Google Chrome
 - Safari
