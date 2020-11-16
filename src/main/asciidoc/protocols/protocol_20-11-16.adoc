@@ -1,0 +1,61 @@
+= Protokoll Gruppe 17
+
+Treffen am 16.11.2020
+
+Ort:      Discord +
+Beginn:   15:45 Uhr +
+Ende:     18:10 Uhr
+
+__Schriftführer:__ Sebastian Jaster
+
+*Nächstes Treffen:* +
+19.11.2020, 13:00 Uhr, BigBlueButton
+
+__Teilnehmer:__
+//Tabellarisch oder Aufzählung, Kennzeichnung von Teilnehmern mit besonderer Rolle (z.B. Kunde)
+
+- David Schroth
+- Marc Albrecht
+- Sebastian Jaster
+- Edgar Wolfert
+- Johannes Kaufmann
+- Shintaro Onogi
+
+== Bemerkungen
+- Durchsprechen des aktuellen Standes zum Pflichtenheft, es sind noch folgende Punkte offen:
+* einige Fehler müssen im Top-Level-Architektur Diagramm geändert werden (siehe Issue #16)
+* es fehlen noch Restentwürfe für den GUI-Prototyp (siehe Issue #19)
+- Testen des aktuellen Standes des Videoshop vom main Branch und ausbessern kleinerer Fehler
+
+== Planung des nächsten Sprints
+- Deadline: Di. 17.11.2020 23:59Uhr
+
+*Issue referenziert die Issue ID von GitHub*
+
+// See http://asciidoctor.org/docs/user-manual/=tables
+[option="headers"]
+|===
+|Issue |Titel |Beschreibung |Verantwortlicher |Status
+|#1   | Erstellung Kontext-Diagramm        | Es soll ein Kontext-Diagramm für das Pflichtenheft angefertigt werden.                 | Shintaro    | Fertig
+|#2   | Erstellung Use-Case Diagramm       | Es soll ein Use-Case Diagramm für das Pflichtenheft angefertigt werden.                | Sebastian   | Fertig
+|#3   | Beschreibung Use-Cases             | Es soll für mindestens 5 Use-Cases eine ausführliche Beschreibung angefertigt werden.  | Sebastian   | Fertig
+|#4   | Einpflegung Muss-Kriterien         | Es sollen mindestens 5 Muss-Kriterien in das Pflichtenheft eingepflegt werden.         | Edgar       | Fertig
+|#5   | Anfertigung GUI-Prototyp           | Es soll ein Prototyp/Mockup für die GUI der Website angefertigt werden.                | David       | Fertig
+|#6   | Erstellung Analyse-Klassendiagramm | Es sollen ein Analyse-Klassendiagramm angefertigt werden.                              | Johannes    | Fertig
+|#7   | Einpflegung Test-Akzeptanzfällen   | Es sollen mindestens 5 Test-Akzeptanzfälle in das Pflichtenheft eingepflegt werden.    | Marc        | Fertig
+|#8   | Videoshop Aufgabe 1                | Feature Registrierung                                                                  | Johannes    | Fertig
+|#9   | Videoshop Aufgabe 2                | Feature Bewertungen                                                                    | David       | Fertig
+|#10  | Videoshop Aufgabe 3                | Feature Bestellungen                                                                   | Sebastian   | Fertig
+|#11  | Videoshop Aufgabe 4                | Feature Rechnung                                                                       | Edgar       | Fertig
+|#12  | Videoshop Aufgabe 5                | Feature Kategorien                                                                     | Shintaro    | Fertig
+|#13  | Videoshop Aufgabe 6                | Feature neuer Videotyp                                                                 | Marc        | Fertig
+|#14  | Pflichtenheft Zusammenfassung                             | -                                                               | Marc        | Fertig
+|#15  | Pflichtenheft Aufgabenstellung und Zielsetzung            | die Aufgabenstellung soll überarbeitet dargestellt werden       | Marc        | Fertig
+|#16  | Pflichtenheft Top-Level-Architektur                       | -                                                               | Shintaro    | in Arbeit
+|#17  | Pflichtenheft Produktnutzung/Interessensgruppen           | -                                                               | David       | Fertig
+|#18  | Pflichtenheft Nicht Funktionale Anforderungen             | -                                                               | Edgar       | Fertig
+|#19  | Pflichtenheft GUI-Prototyp Dialogbeschreibung             | jedes Bild soll mit einer Tabelle beschrieben werden            | David       | in Arbeit
+|#20  | Pflichtenheft Klassenbeschreibung/Analysenklassendiagramm | -                                                               | Johannes    | Fertig
+|#21  | Pflichtenheft Glossar                                     | -                                                               | Shintaro    | Fertig
+|#22  | Pflichtenheft Sequenzdiagramme für Anwendugsfälle         | -                                                               | Sebastian   | Fertig
+|===
