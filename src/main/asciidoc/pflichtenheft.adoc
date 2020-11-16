@@ -46,13 +46,61 @@ Am Ende des Projektes soll eine Software vorliegen, welche den gegebenen Anforde
 
 == Produktnutzung
 
-In welchem Kontext soll das System später genutzt werden?
-Welche Rahmenbedingungen gelten?
-Zusätzlich kurze Einleitung für fachfremde Personen
+Dieser Abschnitt gibt einen kurzen Überblick über die geplante Verwendung des Produkts.
+
+Das System soll als Webshop von Möbel-hier verwendet werden, um Möbel und Möbel-Sets zu verkaufen und auszuliefern. Einige dieser Möbel-Sets können von den Kunden noch vor der Bestellung individuell angepasst werden. Außerdem beinhaltet das System einen LKW-Verleih, über den die Liefer-LKWs direkt and die Kunden vermietet werden können. Die Kunden sollen mithilfe eines Browsers jederzeit Zugriff auf den Webshop haben.
+
+Das System ist für folgende Browser aufrufbar und optimiert:
+- Mozilla Firefox
+- Google Chrome
+- Safari
+
+Die Hauptnutzer des Webshops sind Kunden, die bereits mit der üblichen Webseite-Navigation vertraut sind. Administratoren der Website haben erweiterten Zugriff auf Bestellungsrelevante Informationen, brauchen dafür jedoch kein technisches Sachverständnis. Alle für sie relevanten Daten sind in einer Datenbank abgespeichert und mithilfe einer grafischen Oberfläche direkt auf der Webseite aufrufbar.
 
 == Interessensgruppen (Stakeholders)
 
-Welche realen und juristischen Personen(-gruppen) haben Einfluss auf die Anforderungen im Projekt?
+Hier ist eine Auflistung aller realen und juristischen Personengruppen, die einen Einfluss auf die Anforderungen des Systems haben. Jeder Personengruppe ist neben ihren Hauptzielen auch eine Priorität von eins bis fünf zugeordnet, welche bei Interessenkonflikten für eine einfachere Entscheidung sorgt.
+
+[options="header", cols="2, ^1, 4, 4"]
+|===
+|Name
+|Priorität (1..5)
+|Beschreibung
+|Ziele
+
+|Vorsitzende der Moebel-Hunger-Kette
+|5
+|Der Auftraggeber dieses Projekts.
+a|
+- mehr Möbel verkaufen
+- mehr LKWs vermieten
+- Abläufe automatisieren
+- effiziente Organisation von Lager und Lieferung
+|Kunden
+|4
+|Hauptnutzer des Systems, sollen Gewinn einbringen
+a|
+- gute Nutzererfahrung
+- einfaches Durchstöbern des Katalogs
+- schnelle Bestellungsverarbeitung
+
+|Administratoren
+|2
+|Nutzer des Systems, die alles Bestellungsrelevante verwalten
+a|
+- Bestellungen verwalten
+- Zugriff auf monatliche Statistiken
+- Verwaltung der Lieferanten
+
+|Entwickler
+|3
+|Implementierer und Verwalter des Systems
+a|
+- ein einfach erweiterbares System
+- wenig Verwaltungsaufwand
+- gute Debug-Möglichkeiten
+
+|===
 
 == Systemgrenze und Top-Level-Architektur
 
