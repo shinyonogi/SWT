@@ -108,11 +108,11 @@ Hier ist eine Auflistung aller realen und juristischen Personengruppen, die eine
 
 Das Kontextdiagramm zeigt das geplante Software-System in seiner Umgebung.
 
-image::./images/context_diagram_2.png[Kontextdiagramm,100%,100%,pdfwidth=100%,title= "Kontextdiagramm des Projektes {project_name}",align=center]
+image::./models/analysis/context_diagram_2.png[Kontextdiagramm,100%,100%,pdfwidth=100%,title= "Kontextdiagramm des Projektes {project_name}",align=center]
 
 === Top-Level-Architektur
 
-image::./images/top_level_architecture_2.png[Top-Level-Architektur,100%,100%,pdfwidth=100%,title= "Top-Level-Architektur des Projektes {project_name}",align=center]
+image::./models/analysis/top_level_architecture_2.png[Top-Level-Architektur,100%,100%,pdfwidth=100%,title= "Top-Level-Architektur des Projektes {project_name}",align=center]
 
 == Anwendungsfälle
 
@@ -134,7 +134,7 @@ Akteure sind die Benutzer des Software-Systems oder Nachbarsysteme, welche darau
 Anwendungsfall-Diagramm, das alle Anwendungsfälle und alle Akteure darstellt.
 
 [[usecase_diagram]]
-image::./images/usecase.png[Anwendungsfalldiagramm,100%,100%,pdfwidth=100%,title= "Anwendungsfalldiagramm des Projektes {project_name}",align=center]
+image::./models/analysis/usecase.png[Anwendungsfalldiagramm,100%,100%,pdfwidth=100%,title= "Anwendungsfalldiagramm des Projektes {project_name}",align=center]
 
 === Anwendungsfallbeschreibungen
 
@@ -231,7 +231,7 @@ Der Mitarbeiter klickt auf den Logout Button in der Navigationsleiste und wird a
 |Funktionale Anforderung    |<<F0020>>, <<F0021>>
 |===
 [[sequence_uc120]]
-image::./images/sequence_usecases/sequence_uc120.png[sequence_uc120,90%,100%,pdfwidth=100%,title= "Sequenzdiagramm für <<UC120>> Bestellung durchführen",align=center]
+image::./models/analysis/sequence_usecases/sequence_uc120.png[sequence_uc120,90%,100%,pdfwidth=100%,title= "Sequenzdiagramm für <<UC120>> Bestellung durchführen",align=center]
 
 [cols="1h, 3a", width="100%"]
 [[UC200]]
@@ -275,7 +275,7 @@ image::./images/sequence_usecases/sequence_uc120.png[sequence_uc120,90%,100%,pdf
 |Funktionale Anforderung    |<<F0004>>
 |===
 [[sequence_uc220]]
-image::./images/sequence_usecases/sequence_uc220.png[sequence_uc220,60%,100%,pdfwidth=50%,title= "Sequenzdiagramm für <<UC220>> Artikel Ausführung ändern.",align=center]
+image::./models/analysis/sequence_usecases/sequence_uc220.png[sequence_uc220,60%,100%,pdfwidth=50%,title= "Sequenzdiagramm für <<UC220>> Artikel Ausführung ändern.",align=center]
 
 [cols="1h, 3a", width="100%"]
 [[UC230]]
@@ -372,7 +372,7 @@ _Kunde:_
 |Funktionale Anforderung    |<<F0020>>, <<F0024>>
 |===
 [[sequence_uc330]]
-image::./images/sequence_usecases/sequence_uc330.png[sequence_uc330,80%,100%,pdfwidth=100%,title= "Sequenzdiagramm für <<UC330>> Bestellstatus bearbeiten",align=center]
+image::./models/analysis/sequence_usecases/sequence_uc330.png[sequence_uc330,80%,100%,pdfwidth=100%,title= "Sequenzdiagramm für <<UC330>> Bestellstatus bearbeiten",align=center]
 
 [cols="1h, 3a", width="100%"]
 [[UC400]]
@@ -416,7 +416,7 @@ image::./images/sequence_usecases/sequence_uc330.png[sequence_uc330,80%,100%,pdf
 |Funktionale Anforderung    |<<F0055>>, <<F0056>>
 |===
 [[sequence_uc420]]
-image::./images/sequence_usecases/sequence_uc420.png[sequence_uc420,90%,100%,pdfwidth=100%,title= "Sequenzdiagramm für <<UC420>> Monatsstatistik einsehen",align=center]
+image::./models/analysis/sequence_usecases/sequence_uc420.png[sequence_uc420,90%,100%,pdfwidth=100%,title= "Sequenzdiagramm für <<UC420>> Monatsstatistik einsehen",align=center]
 
 [cols="1h, 3a", width="100%"]
 [[UC430]]
@@ -490,7 +490,7 @@ _Hinzufügen:_
 |Funktionale Anforderung    |<<F0042>>
 |===
 [[sequence_uc520]]
-image::./images/sequence_usecases/sequence_uc520.png[sequence_uc520,100%,100%,pdfwidth=100%,title= "Sequenzdiagramm für <<UC520>> LKW buchen",align=center]
+image::./models/analysis/sequence_usecases/sequence_uc520.png[sequence_uc520,100%,100%,pdfwidth=100%,title= "Sequenzdiagramm für <<UC520>> LKW buchen",align=center]
 
 == Funktionale Anforderungen
 
@@ -773,7 +773,7 @@ Die Integration von Erweiterungen muss kleiner gleich 7 Tage sein.
 
 In diesem Kapitel soll ein Entwurf der Navigationsmöglichkeiten und Dialoge des Systems erstellt werden.
 
-image::./images/GUI/catalog.png[catalog,100%,100%,pdfwidth=100%,title= "Katalog auf der Webseite",align=center]
+image::./models/analysis/GUI/catalog.png[catalog,100%,100%,pdfwidth=100%,title= "Katalog auf der Webseite",align=center]
 [options="header", cols="1h, 12a", width="100%"]
 |===
 |Nr.  |Beschreibung
@@ -786,7 +786,7 @@ image::./images/GUI/catalog.png[catalog,100%,100%,pdfwidth=100%,title= "Katalog 
 |7    |Name, Preis und Beschreibung eines Möbelstücks und Weiterleitung zur Großansicht (itemView.html)
 |===
 
-image::./images/GUI/itemView.png[itemView,100%,100%,pdfwidth=100%,title= "Ansicht eines Möbelstücks auf der Webseite",align=center]
+image::./models/analysis/GUI/itemView.png[itemView,100%,100%,pdfwidth=100%,title= "Ansicht eines Möbelstücks auf der Webseite",align=center]
 [options="header", cols="1h, 12a", width="100%"]
 |===
 |Nr.  |Beschreibung
@@ -796,7 +796,7 @@ image::./images/GUI/itemView.png[itemView,100%,100%,pdfwidth=100%,title= "Ansich
 |4    |Schaltfläche, über die das Möbelstück dem Warenkorb hinzugefügt wird
 |===
 
-image::./images/GUI/cart.png[cart,100%,100%,pdfwidth=100%,title= "Warenkorb auf der Webseite",align=center]
+image::./models/analysis/GUI/cart.png[cart,100%,100%,pdfwidth=100%,title= "Warenkorb auf der Webseite",align=center]
 [options="header", cols="1h, 12a", width="100%"]
 |===
 |Nr.  |Beschreibung
@@ -805,7 +805,7 @@ image::./images/GUI/cart.png[cart,100%,100%,pdfwidth=100%,title= "Warenkorb auf 
 |3    |Schaltfläche zur zur Weiterleitung zum Bestellformular (orderCheckout.html)
 |===
 
-image::./images/GUI/orderCheckout.png[orders,100%,100%,pdfwidth=100%,title= "Bestellformular auf der Webseite",align=center]
+image::./models/analysis/GUI/orderCheckout.png[orders,100%,100%,pdfwidth=100%,title= "Bestellformular auf der Webseite",align=center]
 [options="header", cols="1h, 12a", width="100%"]
 |===
 |Nr.  |Beschreibung
@@ -816,7 +816,7 @@ image::./images/GUI/orderCheckout.png[orders,100%,100%,pdfwidth=100%,title= "Bes
 |5    |Schaltfläche zum Abschicken der Bestellung
 |===
 
-image::./images/GUI/orders.png[orders,100%,100%,pdfwidth=100%,title= "Bestellungssuche auf der Webseite",align=center]
+image::./models/analysis/GUI/orders.png[orders,100%,100%,pdfwidth=100%,title= "Bestellungssuche auf der Webseite",align=center]
 [options="header", cols="1h, 12a", width="100%"]
 |===
 |Nr.  |Beschreibung
@@ -824,7 +824,7 @@ image::./images/GUI/orders.png[orders,100%,100%,pdfwidth=100%,title= "Bestellung
 |2    |Weiterleitung zur Ansicht der Bestellung (orderItems.html)
 |===
 
-image::./images/GUI/orderItems.png[orderItems,100%,100%,pdfwidth=100%,title= "Bestellungen auf der Webseite",align=center]
+image::./models/analysis/GUI/orderItems.png[orderItems,100%,100%,pdfwidth=100%,title= "Bestellungen auf der Webseite",align=center]
 [options="header", cols="1h, 12a", width="100%"]
 |===
 |Nr.  |Beschreibung
@@ -833,7 +833,7 @@ image::./images/GUI/orderItems.png[orderItems,100%,100%,pdfwidth=100%,title= "Be
 |3    |Schaltfläche zur Stornierung der gesamten Bestellung
 |===
 
-image::./images/GUI/lkw.png[lkw,100%,100%,pdfwidth=100%,title= "LKW-Vermietung auf der Webseite",align=center]
+image::./models/analysis/GUI/lkw.png[lkw,100%,100%,pdfwidth=100%,title= "LKW-Vermietung auf der Webseite",align=center]
 [options="header", cols="1h, 12a", width="100%"]
 |===
 |Nr.  |Beschreibung
@@ -842,7 +842,7 @@ image::./images/GUI/lkw.png[lkw,100%,100%,pdfwidth=100%,title= "LKW-Vermietung a
 |3    |Weiterleitung zum Ausfüllen des Mietformulars (lkwCheckout.html)
 |===
 
-image::./images/GUI/lkwCheckout.png[lkw,100%,100%,pdfwidth=100%,title= "Mietformular für LKWs auf der Webseite",align=center]
+image::./models/analysis/GUI/lkwCheckout.png[lkw,100%,100%,pdfwidth=100%,title= "Mietformular für LKWs auf der Webseite",align=center]
 [options="header", cols="1h, 12a", width="100%"]
 |===
 |Nr.  |Beschreibung
@@ -852,7 +852,7 @@ image::./images/GUI/lkwCheckout.png[lkw,100%,100%,pdfwidth=100%,title= "Mietform
 |4    |Schaltfläche zum Mieten des LKW 
 |===
 
-image::./images/GUI/adminLogin.png[adminLogin,100%,100%,pdfwidth=100%,title= "Administrator-Login auf der Webseite",align=center]
+image::./models/analysis/GUI/adminLogin.png[adminLogin,100%,100%,pdfwidth=100%,title= "Administrator-Login auf der Webseite",align=center]
 [options="header", cols="1h, 12a", width="100%"]
 |===
 |Nr.  |Beschreibung
@@ -861,7 +861,7 @@ image::./images/GUI/adminLogin.png[adminLogin,100%,100%,pdfwidth=100%,title= "Ad
 |3    |Schaltfläche zum Einloggen (hierdurch wird die Logout-Schaltfläche sichtbar)
 |===
 
-image::./images/GUI/admin.png[cart,100%,100%,pdfwidth=100%,title= "Administrator-Bereich auf der Webseite",align=center]
+image::./models/analysis/GUI/admin.png[cart,100%,100%,pdfwidth=100%,title= "Administrator-Bereich auf der Webseite",align=center]
 [options="header", cols="1h, 12a", width="100%"]
 |===
 |Nr.  |Beschreibung
@@ -870,14 +870,14 @@ image::./images/GUI/admin.png[cart,100%,100%,pdfwidth=100%,title= "Administrator
 |3    |Schaltfläche zur Ansicht der Lieferanten (suppliers.html)
 |===
 
-image::./images/GUI/customerOrders.png[cart,100%,100%,pdfwidth=100%,title= "Administrator-Ansicht von Kundenbestellungen auf der Webseite",align=center]
+image::./models/analysis/GUI/customerOrders.png[cart,100%,100%,pdfwidth=100%,title= "Administrator-Ansicht von Kundenbestellungen auf der Webseite",align=center]
 [options="header", cols="1h, 12a", width="100%"]
 |===
 |Nr.  |Beschreibung
 |1    |Weiterleitung zur Ansicht der Bestellung (orderItems.html)
 |===
 
-image::./images/GUI/monthlyStatistic.png[cart,100%,100%,pdfwidth=100%,title= "Administrator-Ansicht der Monatsstatistik auf der Webseite",align=center]
+image::./models/analysis/GUI/monthlyStatistic.png[cart,100%,100%,pdfwidth=100%,title= "Administrator-Ansicht der Monatsstatistik auf der Webseite",align=center]
 [options="header", cols="1h, 12a", width="100%"]
 |===
 |Nr.  |Beschreibung
@@ -885,7 +885,7 @@ image::./images/GUI/monthlyStatistic.png[cart,100%,100%,pdfwidth=100%,title= "Ad
 |2    |Differenz des Betrags zum vorherigen Monat
 |===
 
-image::./images/GUI/suppliers.png[cart,100%,100%,pdfwidth=100%,title= "Administrator-Ansicht zur Verwaltung der Lieferanten auf der Webseite",align=center]
+image::./models/analysis/GUI/suppliers.png[cart,100%,100%,pdfwidth=100%,title= "Administrator-Ansicht zur Verwaltung der Lieferanten auf der Webseite",align=center]
 [options="header", cols="1h, 12a", width="100%"]
 |===
 |Nr.  |Beschreibung
@@ -1273,6 +1273,7 @@ Sämtliche Begriffe, die innerhalb des Projektes verwendet werden und deren geme
 |Begriff                |Beschreibung
 |Abholung               | {domain_ref}
 |Abrechnung             | Monatliche Verkaufszahlen/Statistik.
+|Admin/Administrator    | Synonym für Mitarbeiter der Moebel-Hunger Kette. (s. Mitarbeiter)
 |Bestellung             | {domain_ref}
 |Bestelleintrag         | {domain_ref}
 |Bestellmanager         | {domain_ref}
