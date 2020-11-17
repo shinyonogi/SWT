@@ -182,7 +182,7 @@ _Einloggen:_
 _Ausloggen:_
 
 Der Mitarbeiter klickt auf den Logout Button in der Navigationsleiste und wird auf die Startseite zurückgeleitet.
-|Erweiterungen              |
+|Erweiterungen              |-
 |Funktionale Anforderung    |<<F0050>>, <<F0051>>, <<F0052>>
 |===
 
@@ -384,7 +384,7 @@ image::./models/analysis/sequence_usecases/sequence_uc330.png[sequence_uc330,80%
 |Auslöser                   |Ein Mitarbeiter möchte firmeninterne Daten abrufen.
 |Bedingungen                |Der Mitarbeiter hat sich zuvor mithilfe von <<UC010>> gegenüber dem System authentifiziert.
 |Notwendige Schritte        |Der Mitarbeiter drückt auf den Reiter "Admin" in der Navigationsleiste.
-|Erweiterungen              |Der Reiter "Admin" erscheint nur wenn der Nutzer im System die Rolle Mitarbeiter erhalten hat.
+|Erweiterungen              |-
 |Funktionale Anforderung    |<<F0053>>, <<F0054>>
 |===
 
