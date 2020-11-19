@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
   <title>Bestellungen</title>
   <meta charset="utf-8">
@@ -11,36 +11,7 @@
 </head>
 <body>
 
-<div class="container">
-
-	<div class="jumbotron">
-	  <h1>Möbel-Hier</h1>
-	  <p>Die besten Möbel.</p>
-	</div>
-		
-	<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-		<ul class="navbar-nav">
-			<li class="nav-item">
-				<a class="nav-link" href="catalog.html">Katalog</a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link" href="cart.html">Warenkorb</a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link" href="orders.html">Bestellungen</a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link" href="lkw.html">LKW mieten</a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link" href="adminLogin.html">Admin</a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link" href="#">Logout</a>
-			</li>
-		</ul>
-	</nav>
-</div>
+<nav th:include="navigation :: navigation"></nav>
 
 <div class="container pt-3">
 	<div class="row">
