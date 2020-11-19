@@ -1,0 +1,50 @@
+= Protokoll Gruppe 17
+
+Treffen am 19.11.2020
+
+Ort:      BigBlueButton +
+Beginn:   13:00 Uhr +
+Ende:     14:30 Uhr
+
+__Schriftführer:__ Edgar Wolfert
+
+*Nächstes Treffen:* +
+23.11.2020, 14:50 Uhr, Discord
+
+__Teilnehmer:__
+//Tabellarisch oder Aufzählung, Kennzeichnung von Teilnehmern mit besonderer Rolle (z.B. Kunde)
+
+- Markus Richter (Tutor)
+- Marc Albrecht
+- Sebastian Jaster
+- Edgar Wolfert
+- Johannes Kaufmann
+- Shintaro Onogi
+
+== Bemerkungen
+- Vorstellung des fertigen Videoshops -> Meilenstein erfüllt.
+- Durchsprechen des aktuellen Standes zum Pflichtenheft. Folgende Punkte offen:
+* [NF0002]: Kundendaten müssen nicht verschlüsselt sein, da sie durch Login geschützt sind.
+- Vorstellung der neuen Aufgaben
+- Verteilung der Aufgaben
+
+== Planung des nächsten Sprints
+- Deadline: Di. 24.11.2020 23:59Uhr
+
+*Issue referenziert die Issue ID von GitHub*
+
+// See http://asciidoctor.org/docs/user-manual/=tables
+[option="headers"]
+|===
+|Issue |Titel |Beschreibung |Verantwortlicher |Status
+|#24   | Erstellung des Entwurfsklassendiagramm		| Überführung des Analyseklassendiagramm in ein Entwurfsklassendiagramm             | Sebastian		| Offen
+|#25   | Erstellung des Testplanes					| Jeder denkt sich einen Unit Test und einen Integrationstest für seine Aufgabe aus | Alle			| Offen
+|#26   | Implementierung Inventarverwaltung		    | *Details in Issue                 | Edgar			| Offen
+|#27   | Implementierung Lieferantenverwaltung		| *                 | David			| Offen
+|#28   | Implementierung LKW-Verwaltung				| *                 | Marc			| Offen
+|#29   | Implementierung Bestellverwaltung			| *                 | Johannes		| Offen
+|#30   | Implementierung Warenkorb					| *                 | Shintaro		| Offen
+|#31   | Implementierung Login					    | *                 | Sebastian		| Offen
+|#32   | Erstellung von Dummy Data					| Dummy Data für Lieferanten, Möbel, LKWs | Sebastian		| Offen
+
+|===
