@@ -11,7 +11,7 @@ import java.time.LocalDate;
 public abstract class CalendarEntry {
 
 	@Id @GeneratedValue
-	private int id;
+	private long id;
 
 	private LocalDate date;
 
@@ -23,7 +23,7 @@ public abstract class CalendarEntry {
 		this.date = date;
 	}
 
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 

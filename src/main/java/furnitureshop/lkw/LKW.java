@@ -2,52 +2,39 @@ package furnitureshop.lkw;
 
 import org.springframework.util.Assert;
 
-import javax.money.MonetaryAmount;
 import javax.persistence.*;
 
 @Entity
 public class LKW {
 
 	@Id @GeneratedValue
-	private int id;
-	private double weight;
+	private long id;
 
-	private MonetaryAmount price;
+	@Enumerated(EnumType.ORDINAL)
+	private LKWType type;
 
 	@OneToOne(cascade = CascadeType.ALL)
 	private Calendar calendar;
 
 	protected LKW() {}
 
-	public LKW(double weight, MonetaryAmount price) {
-		Assert.isTrue(weight > 0, "Weight must be greater than 0!");
-		Assert.notNull(price, "Price must not be null!");
+	public LKW(LKWType type) {
+		Assert.notNull(type, "Type must not be null!");
 
-		this.weight = weight;
-		this.price = price;
+		this.type = type;
 		this.calendar = new Calendar();
 	}
 
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
-	public double getWeight() {
-		return weight;
-	}
-
-	public MonetaryAmount getPrice() {
-		return price;
+	public LKWType getType() {
+		return type;
 	}
 
 	public Calendar getCalendar() {
 		return calendar;
-	}
-
-	public LKW setPrice(MonetaryAmount price) {
-		Assert.notNull(price, "Price must not be null!");
-
-		return this;
 	}
 
 }

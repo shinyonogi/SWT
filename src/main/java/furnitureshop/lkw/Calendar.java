@@ -11,7 +11,7 @@ import java.util.List;
 public class Calendar {
 
 	@Id @GeneratedValue
-	private int id;
+	private long id;
 
 	@OneToMany(cascade = CascadeType.ALL)
 	private final List<CalendarEntry> entries;
@@ -52,7 +52,7 @@ public class Calendar {
 		return null;
 	}
 
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
