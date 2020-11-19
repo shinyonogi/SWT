@@ -1,33 +1,31 @@
-= Pflichtenheft __{project_name}
-__
+= Pflichtenheft __{project_name}__
 :project_name: Möbelgeschäft
 :numbered:
 :toc:
 :toc-title: Inhaltsverzeichnis
 
-[options="header"]
-[cols="1, 1, 6"]
+[options="header", cols="1a, 1a, 6a, 7a", width="100%"]
 |===
-|Version | Bearbeitungsdatum | Autoren(en)
-|1.0     | 10.10.2020        | David Schroth, Marc Albrecht, Sebastian Jaster, Edgar Wolfert, Johannes Kaufmann, Shintaro Onogi
-|2.0     | 17.10.2020        | David Schroth, Marc Albrecht, Sebastian Jaster, Edgar Wolfert, Johannes Kaufmann, Shintaro Onogi
+|Version | Bearbeitungsdatum | Autoren(en) | Vermerk
+|0.1     | 10.11.2020        | David Schroth, Marc Albrecht, Sebastian Jaster, Edgar Wolfert, Johannes Kaufmann, Shintaro Onogi | Kontextdiagramm, Anwendungsfälle, Funktionale Anforderungen, GUI Prototyp, Klassendiagramm, Akzeptanztestfälle
+|1.0     | 17.11.2020        | David Schroth, Marc Albrecht, Sebastian Jaster, Edgar Wolfert, Johannes Kaufmann, Shintaro Onogi | Zusammenfassung, Aufgabenstellung, Produktnutzung, Interessensgruppen, Top-Level-Architektur, Nicht-Funktionale Anforderungen, Glossar, Ergänzungen zu 0.1
 |===
 
 == Zusammenfassung
 
-Dieses Dokument beschreibt das Pflichtenheft für das Möbelgeschäft-Projekt im Zusammenhang mit dem Softwaretechnologie-Projekt 2020/21.
+Dieses Dokument beschreibt das Pflichtenheft für das Möbelgeschäft-Projekt im Zusammenhang mit dem Softwaretechnologie-Projekt 2020/21. Dabei soll eine Kundensoftware für ein Möbelgeschäft entwickelt werden, welche für die Bestellverwaltung, das Warenlager und den Auslieferungsservice verantwortlich ist.
 
-Im Pflichtenheft sind Informationen bezüglich des Aufbaus des Softwareproduktes zu finden, welche sich in verschiedene Teilbereiche untergliedern.
-Das Dokument beinhaltet die Projektanforderungen mit den entsprechenden Zielen für eine gute und einfache Kommunikation zwischen dem Kunden und den Entwicklern.
-Das Pflichtenheft stellt die Anforderungen, Funktionalitäten sowie Umsetzungen der Software dar und beschreibt welchen Nutzen individuelle Akteure an der Software fordern.
-Der Grundaufbau der Software wird im Pflichtenheft durch das Kontextdiagramm, Anwendungsfalldiagramm, Klassendiagramm sowie dem GUI-Prototype sowohl aus Sicht des Kunden als auch für Nutzer der Software beschreiben.
-Des Weiteren beinhaltet es eine detaillierte Beschreibung der Software-Architektur und grafischen Oberfläche sowie den Anforderungen der Software und Nutzung.
+Im Pflichtenheft sind Informationen bezüglich des Aufbaus des Softwareproduktes zu finden, welche in verschiedene Teilbereiche untergliedert sind.
+Das Dokument beinhaltet die Projektanforderungen mit den entsprechenden Zielen für eine gute und einfache Kommunikation zwischen dem Auftraggeber und den Entwicklern.
+Die Anforderungen, Funktionalitäten sowie die grundlegende Implementierung der Software wird im Pflichtenheft dargestellt. Es beschreibt zudem welche Funktionen bestimmte Akteure von der Software fordern.
+Der Grundaufbau der Software wird im Pflichtenheft durch die Top-Level-Architektur, die Anwendungsfälle mit Akzeptanztestfällen und das Datenmodell für unterschiedliche Nutzer der Software beschrieben.
+Des Weiteren beinhaltet es eine detaillierte Beschreibung des Prototyps der grafischen Oberfläche und der Ziele der Software und des Projektes.
 
 == Aufgabenstellung und Zielsetzung
 
 Das von der Moebel-Hunger-Kette übernommene Geschäft Möbel-Hier wird von Ihrer Firma mit einer neuen Kundensoftware ausgestattet. Im Leistungsumfang sind die Bestellverwaltung, das Warenlager und der Auslieferungsservice enthalten. Besonderes Augenmerk soll auf die Warenbestellung, -zwischenlagerung und -auslieferung gelegt werden.
 
-Den Kunden liegt ein Sortiment im Internet vor, aus dem sie Möbel bestellen können. Die Lieferung erfolgt entweder in das Hauptlager oder direkt an den Kunden.
+Den Kunden liegt ein Sortiment im Internet vor, aus dem sie Möbel bestellen können, dafür ist keine Anmeldung nötig. Die Lieferung erfolgt entweder in das Hauptlager oder direkt an den Kunden.
 
 Weiterhin soll eine Statusabfrage über die bereits gelieferten Möbelteile der Bestellungen möglich sein. Wenn der Kunde unbedingt will, kann er die bereits gelieferte Ware in Teilen abholen, muss dann aber auch diese Teile sofort bezahlen.
 
@@ -35,82 +33,114 @@ Ein Grundsatz des Möbelhauses heißt Modularität. Der Kunde kann sich die meis
 
 Die Auslieferung erfolgt mit dem firmeneigenen LKW-Park. Alternativ können sich Kunden auch diese LKW's für einen Tag mieten. Je nach Gewicht der Lieferung soll immer der nächstgünstigere LKW von der Firma zum Ausliefern genutzt werden.
 
-Die Software soll auch das Abbestellung der Ware berücksichtigen. Je nach Bearbeitungsstand einer Lieferung errechnet sich eine Rücklieferungs- und Bearbeitungsgebühr. Die Stornierung eines LKW ist kostenlos.
+Die Software soll auch das Abbestellung der Ware berücksichtigen. Je nach Bearbeitungsstand einer Lieferung errechnet sich eine Rücklieferungsgebühr. Die Stornierung eines LKW ist kostenlos.
 
-Das Angebotsspektrum von Möbel-Hier ergibt sich aus den Katalogen der angegliederten Großlieferanten. Die Geschäftsbeziehungen zu diesen Firmen soll entsprechend verwaltet werden.
+Das Angebotsspektrum von Möbel-Hier ergibt sich aus den Katalogen der angegliederten Großlieferanten. Die Geschäftsbeziehungen zu diesen Firmen soll entsprechend verwaltet werden. Die Preiskalkulation für die Waren findet gruppiert nach den Großlieferanten statt, so ergeben bspw. die Kundenpreise der Waren des Lieferanten Großmöbel 205% des Lieferpreises.
 
-Die Preiskalkulation für die Waren findet gruppiert nach den Großlieferanten statt, so ergeben bspw. die Kundenpreise der Waren des Lieferanten Großmöbel 205% des Lieferpreises.
-
-Die Mitarbeiter haben durch eine Anmeldung die Möglichkeit haben, Bestellungen einzusehen oder zu bearbeiten sowie das Möbelgeschäft zu verwalten. Um die Attraktivität des Angebotes steigern zu können, möchte die Geschäftsführung von Möbel-Hier eine monatliche Abrechnung (mit Vergleich zum Vormonat) haben, in der die Möbelverkäufe nach Großlieferanten aufgegliedert aufgeführt sind.
+Die Mitarbeiter sollten durch eine Anmeldung die Möglichkeit haben, Bestellungen einzusehen oder zu bearbeiten sowie das Möbelgeschäft zu verwalten. Um die Attraktivität des Angebotes steigern zu können, möchte die Geschäftsführung von Möbel-Hier eine monatliche Abrechnung (mit Vergleich zum Vormonat) haben, in der die Möbelverkäufe nach Großlieferanten aufgegliedert aufgeführt sind.
 
 
-Das Projekt dient dazu Studenten den Prozess der professionellen Softwareentwicklung heranzubringen und auf das spätere Berufsleben vorzubereiten.
+Das Projekt dient dazu Studenten an den Prozess der professionellen Softwareentwicklung heranzubringen und auf das spätere Berufsleben vorzubereiten.
+Am Ende des Projektes soll eine Software vorliegen, welche den gegebenen Anforderungen entspricht und eine realitätsgetreue Kundensoftware für ein Möbelgeschäft beschreibt.
 
 == Produktnutzung
 
-In welchem Kontext soll das System später genutzt werden?
-Welche Rahmenbedingungen gelten?
-Zusätzlich kurze Einleitung für fachfremde Personen
+Dieser Abschnitt gibt einen kurzen Überblick über die geplante Verwendung des Produkts.
+
+Das System soll als Webshop von Möbel-hier verwendet werden, um Möbel und Möbel-Sets zu verkaufen und auszuliefern. Einige dieser Möbel-Sets können von den Kunden noch vor der Bestellung individuell angepasst werden. Außerdem beinhaltet das System einen LKW-Verleih, über den die Liefer-LKWs direkt an die Kunden vermietet werden können.
+Die Kunden sollen mithilfe eines Browsers jederzeit Zugriff auf den Webshop haben.
+
+Das System ist für folgende Browser aufrufbar und optimiert:
+
+- Mozilla Firefox, Version 82.0.1+
+- Chromium basierende Browser, Version 86.0.4240.1+
+
+Die Hauptnutzer des Webshops sind Kunden, die bereits mit der üblichen Webseite-Navigation vertraut sind. Mitarbeiter der Moebel-Hunger-Kette haben erweiterten Zugriff auf bestellungsrelevante Informationen, brauchen dafür jedoch kein technisches Sachverständnis. Alle für sie relevanten Daten sind in einer Datenbank abgespeichert und mithilfe einer grafischen Oberfläche direkt auf der Webseite aufrufbar.
 
 == Interessensgruppen (Stakeholders)
 
-Welche realen und juristischen Personen(-gruppen) haben Einfluss auf die Anforderungen im Projekt?
+Hier ist eine Auflistung aller realen und juristischen Personengruppen, die einen Einfluss auf die Anforderungen des Systems haben. Jeder Personengruppe ist neben ihren Hauptzielen auch eine Priorität von eins bis fünf zugeordnet, welche bei Interessenkonflikten für eine einfachere Entscheidung sorgt.
+
+[options="header", cols="2a, 1a, 4a, 4a", width="100%"]
+|===
+|Name
+|Priorität (1..5)
+|Beschreibung
+|Ziele
+
+|Vorsitzende der Moebel-Hunger-Kette
+|5
+|Der Auftraggeber dieses Projekts.
+|
+- mehr Möbel verkaufen
+- mehr LKWs vermieten
+- Abläufe automatisieren
+- effiziente Organisation von Bestellungen
+
+|Nutzer
+|3
+|Hauptnutzer des Systems, sollen Gewinn einbringen
+|
+- gute Nutzererfahrung
+- einfaches Durchstöbern des Katalogs
+- schnelle Bestellungsverarbeitung
+
+|Mitarbeiter der Moebel-Hunger-Kette
+|4
+|Nutzer des Systems, die alles Bestellungsrelevante verwalten
+|
+- Bestellungen verwalten
+- Zugriff auf monatliche Statistiken
+- Verwaltung der Lieferanten
+
+|Entwickler
+|3
+|Implementierer und Verwalter des Systems
+|
+- ein einfach erweiterbares System
+- wenig Verwaltungsaufwand
+- gute Debug-Möglichkeiten
+|===
 
 == Systemgrenze und Top-Level-Architektur
 
 === Kontextdiagramm
 
 Das Kontextdiagramm zeigt das geplante Software-System in seiner Umgebung.
-Zur Umgebung gehören alle Nutzergruppen des Systems und Nachbarsysteme.
-Die Grafik kann auch informell gehalten sein.
-Überlegen Sie sich dann geeignete Symbole.
-Die Grafik kann beispielsweise mit Visio erstellt werden.
-Wenn nötig, erläutern Sie diese Grafik.
 
-image::./images/context_diagram_2.png[Kontextdiagramm,100%,100%,pdfwidth=100%,title= "Kontextdiagramm des Projektes {project_name}",align=center]
+image::./models/analysis/context_diagram_2.png[Kontextdiagramm,100%,100%,pdfwidth=100%,title= "Kontextdiagramm des Projektes {project_name}",align=center]
 
 === Top-Level-Architektur
 
-Dokumentieren Sie ihre Top-Level-Architektur mit Hilfe eines Komponentendiagramm.
+image::./models/analysis/top_level_architecture_2.png[Top-Level-Architektur,100%,100%,pdfwidth=100%,title= "Top-Level-Architektur des Projektes {project_name}",align=center]
 
 == Anwendungsfälle
 
 === Akteure
-
+[[actors]]
 Akteure sind die Benutzer des Software-Systems oder Nachbarsysteme, welche darauf zugreifen.
-Dokumentieren Sie die Akteure in einer Tabelle.
-Diese Tabelle gibt einen Überblick über die Akteure und beschreibt sie kurz.
-Die Tabelle hat also mindestens zwei Spalten (Akteur Name und Kommentar).
-Weitere relevante Spalten können bei Bedarf ergänzt werden.
 
 // See http://asciidoctor.org/docs/user-manual/#tables
-[options="header"]
-[cols="1,4"]
+[options="header", cols="1a, 4a", width="100%"]
 |===
-|**Name** | **Beschreibung**
+|**Name**      | **Beschreibung**
 |_Nutzer_      |Ein Nutzer repräsentiert jede Person die mit der Seite interagiert.
-|_Kunde_       |Ein Kunde repräsentiert jeder Person, die auf der Seite ihre Bestellnummer angegeben hat um mit ihrer Bestellung zu interagieren.
+|_Kunde_       |Ein Kunde repräsentiert jede Person, die auf der Seite ihre Bestellnummer angegeben hat um mit ihrer Bestellung zu interagieren.
 |_Mitarbeiter_ |Ein Mitarbeiter repräsentiert die Mitarbeiter der Möbel-Hunger Kette, welche im System die Rolle "Mitarbeiter" erhalten, nachdem Sie sich entsprechend eingeloggt haben.
 |===
 
 === Überblick Anwendungsfalldiagramm
 
-Anwendungsfall-Diagramm, das alle Anwendungsfälle und alle Akteure darstellt
+Anwendungsfall-Diagramm, das alle Anwendungsfälle und alle Akteure darstellt.
 
 [[usecase_diagram]]
-image::./images/usecase.png[Anwendungsfalldiagramm,100%,100%,pdfwidth=100%,title= "Anwendungsfalldiagramm des Projektes {project_name}",align=center]
+image::./models/analysis/usecase.png[Anwendungsfalldiagramm,100%,100%,pdfwidth=100%,title= "Anwendungsfalldiagramm des Projektes {project_name}",align=center]
 
 === Anwendungsfallbeschreibungen
 
 Dieser Unterabschnitt beschreibt die Anwendungsfälle.
-In dieser Beschreibung müssen noch nicht alle Sonderfälle und Varianten berücksichtigt werden.
-Schwerpunkt ist es, die wichtigsten Anwendungsfälle des Systems zu finden.
-Wichtig sind solche Anwendungsfälle, die für den Auftraggeber, den Nutzer den größten Nutzen bringen.
-Für komplexere Anwendungsfälle ein UML-Sequenzdiagramm ergänzen.
-Einfache Anwendungsfälle mit einem Absatz beschreiben.
-Die typischen Anwendungsfälle (Anlegen, Ändern, Löschen) können zu einem einzigen zusammengefasst werden.
 
-[cols="1h, 3a"]
+[cols="1h, 3a", width="100%"]
 [[UC010]]
 |===
 |ID                         |**<<UC010>>**
@@ -128,7 +158,7 @@ Ein Mitarbeiter kann sich wieder aus dem System ausloggen.
 |Auslöser                   |
 _Einloggen:_
 
-Der Mitarbeiter möchte die Rolle Mitarbeiter im System erhalten um auf die restlichen Admin-Komponenten zuzugreifen.
+Der Mitarbeiter möchte die Rolle Mitarbeiter im System erhalten, um auf die restlichen Admin-Komponenten zuzugreifen.
 
 _Ausloggen:_
 
@@ -145,7 +175,7 @@ Der Mitarbeiter hat sich mithilfe von <<UC010>> gegenüber dem System authentifi
 |Notwendige Schritte        |
 _Einloggen:_
 
-1. Mitarbeiter klickt auf den Login Button in der Navigationsleiste.
+1. Mitarbeiter klickt auf den Admin Button in der Navigationsleiste.
 2. Mitarbeiter gibt seine gültigen Logindaten an.
 3. Mitarbeiter bestätigt seine Eingaben mit einem Klick auf den "Login" Button.
 
@@ -153,10 +183,10 @@ _Ausloggen:_
 
 Der Mitarbeiter klickt auf den Logout Button in der Navigationsleiste und wird auf die Startseite zurückgeleitet.
 |Erweiterungen              |-
-|Funktionale Anforderung    |<<F0051>>, <<F0052>>
+|Funktionale Anforderung    |<<F0050>>, <<F0051>>, <<F0052>>
 |===
 
-[cols="1h, 3a"]
+[cols="1h, 3a", width="100%"]
 [[UC100]]
 |===
 |ID                         |**<<UC100>>**
@@ -167,24 +197,24 @@ Der Mitarbeiter klickt auf den Logout Button in der Navigationsleiste und wird a
 |Bedingungen                |-
 |Notwendige Schritte        |Nutzer klickt auf den Warenkorb in der Navigationsleiste.
 |Erweiterungen              |-
-|Funktionale Anforderung    |<<F0011>>
+|Funktionale Anforderung    |<<F0010>>, <<F0011>>
 |===
 
-[cols="1h, 3a"]
+[cols="1h, 3a", width="100%"]
 [[UC110]]
 |===
 |ID                         |**<<UC110>>**
 |Name                       |Produkte entfernen
-|Beschreibung               |Ein Nutzer kann gegebenfalls Artikel aus seinem Warenkorb entfernen, wenn er sie z.B. nicht mehr benötigt oder bestellen möchte.
+|Beschreibung               |Ein Nutzer kann gegeben Falls Artikel aus seinem Warenkorb entfernen, wenn er sie z.B. nicht mehr benötigt oder bestellen möchte.
 |Akteur                     |Nutzer
 |Auslöser                   |Der Nutzer möchte einen bestimmten Artikel nicht mehr bestellen.
 |Bedingungen                |Der Nutzer befindet sich im Warenkorb <<UC100>>.
-|Notwendige Schritte        |Nutzer klickt auf "Entfernen" am jeweiligen Artikel im Warenkorb um den Artikel zu löschen.
+|Notwendige Schritte        |Nutzer klickt auf das rote Kreuz am jeweiligen Artikel im Warenkorb um den Artikel zu löschen.
 |Erweiterungen              |-
-|Funktionale Anforderung    |<<F0012>>
+|Funktionale Anforderung    |<<F0010>>, <<F0012>>
 |===
 
-[cols="1h, 3a"]
+[cols="1h, 3a", width="100%"]
 [[UC120]]
 |===
 |ID                         |**<<UC120>>**
@@ -194,16 +224,16 @@ Der Mitarbeiter klickt auf den Logout Button in der Navigationsleiste und wird a
 |Auslöser                   |Der Nutzer ist mit seinem Einkauf fertig und möchte nun seine Bestellung aufgeben.
 |Bedingungen                |Der Nutzer hat Artikel im Warenkorb und schaut sich den Warenkorb <<UC100>> an.
 |Notwendige Schritte        |
-1. Nutzer klickt auf "Artikel bestellen" im Warenkorb.
-2. Nutzer gibt persönliche Daten (Adresse, E-Mail) an und wählt die Versandoption aus (Lieferung oder Abholung).
-3. Nutzer bestätigt die Eingaben und die Bestellung mithilfe des Buttons "Bestellung abschließen".
+1. Nutzer klickt auf "Bestellen" im Warenkorb.
+2. Nutzer gibt persönliche Daten (Name, Adresse und E-Mail) an und wählt die Versandoption aus (Lieferung oder Abholung).
+3. Nutzer bestätigt die Eingaben und die Bestellung mithilfe des Buttons "Bestellung abschicken" und wird auf die Katalog-Seite weitergeleitet.
 |Erweiterungen              |-
-|Funktionale Anforderung    |<<F0021>>
+|Funktionale Anforderung    |<<F0020>>, <<F0021>>
 |===
 [[sequence_uc120]]
-image::./images/sequence_usecases/sequence_uc120.png[sequence_uc120,90%,100%,pdfwidth=100%,title= "Sequenzdiagramm für <<UC120>> Bestellung durchführen",align=center]
+image::./models/analysis/sequence_usecases/sequence_uc120.png[sequence_uc120,90%,100%,pdfwidth=100%,title= "Sequenzdiagramm für <<UC120>> Bestellung durchführen",align=center]
 
-[cols="1h, 3a"]
+[cols="1h, 3a", width="100%"]
 [[UC200]]
 |===
 |ID                         |**<<UC200>>**
@@ -217,7 +247,7 @@ image::./images/sequence_usecases/sequence_uc120.png[sequence_uc120,90%,100%,pdf
 |Funktionale Anforderung    |<<F0002>>
 |===
 
-[cols="1h, 3a"]
+[cols="1h, 3a", width="100%"]
 [[UC210]]
 |===
 |ID                         |**<<UC210>>**
@@ -226,12 +256,12 @@ image::./images/sequence_usecases/sequence_uc120.png[sequence_uc120,90%,100%,pdf
 |Akteur                     |Nutzer
 |Auslöser                   |Der Nutzer interessiert sich für einen Artikel genauer und möchte auf die zugehörige Artikelseite gelangen.
 |Bedingungen                |Der Nutzer schaut sich derzeit den Artikel-Katalog <<UC200>> an.
-|Notwendige Schritte        |Der Nutzer klickt auf den Namen des gewünschten Artikel.
+|Notwendige Schritte        |Der Nutzer klickt auf den Namen oder Bild des gewünschten Artikels.
 |Erweiterungen              |-
 |Funktionale Anforderung    |<<F0004>>
 |===
 
-[cols="1h, 3a"]
+[cols="1h, 3a", width="100%"]
 [[UC220]]
 |===
 |ID                         |**<<UC220>>**
@@ -240,14 +270,14 @@ image::./images/sequence_usecases/sequence_uc120.png[sequence_uc120,90%,100%,pdf
 |Akteur                     |Nutzer
 |Auslöser                   |Der Nutzer schaut sich einen Artikel bzw ein Artikel-Set an und möchte die unterschiedlichen Ausführungen begutachten.
 |Bedingungen                |Der Nutzer schaut sich derzeit den Artikel oder das Artikel-Set <<UC210>> an.
-|Notwendige Schritte        |Der Nutzer klickt auf eine beliebig aufgelistete Ausführung auf der Artikel-Seite um die Ausführung anzuschauen.
+|Notwendige Schritte        |Der Nutzer klickt auf das Dropdown Ausführung auf der Artikel-Seite um die Ausführung zu ändern.
 |Erweiterungen              |-
-|Funktionale Anforderung    |TBD
+|Funktionale Anforderung    |<<F0004>>
 |===
 [[sequence_uc220]]
-image::./images/sequence_usecases/sequence_uc220.png[sequence_uc220,60%,100%,pdfwidth=50%,title= "Sequenzdiagramm für <<UC220>> Artikel Ausführung ändern.",align=center]
+image::./models/analysis/sequence_usecases/sequence_uc220.png[sequence_uc220,60%,100%,pdfwidth=50%,title= "Sequenzdiagramm für <<UC220>> Artikel Ausführung ändern.",align=center]
 
-[cols="1h, 3a"]
+[cols="1h, 3a", width="100%"]
 [[UC230]]
 |===
 |ID                         |**<<UC230>>**
@@ -256,12 +286,14 @@ image::./images/sequence_usecases/sequence_uc220.png[sequence_uc220,60%,100%,pdf
 |Akteur                     |Nutzer
 |Auslöser                   |Der Nutzer möchte diesen Artikel kaufen und ihn deshalb zu seinem Warenkorb hinzufügen.
 |Bedingungen                |Der Nutzer schaut sich derzeit den Artikel oder das Artikel-Set <<UC210>> an.
-|Notwendige Schritte        |Der Nutzer klickt auf den Button "Zum Warenkorb hinzufügen"
+|Notwendige Schritte        |
+    1. Der Nutzer wählt die entsprechende Anzahl des Artikels aus.
+    2. Der Nutzer klickt auf den Button "Zum Warenkorb hinzufügen" um den Artikel in der Anzahl hinzuzufügen.
 |Erweiterungen              |-
-|Funktionale Anforderung    |<<F0012>>
+|Funktionale Anforderung    |<<F0010>>, <<F0012>>
 |===
 
-[cols="1h, 3a"]
+[cols="1h, 3a", width="100%"]
 [[UC300]]
 |===
 |ID                         |**<<UC300>>**
@@ -281,17 +313,20 @@ Der Kunde besitzt eine Bestellungsnummer.
 _Mitarbeiter:_
 
 1. Mitarbeiter sucht die gewünschte Bestellung aus der Liste der Bestellungen heraus.
-2. Mitarbeiter klickt auf die gewünschte Bestellung in der Liste.
+2. Mitarbeiter klickt auf den Button "Bestellung ansehen" beim jeweiligen Besteilleintrag.
+3. Mitarbeiter wird auf die Seite der Bestellung weitergeleitet.
 
 _Kunde:_
 
-1. Kunde wählt den Reiter "Bestellung einsehen" in der Navigationsleiste.
-2. Kunde gibt seine Bestellnummer in das Eingabefeld ein und drückt auf den Button "Bestätigen".
+1. Kunde wählt den Reiter "Bestellungen" in der Navigationsleiste aus.
+2. Kunde gibt seine Bestellnummer in das Eingabefeld ein und drückt auf den Button "Bestellung ansehen".
+3. Kunde wird auf die Seite der Bestellung weitergeleitet.
+
 |Erweiterungen              |-
 |Funktionale Anforderung    |<<F0023>>
 |===
 
-[cols="1h, 3a"]
+[cols="1h, 3a", width="100%"]
 [[UC310]]
 |===
 |ID                         |**<<UC310>>**
@@ -300,14 +335,12 @@ _Kunde:_
 |Akteur                     |Kunde
 |Auslöser                   |Der Kunde möchte die komplette Bestellung nicht mehr erhalten.
 |Bedingungen                |Der Kunde sieht seine Bestellung derzeit ein <<UC300>>.
-|Notwendige Schritte        |
-1. Der Kunde klickt den Button "Bestellung stornieren".
-2. Der Kunde bestätigt die Stornierung mit einen Klick auf den Button "Bestätigen".
+|Notwendige Schritte        |Der Kunde klickt den Button "Bestellung stornieren".
 |Erweiterungen              |-
 |Funktionale Anforderung    |<<F0022>>
 |===
 
-[cols="1h, 3a"]
+[cols="1h, 3a", width="100%"]
 [[UC320]]
 |===
 |ID                         |**<<UC320>>**
@@ -319,12 +352,11 @@ _Kunde:_
 |Notwendige Schritte        |
 1. Der Kunde sucht den Artikel aus der Artikel-Liste innerhalb der Bestellung.
 2. Der Kunde drückt den zum Artikel zugehörigen Knopf "Artikel stornieren".
-3. Der Kunde bestätigt die Stornierung mit einen Klick auf den Button "Bestätigen".
 |Erweiterungen              |-
-|Funktionale Anforderung    |TBD
+|Funktionale Anforderung    |<<F0022>>
 |===
 
-[cols="1h, 3a"]
+[cols="1h, 3a", width="100%"]
 [[UC330]]
 |===
 |ID                         |**<<UC330>>**
@@ -334,17 +366,15 @@ _Kunde:_
 |Auslöser                   |Ein Kunde hat seine Bestellung per Vorkasse bezahlt und der Mitarbeiter möchte den Zahlungseingang im System bestätigen.
 |Bedingungen                |Der Mitarbeiter schaut sich derzeit die Liste der Bestellungen an <<UC410>>.
 |Notwendige Schritte        |
-1. Der Mitarbeiter sucht die entsprechende Bestellung über die Bestellnummer aus der Liste heraus und klickt diese an.
-2. Der Mitarbeiter drückt auf den Button "Bestellstatus ändern"
-3. Der Mitarbeiter wählt den neuen Status aus dem Dropdown aus.
-4. Der Mitarbeiter klickt auf den Button "Bestätigen" um den Status zu ändern.
+1. Der Mitarbeiter sucht die entsprechende Bestellung über die Bestellnummer aus der Liste heraus und klickt auf "Bestellung ansehen"-
+2. Der Mitarbeiter wählt den neuen Status aus dem Dropdown aus.
 |Erweiterungen              |-
-|Funktionale Anforderung    |<<F0024>>
+|Funktionale Anforderung    |<<F0020>>, <<F0024>>
 |===
 [[sequence_uc330]]
-image::./images/sequence_usecases/sequence_uc330.png[sequence_uc330,80%,100%,pdfwidth=100%,title= "Sequenzdiagramm für <<UC330>> Bestellstatus bearbeiten",align=center]
+image::./models/analysis/sequence_usecases/sequence_uc330.png[sequence_uc330,80%,100%,pdfwidth=100%,title= "Sequenzdiagramm für <<UC330>> Bestellstatus bearbeiten",align=center]
 
-[cols="1h, 3a"]
+[cols="1h, 3a", width="100%"]
 [[UC400]]
 |===
 |ID                         |**<<UC400>>**
@@ -352,13 +382,13 @@ image::./images/sequence_usecases/sequence_uc330.png[sequence_uc330,80%,100%,pdf
 |Beschreibung               |Ein Mitarbeiter ist in der Lage auf das Admin-Interface der Seite zuzugreifen.
 |Akteur                     |Mitarbeiter
 |Auslöser                   |Ein Mitarbeiter möchte firmeninterne Daten abrufen.
-|Bedingungen                |Der Mitarbeiter hat sich zuvor mithilfe von <<UC010>> gegenüber dem System authetifiziert.
-|Notwendige Schritte        |Der Mitarbeiter drückt auf den Reiter "Admin-Interface" in der Navigatonsleiste.
-|Erweiterungen              |Der Reiter "Admin-Interface" erscheint nur wenn der Nutzer im System die Rolle Mitarbeiter erhalten hat.
-|Funktionale Anforderung    |<<F0054>>
+|Bedingungen                |Der Mitarbeiter hat sich zuvor mithilfe von <<UC010>> gegenüber dem System authentifiziert.
+|Notwendige Schritte        |Der Mitarbeiter drückt auf den Reiter "Admin" in der Navigationsleiste.
+|Erweiterungen              |-
+|Funktionale Anforderung    |<<F0053>>, <<F0054>>
 |===
 
-[cols="1h, 3a"]
+[cols="1h, 3a", width="100%"]
 [[UC410]]
 |===
 |ID                         |**<<UC410>>**
@@ -367,12 +397,12 @@ image::./images/sequence_usecases/sequence_uc330.png[sequence_uc330,80%,100%,pdf
 |Akteur                     |Mitarbeiter
 |Auslöser                   |Der Mitarbeiter möchte die Bestellungen einsehen und ggf. eine bestimmte Bestellung suchen.
 |Bedingungen                |Der Mitarbeiter befindet sich im Admin-Interface <<UC400>>.
-|Notwendige Schritte        |Der Mitarbeiter wählt den Punkt "Kundenbestellungen auflisten" aus und wird dadurch auf die Seite mit allen Bestellungen weitergeleitet.
+|Notwendige Schritte        |Der Mitarbeiter wählt den Punkt "Kundenbestellungen" aus und wird dadurch auf die Seite mit allen Bestellungen weitergeleitet.
 |Erweiterungen              |-
 |Funktionale Anforderung    |<<F0057>>
 |===
 
-[cols="1h, 3a"]
+[cols="1h, 3a", width="100%"]
 [[UC420]]
 |===
 |ID                         |**<<UC420>>**
@@ -381,14 +411,14 @@ image::./images/sequence_usecases/sequence_uc330.png[sequence_uc330,80%,100%,pdf
 |Akteur                     |Mitarbeiter
 |Auslöser                   |Der Mitarbeiter möchte die Verkaufszahlen des letzen Monats anschauen.
 |Bedingungen                |Der Mitarbeiter befindet sich im Admin-Interface <<UC400>>.
-|Notwendige Schritte        |Der Mitarbeiter wählt den Punkt "Monatsstatistik einsehen" aus und wird auf die Seite der Statistik weitergeleitet.
+|Notwendige Schritte        |Der Mitarbeiter wählt den Punkt "Monatsstatistik" aus und wird auf die Seite der Statistik weitergeleitet.
 |Erweiterungen              |-
-|Funktionale Anforderung    |<<F0056>>
+|Funktionale Anforderung    |<<F0055>>, <<F0056>>
 |===
 [[sequence_uc420]]
-image::./images/sequence_usecases/sequence_uc420.png[sequence_uc420,90%,100%,pdfwidth=100%,title= "Sequenzdiagramm für <<UC420>> Monatsstatistik einsehen",align=center]
+image::./models/analysis/sequence_usecases/sequence_uc420.png[sequence_uc420,90%,100%,pdfwidth=100%,title= "Sequenzdiagramm für <<UC420>> Monatsstatistik einsehen",align=center]
 
-[cols="1h, 3a"]
+[cols="1h, 3a", width="100%"]
 [[UC430]]
 |===
 |ID                         |**<<UC430>>**
@@ -400,21 +430,20 @@ image::./images/sequence_usecases/sequence_uc420.png[sequence_uc420,90%,100%,pdf
 |Notwendige Schritte        |
 _Löschen:_
 
-1. Der Mitarbeiter wählt den Punkt "Lieferanten verwalten" aus und wird auf die Seite mit einer Liste aller Lieferanten weitergeleitet.
-2. Der Mitarbeiter wählt den Button "Lieferant löschen" in der Zeile des gewünschten Lieferanten aus.
-3. Der Mitarbeiter bestätigt das Löschen des Lieferanten mithilfe des Buttons "Bestätigen".
+1. Der Mitarbeiter wählt den Punkt "Lieferanten" aus und wird auf die Seite mit einer Liste aller Lieferanten weitergeleitet.
+2. Der Mitarbeiter wählt den Button "Lieferant entfernen" in der Zeile des gewünschten Lieferanten aus.
 
 _Hinzufügen:_
 
-1. Der Mitarbeiter wählt den Punkt "Lieferanten verwalten" aus und wird auf die Seite mit einer Liste aller Lieferanten weitergeleitet.
-2. Der Mitarbeiter wählt "Neuen Lieferant hinzufügen" am Anfang der Liste aus.
-3. Der Mitarbeiter gibt die Daten des neuen Lieferanten ein.
-4. Der Mitarbeiter bestätigt die Eingaben mithilfe des Buttons "Lieferant hinzufügen".
+1. Der Mitarbeiter wählt den Punkt "Lieferanten" aus und wird auf die Seite mit einer Liste aller Lieferanten weitergeleitet.
+2. Der Mitarbeiter gibt den Namen des neuen Lieferanten in das Textfeld ein.
+3. Der Mitarbeiter bestätigt die Eingaben mithilfe des Buttons "Lieferant hinzufügen".
+
 |Erweiterungen              |-
-|Funktionale Anforderung    |<<F0059>>
+|Funktionale Anforderung    |<<F0058>>, <<F0059>>
 |===
 
-[cols="1h, 3a"]
+[cols="1h, 3a", width="100%"]
 [[UC500]]
 |===
 |ID                         |**<<UC500>>**
@@ -424,13 +453,13 @@ _Hinzufügen:_
 |Auslöser                   |Der Kunde möchte die Informationen zu seinem gebuchten LKW einsehen.
 |Bedingungen                |Der Kunde hat einen LKW gebucht und eine gültige Buchungsnummer.
 |Notwendige Schritte        |
-1. Der Kunde drückt auf den Reiter "Bestellung einsehen" und gibt die Nummer seiner LKW Buchung ein.
-2. Der Kunde drückt auf "Bestätigen" und wird auf die Detailseite der Buchung weitergeleitet.
+1. Der Kunde drückt auf den Reiter "Bestellungen" und gibt die Nummer seiner LKW Buchung ein.
+2. Der Kunde drückt auf "Bestellung ansehen" und wird auf die Detailseite der Buchung weitergeleitet.
 |Erweiterungen              |-
-|Funktionale Anforderung    |TBD
+|Funktionale Anforderung    |<<F0023>>
 |===
 
-[cols="1h, 3a"]
+[cols="1h, 3a", width="100%"]
 [[UC510]]
 |===
 |ID                         |**<<UC510>>**
@@ -439,12 +468,12 @@ _Hinzufügen:_
 |Akteur                     |Kunde
 |Auslöser                   |Der Kunde benötigt seinen gebuchten LKW nicht mehr.
 |Bedingungen                |Der Kunde hat einen LKW gebucht und eine gültige Buchungsnummer und befindet sich auf der Detailseite seiner LKW-Bestellung <<UC500>>.
-|Notwendige Schritte        |Der Kunde drückt auf "Lkw stornieren" und anschließend auf "Bestätigen" um die Aktion auszuführen.
+|Notwendige Schritte        |Der Kunde drückt auf den Button "LKW stornieren".
 |Erweiterungen              |-
 |Funktionale Anforderung    |<<F0043>>
 |===
 
-[cols="1h, 3a"]
+[cols="1h, 3a", width="100%"]
 [[UC520]]
 |===
 |ID                         |**<<UC520>>**
@@ -453,21 +482,21 @@ _Hinzufügen:_
 |Auslöser                   |Der Nutzer benötigt einen LKW.
 |Bedingungen                |-
 |Notwendige Schritte        |
-1. Der Nutzer wählt in der Navigationsleiste den Reiter "LKW buchen" aus.
-2. Der Nutzer wählt einen LKW-Typen aus der Liste aus
-3. Der Nutzer gibt seine persönlichen Daten sowie das Datum auf der Bestellseite ein.
+1. Der Nutzer wählt in der Navigationsleiste den Reiter "LKW mieten" aus.
+2. Der Nutzer wählt einen LKW-Typen aus der Liste aus und drückt auf den Button "Mieten".
+3. Der Nutzer gibt seine persönlichen Daten (Name und E-Mail) sowie das Datum auf der Bestellseite ein und drückt auf den Button "LKW mieten".
 4. Das System weist dem Nutzer automatisch einen LKW zu und teilt dem Kunden die Bestellnummer mit.
 |Erweiterungen              |-
 |Funktionale Anforderung    |<<F0042>>
 |===
 [[sequence_uc520]]
-image::./images/sequence_usecases/sequence_uc520.png[sequence_uc520,80%,100%,pdfwidth=100%,title= "Sequenzdiagramm für <<UC520>> LKW buchen",align=center]
+image::./models/analysis/sequence_usecases/sequence_uc520.png[sequence_uc520,100%,100%,pdfwidth=100%,title= "Sequenzdiagramm für <<UC520>> LKW buchen",align=center]
 
 == Funktionale Anforderungen
 
 === Muss-Kriterien
 
-[options="header", cols="2h, 1, 3, 12"]
+[options="header", cols="2h, 1a, 3a, 12a", width="100%"]
 |===
 |ID
 |Version
@@ -477,29 +506,29 @@ image::./images/sequence_usecases/sequence_uc520.png[sequence_uc520,80%,100%,pdf
 |[[F0001]]<<F0001>>
 |v1.0
 |Artikel-Katalog
-a|
+|
 Das System muss eine Liste von Artikeln, welche den Artikel-Katalog repräsentiert, dauerhaft in einer Datenbank speichern.
 
 
 |[[F0002]]<<F0002>>
 |v1.0
-|Artikel-Katalog anzeigen 
-a|
+|Artikel-Katalog anzeigen
+|
 Das System muss Nutzern die Möglichkeit bieten, alle Artikel des Artikel-Katalogs anzuzeigen.
 Dabei wird für jeden Artikel nur der Name, der Preis und ein Bild des Artikels angezeigt.
 
 
 |[[F0003]]<<F0003>>
 |v1.0
-|Artikel-Katalog bearbeiten 
-a|
+|Artikel-Katalog bearbeiten
+|
 Das System muss Mitarbeitern die Möglichkeit bieten, Artikel dem Artikel-Katalog hinzuzufügen und Artikel aus dem Artikel-Katalog zu entfernen.
 
 
 |[[F0004]]<<F0004>>
 |v1.0
-|Artikel anzeigen 
-a|
+|Artikel anzeigen
+|
 Das System muss Nutzern die Möglichkeit bieten einen ausgewählten Artikel anzuzeigen.
 Dabei wird ein Bild, der Name, der Preis, die Kategorie und die Variante des Artikels angezeigt.
 Die Variante kann dabei geändert werden.
@@ -508,30 +537,30 @@ Die Variante kann dabei geändert werden.
 |[[F0010]]<<F0010>>
 |v1.0
 |Warenkorb
-a|
+|
 Das System muss jedem Nutzer einen eigenen Warenkorb zur Verfügung stellen, in dem er mehrere unterschiedliche Artikel vorübergehend speichern kann.
 
 
 |[[F0011]]<<F0011>>
 |v1.0
 |Warenkorb anzeigen
-a|
+|
 Das System muss Nutzern die Möglichkeit bieten, ihren Warenkorb anzuschauen.
-Dabei werden die einzelnen Artikel des Warenkorbes aufgelistet mit Name, Preis und Variante.
+Dabei werden die einzelnen Artikel des Warenkorbes mit Namen, Preis und Variante aufgelistet.
 Außerdem wird der Gesamtpreis des Warenkorbes angezeigt.
 
 
 |[[F0012]]<<F0012>>
 |v1.0
 |Warenkorb bearbeiten
-a|
+|
 Das System muss Nutzern die Möglichkeit bieten, ausgewählte Artikel ihrem Warenkorb hinzuzufügen oder zu entfernen.
 
 
 |[[F0020]]<<F0020>>
 |v1.0
 |Bestellung speichern
-a|
+|
 Das System muss Bestellungen in einer Datenbank speichern.
 Eine Bestellung besteht aus ein oder mehreren Bestelleinträgen, den Kontaktinformationen des Kunden, einer eindeutigen ID und einem Abholdatum oder alternativ einem LKW Lieferdatum.
 Ein Bestelleintrag besteht aus einem Item, der Anzahl des ausgewählten Items und dem Bestellstatus.
@@ -540,21 +569,21 @@ Ein Bestelleintrag besteht aus einem Item, der Anzahl des ausgewählten Items un
 |[[F0021]]<<F0021>>
 |v1.0
 |Bestellung erstellen
-a|
+|
 Das System muss fähig sein eine Bestellung zu erstellen, nachdem der Kunde eine Bestellung aufgegeben hat
 
 
 |[[F0022]]<<F0022>>
 |v1.0
 |Bestellung stornieren
-a|
+|
 Das System muss einem Kunden die Möglichkeit bieten, seine gesamte Bestellung oder einzelne Artikel der Bestellung zu stornieren.
 
 
 |[[F0023]]<<F0023>>
 |v1.0
 |Bestellung anzeigen
-a|
+|
 Das System muss dem Nutzer die Möglichkeit bieten, über die Bestell-ID, seine Bestellung anzuzeigen.
 Dazu gehören Möbel- und LKW-Bestellungen.
 
@@ -562,52 +591,52 @@ Dazu gehören Möbel- und LKW-Bestellungen.
 |[[F0024]]<<F0024>>
 |v1.0
 |Bestellstatus bearbeiten
-a|
+|
 Das System muss Mitarbeitern die Möglichkeit bieten, den Status einer Bestellung zu ändern.
 
 
 |[[F0040]]<<F0040>>
 |v1.0
 |LKW Park speichern
-a|
-Das System muss eine Liste von LKWS dauerhaft in einer Datenbank speichern.
+|
+Das System muss eine Liste von LKWs dauerhaft in einer Datenbank speichern.
 
 
 |[[F0041]]<<F0041>>
 |v1.0
 |LKW bearbeiten
-a|
-Das System muss fähig sein den Kalendar eines LKWs zu bearbeiten.
-Der Kalendar enthält Kalendareinträge, welche ein Datum haben und einen Mieteintrag oder Liefereintrag.
+|
+Das System muss fähig sein den Kalender eines LKWs zu bearbeiten.
+Der Kalender enthält Kalendereinträge, welche ein Datum haben und einen Mieteintrag oder Liefereintrag.
 
 |[[F0042]]<<F0042>>
 |v1.0
 |LKW buchen
-a|
+|
 Das System muss Nutzern die Möglichkeit bieten, LKWs aus dem LKW-Park zu buchen.
 Bei der Buchung wird zunächst die LKW Bestellung validiert nach <<F0021>>.
-Wenn die Bestellung valide ist, wird der Kalendar des LKWs bearbeitet nach <<F0041>>.
+Wenn die Bestellung valide ist, wird der Kalender des LKWs bearbeitet nach <<F0041>>.
 
 
 |[[F0043]]<<F0043>>
 |v1.0
 |LKW stornieren
-a|
+|
 Das System muss einem Kunden mit einer gültigen Bestell-ID, die Möglichkeit bieten, von ihm gebuchte LKWs zu stornieren.
-Dabei wird der Kalendareintrag gelöscht.
+Dabei wird der Kalendereintrag gelöscht.
 
 
 |[[F0050]]<<F0050>>
 |v1.0
 |Mitarbeiter speichern
-a|
+|
 Das System muss Mitarbeiter und deren Logindaten dauerhaft in einer Datenbank speichern.
 
 
 |[[F0051]]<<F0051>>
 |v1.0
 |Login
-a|
+|
 Das System muss die Möglichkeit bieten sich einzuloggen.
 Ein Mitarbeiter ist ein eingeloggter Nutzer.
 
@@ -615,14 +644,14 @@ Ein Mitarbeiter ist ein eingeloggter Nutzer.
 |[[F0052]]<<F0052>>
 |v1.0
 |Logout
-a|
+|
 Das System muss die Möglichkeit bieten sich als Mitarbeiter auszuloggen.
 
 
 |[[F0053]]<<F0053>>
 |v1.0
 |Admin Interface
-a|
+|
 Das System muss ein Admin Interface besitzen.
 Das Admin Interface beinhaltet eine monatliche Statistik und die Möglichkeit Lieferanten und Bestellungen zu verwalten.
 
@@ -630,35 +659,35 @@ Das Admin Interface beinhaltet eine monatliche Statistik und die Möglichkeit Li
 |[[F0054]]<<F0054>>
 |v1.0
 |Admin Interface anzeigen
-a|
+|
 Das System muss Mitarbeitern die Möglichkeit bieten das Admin Interface anzuzeigen.
 
 
 |[[F0055]]<<F0055>>
 |v1.0
 |monatliche Statistik
-a|
+|
 Das System muss fähig sein eine monatliche Statistik zu erstellen, welche die Daten über die Verkäufe des Monats, nach Großlieferant sortiert, zusammenfasst.
 
 
 |[[F0056]]<<F0056>>
 |v1.0
 |monatliche Statistik anzeigen
-a|
+|
 Das System muss Mitarbeitern, welche sich im Admin Interface befinden, die Möglichkeit bieten, die monatliche Statistik mit Vergleich der vorherigen monatlichen Statistik anzuzeigen.
 
 
 |[[F0057]]<<F0057>>
 |v1.0
 |Bestellungen anzeigen
-a|
+|
 Das System muss Mitarbeitern, welche sich im Admin Interface befinden, die Möglichkeit bieten, alle Bestellungen mit Bestelldatum und Bestellnummer aufzulisten.
 
 
 |[[F0058]]<<F0058>>
 |v1.0
 |Lieferanten anzeigen
-a|
+|
 Das System muss Mitarbeitern, welche sich im Admin Interface befinden, die Möglichkeit bieten, alle Lieferanten anzuzeigen.
 
 |===
@@ -667,7 +696,7 @@ Das System muss Mitarbeitern, welche sich im Admin Interface befinden, die Mögl
 
 Anforderungen, die das Programm leisten können soll, aber für den korrekten Betrieb entbehrlich sind.
 
-[options="header", cols="2h, 1, 3, 12"]
+[options="header", cols="2h, 1a, 3a, 12a", width="100%"]
 |===
 |ID
 |Version
@@ -677,14 +706,14 @@ Anforderungen, die das Programm leisten können soll, aber für den korrekten Be
 |[[F0030]]<<F0030>>
 |v1.0
 |Kunden benachrichtigen
-a|
+|
 Das System sollte fähig sein, Kunden zu benachrichtigen, wenn ihre bestellte Ware im Hauptlager angekommen ist, bzw. wenn das Abholdatum erreicht ist.
 
 
 |[[F0059]]<<F0059>>
 |v1.0
 |Lieferanten verwalten
-a|
+|
 Das System sollte Mitarbeitern, welche sich im Admin Interface befinden, die Möglichkeit bieten, Lieferanten zu löschen oder hinzuzufügen.
 
 |===
@@ -695,7 +724,7 @@ Das System sollte Mitarbeitern, welche sich im Admin Interface befinden, die Mö
 
 1 = Nicht wichtig | 5 = Sehr wichtig
 
-[options="header", cols="3h, ^1, ^1, ^1, ^1, ^1"]
+[options="header", cols="3h, 1, 1, 1, 1, 1"]
 |===
 |Qualitätsanspruch        | 1 | 2 | 3 | 4 | 5
 |Zuverlässigkeit          |   |   |   |   | x
@@ -705,10 +734,9 @@ Das System sollte Mitarbeitern, welche sich im Admin Interface befinden, die Mö
 
 |===
 
-
 === Konkrete Nicht-Funktionale Anforderungen
 
-[options="header", cols="2h, 1, 3, 12"]
+[options="header", cols="2h, 1a, 3a, 12a", width="100%"]
 |===
 |ID
 |Version
@@ -718,25 +746,25 @@ Das System sollte Mitarbeitern, welche sich im Admin Interface befinden, die Mö
 |[[NF0001]]<<NF0001>>
 |v1.0
 |Zuverlässigkeit
-a|
+|
 Die Erreichbarkeit des Systems muss größer als 99 % pro Jahr sein.
 
 |[[NF0002]]<<NF0002>>
 |v1.0
 |Sicherheit
-a|
-Das System muss Passwörter und Kundendaten verschlüsselt speichern.
+|
+Das System muss Kundendaten verschlüsselt speichern.
 
 |[[NF0003]]<<NF0003>>
 |v1.0
 |Benutzerfreundlichkeit
-a|
+|
 Ein Nutzer, der nach einem bestimmten Artikel aus dem Artikel-Katalog sucht, sollte weniger als 5 Minuten brauchen, um diesen zu finden.
 
 |[[NF0004]]<<NF0004>>
 |v1.0
 |Wartbarkeit
-a|
+|
 Die Integration von Erweiterungen muss kleiner gleich 7 Tage sein.
 
 |===
@@ -744,91 +772,194 @@ Die Integration von Erweiterungen muss kleiner gleich 7 Tage sein.
 == GUI Prototyp
 
 In diesem Kapitel soll ein Entwurf der Navigationsmöglichkeiten und Dialoge des Systems erstellt werden.
-Idealerweise entsteht auch ein grafischer Prototyp, welcher dem Kunden zeigt, wie sein System visuell umgesetzt werden soll.
-Konkrete Absprachen - beispielsweise ob der grafische Prototyp oder die Dialoglandkarte höhere Priorität hat - sind mit dem Kunden zu treffen.
 
-image::./images/GUI/catalog.png[catalog,100%,100%,pdfwidth=100%,title= "Katalog auf der Website",align=center]
+image::./models/analysis/GUI/catalog.png[catalog,100%,100%,pdfwidth=100%,title= "Katalog auf der Webseite",align=center]
+[options="header", cols="1h, 12a", width="100%"]
+|===
+|Nr.  |Beschreibung
+|1    |Weiterleitung zum Katalog (catalog.html)
+|2    |Weiterleitung zum Warenkorb (cart.html)
+|3    |Weiterleitung zu den Bestellungen (orders.html)
+|4    |Weiterleitung zur LKW-Vermietung (lkw.html)
+|5    |Weiterleitung zum Administrator-Bereich (adminLogin.html)
+|6    |Logout Button (nur für eingeloggte Administratoren sichtbar)
+|7    |Name, Preis und Beschreibung eines Möbelstücks und Weiterleitung zur Großansicht (itemView.html)
+|===
 
-image::./images/GUI/itemView.png[itemView,100%,100%,pdfwidth=100%,title= "Ansicht eines Möbelstücks auf der Website",align=center]
+image::./models/analysis/GUI/itemView.png[itemView,100%,100%,pdfwidth=100%,title= "Ansicht eines Möbelstücks auf der Webseite",align=center]
+[options="header", cols="1h, 12a", width="100%"]
+|===
+|Nr.  |Beschreibung
+|1    |Beschreibung des Möbelstücks
+|2    |Auswahl einer Ausführung des Möbelstücks (z.B. in anderer Farbe) über ein Dropdown-Menü
+|3    |Auswahl der Anzahl, die dem Warenkorb hinzugefügt werden soll
+|4    |Schaltfläche, über die das Möbelstück dem Warenkorb hinzugefügt wird
+|===
 
-image::./images/GUI/cart.png[cart,100%,100%,pdfwidth=100%,title= "Warenkorb auf der Website",align=center]
+image::./models/analysis/GUI/cart.png[cart,100%,100%,pdfwidth=100%,title= "Warenkorb auf der Webseite",align=center]
+[options="header", cols="1h, 12a", width="100%"]
+|===
+|Nr.  |Beschreibung
+|1    |Änderung der Anzahl des Artikels im Warenkorb (min. 1)
+|2    |Schaltfläche zur Entfernung des Artikels aus dem Warenkorb
+|3    |Schaltfläche zur zur Weiterleitung zum Bestellformular (orderCheckout.html)
+|===
 
-image::./images/GUI/orders.png[orders,100%,100%,pdfwidth=100%,title= "Bestellungssuche auf der Website",align=center]
+image::./models/analysis/GUI/orderCheckout.png[orders,100%,100%,pdfwidth=100%,title= "Bestellformular auf der Webseite",align=center]
+[options="header", cols="1h, 12a", width="100%"]
+|===
+|Nr.  |Beschreibung
+|1    |Textfeld zur Eingabe des Namens
+|2    |Textfeld zur Eingabe der E-Mail
+|3    |Textfeld zur Eingabe der Adresse
+|4    |Auswahl zwischen Lieferung und Abholung der Möbel
+|5    |Schaltfläche zum Abschicken der Bestellung
+|===
 
-image::./images/GUI/orderItems.png[orderItems,100%,100%,pdfwidth=100%,title= "Bestellungen auf der Website",align=center]
+image::./models/analysis/GUI/orders.png[orders,100%,100%,pdfwidth=100%,title= "Bestellungssuche auf der Webseite",align=center]
+[options="header", cols="1h, 12a", width="100%"]
+|===
+|Nr.  |Beschreibung
+|1    |Textfeld zur Eingabe der Bestellnummer
+|2    |Weiterleitung zur Ansicht der Bestellung (orderItems.html)
+|===
 
-image::./images/GUI/lkw.png[lkw,100%,100%,pdfwidth=100%,title= "LKW-Mietung auf der Website",align=center]
+image::./models/analysis/GUI/orderItems.png[orderItems,100%,100%,pdfwidth=100%,title= "Bestellungen auf der Webseite",align=center]
+[options="header", cols="1h, 12a", width="100%"]
+|===
+|Nr.  |Beschreibung
+|1    |Änderung des Bestellstatus in einem Dropdown-Menü (nur für eingeloggte Administratoren sichtbar)
+|2    |Schaltfläche zur Stornierung des Artikels
+|3    |Schaltfläche zur Stornierung der gesamten Bestellung
+|===
 
-image::./images/GUI/adminLogin.png[adminLogin,100%,100%,pdfwidth=100%,title= "Administrator-Login auf der Website",align=center]
+image::./models/analysis/GUI/lkw.png[lkw,100%,100%,pdfwidth=100%,title= "LKW-Vermietung auf der Webseite",align=center]
+[options="header", cols="1h, 12a", width="100%"]
+|===
+|Nr.  |Beschreibung
+|1    |Gewichtsklasse des LKW
+|2    |Mietpreis für einen Tag
+|3    |Weiterleitung zum Ausfüllen des Mietformulars (lkwCheckout.html)
+|===
 
-image::./images/GUI/admin.png[cart,100%,100%,pdfwidth=100%,title= "Administrator-Bereich auf der Website",align=center]
+image::./models/analysis/GUI/lkwCheckout.png[lkw,100%,100%,pdfwidth=100%,title= "Mietformular für LKWs auf der Webseite",align=center]
+[options="header", cols="1h, 12a", width="100%"]
+|===
+|Nr.  |Beschreibung
+|1    |Textfeld zur Eingabe des Namens
+|2    |Textfeld zur Eingabe der E-Mail
+|3    |Textfeld zur Eingabe des Datums, an dem der LKW gemietet werden soll
+|4    |Schaltfläche zum Mieten des LKW 
+|===
 
-=== Überblick: Dialoglandkarte
+image::./models/analysis/GUI/adminLogin.png[adminLogin,100%,100%,pdfwidth=100%,title= "Administrator-Login auf der Webseite",align=center]
+[options="header", cols="1h, 12a", width="100%"]
+|===
+|Nr.  |Beschreibung
+|1    |Feld zur Eingabe des Nutzernamens 
+|2    |Feld zur Eingabe des Passworts
+|3    |Schaltfläche zum Einloggen (hierdurch wird die Logout-Schaltfläche sichtbar)
+|===
 
-Erstellen Sie ein Übersichtsdiagramm, das das Zusammenspiel Ihrer Masken zur Laufzeit darstellt.
-Also mit welchen Aktionen zwischen den Masken navigiert wird.
-//Die nachfolgende Abbildung zeigt eine an die Pinnwand gezeichnete Dialoglandkarte. Ihre Karte sollte zusätzlich die Buttons/Funktionen darstellen, mit deren Hilfe Sie zwischen den Masken navigieren.
+image::./models/analysis/GUI/admin.png[cart,100%,100%,pdfwidth=100%,title= "Administrator-Bereich auf der Webseite",align=center]
+[options="header", cols="1h, 12a", width="100%"]
+|===
+|Nr.  |Beschreibung
+|1    |Schaltfläche zur Ansicht der Kundenbestellungen (customerOrders.html)
+|2    |Schaltfläche zur Ansicht der Monatsstatistik (monthlyStatistic.html)
+|3    |Schaltfläche zur Ansicht der Lieferanten (suppliers.html)
+|===
 
-=== Dialogbeschreibung
+image::./models/analysis/GUI/customerOrders.png[cart,100%,100%,pdfwidth=100%,title= "Administrator-Ansicht von Kundenbestellungen auf der Webseite",align=center]
+[options="header", cols="1h, 12a", width="100%"]
+|===
+|Nr.  |Beschreibung
+|1    |Weiterleitung zur Ansicht der Bestellung (orderItems.html)
+|===
 
-Für jeden Dialog:
+image::./models/analysis/GUI/monthlyStatistic.png[cart,100%,100%,pdfwidth=100%,title= "Administrator-Ansicht der Monatsstatistik auf der Webseite",align=center]
+[options="header", cols="1h, 12a", width="100%"]
+|===
+|Nr.  |Beschreibung
+|1    |Der Betrag, für den diesen Monat Möbel gekauft wurden
+|2    |Differenz des Betrags zum vorherigen Monat
+|===
 
-1. Kurze textuelle Dialogbeschreibung eingefügt: Was soll der jeweilige Dialog?
-Was kann man damit tun?
-Überblick?
-2. Maskenentwürfe (Screenshot, Mockup)
-3. Maskenelemente (Ein/Ausgabefelder, Aktionen wie Buttons, Listen, …)
-4. Evtl.
-Maskendetails, spezielle Widgets
+image::./models/analysis/GUI/suppliers.png[cart,100%,100%,pdfwidth=100%,title= "Administrator-Ansicht zur Verwaltung der Lieferanten auf der Webseite",align=center]
+[options="header", cols="1h, 12a", width="100%"]
+|===
+|Nr.  |Beschreibung
+|1    |Schaltfläche zum Entfernen des Lieferanten
+|2    |Textfeld für den Namen des neuen Lieferanten
+|3    |Schaltfläche zum Hinzufügen des Lieferanten
+|===
 
 == Datenmodell
 
 === Überblick: Klassendiagramm
 
 [[analyseclass_diagram]]
-image::./models/analysis/Model.png[Analyseklassendiagramm,100%,100%,pdfwidth=100%,title= "Analyseklassendiagramms des Projektes {project_name}",align=center]
+image::./models/analysis/analyseklassendiagramm.png[Analyseklassendiagramm,100%,100%,pdfwidth=100%,title= "Analyseklassendiagramm des Projektes {project_name}",align=center]
 
 === Klassen und Enumerationen
 
-Dieser Abschnitt stellt eine Vereinigung von Glossar und der Beschreibung von Klassen/Enumerationen dar.
-Jede Klasse und Enumeration wird in Form eines Glossars textuell beschrieben.
-Zusätzlich werden eventuellen Konsistenz- und Formatierungsregeln aufgeführt.
+Dieser Abschnitt beinhaltet die Beschreibung von Klassen/Enumerationen.
 
 // See http://asciidoctor.org/docs/user-manual/#tables
-[options="header"]
+[options="header", cols="2h, 6a", width="100%"]
 [[classes_enumerations]]
 |===
-|Klasse/Enumeration |Beschreibung |
-|…                  |…            |
+|Klasse/Enumeration               |Beschreibung
+|Möbelgeschäft                    |Repräsentiert das Geschäft selbst
+|WarenkorbEintrag                 |Erfasst einen zu kaufenden Artikel im Warenkorb und deren gewünschte Anzahl            
+|Warenkorb                        |Beinhaltet alle gewünschten WarenkorbEinträge des Kunden
+|Item                             |Modelliert alle Möbelstücke in unserem Inventar
+|Set                              |Ein Set stellt eine Sammlung aus verschiedenen Items dar und modelliert vorgefertigte Sätze an Möbelstücken zu einem Angebotspreis 
+|Teil                             |Ist die konkrete Implementierung eines Items
+|Inventar                         |Erfasst die Sammlung aller Items und modelliert so ein physisches Inventar
+|Kategorie                        |Ist eine Enumeration über alle Kategorien die ein Möbelstück haben kann
+|Lieferant                        |Stellt alle unsere registrierten Lieferanten dar
+|LieferantManager                 |Verwaltet alle Lieferanten und ermöglicht das Hinzufügen und Entfernen von Lieferanten und ermöglicht das Erstellen einer Lieferantenstatistik
+|BestellManager                   |Verwaltet alle aktiven und vergangenen Bestellungen und implementiert das Erstellen und Stornieren jener
+|Bestellung                       |Ist eine abstrakte Modellierung aller Bestellungen und beinhaltet alle BestellEinträge
+|BestellEintrag                   |Erfasst einen bestellten Artikel mit der Anzahl und dem Bestellstatus
+|BestellStatus                    |Ist eine Enumeration und modelliert alle verschiedenen Staten in denen sich ein BestellEintrag befinden kann
+|Kontaktinformationen             |Beinhaltet alle relevanten Kontaktinformationen eines Kunden
+|ItemBestellung                   |Ist die abstrakte Modellierung für alle physischen Verkaufsartikel
+|LKWMietung                       |Modelliert alle benötigten Informationen für die LKWMietung
+|Abholung                         |Ist die konkrete Implementierung der ItemBestellung für Items, die aus dem Lager abgeholt werden
+|Lieferung                        |Ist die konkrete Implementierung der ItemBestellung für Items, die zum Kunden geliefert werden
+|LKWManager                       |Verwaltet alle LKWs und regelt deren Buchung und Stornierung
+|LKW                              |Modelliert einen physischen LKW, der entweder gemietet werden kann oder zur Lieferung genutzt wird
+|Kalender                         |Erfasst alle Buchungen für alle LKWs und deren Zeitfenster
+|KalenderEintrag                  |Stellt als abstrakte Klasse einen Eintrag mit einer Buchung für einen bestimmten Tag und einen bestimmten LKW dar
+|Mieteintrag                      |Modelliert die Mietung eines LKWs an einem spezifischen Tag
+|Liefereintrag                    |Modelliert die Lieferung einer Bestellung mit einem LKW an einem spezifischen Tag
 |===
 
 == Akzeptanztestfälle
 
 Mithilfe von Akzeptanztests wird geprüft, ob die Software die funktionalen Erwartungen und Anforderungen im Gebrauch erfüllt.
-Diese sollen und können aus den Anwendungsfallbeschreibungen und den UML-Sequenzdiagrammen abgeleitet werden. D.h. pro (komplexen) Anwendungsfall gibt es typischerweise mindestens ein Sequenzdiagramm (welches ein Szenarium beschreibt).
-Für jedes Szenarium sollte es einen Akzeptanztestfall geben.
-Listen Sie alle Akzeptanztestfälle in tabellarischer Form auf.
-Jeder Testfall soll mit einer ID versehen werde, um später zwischen den Dokumenten (z.B. im Test-Plan) referenzieren zu können.
 
 :Use: Anwendungsfall
 :Pre: Vorbedingung(en)
 :Event: Auslöser
 :Result: Erwartetes Ergebnis
 
-[cols="1h, 4a"]
+[cols="1h, 4a", width="100%"]
 [[AT010]]
 |===
 |ID        |**<<AT010>>**
 |{Use}     |<<UC010>>
 |{Pre}     |Das System verfügt über Mitarbeiter-Anmeldungsdaten.
-|{Event}   |Ein nicht authentifizierter Nutzer klickt auf "Login" in der Navigationsliste, gibt seine richten Mitarbeiter Daten ein (Name und Password) und klickt auf den "Login" Button.
+|{Event}   |Ein nicht authentifizierter Nutzer klickt auf "Login" in der Navigationsliste, gibt seine richtigen Mitarbeiter Daten ein (Name und Password) und klickt auf den "Login" Button.
 |{Result}  |
 - Der Nutzer wird als Mitarbeiter angemeldet.
 - Der Nutzer wird auf die Admin Seite weitergeleitet.
 - Der Nutzer hat nun die Möglichkeit auf weitere Funktionalitäten von der Rolle "Mitarbeiter" auf der Seite zuzugreifen.
 |===
 
-[cols="1h, 4a"]
+[cols="1h, 4a", width="100%"]
 [[AT011]]
 |===
 |ID        |**<<AT011>>**
@@ -836,11 +967,11 @@ Jeder Testfall soll mit einer ID versehen werde, um später zwischen den Dokumen
 |{Pre}     |Der Nutzer ist als Mitarbeiter angemeldet.
 |{Event}   |Ein Mitarbeiter klickt auf "Ausloggen" in der Navigationsleiste.
 |{Result}  |
-- Der Nutzer wird abgemeldet und hat nicht mehr die Rolle "Mitabeiter".
+- Der Nutzer wird abgemeldet und hat nicht mehr die Rolle "Mitarbeiter".
 - Der Nutzer verliert den Zugriff auf Funktionalitäten der Rolle "Mitarbeiter".
 |===
 
-[cols="1h, 4a"]
+[cols="1h, 4a", width="100%"]
 [[AT100]]
 |===
 |ID        |**<<AT100>>**
@@ -852,7 +983,7 @@ Jeder Testfall soll mit einer ID versehen werde, um später zwischen den Dokumen
 - Im Warenkorb werden alle Artikel angezeigt, die der Nutzer vorher hinzugefügt hat.
 |===
 
-[cols="1h, 4a"]
+[cols="1h, 4a", width="100%"]
 [[AT110]]
 |===
 |ID        |**<<AT110>>**
@@ -864,7 +995,7 @@ Jeder Testfall soll mit einer ID versehen werde, um später zwischen den Dokumen
 - Die Warenkorb Seite wird aktualisiert.
 |===
 
-[cols="1h, 4a"]
+[cols="1h, 4a", width="100%"]
 [[AT120]]
 |===
 |ID        |**<<AT120>>**
@@ -875,7 +1006,7 @@ Jeder Testfall soll mit einer ID versehen werde, um später zwischen den Dokumen
 - Der Nutzer wird auf eine Seite weitergeleitet, wo er seine persönlichen Daten eingeben und die Lieferoption auswählen muss.
 |===
 
-[cols="1h, 4a"]
+[cols="1h, 4a", width="100%"]
 [[AT121]]
 |===
 |ID        |**<<AT121>>**
@@ -883,10 +1014,10 @@ Jeder Testfall soll mit einer ID versehen werde, um später zwischen den Dokumen
 |{Pre}     |Ein Nutzer hat Artikel im Warenkorb und hat <<AT120>> gemacht.
 |{Event}   |Ein Nutzer klickt auf den "Bestellung abschließen" Button, nachdem er seine persönlichen Daten eingetragen hat.
 |{Result}  |
-- Seine Bestellung wird aufgegeben und der Nutzer erhält weitere Informationen per E-Mail.
+- Seine Bestellung wird aufgegeben und dem Nutzer wird seine Bestellnummer angezeigt.
 |===
 
-[cols="1h, 4a"]
+[cols="1h, 4a", width="100%"]
 [[AT200]]
 |===
 |ID        |**<<AT200>>**
@@ -898,7 +1029,7 @@ Jeder Testfall soll mit einer ID versehen werde, um später zwischen den Dokumen
 - Dem Nutzer werden alle verfügbaren Artikel angezeigt.
 |===
 
-[cols="1h, 4a"]
+[cols="1h, 4a", width="100%"]
 [[AT210]]
 |===
 |ID        |**<<AT210>>**
@@ -909,7 +1040,7 @@ Jeder Testfall soll mit einer ID versehen werde, um später zwischen den Dokumen
 - Der Nutzer wird auf die Detailseite des Artikels weitergeleitet.
 |===
 
-[cols="1h, 4a"]
+[cols="1h, 4a", width="100%"]
 [[AT220]]
 |===
 |ID        |**<<AT220>>**
@@ -920,7 +1051,7 @@ Jeder Testfall soll mit einer ID versehen werde, um später zwischen den Dokumen
 - Der Nutzer wird auf die Detailseite des ausgewählten Artikels weitergeleitet.
 |===
 
-[cols="1h, 4a"]
+[cols="1h, 4a", width="100%"]
 [[AT230]]
 |===
 |ID        |**<<AT230>>**
@@ -931,7 +1062,7 @@ Jeder Testfall soll mit einer ID versehen werde, um später zwischen den Dokumen
 - Der Artikel wird zu dem persönlichen Warenkorb des Nutzers hinzugefügt.
 |===
 
-[cols="1h, 4a"]
+[cols="1h, 4a", width="100%"]
 [[AT300]]
 |===
 |ID        |**<<AT300>>**
@@ -942,7 +1073,7 @@ Jeder Testfall soll mit einer ID versehen werde, um später zwischen den Dokumen
 - Der Kunde wird auf deine Seite weitergeleitet, wo er seine Bestellnummer eingeben muss.
 |===
 
-[cols="1h, 4a"]
+[cols="1h, 4a", width="100%"]
 [[AT301]]
 |===
 |ID        |**<<AT301>>**
@@ -953,7 +1084,7 @@ Jeder Testfall soll mit einer ID versehen werde, um später zwischen den Dokumen
 - Der Kunde wird auf deine Seite weitergeleitet, wo seine Bestellung aufgelistet ist.
 |===
 
-[cols="1h, 4a"]
+[cols="1h, 4a", width="100%"]
 [[AT302]]
 |===
 |ID        |**<<AT302>>**
@@ -964,29 +1095,29 @@ Jeder Testfall soll mit einer ID versehen werde, um später zwischen den Dokumen
 - Der Mitarbeiter wird auf deine Seite weitergeleitet, wo die Bestellung aufgelistet ist.
 |===
 
-[cols="1h, 4a"]
+[cols="1h, 4a", width="100%"]
 [[AT310]]
 |===
 |ID        |**<<AT310>>**
 |{Use}     |<<UC310>>
 |{Pre}     |Ein Kunde befindet sich auf der Bestellübersicht.
-|{Event}   |Der Kunde klickt den "Bestellung stonieren" Button und anschließen auf den "Bestätigen" Button.
+|{Event}   |Der Kunde klickt den "Bestellung stornieren" Button und anschließen auf den "Bestätigen" Button.
 |{Result}  |
 - Die gesamte Bestellung wird storniert.
 |===
 
-[cols="1h, 4a"]
+[cols="1h, 4a", width="100%"]
 [[AT320]]
 |===
 |ID        |**<<AT320>>**
 |{Use}     |<<UC320>>
 |{Pre}     |Ein Kunde befindet sich auf der Bestellübersicht.
-|{Event}   |Der Kunde klickt den "Artikel stonieren" Button und anschließen auf den "Bestätigen" Button.
+|{Event}   |Der Kunde klickt den "Artikel stornieren" Button und anschließen auf den "Bestätigen" Button.
 |{Result}  |
 - Der Artikel wird storniert.
 |===
 
-[cols="1h, 4a"]
+[cols="1h, 4a", width="100%"]
 [[AT330]]
 |===
 |ID        |**<<AT330>>**
@@ -997,7 +1128,7 @@ Jeder Testfall soll mit einer ID versehen werde, um später zwischen den Dokumen
 - Der Status der gesamten Bestellung ändert sich zum neuen Status.
 |===
 
-[cols="1h, 4a"]
+[cols="1h, 4a", width="100%"]
 [[AT400]]
 |===
 |ID        |**<<AT400>>**
@@ -1008,7 +1139,7 @@ Jeder Testfall soll mit einer ID versehen werde, um später zwischen den Dokumen
 - Der Mitarbeiter wird auf die Admin Seite weitergeleitet.
 |===
 
-[cols="1h, 4a"]
+[cols="1h, 4a", width="100%"]
 [[AT410]]
 |===
 |ID        |**<<AT410>>**
@@ -1019,7 +1150,7 @@ Jeder Testfall soll mit einer ID versehen werde, um später zwischen den Dokumen
 - Der Mitarbeiter wird auf die Kundenbestellungen Seite weitergeleitet.
 |===
 
-[cols="1h, 4a"]
+[cols="1h, 4a", width="100%"]
 [[AT420]]
 |===
 |ID        |**<<AT420>>**
@@ -1030,7 +1161,7 @@ Jeder Testfall soll mit einer ID versehen werde, um später zwischen den Dokumen
 - Der Mitarbeiter wird auf die Monatsstatistik Seite weitergeleitet.
 |===
 
-[cols="1h, 4a"]
+[cols="1h, 4a", width="100%"]
 [[AT430]]
 |===
 |ID        |**<<AT430>>**
@@ -1041,7 +1172,7 @@ Jeder Testfall soll mit einer ID versehen werde, um später zwischen den Dokumen
 - Der Mitarbeiter wird auf die Lieferanten Seite weitergeleitet.
 |===
 
-[cols="1h, 4a"]
+[cols="1h, 4a", width="100%"]
 [[AT431]]
 |===
 |ID        |**<<AT431>>**
@@ -1052,7 +1183,7 @@ Jeder Testfall soll mit einer ID versehen werde, um später zwischen den Dokumen
 - Der Lieferant mit allen Artikeln und Verkäufen wird aus dem System gelöscht.
 |===
 
-[cols="1h, 4a"]
+[cols="1h, 4a", width="100%"]
 [[AT432]]
 |===
 |ID        |**<<AT432>>**
@@ -1060,10 +1191,10 @@ Jeder Testfall soll mit einer ID versehen werde, um später zwischen den Dokumen
 |{Pre}     |Ein Mitarbeiter befindet sich auf der Lieferanten Seite.
 |{Event}   |Der Mitarbeiter klickt auf "Lieferant hinzufügen" Button.
 |{Result}  |
-- Der Mitarbeiter wird auf eine Seite weitergeleitet, wo er die Daten des neuen Liefernaten eingeben muss.
+- Der Mitarbeiter wird auf eine Seite weitergeleitet, wo er die Daten des neuen Lieferanten eingeben muss.
 |===
 
-[cols="1h, 4a"]
+[cols="1h, 4a", width="100%"]
 [[AT433]]
 |===
 |ID        |**<<AT433>>**
@@ -1074,7 +1205,7 @@ Jeder Testfall soll mit einer ID versehen werde, um später zwischen den Dokumen
 - Der Mitarbeiter wird auf die Lieferanten Seite weitergeleitet.
 |===
 
-[cols="1h, 4a"]
+[cols="1h, 4a", width="100%"]
 [[AT500]]
 |===
 |ID        |**<<AT500>>**
@@ -1085,29 +1216,29 @@ Jeder Testfall soll mit einer ID versehen werde, um später zwischen den Dokumen
 - Der Kunde wird auf deine Seite weitergeleitet, wo er seine LKW-Bestellnummer eingeben muss.
 |===
 
-[cols="1h, 4a"]
+[cols="1h, 4a", width="100%"]
 [[AT501]]
 |===
 |ID        |**<<AT501>>**
 |{Use}     |<<UC500>>
 |{Pre}     |Ein Kunde besitzt eine LKW-Bestellnummer und hat <<AT500>> ausgeführt.
-|{Event}   |Ein Nutzer klickt auf deb "Bestätigen" Button, nachdem er seine Bestellnummer eingetragen hat.
+|{Event}   |Ein Nutzer klickt auf den "Bestätigen" Button, nachdem er seine Bestellnummer eingetragen hat.
 |{Result}  |
 - Der Kunde wird auf deine Seite weitergeleitet, wo seine LKW-Bestellung aufgelistet ist.
 |===
 
-[cols="1h, 4a"]
+[cols="1h, 4a", width="100%"]
 [[AT510]]
 |===
-|ID        |**<<AT500>>**
-|{Use}     |<<UC500>>
+|ID        |**<<AT510>>**
+|{Use}     |<<UC510>>
 |{Pre}     |Ein Kunde befindet sich auf seiner Bestellübersicht.
-|{Event}   |Der Kunde klickt auf den "LKW stonieren" Button und anschließend auf den "Bestätigen" Button.
+|{Event}   |Der Kunde klickt auf den "LKW stornieren" Button und anschließend auf den "Bestätigen" Button.
 |{Result}  |
-- Der LKW wird stoniert und die Bestellung aus dem System gelöscht.
+- Der LKW wird storniert und die Bestellung aus dem System gelöscht.
 |===
 
-[cols="1h, 4a"]
+[cols="1h, 4a", width="100%"]
 [[AT520]]
 |===
 |ID        |**<<AT520>>**
@@ -1118,7 +1249,7 @@ Jeder Testfall soll mit einer ID versehen werde, um später zwischen den Dokumen
 - Der Nutzer wird auf eine Seite weitergeleitet, wo er einen LKW-Typen auswählen kann
 |===
 
-[cols="1h, 4a"]
+[cols="1h, 4a", width="100%"]
 [[AT521]]
 |===
 |ID        |**<<AT521>>**
@@ -1126,24 +1257,23 @@ Jeder Testfall soll mit einer ID versehen werde, um später zwischen den Dokumen
 |{Pre}     |Der Nutzer hat einen LKW nach <<AT520>> ausgewählt
 |{Event}   |Der Nutzer gibt klickt auf den "Bestellen" Button, nachdem er seine persönlichen Daten und das Datum eingegeben hat
 |{Result}  |
-- Seine Bestellung wird aufgegeben und der Nutzer erhält weitere Informationen per E-Mail.
+- Seine Bestellung wird aufgegeben und dem Nutzer wird seine Bestellnummer angezeigt.
 |===
 
 == Glossar
 
-Sämtliche Begriffe, die innerhalb des Projektes verwendet werden und deren gemeinsames Verständnis aller beteiligten Stakeholder essentiell ist, sollten hier aufgeführt werden.
-Insbesondere Begriffe der zu implementierenden Domäne wurden bereits beschrieben, jedoch gibt es meist mehr Begriffe, die einer Beschreibung bedürfen. +
-Beispiel: Was bedeutet "Kunde"?
-Ein Nutzer des Systems?
-Der Kunde des Projektes (Auftraggeber)?
+Sämtliche Begriffe, die innerhalb des Projektes verwendet werden und deren gemeinsames Verständnis aller beteiligten Stakeholder essentiell ist, sind hier aufgeführt.
 
-:domain_ref: Siehe <<classes_enumerations, domain overview>>
+:domain_ref: Siehe <<classes_enumerations, Domänenübersicht>>
+:actors_ref: Siehe <<actors, Akteure>>
 
-[options="header", cols="1h, 4"]
+[options="header", cols="1a, 4a", width="100%"]
 [[glossar]]
 |===
 |Begriff                |Beschreibung
 |Abholung               | {domain_ref}
+|Abrechnung             | Monatliche Verkaufszahlen/Statistik.
+|Admin/Administrator    | Synonym für Mitarbeiter der Moebel-Hunger Kette. (s. Mitarbeiter)
 |Bestellung             | {domain_ref}
 |Bestelleintrag         | {domain_ref}
 |Bestellmanager         | {domain_ref}
@@ -1155,6 +1285,7 @@ Der Kunde des Projektes (Auftraggeber)?
 |Kalendar               | {domain_ref}
 |Kalendareintrag        | {domain_ref}
 |Kontaktinformationen   | {domain_ref}
+|Kunde                  | {actors_ref}
 |Lieferung              | {domain_ref}
 |Lieferant              | {domain_ref}
 |Lieferantmanager       | {domain_ref}
@@ -1162,8 +1293,15 @@ Der Kunde des Projektes (Auftraggeber)?
 |LKW                    | {domain_ref}
 |LKWMietung             | {domain_ref}
 |LKWManager             | {domain_ref}
+|Login                  | Mitarbeiter haben die Möglichkeit sich einzuloggen und Bestellungen bearbeiten, sowie das Möbelgeschäft zu verwalten.
 |Mieteintrag            | {domain_ref}
+|Mitarbeiter            | {actors_ref}
+|Möbelgeschäft          | {domain_ref}
+|Nutzer                 | {actors_ref}
 |Set                    | {domain_ref}
+|System                 | Allgemeiner Begriff für das Softwaresystem, das während dieses Projekts implementiert werden muss.
+|Set                    | {domain_ref}   
+|Set                    | {domain_ref}      
 |Teil                   | {domain_ref}
 |Warenkorb              | {domain_ref}
 |Warenkorbeintrag       | {domain_ref}
