@@ -16,15 +16,15 @@ import java.util.List;
 public class LKWManager {
 
 	private static final List<DayOfWeek> WORK_DAYS = Arrays.asList(
-			DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY, DayOfWeek.THURSDAY, DayOfWeek.FRIDAY, DayOfWeek.SATURDAY
+			DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY, DayOfWeek.THURSDAY, DayOfWeek.FRIDAY
 	);
 
-	private final LKWRepository lkwRepository;
+	private final LKWCatalog lkwCatalog;
 
-	LKWManager(LKWRepository lkwRepository) {
-		Assert.notNull(lkwRepository, "LKWRepository must not be null!");
+	LKWManager(LKWCatalog lkwCatalog) {
+		Assert.notNull(lkwCatalog, "LKWCatalog must not be null!");
 
-		this.lkwRepository = lkwRepository;
+		this.lkwCatalog = lkwCatalog;
 	}
 
 	public LocalDate findNextAvailableDeliveryDate(LocalDate date, LKWType type) {
@@ -92,13 +92,6 @@ public class LKWManager {
 		}
 
 		return available;
-	}
-
-	public LocalDate findNextAvailableCharterDate(LocalDate date, LKWType type) {
-		while (!isCharterAvailable(date, type)) {
-			date = date.plusDays(1);
-		}
-		return date;
 	}
 
 	public boolean isCharterAvailable(LocalDate date, LKWType type) {
@@ -174,7 +167,7 @@ public class LKWManager {
 	public void createLKW(LKWType type) {
 		final LKW lkw = new LKW(type);
 
-		lkwRepository.save(lkw);
+		lkwCatalog.save(lkw);
 	}
 
 	public void createLKWs(LKWType type, int amount) {
@@ -184,21 +177,21 @@ public class LKWManager {
 			lkws.add(new LKW(type));
 		}
 
-		lkwRepository.saveAll(lkws);
+		lkwCatalog.saveAll(lkws);
 	}
 
 	public void removeLKW(LKW lkw) {
 		Assert.notNull(lkw, "LKW must not be null!");
 
-		lkwRepository.delete(lkw);
+		lkwCatalog.delete(lkw);
 	}
 
 	public Streamable<LKW> findByType(LKWType type) {
-		return lkwRepository.findAll().filter(l -> l.getType() == type);
+		return lkwCatalog.findAll().filter(l -> l.getType() == type);
 	}
 
 	public Streamable<LKW> findAll() {
-		return lkwRepository.findAll();
+		return lkwCatalog.findAll();
 	}
 
 }

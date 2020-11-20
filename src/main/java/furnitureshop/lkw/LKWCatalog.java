@@ -1,9 +1,10 @@
 package furnitureshop.lkw;
 
+import org.salespointframework.catalog.Catalog;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.util.Streamable;
 
-interface LKWRepository extends CrudRepository<LKW, Long> {
+interface LKWCatalog extends Catalog<LKW> {
 
 	@Override
 	Streamable<LKW> findAll();
