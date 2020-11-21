@@ -54,6 +54,16 @@ public enum LKWType {
 		return delieveryPrice;
 	}
 
+	public static LKWType getByName(String name) {
+		for (LKWType type : LKWType.values()) {
+			if (type.name().equalsIgnoreCase(name)) {
+				return type;
+			}
+		}
+
+		return null;
+	}
+
 	public static LKWType getByWeight(int weight) {
 		LKWType minType = null;
 

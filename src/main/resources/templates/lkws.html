@@ -30,7 +30,7 @@
 				<a class="nav-link" href="orders.html">Bestellungen</a>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link" href="lkw.html">LKW mieten</a>
+				<a class="nav-link" href="lkws.html">LKW mieten</a>
 			</li>
 			<li class="nav-item">
 				<a class="nav-link" href="adminLogin.html">Admin</a>
@@ -47,21 +47,20 @@
 	<table class="table table bg-light pb-5">
 		<tbody>
 			<tr th:each="type : ${types}">
-				<td class="align-middle" style="width: 20%">
-					<a th:href="@{/lkwCheckout/{type}(type=${type.ordinal()})}" class="img-fluid">
+				<td class="align-middle text-center" style="width: 20%">
+					<a th:href="@{/lkw/checkout/{name}(name=${type.name().toLowerCase()})}" class="img-fluid">
 						<img class="img-fluid" th:src="@{/resources/img/{image}(image=${type.getPicture()})}"
-							 src="../static/resources/img/smalllkw.jpg"/>
+							 src="../static/resources/img/smalllkw.jpg" alt="LKW"/>
 					</a>
 				</td>
-				<td style="width: 20%"></td>
-				<td class="align-middle" style="width: 20%">
+				<td class="align-middle text-center">
 					<h4 class="description" th:text="${type.getName()}">5,5t</h4>
 				</td>
-				<td class="align-middle" style="width: 20%">
-					<h5 class="description" th:text="${type.getCharterPrice() + ' / Tag'}">10 EUR / Tag</h5>
+				<td class="align-middle text-center">
+					<h5 class="description" th:text="${type.getCharterPrice()} + ' ' + #{lkw.price}">10 EUR / Tag</h5>
 				</td>
-				<td class="align-middle" style="width: 20%">
-					<button type="button" class="btn btn-info" th:href="@{/lkwCheckout/{type}(type=${type.ordinal()})}">Mieten</button>
+				<td class="align-middle text-center">
+					<a class="btn btn-info" th:text="#{lkw.open}" th:href="@{/lkw/checkout/{name}(name=${type.name().toLowerCase()})}">Mieten</a>
 				</td>
 			</tr>
 		</tbody>

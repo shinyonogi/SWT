@@ -1,8 +1,10 @@
 package furnitureshop.lkw;
 
 import org.salespointframework.core.DataInitializer;
+import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
+@Component
 public class LKWDataInitializer implements DataInitializer {
 
 	private final LKWCatalog lkwCatalog;
@@ -15,15 +17,11 @@ public class LKWDataInitializer implements DataInitializer {
 
 	@Override
 	public void initialize() {
-			for (int j = 0; j < 7; j++){
-				switch(j % 3) {
-					case 0:
-						lkwCatalog.save(new LKW(LKWType.SMALL));
-					case 1:
-						lkwCatalog.save(new LKW(LKWType.MEDIUM));
-					case 2:
-						lkwCatalog.save(new LKW(LKWType.LARGE));
-				}
+		for (LKWType type : LKWType.values()) {
+			for (int i = 0; i < 2; i++) {
+				lkwCatalog.save(new LKW(type));
 			}
+		}
 	}
+
 }

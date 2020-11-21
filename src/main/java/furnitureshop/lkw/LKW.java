@@ -10,10 +10,13 @@ import javax.persistence.*;
 public class LKW extends Product {
 
 	@Enumerated(EnumType.ORDINAL)
-	private final LKWType type;
+	private LKWType type;
 
 	@OneToOne(cascade = CascadeType.ALL)
-	private final Calendar calendar;
+	private Calendar calendar;
+
+	@SuppressWarnings("deprecation")
+	protected LKW() {}
 
 	public LKW(LKWType type) {
 		super("lkw", Currencies.ZERO_EURO);

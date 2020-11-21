@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
   <title>LKW Mieten</title>
   <meta charset="utf-8">
@@ -30,7 +30,7 @@
 				<a class="nav-link" href="orders.html">Bestellungen</a>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link" href="lkw.html">LKW mieten</a>
+				<a class="nav-link" href="lkws.html">LKW mieten</a>
 			</li>
 			<li class="nav-item">
 				<a class="nav-link" href="adminLogin.html">Admin</a>
@@ -46,20 +46,40 @@
 	<div class="row">
 		<div class="col-4"></div>
 		<div class="col-4">
-			<form class="form pt-3" action="lkw.html">
+			<br>
+
+			<div class="alert alert-danger" th:if="${result > 0}">
+				<h4 class="alert-heading" th:text="#{lkw.status.error}">Fehler!</h4>
+
+				<p th:if="${result == 1}" th:text="#{lkw.status.name}">Ungültiger Name</p>
+				<p th:if="${result == 2}" th:text="#{lkw.status.email}">Ungültige E-Mail</p>
+				<p th:if="${result == 3}" th:text="#{lkw.status.date}">Ungültiges Datum</p>
+				<p th:if="${result == 4}" th:text="#{lkw.status.unavailable}">LKW nicht verfügbar</p>
+			</div>
+
+			<div class="alert alert-success" th:if="${result < 0}">
+				<h4 class="alert-heading" th:text="#{lkw.status.success}">Erfolgreich!</h4>
+
+				<p th:if="${result == -1}" th:text="#{lkw.status.available}">LKW verfügbar</p>
+			</div>
+
+			<form method="post" th:object="${lkwform}" th:action="@{/lkw/checkout/{name}(name=${type.name().toLowerCase()})}" role="form" class="form pt-3" id="form">
 				<div class="form-group">
-		    		<label for="name">Name:</label>
-		    		<input type="text" class="form-control" id="name">
+		    		<label for="name" th:text="#{lkw.name}">Name:</label>
+		    		<input type="text" name="name" th:value="*{name}" class="form-control" id="name" required th:placeholder="#{lkw.name.placeholder}">
 		  		</div>
 		  		<div class="form-group">
-		    		<label for="email">E-Mail:</label>
-		    		<input type="email" class="form-control" id="email">
+		    		<label for="email" th:text="#{lkw.email}">E-Mail:</label>
+		    		<input type="email" name="email" th:value="*{email}" class="form-control" id="email" required th:placeholder="#{lkw.email.placeholder}">
 		  		</div>
 		  		<div class="form-group">
-		    		<label for="adress">Datum:</label>
-		    		<input type="text" class="form-control" id="date">
-		  		</div>
-		  		<button type="submit" class="btn btn-info">LKW mieten</button>
+					<label for="date" th:text="#{lkw.date}">Datum:</label>
+					<div class="d-flex">
+						<input type="date" name="date" th:value="*{date}" class="form-control mr-md-2" id="date" required>
+						<button type="submit" th:text="#{lkw.check}" formnovalidate name="check" class="btn btn-info">Prüfen</button>
+					</div>
+				</div>
+		  		<button type="submit" th:text="#{lkw.buy}" name="buy" class="btn btn-info">LKW mieten</button>
 			</form>
 		</div>
 		<div class="col-4"></div>

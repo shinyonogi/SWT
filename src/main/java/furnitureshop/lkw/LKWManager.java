@@ -7,7 +7,6 @@ import org.springframework.util.Assert;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -36,7 +35,7 @@ public class LKWManager {
 
 	public boolean isDeliveryAvailable(LocalDate date, LKWType type) {
 		Assert.notNull(date, "Date must not be null!");
-		Assert.notNull(date, "Type must not be null!");
+		Assert.notNull(type, "Type must not be null!");
 
 		if (!WORK_DAYS.contains(date.getDayOfWeek())) {
 			return false;
@@ -62,7 +61,7 @@ public class LKWManager {
 
 	public LKW createDeliveryOrder(LocalDate date, LKWType type) {
 		Assert.notNull(date, "Date must not be null!");
-		Assert.notNull(date, "Type must not be null!");
+		Assert.notNull(type, "Type must not be null!");
 
 		if (!WORK_DAYS.contains(date.getDayOfWeek())) {
 			return null;
@@ -96,7 +95,7 @@ public class LKWManager {
 
 	public boolean isCharterAvailable(LocalDate date, LKWType type) {
 		Assert.notNull(date, "Date must not be null!");
-		Assert.notNull(date, "Type must not be null!");
+		Assert.notNull(type, "Type must not be null!");
 
 		if (!WORK_DAYS.contains(date.getDayOfWeek())) {
 			return false;
@@ -115,7 +114,7 @@ public class LKWManager {
 
 	public LKW createCharterOrder(LocalDate date, LKWType type) {
 		Assert.notNull(date, "Date must not be null!");
-		Assert.notNull(date, "Type must not be null!");
+		Assert.notNull(type, "Type must not be null!");
 
 		if (!WORK_DAYS.contains(date.getDayOfWeek())) {
 			return null;
@@ -135,8 +134,8 @@ public class LKWManager {
 	}
 
 	public boolean cancelOrder(LKW lkw, LocalDate date) {
-		Assert.notNull(date, "Date must not be null!");
 		Assert.notNull(lkw, "LKW must not be null!");
+		Assert.notNull(date, "Date must not be null!");
 
 		final Calendar calendar = lkw.getCalendar();
 		final CalendarEntry entry = calendar.getEntry(date);
@@ -162,28 +161,6 @@ public class LKWManager {
 		}
 
 		throw new IllegalStateException("Invalid CalenderEntry Type");
-	}
-
-	public void createLKW(LKWType type) {
-		final LKW lkw = new LKW(type);
-
-		lkwCatalog.save(lkw);
-	}
-
-	public void createLKWs(LKWType type, int amount) {
-		final List<LKW> lkws = new ArrayList<>(amount);
-
-		for (int i = 0; i < amount; i++) {
-			lkws.add(new LKW(type));
-		}
-
-		lkwCatalog.saveAll(lkws);
-	}
-
-	public void removeLKW(LKW lkw) {
-		Assert.notNull(lkw, "LKW must not be null!");
-
-		lkwCatalog.delete(lkw);
 	}
 
 	public Streamable<LKW> findByType(LKWType type) {
