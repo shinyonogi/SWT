@@ -10,13 +10,17 @@ public class LKWDataInitializer implements DataInitializer {
 	private final LKWCatalog lkwCatalog;
 
 	public LKWDataInitializer(LKWCatalog lkwCatalog) {
-		Assert.notNull(lkwCatalog, "lkwManager must not be null!");
+		Assert.notNull(lkwCatalog, "LKWCatalog must not be null!");
 
 		this.lkwCatalog = lkwCatalog;
 	}
 
 	@Override
 	public void initialize() {
+		if (!lkwCatalog.findAll().isEmpty()) {
+			return;
+		}
+
 		for (LKWType type : LKWType.values()) {
 			for (int i = 0; i < 2; i++) {
 				lkwCatalog.save(new LKW(type));

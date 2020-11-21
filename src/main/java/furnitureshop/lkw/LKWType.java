@@ -20,10 +20,19 @@ public enum LKWType {
 			Money.of(80, Currencies.EURO), Money.of(20, Currencies.EURO)
 	);
 
+	// Displayname of the LKWType
 	private final String name;
+
+	// Maximum transport weight
 	private final int weight;
+
+	// Picturename of the LKWType
 	private final String picture;
+
+	// Price if an LKW of this Type is rent
 	private final MonetaryAmount charterPrice;
+
+	// Price for an delivery with an LKW of this Type
 	private final MonetaryAmount delieveryPrice;
 
 	LKWType(String name, int weight, String picture, MonetaryAmount charterPrice, MonetaryAmount delieveryPrice) {
@@ -54,9 +63,17 @@ public enum LKWType {
 		return delieveryPrice;
 	}
 
+	/**
+	 * Finds an {@code LKWType} by its case insensitivity Enum-Name or Displayname.
+	 * Similar to {@code LKWType.valueOf()} but with no Exception.
+	 *
+	 * @param name The name of the type
+	 *
+	 * @return The {@code LKWType} with this name or {@code null} if none was found
+	 */
 	public static LKWType getByName(String name) {
 		for (LKWType type : LKWType.values()) {
-			if (type.name().equalsIgnoreCase(name)) {
+			if (type.name().equalsIgnoreCase(name) || type.getName().equalsIgnoreCase(name)) {
 				return type;
 			}
 		}
@@ -64,6 +81,14 @@ public enum LKWType {
 		return null;
 	}
 
+	/**
+	 * Finds an {@code LKWType} by its weight. Used to find an {@code LKW} which can transport the weight.
+	 * Returns the next biggest {@code LKWType} to fit the weight.
+	 *
+	 * @param weight The minimum weight of the {@code LKW}
+	 *
+	 * @return The {@code LKWType} with the weight or {@code null} if none was found
+	 */
 	public static LKWType getByWeight(int weight) {
 		LKWType minType = null;
 

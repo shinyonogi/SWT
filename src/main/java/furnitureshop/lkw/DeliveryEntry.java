@@ -26,6 +26,7 @@ public class DeliveryEntry extends CalendarEntry {
 
 	public void setQuantity(int quantity) {
 		Assert.isTrue(quantity >= 0, "Quantity must be greater or equal than 0!");
+		Assert.isTrue(quantity <= MAX_DELIVERY, "Quantity must be less or equal than " + MAX_DELIVERY + "!");
 
 		this.quantity = quantity;
 	}
