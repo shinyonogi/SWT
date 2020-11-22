@@ -1,4 +1,5 @@
 package furnitureshop.inventory;
 
-public enum Category {
+public enum Category{
+	CHAIR, TABLE, COUCH
 }
