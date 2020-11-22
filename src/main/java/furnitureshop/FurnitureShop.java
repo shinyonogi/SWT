@@ -15,28 +15,41 @@
  */
 package furnitureshop;
 
+import furnitureshop.admin.AdminController;
 import org.salespointframework.EnableSalespoint;
 import org.salespointframework.SalespointSecurityConfiguration;
 import org.springframework.boot.SpringApplication;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @EnableSalespoint
 public class FurnitureShop {
 
-	public static void main(String[] args) {
-		SpringApplication.run(FurnitureShop.class, args);
-	}
+	public static void main(String[] args) { SpringApplication.run(FurnitureShop.class, args); }
 
 	@Configuration
 	static class WebSecurityConfiguration extends SalespointSecurityConfiguration {
 
+		public BCryptPasswordEncoder passwordEncoder() {
+			return new BCryptPasswordEncoder();
+		}
+
+		@Override
+		protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
+			auth.inMemoryAuthentication()
+					.withUser("admin").password(passwordEncoder().encode("admin")).roles("EMPLOYEE");
+		}
+
 		@Override
 		protected void configure(HttpSecurity http) throws Exception {
 			http.csrf().disable();  // for lab purposes, that's ok!
-			http.authorizeRequests().antMatchers("/**").permitAll().and()
-					.formLogin().loginProcessingUrl("/login").and()
-					.logout().logoutUrl("/logout").logoutSuccessUrl("/");
+			http.authorizeRequests().antMatchers("/admin/**").hasRole("EMPLOYEE").and()
+					.formLogin().loginPage("/login").permitAll()
+					.and()
+					.logout().permitAll();
 		}
 	}
 }
