@@ -15,25 +15,67 @@
 
 <div class="container">
 	<div class="row">
-		<div class="col-4"></div>
-		<div class="col-4">
-			<form class="form pt-3" action="lkw.html">
+		<div class="col-2"></div>
+		<div class="col-4 mt-3">
+			<div class="alert alert-danger" th:if="${result > 0}">
+				<h4 class="alert-heading" th:text="#{lkw.status.error}">Fehler!</h4>
+
+				<div th:if="${result == 1}" th:text="#{lkw.status.name}">Ungültiger Name</div>
+				<div th:if="${result == 2}" th:text="#{lkw.status.address}">Ungültige Adresse</div>
+				<div th:if="${result == 3}" th:text="#{lkw.status.email}">Ungültige E-Mail</div>
+				<div th:if="${result == 4}" th:text="#{lkw.status.date}">Ungültiges Datum</div>
+				<div th:if="${result == 5}" th:text="#{lkw.status.unavailable}">LKW nicht verfügbar</div>
+			</div>
+
+			<div class="alert alert-success" th:if="${result < 0}">
+				<h4 class="alert-heading" th:text="#{lkw.status.success}">Erfolgreich!</h4>
+
+				<div th:if="${result == -1}" th:text="#{lkw.status.available}">LKW verfügbar</div>
+			</div>
+
+			<div class="border bg-light rounded p-1">
+				<div class="align-middle text-center">
+					<img class="img-fluid" th:src="@{/resources/img/{image}(image=${type.getPicture()})}"
+						 src="../static/resources/img/smalllkw.jpg" alt="LKW"/>
+				</div>
+				<div class="pt-3">
+					<div class="d-flex justify-content-between align-items-end pl-2 pr-2">
+						<h4 th:text="#{lkw.size}">Größe:</h4>
+						<h5 th:text="${type.getName()}">5,5t</h5>
+					</div>
+					<div class="d-flex justify-content-between align-items-end pl-2 pr-2">
+						<h4 th:text="#{lkw.price}">Preis:</h4>
+						<h5 th:text="${type.getCharterPrice()} + ' ' + #{lkw.priceinfo}">10 EUR / Tag</h5>
+					</div>
+				</div>
+			</div>
+
+		</div>
+		<div class="col-4 mt-3">
+			<form method="post" th:object="${lkwform}" th:action="@{/lkw/checkout/{name}(name=${type.name().toLowerCase()})}" role="form" class="form" id="form">
 				<div class="form-group">
-		    		<label for="name">Name:</label>
-		    		<input type="text" class="form-control" id="name">
+		    		<label for="name" th:text="#{lkw.name}">Name:</label>
+		    		<input type="text" name="name" th:value="*{name}" class="form-control" id="name" required th:placeholder="#{lkw.name.placeholder}">
+		  		</div>
+				<div class="form-group">
+					<label for="address" th:text="#{lkw.address}">Adresse:</label>
+					<input type="text" name="address" th:value="*{address}" class="form-control" id="address" required th:placeholder="#{lkw.address.placeholder}">
+				</div>
+		  		<div class="form-group">
+		    		<label for="email" th:text="#{lkw.email}">E-Mail:</label>
+		    		<input type="email" name="email" th:value="*{email}" class="form-control" id="email" required th:placeholder="#{lkw.email.placeholder}">
 		  		</div>
 		  		<div class="form-group">
-		    		<label for="email">E-Mail:</label>
-		    		<input type="email" class="form-control" id="email">
-		  		</div>
-		  		<div class="form-group">
-		    		<label for="adress">Datum:</label>
-		    		<input type="text" class="form-control" id="date">
-		  		</div>
-		  		<button type="submit" class="btn btn-info">LKW mieten</button>
+					<label for="date" th:text="#{lkw.date}">Datum:</label>
+					<div class="d-flex">
+						<input type="date" name="date" th:value="*{date}" class="form-control mr-md-2" id="date" required>
+						<button type="submit" th:text="#{lkw.check}" formnovalidate name="check" class="btn btn-info">Prüfen</button>
+					</div>
+				</div>
+		  		<button type="submit" th:text="#{lkw.buy}" name="buy" class="btn btn-info">LKW mieten</button>
 			</form>
 		</div>
-		<div class="col-4"></div>
+		<div class="col-2"></div>
 	</div>
 </div>
 
