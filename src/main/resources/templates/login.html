@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-  <title>LKW Mieten</title>
+  <title>Admin Login</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -17,20 +17,19 @@
 	<div class="row">
 		<div class="col-4"></div>
 		<div class="col-4">
-			<form class="form pt-3" action="lkw.html">
+			<br>
+			<div th:if="${param.error}" class="alert alert-danger" th:text="#{login.error}"></div><br>
+			<div th:if="${param.logout}" class="alert alert-success" th:text="#{logout.success}"></div>
+			<form class="form pt-3" th:method="post" th:action="@{/login}">
 				<div class="form-group">
-		    		<label for="name">Name:</label>
-		    		<input type="text" class="form-control" id="name">
+		    		<label th:text="#{login.username}" for="username">Name:</label>
+		    		<input type="text" class="form-control" id="username" name="username">
 		  		</div>
 		  		<div class="form-group">
-		    		<label for="email">E-Mail:</label>
-		    		<input type="email" class="form-control" id="email">
+		    		<label th:text="#{login.password}" for="password">Passwort:</label>
+		    		<input type="password" class="form-control" id="password" name="password">
 		  		</div>
-		  		<div class="form-group">
-		    		<label for="adress">Datum:</label>
-		    		<input type="text" class="form-control" id="date">
-		  		</div>
-		  		<button type="submit" class="btn btn-info">LKW mieten</button>
+		  		<button type="submit" class="btn btn-secondary" th:text="#{login.button}">Login</button>
 			</form>
 		</div>
 		<div class="col-4"></div>
