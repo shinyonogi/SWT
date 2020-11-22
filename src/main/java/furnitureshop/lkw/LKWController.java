@@ -43,7 +43,7 @@ public class LKWController {
 		}
 
 		// Add attributes to model to display form with default values and no errors
-		model.addAttribute("lkwform", new LKWCharterForm("", "", businessTime.getTime().toLocalDate()));
+		model.addAttribute("lkwform", new LKWCharterForm("", "", "", businessTime.getTime().toLocalDate()));
 		model.addAttribute("type", type);
 		model.addAttribute("result", 0);
 
@@ -67,13 +67,13 @@ public class LKWController {
 		// Check if date is invalid or before current date
 		if (form.getDate() == null || !form.getDate().isAfter(businessTime.getTime().toLocalDate())) {
 			// Display error message
-			model.addAttribute("result", 3);
+			model.addAttribute("result", 4);
 			return "lkwCheckout";
 		}
 		// Check if LKW with given type is available on the date
 		if (!lkwManager.isCharterAvailable(form.getDate(), type)) {
 			// Display error message
-			model.addAttribute("result", 4);
+			model.addAttribute("result", 5);
 			return "lkwCheckout";
 		}
 
@@ -103,22 +103,28 @@ public class LKWController {
 			model.addAttribute("result", 1);
 			return "lkwCheckout";
 		}
+		// Check if address is invalid
+		if (!StringUtils.hasText(form.getAddress())) {
+			// Display error message
+			model.addAttribute("result", 2);
+			return "lkwCheckout";
+		}
 		// Check if email is invalid
 		if (!StringUtils.hasText(form.getEmail()) || !form.getEmail().matches(".+@.+")) {
 			// Display error message
-			model.addAttribute("result", 2);
+			model.addAttribute("result", 3);
 			return "lkwCheckout";
 		}
 		// Check if date is invalid or before current date
 		if (form.getDate() == null || !form.getDate().isAfter(businessTime.getTime().toLocalDate())) {
 			// Display error message
-			model.addAttribute("result", 3);
+			model.addAttribute("result", 4);
 			return "lkwCheckout";
 		}
 		// Check if lkw with given type is available on the date
 		if (!lkwManager.isCharterAvailable(form.getDate(), type)) {
 			// Display error message
-			model.addAttribute("result", 4);
+			model.addAttribute("result", 5);
 			return "lkwCheckout";
 		}
 
@@ -128,7 +134,7 @@ public class LKWController {
 		// Should never be null (only if LKW is booked in the meantime)
 		if (lkw == null) {
 			// Display error message
-			model.addAttribute("result", 4);
+			model.addAttribute("result", 5);
 			return "lkwCheckout";
 		}
 

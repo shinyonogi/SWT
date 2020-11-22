@@ -54,10 +54,10 @@
 					</a>
 				</td>
 				<td class="align-middle text-center">
-					<h4 class="description" th:text="${type.getName()}">5,5t</h4>
+					<h4 th:text="${type.getName()}">5,5t</h4>
 				</td>
 				<td class="align-middle text-center">
-					<h5 class="description" th:text="${type.getCharterPrice()} + ' ' + #{lkw.price}">10 EUR / Tag</h5>
+					<h5 th:text="${type.getCharterPrice()} + ' ' + #{lkw.priceinfo}">10 EUR / Tag</h5>
 				</td>
 				<td class="align-middle text-center">
 					<a class="btn btn-info" th:text="#{lkw.open}" th:href="@{/lkw/checkout/{name}(name=${type.name().toLowerCase()})}">Mieten</a>
