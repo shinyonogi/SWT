@@ -17,25 +17,19 @@
 	<table class="table table-striped">
 		<thead>
 			<tr>
-				<th scope="col" style="width: 25%">Bestell-Nr.</th>
-				<th scope="col" style="width: 25%">Bestelldatum</th>
-				<th scope="col" style="width: 25%">Betrag</th>
+				<th scope="col" style="width: 25%" th:text="#{order.overview.number}">Bestell-Nr.</th>
+				<th scope="col" style="width: 25%" th:text="#{order.overview.date}">Bestelldatum</th>
+				<th scope="col" style="width: 25%" th:text="#{order.overview.total}">Betrag</th>
+				<th scope="col" style="width: 25%" th:text="#{order.overview.status}">Status</th>
 				<th scope="col" style="width: 25%"></th>
 			</tr>
 		</thead>
 		<tbody>
-			<tr>
-				<td>5318008</td>
-				<td>23.03.2021</td>
-				<td>999,99€</td>
-				<td>
-					<a href="orderItems.html" class="btn btn-secondary" role="button">Bestellung ansehen</a>
-				</td>
-			</tr>
-			<tr>
-				<td>7355608</td>
-				<td>21.04.2012</td>
-				<td>800,00€</td>
+			<tr th:each="order : ${orders}">
+				<td th:text="${order.getId()}">5318008</td>
+				<td th:text="${order.getDateCreated()}">23.03.2021</td>
+				<td th:text="${order.getTotal()}">999,99€</td>
+				<td>TBD</td>
 				<td>
 					<a href="orderItems.html" class="btn btn-secondary" role="button">Bestellung ansehen</a>
 				</td>

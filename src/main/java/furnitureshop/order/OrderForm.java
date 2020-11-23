@@ -1,0 +1,30 @@
+package furnitureshop.order;
+
+public class OrderForm {
+
+	private final String name;
+	private final String address;
+	private final String email;
+	private final int index;
+
+	public OrderForm(String name, String address, String email, int index) {
+		this.name = name;
+		this.address = address;
+		this.email = email;
+		this.index = index;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public int getIndex() { return index; }
+}

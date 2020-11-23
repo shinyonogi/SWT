@@ -4,13 +4,11 @@ import furnitureshop.inventory.Item;
 
 import org.salespointframework.order.Cart;
 import org.salespointframework.order.CartItem;
-import org.salespointframework.order.OrderManagement;
 import org.salespointframework.quantity.Quantity;
 
-
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
 import org.springframework.util.Assert;
 
 
@@ -18,12 +16,12 @@ import org.springframework.util.Assert;
 @SessionAttributes("cart")
 class OrderController {
 
-	private final OrderManagement<ShopOrder> orderManagement;
+	private final OrderManager orderManager;
 
-	OrderController(OrderManagement<ShopOrder> orderManagement) {
-		Assert.notNull(orderManagement, "OrderManagement must not be null");
+	OrderController(OrderManager orderManager) {
+		Assert.notNull(orderManager, "OrderManager must not be null");
 
-		this.orderManagement = orderManagement;
+		this.orderManager = orderManager;
 	}
 
 	@ModelAttribute("cart")
@@ -58,23 +56,33 @@ class OrderController {
 		return "redirect:/cart";
 	}
 
+	@GetMapping("/checkout")
+	String checkout(Model model) {
+		model.addAttribute("orderform", new OrderForm("", "", "", 0));
+		return "orderCheckout";
+	}
+
 	/* Bezahlen-Funktion */
-	/*
-	TODO: proper Implementation with Salespoint Order class
-	@PostMapping("/checkout")
-	String buy(@ModelAttribute Cart cart) {
+	@PostMapping("/checkout/completeOrder")
+	String buy(@ModelAttribute("cart") Cart cart, @ModelAttribute("orderform") OrderForm orderForm) {
+		ContactInformation contactInformation = new ContactInformation(orderForm.getName(), orderForm.getAddress(), orderForm.getEmail());
 
-		var order = new Order();
-
-		cart.addItemsTo(order);
-
-		orderManagement.payOrder(order);
-		orderManagement.completeOrder(order);
+		// Delivery
+		if (orderForm.getIndex() == 1) {
+			if (!orderManager.orderDelieveryItem(cart, contactInformation)){
+				return "redirect:/checkout";
+			}
+		}
+		// Pickup
+		if (orderForm.getIndex() == 0) {
+			if (!orderManager.orderPickupItem(cart, contactInformation)) {
+				return "redirect:/checkout";
+			}
+		}
 
 		cart.clear();
-
 		return "redirect:/";
-	}*/
+	}
 
 	@GetMapping("/orders")
 	String getOrderPage(){
@@ -82,7 +90,14 @@ class OrderController {
 	}
 
 	@GetMapping("/customerOrders")
-	String getCustomerOrders(){
+	String getCustomerOrders(Model model){
+		if (orderManager.findAll().isEmpty()){
+			System.out.println("EMPTY");
+		}
+		for (ShopOrder order : orderManager.findAll().toList()){
+			System.out.println(order);
+		}
+		model.addAttribute("orders", orderManager.findAll());
 		return  "customerOrders";
 	}
 

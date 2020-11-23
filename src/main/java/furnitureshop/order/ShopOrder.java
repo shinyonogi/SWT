@@ -1,15 +1,17 @@
 package furnitureshop.order;
 
 import org.salespointframework.order.Order;
+import org.salespointframework.payment.Cash;
 import org.salespointframework.useraccount.UserAccount;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 
 @Entity
-public class ShopOrder extends Order {
+public abstract class ShopOrder extends Order {
 
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	private ContactInformation contactInformation;
 
 	ShopOrder(UserAccount userAccount, ContactInformation contactInformation) {

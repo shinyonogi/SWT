@@ -14,15 +14,15 @@ public class ItemOrderEntry {
 	@Enumerated(EnumType.ORDINAL)
 	private OrderStatus status;
 
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	private OrderLine orderline;
 
-	public ItemOrderEntry(OrderStatus status, OrderLine orderline) {
-		Assert.notNull(status, "OrderStatus must not be null!");
+	public ItemOrderEntry(OrderLine orderline, OrderStatus status) {
 		Assert.notNull(orderline, "OrderLine must not be null!");
+		Assert.notNull(status, "OrderStatus must not be null!");
 
-		this.status = status;
 		this.orderline = orderline;
+		this.status = status;
 	}
 
 	protected ItemOrderEntry() { }

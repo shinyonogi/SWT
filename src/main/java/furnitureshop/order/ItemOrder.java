@@ -5,6 +5,7 @@ import org.salespointframework.order.OrderLine;
 import org.salespointframework.quantity.Quantity;
 import org.salespointframework.useraccount.UserAccount;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import java.util.ArrayList;
@@ -13,7 +14,7 @@ import java.util.List;
 @Entity
 public abstract class ItemOrder extends ShopOrder {
 
-	@OneToMany
+	@OneToMany(cascade = CascadeType.ALL)
 	private List<ItemOrderEntry> orderWithStatus;
 
 	public ItemOrder(UserAccount userAccount, ContactInformation contactInformation) {
@@ -26,7 +27,7 @@ public abstract class ItemOrder extends ShopOrder {
 	@Override
 	public OrderLine addOrderLine(Product product, Quantity quantity) {
 		OrderLine orderLine = super.addOrderLine(product, quantity);
-		orderWithStatus.add(new ItemOrderEntry(OrderStatus.OPEN, orderLine));
+		orderWithStatus.add(new ItemOrderEntry(orderLine, OrderStatus.OPEN));
 		return orderLine;
 	}
 
