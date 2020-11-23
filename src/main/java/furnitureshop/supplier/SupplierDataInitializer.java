@@ -15,7 +15,7 @@ public class SupplierDataInitializer implements DataInitializer {
 	}
 	
 	public void initialize() {
-		if(!supplierRepository.findAll().iterator().hasNext()) {
+		if(supplierRepository.findAll().iterator().hasNext()) {
 			return;
 		}
 
