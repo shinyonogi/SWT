@@ -1,8 +1,12 @@
 package furnitureshop.order;
 
+import furnitureshop.inventory.Item;
+import furnitureshop.inventory.ItemManager;
 import furnitureshop.lkw.LKW;
+
+import furnitureshop.lkw.LKWManager;
+import org.salespointframework.catalog.ProductIdentifier;
 import org.salespointframework.order.Cart;
-import org.salespointframework.order.Order;
 import org.salespointframework.order.OrderManagement;
 import org.salespointframework.time.BusinessTime;
 import org.salespointframework.useraccount.UserAccount;
@@ -22,11 +26,16 @@ public class OrderManager {
 	private final UserAccountManagement userAccountManagement;
 	private final BusinessTime businessTime;
 	private final OrderManagement<ShopOrder> orderManagement;
+	private final ItemManager itemManager;
+	private final LKWManager lkwManager;
 
-	OrderManager(UserAccountManagement userAccountManagement, BusinessTime businessTime, OrderManagement<ShopOrder> orderManagement) {
+	OrderManager(UserAccountManagement userAccountManagement, BusinessTime businessTime, OrderManagement<ShopOrder> orderManagement,
+				 ItemManager itemManager, LKWManager lkwManager) {
 		this.userAccountManagement = userAccountManagement;
 		this.businessTime = businessTime;
 		this.orderManagement = orderManagement;
+		this.itemManager = itemManager;
+		this.lkwManager = lkwManager;
 	}
 
 	public Optional<Pickup> orderPickupItem(Cart cart, ContactInformation contactInformation) {
@@ -70,7 +79,7 @@ public class OrderManager {
 		return true;
 	}
 
-	public Optional<ShopOrder> search(String id) {
+	public Optional<ShopOrder> findById(String id) {
 		final Optional<UserAccount> userAccount = getDummyUser();
 
 		if (userAccount.isEmpty()) {
@@ -98,6 +107,14 @@ public class OrderManager {
 
 	public Optional<UserAccount> getDummyUser() {
 		return userAccountManagement.findByUsername("Dummy");
+	}
+
+	public Optional<Item> findItemById(ProductIdentifier productId) {
+		return itemManager.findById(productId);
+	}
+
+	public Optional<LKW> findLKWById(ProductIdentifier productId) {
+		return lkwManager.findById(productId);
 	}
 
 }

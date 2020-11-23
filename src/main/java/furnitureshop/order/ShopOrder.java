@@ -22,4 +22,7 @@ public abstract class ShopOrder extends Order {
 	@SuppressWarnings({ "unused", "deprecation" })
 	protected ShopOrder() { }
 
+	public ContactInformation getContactInformation() {
+		return contactInformation;
+	}
 }

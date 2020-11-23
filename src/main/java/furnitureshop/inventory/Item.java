@@ -5,8 +5,7 @@ import org.salespointframework.catalog.Product;
 import org.salespointframework.catalog.ProductIdentifier;
 
 import javax.money.MonetaryAmount;
-import javax.persistence.Entity;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
 @Entity
 public abstract class Item extends Product {
@@ -14,8 +13,11 @@ public abstract class Item extends Product {
 	private String picture;
 	private String variant;
 	private String description;
-	@OneToOne
+
+	@OneToOne(cascade = CascadeType.ALL)
 	private Supplier supplier;
+
+	@Enumerated(EnumType.ORDINAL)
 	private Category category;
 
 	@SuppressWarnings({ "unused", "deprecation" })

@@ -1,5 +1,6 @@
 package furnitureshop.lkw;
 
+import org.salespointframework.catalog.ProductIdentifier;
 import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -268,5 +269,7 @@ public class LKWManager {
 	public Streamable<LKW> findAll() {
 		return lkwCatalog.findAll();
 	}
+
+	public Optional<LKW> findById(ProductIdentifier productId) { return lkwCatalog.findById(productId); }
 
 }

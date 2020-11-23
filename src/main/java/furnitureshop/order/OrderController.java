@@ -2,8 +2,10 @@ package furnitureshop.order;
 
 import furnitureshop.inventory.Item;
 
+import org.salespointframework.catalog.Product;
 import org.salespointframework.order.Cart;
 import org.salespointframework.order.CartItem;
+import org.salespointframework.order.OrderLine;
 import org.salespointframework.quantity.Quantity;
 
 import org.springframework.stereotype.Controller;
@@ -11,6 +13,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.util.Assert;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -103,22 +107,43 @@ class OrderController {
 
 	@GetMapping("/checkOrder")
 	String getOrderPage(){
-		return "checkOrder";
+		return "orderSearch";
 	}
 
 	@PostMapping("/checkOrder")
-	String getOrderOverview(@RequestParam("orderId") String orderId) {
-		return "";
+	String getOrderOverview(@RequestParam("orderId") String orderId, Model model) {
+		Optional<ShopOrder> shopOrder = orderManager.findById(orderId);
+
+		if(shopOrder.isEmpty()) {
+			return "redirect:/checkOrder";
+		}
+
+		List<Item> itemList = new ArrayList<>();
+
+		if (shopOrder.get() instanceof ItemOrder) {
+			for (OrderLine orderline : shopOrder.get().getOrderLines()){
+				Optional<Item> item = orderManager.findItemById(orderline.getProductIdentifier());
+
+				if (item.isEmpty()){ continue; }
+
+				itemList.add(item.get());
+			}
+			if (shopOrder.get() instanceof Delivery) {
+				model.addAttribute("deliveryDate", ((Delivery) shopOrder.get()).getDeliveryDate());
+			}
+		} else if (shopOrder.get() instanceof LKWCharter){
+			// LKW Charter
+		}
+
+
+		model.addAttribute("contactInfo", shopOrder.get().getContactInformation());
+		model.addAttribute("items", itemList);
+		model.addAttribute("order", shopOrder.get());
+		return "orderOverview";
 	}
 
 	@GetMapping("/customerOrders")
 	String getCustomerOrders(Model model){
-		if (orderManager.findAll().isEmpty()){
-			System.out.println("EMPTY");
-		}
-		for (ShopOrder order : orderManager.findAll().toList()){
-			System.out.println(order);
-		}
 		model.addAttribute("orders", orderManager.findAll());
 		return  "customerOrders";
 	}
