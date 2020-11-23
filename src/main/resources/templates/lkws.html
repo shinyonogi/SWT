@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>LKW</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<nav th:include="navigation :: navigation"></nav>
+
+<div class="container pt-3">
+
+	<table class="table table bg-light pb-5">
+		<tbody>
+			<tr th:each="type : ${types}">
+				<td class="align-middle text-center" style="width: 20%">
+					<a th:href="@{/lkw/checkout/{name}(name=${type.name().toLowerCase()})}" class="img-fluid">
+						<img class="img-fluid" th:src="@{/resources/img/{image}(image=${type.getPicture()})}"
+							 src="../static/resources/img/smalllkw.jpg" alt="LKW"/>
+					</a>
+				</td>
+				<td class="align-middle text-center">
+					<h4 th:text="${type.getName()}">5,5t</h4>
+				</td>
+				<td class="align-middle text-center">
+					<h5 th:text="${type.getCharterPrice()} + ' ' + #{lkw.priceinfo}">10 EUR / Tag</h5>
+				</td>
+				<td class="align-middle text-center">
+					<a class="btn btn-info" th:text="#{lkw.open}" th:href="@{/lkw/checkout/{name}(name=${type.name().toLowerCase()})}">Mieten</a>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	
+</div>
+
+</body>
+</html> 

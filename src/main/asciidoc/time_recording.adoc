@@ -9,8 +9,8 @@ Die individuell erfasste Zeit beinhaltet auch das Lesen von Dokumentationen, Bes
 |Woche |David Schroth |Marc Albrecht |Sebastian Jaster |Edgar Wolfert |Johannes Kaufmann |Shintaro Onogi |Meeting
 |1  |300   |400    |610    |270    |540    |180    |40
 |2  |540   |600    |1015   |600    |690    |300    |90
-|3  |900   |1000    |1090    |800    |850    |800    |75
-|4  |…   |…    |…    |…    |…    |…    |30    
+|3  |900   |1000   |1090   |800    |850    |800    |75
+|4  |…   |1000    |1100    |…    |…    |…    |30
 |5  |…   |…    |…    |…    |…    |…    |…    
 |6  |…   |…    |…    |…    |…    |…    |…    
 |7  |…   |…    |…    |…    |…    |…    |…    
