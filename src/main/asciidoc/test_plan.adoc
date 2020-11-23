@@ -1,9 +1,12 @@
-= Test-Plan
+= Test-Plan _Möbelgeschäft_
 
 Dieser Testplan stellt eine vereinfachte Version der IEEE 829-1998 Vorlage dar.
 
 == Einführung
-Wozu dient das Dokument? Zielgruppe?
+In diesem Dokument befinde sich eine Auflistung aller durchzuführender Test für die optimale Überprüfung der Software.
+Es werden Klassen sowie komplexe Strukturen getestet und auf Fehler überprüft.
+Das Dokument soll dabei einen Überblick geben, was und wie getestet wird und wer dafür zuständig ist.
+Es sollen dabei Anwendungsteile für die unterschiedlichsten Szenarien und Anwender getestet werden, um einen reibungslosen Ablauf zu garantieren.
 
 == Test Gegenstände
 - Möbelgeschäftstruktur
@@ -30,7 +33,7 @@ Wozu dient das Dokument? Zielgruppe?
 - _U-5:_ ContactInformation
 - _U-6:_ ItemOrderEntry
 - _U-7:_ Supplier
-- _U-8:_ Controller-Tests
+- _U-8 - U-12:_ Controller-Tests
 
 == Nicht zu testende Funktionalitäten
 - Spring
@@ -45,13 +48,13 @@ Wozu dient das Dokument? Zielgruppe?
 
 == Umgebungsvoraussetzungen
 * Wird spezielle Hardware benötigt?
-- Nein, alles funktioniert mit der gegebenen Hardware
+- Nein, alles funktioniert mit der gegebenen Hardware.
 * Welche Daten müssen bereitgestellt werden? Wie werden die Daten bereitgestellt?
-- Nein, es werden die Shopdaten verwerdet
+- Nein, es werden die Shopdaten verwerdet.
 * Wird zusätzliche Software für das Testen benötigt?
-- Nein, JUnit-Test laufen in der IDE ab
+- Nein, JUnit-Test laufen in der IDE ab.
 * Wie kommuniziert die Software während des Testens? Internet? Netzwerk?
-- Keine Kommuniktaion außerhalb der Software nötig
+- Keine Kommuniktaion außerhalb der Software nötig.
 
 == Testfälle und Verantwortlichkeit
 Jede testbezogene Aufgabe muss einem Ansprechpartner zugeordnet werden.
