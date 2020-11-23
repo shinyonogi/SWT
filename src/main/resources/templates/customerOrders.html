@@ -31,7 +31,10 @@
 				<td th:text="${order.getTotal()}">999,99€</td>
 				<td>TBD</td>
 				<td>
-					<a href="orderOverview.html" class="btn btn-secondary" role="button">Bestellung ansehen</a>
+					<form th:action="@{/checkOrder}" th:method="post">
+						<input type="hidden" th:value="${order.getId()}" id="orderId" name="orderId"/>
+						<button type="submit" class="btn btn-secondary" role="button">Bestellung ansehen</button>
+					</form>
 				</td>
 			</tr>
 		</tbody>
