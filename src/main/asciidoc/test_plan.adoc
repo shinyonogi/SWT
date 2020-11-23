@@ -5,21 +5,36 @@ Dieser Testplan stellt eine vereinfachte Version der IEEE 829-1998 Vorlage dar.
 == Einführung
 Wozu dient das Dokument? Zielgruppe?
 
-== Aufbau der Testbezeichner
-Nach welchem Schema sind die Tests benannt?
-
-*Bsp.*
-
-*U - Unit Test, I - Integrationstest*
-
-*U-1, U-2, I-1*
-
 == Test Gegenstände
+- Möbelgeschäftstruktur
+- Inventarmanagement
+- Lieferantenverwaltung
+- Bestellverwaltung
+- LKW-Verwaltung
 
 == Zu testende Funktionalitäten
 
+=== Integrationstests
+- _I-1:_ LKW Mietung nur möglich, wenn LKW verfügbar
+- _I-2:_ Entfernen von Artikel bei Entfernen von Lieferanten
+- _I-3:_ Order aufrufen anhand seiner ID
+- _I-4:_ Entfernen von Sets bei Entfernen von Teilartikeln
+- _I-5:_ Admininterface, Statistiken, Bestellungenübersicht nur Authentifizierung erreichbar
+- _I-6:_ Artikelanzahl im Warenkorb ändern oder Artikel löschen
+
+=== JUnit-Tests
+- _U-1:_ Item, Piece, Set
+- _U-2:_ Calender, CalenderEntry
+- _U-3:_ LKW
+- _U-4:_ ShopOrder, ItemOrder, Pickup, LKWCharter
+- _U-5:_ ContactInformation
+- _U-6:_ ItemOrderEntry
+- _U-7:_ Supplier
+- _U-8:_ Controller-Tests
+
 == Nicht zu testende Funktionalitäten
-z.B. Bibliotheken von Drittanbietern (eigene Tests beschränken sich auf Schnittstelle, bzw. Zusammenspiel).
+- Spring
+- Salespoint
 
 == Herangehensweise
 *Bsp.:*
@@ -30,9 +45,13 @@ z.B. Bibliotheken von Drittanbietern (eigene Tests beschränken sich auf Schnitt
 
 == Umgebungsvoraussetzungen
 * Wird spezielle Hardware benötigt?
+- Nein, alles funktioniert mit der gegebenen Hardware
 * Welche Daten müssen bereitgestellt werden? Wie werden die Daten bereitgestellt?
+- Nein, es werden die Shopdaten verwerdet
 * Wird zusätzliche Software für das Testen benötigt?
+- Nein, JUnit-Test laufen in der IDE ab
 * Wie kommuniziert die Software während des Testens? Internet? Netzwerk?
+- Keine Kommuniktaion außerhalb der Software nötig
 
 == Testfälle und Verantwortlichkeit
 Jede testbezogene Aufgabe muss einem Ansprechpartner zugeordnet werden.
