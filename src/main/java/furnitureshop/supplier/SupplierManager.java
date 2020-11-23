@@ -1,5 +1,6 @@
 package furnitureshop.supplier;
 
+import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,12 +25,10 @@ public class SupplierManager {
 	public void deleteSupplier(long supplierId) {
 		supplierRepository.deleteById(supplierId);
 	}
-	
-	public void analyse() {
-		
+
+	public Iterable<Supplier> findAll() {
+		return supplierRepository.findAll();
 	}
-	
-	public SupplierRepository getSupplierRepository() {
-		return supplierRepository;
-	}
+
+	public void analyse() { return; }
 }

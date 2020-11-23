@@ -15,10 +15,12 @@ public class SupplierDataInitializer implements DataInitializer {
 	}
 	
 	public void initialize() {
-		if(true) {
-			supplierRepository.save(new Supplier("Müller Möbel", 0.1));
-			supplierRepository.save(new Supplier("Möbelmeister", 0.2));
-			supplierRepository.save(new Supplier("Herberts schicke Stühle", 0.1));
+		if(!supplierRepository.findAll().iterator().hasNext()) {
+			return;
 		}
+
+		supplierRepository.save(new Supplier("Müller Möbel", 0.1));
+		supplierRepository.save(new Supplier("Möbelmeister", 0.2));
+		supplierRepository.save(new Supplier("Herberts schicke Stühle", 0.1));
 	}
 }

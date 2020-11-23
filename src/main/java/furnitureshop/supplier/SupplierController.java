@@ -21,7 +21,7 @@ public class SupplierController {
 	@GetMapping("/suppliers")
 	public String getSupplierList(@ModelAttribute SupplierForm supplierForm, Model model) {
 		
-		model.addAttribute("suppliers", supplierManager.getSupplierRepository().findAll());
+		model.addAttribute("suppliers", supplierManager.findAll());
 		model.addAttribute("supplierForm", supplierForm);
 		
 		return "suppliers";
