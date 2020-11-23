@@ -3,10 +3,14 @@ package furnitureshop.order;
 import furnitureshop.lkw.LKW;
 import org.salespointframework.useraccount.UserAccount;
 
+import javax.persistence.Entity;
+import javax.persistence.OneToOne;
 import java.time.LocalDate;
 
+@Entity
 public class LKWCharter extends ShopOrder {
 	private LocalDate rentDate;
+	@OneToOne
 	private LKW lkw;
 
 	LKWCharter(UserAccount userAccount, LocalDate rentDate, ContactInformation contactInformation, LKW lkw) {
@@ -14,4 +18,7 @@ public class LKWCharter extends ShopOrder {
 		this.rentDate = rentDate;
 		this.lkw = lkw;
 	}
+
+	@SuppressWarnings({ "unused", "deprecation" })
+	protected LKWCharter() {}
 }

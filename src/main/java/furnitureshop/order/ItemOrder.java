@@ -6,32 +6,39 @@ import org.salespointframework.quantity.Quantity;
 import org.salespointframework.useraccount.UserAccount;
 
 import javax.persistence.Entity;
-import java.util.HashMap;
-import java.util.Map;
+import javax.persistence.OneToMany;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public abstract class ItemOrder extends ShopOrder {
-	Map<OrderLine, OrderStatus> orderWithStatus;
+
+	@OneToMany
+	List<ItemOrderEntry> orderWithStatus;
 
 	public ItemOrder(UserAccount userAccount, ContactInformation contactInformation) {
 		super(userAccount, contactInformation);
-		this.orderWithStatus = new HashMap<>();
+		this.orderWithStatus = new ArrayList<>();
 	}
+
+	@SuppressWarnings({ "unused", "deprecation" })
+	protected ItemOrder() {}
 
 	@Override
 	public OrderLine addOrderLine(Product product, Quantity quantity) {
 		OrderLine orderLine = super.addOrderLine(product, quantity);
-		orderWithStatus.put(orderLine, OrderStatus.OPEN);
+		orderWithStatus.add(new ItemOrderEntry(OrderStatus.OPEN, orderLine));
 		return orderLine;
 	}
 
 	public boolean changeAllStatus(OrderStatus status) {
-		for (OrderLine orderLine : orderWithStatus.keySet()) {
-			orderWithStatus.replace(orderLine, status);
+		for (ItemOrderEntry entry : orderWithStatus) {
+			entry.setStatus(status);
 		}
 		return true;
 	}
 
+	/*
 	public boolean changeStatus(OrderLine orderLine, OrderStatus status) {
 		if (orderWithStatus.containsKey(orderLine)) {
 			orderWithStatus.replace(orderLine, status);
@@ -39,5 +46,5 @@ public abstract class ItemOrder extends ShopOrder {
 		} else {
 			throw new IllegalArgumentException("Orderline ist nicht in der Order enthalten");
 		}
-	}
+	}*/
 }

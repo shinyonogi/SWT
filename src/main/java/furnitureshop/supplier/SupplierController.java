@@ -42,4 +42,9 @@ public class SupplierController {
 		supplierManager.deleteSupplier(id);
 		return "redirect:/suppliers";
 	}
+
+	@GetMapping("/statistic")
+	String getMonthlyStatistic(){
+		return "monthlyStatistic";
+	}
 }

@@ -7,20 +7,23 @@ import org.salespointframework.order.OrderManagement;
 import org.salespointframework.time.BusinessTime;
 import org.salespointframework.useraccount.UserAccount;
 import org.salespointframework.useraccount.UserAccountManagement;
+import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 
+@Service
+@Transactional
 public class OrderManager {
 	private final UserAccountManagement userAccountManagement;
 	private final BusinessTime businessTime;
 	private final OrderManagement<ShopOrder> orderManagement;
-	private final UserAccount useraccount;
+	private UserAccount useraccount;
 
 	OrderManager(UserAccountManagement userAccountManagement, BusinessTime businessTime, OrderManagement<ShopOrder> orderManagement) {
 		this.userAccountManagement = userAccountManagement;
 		this.businessTime = businessTime;
 		this.orderManagement = orderManagement;
-		this.useraccount = userAccountManagement.findByUsername("Dummy").orElseGet(null);
 	}
 
 	public boolean orderPickupItem(Cart cart, UserAccount userAccount, ContactInformation contactInformation) {
@@ -50,6 +53,7 @@ public class OrderManager {
 	}
 
 	public Order search(String id) {
+		useraccount = userAccountManagement.findByUsername("Dummy").get();
 		for (Order order : orderManagement.findBy(useraccount)) {
 			if (order.getId().getIdentifier().equals(id)) {
 				return order;

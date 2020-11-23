@@ -2,8 +2,10 @@ package furnitureshop.order;
 
 import org.salespointframework.useraccount.UserAccount;
 
+import javax.persistence.Entity;
 import java.time.LocalDate;
 
+@Entity
 public class Delivery extends ItemOrder{
 	private LocalDate deliveryDate;
 
@@ -11,4 +13,6 @@ public class Delivery extends ItemOrder{
 		super(userAccount, contactInformation);
 		this.deliveryDate = deliveryDate;
 	}
+
+	protected Delivery() {}
 }

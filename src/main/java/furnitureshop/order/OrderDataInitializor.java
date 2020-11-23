@@ -3,7 +3,10 @@ package furnitureshop.order;
 import org.salespointframework.core.DataInitializer;
 import org.salespointframework.useraccount.Password;
 import org.salespointframework.useraccount.UserAccountManagement;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
 
+@Component
 public class OrderDataInitializor implements DataInitializer {
 	private UserAccountManagement userAccountManagement;
 

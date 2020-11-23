@@ -4,7 +4,6 @@ import furnitureshop.inventory.Item;
 
 import org.salespointframework.order.Cart;
 import org.salespointframework.order.CartItem;
-import org.salespointframework.order.Order;
 import org.salespointframework.order.OrderManagement;
 import org.salespointframework.quantity.Quantity;
 
@@ -19,9 +18,9 @@ import org.springframework.util.Assert;
 @SessionAttributes("cart")
 class OrderController {
 
-	private final OrderManagement<Order> orderManagement;
+	private final OrderManagement<ShopOrder> orderManagement;
 
-	OrderController(OrderManagement<Order> orderManagement) {
+	OrderController(OrderManagement<ShopOrder> orderManagement) {
 		Assert.notNull(orderManagement, "OrderManagement must not be null");
 		this.orderManagement = orderManagement;
 	}
@@ -40,12 +39,11 @@ class OrderController {
 	@PostMapping("/cart")
 	String addItem(@RequestParam("item") Item item, @RequestParam("number") int number, @ModelAttribute Cart cart) {
 		cart.addOrUpdateItem(item, Quantity.of(number));
-
 		return "redirect:/";
 	}
 
 	/* Warenkorb leer machen-Funktion */
-	@PostMapping("/cart")
+	@PostMapping("/cart/clear")
 	String clearCart(@ModelAttribute Cart cart) {
 		cart.clear();
 
@@ -53,13 +51,11 @@ class OrderController {
 	}
 
 	/*Items löschen-Funktion */
-	@PostMapping("/cart/{id}")
+	@PostMapping("/cart/delete/{id}")
 	String deleteItem(@PathVariable("id") CartItem item, @ModelAttribute Cart cart) {
 		cart.removeItem(item.getId());
 		return "redirect:/cart";
 	}
-
-
 
 	/* Bezahlen-Funktion */
 	/*
@@ -78,5 +74,15 @@ class OrderController {
 
 		return "redirect:/";
 	}*/
+
+	@GetMapping("/orders")
+	String getOrderPage(){
+		return "orders";
+	}
+
+	@GetMapping("/customerOrders")
+	String getCustomerOrders(){
+		return  "customerOrders";
+	}
 
 }
