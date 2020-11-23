@@ -37,49 +37,33 @@ class OrderController {
 	}
 
 	/* In den Warenkorb hinzufügen-Funktion */
-
 	@PostMapping("/cart")
 	String addItem(@RequestParam("item") Item item, @RequestParam("number") int number, @ModelAttribute Cart cart) {
-
 		cart.addOrUpdateItem(item, Quantity.of(number));
 
 		return "redirect:/";
 	}
 
 	/* Warenkorb leer machen-Funktion */
-
 	@PostMapping("/cart")
 	String clearCart(@ModelAttribute Cart cart) {
-
 		cart.clear();
 
 		return "redirect:/cart";
 	}
 
 	/*Items löschen-Funktion */
-
-	@PostMapping("/cart{id}")
-	String deleteItem(@PathVariable("id") Item item, @ModelAttribute Cart cart) {
-
-		cart.removeItem(item.getId()); //there should be a getId function in item class??
+	@PostMapping("/cart/{id}")
+	String deleteItem(@PathVariable("id") CartItem item, @ModelAttribute Cart cart) {
+		cart.removeItem(item.getId());
+		return "redirect:/cart";
 	}
 
-	/* Preis-Summe berechnen-Funktion */
-
-	public double calculatePrice(@ModelAttribute Cart cart) {
-
-		double price = 0;
-
-		for(CartItem cartitem: cart) {
-			price =  price + cartitem.getId().getPrice();
-		}
-
-		return price;
-	}
 
 
 	/* Bezahlen-Funktion */
-
+	/*
+	TODO: proper Implementation with Salespoint Order class
 	@PostMapping("/checkout")
 	String buy(@ModelAttribute Cart cart) {
 
@@ -93,6 +77,6 @@ class OrderController {
 		cart.clear();
 
 		return "redirect:/";
-	}
+	}*/
 
 }
