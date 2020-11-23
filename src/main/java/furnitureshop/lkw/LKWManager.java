@@ -168,7 +168,7 @@ public class LKWManager {
 			final Optional<CalendarEntry> entry = lkw.getCalendar().getEntry(date);
 
 			// Check if no entry exists -> LKW available for rent
-			if (entry.isPresent()) {
+			if (entry.isEmpty()) {
 				return true;
 			}
 		}

@@ -9,7 +9,9 @@ import java.time.LocalDate;
 
 @Entity
 public class LKWCharter extends ShopOrder {
+
 	private LocalDate rentDate;
+
 	@OneToOne
 	private LKW lkw;
 
@@ -19,6 +21,14 @@ public class LKWCharter extends ShopOrder {
 		this.lkw = lkw;
 	}
 
-	@SuppressWarnings({ "unused", "deprecation" })
 	protected LKWCharter() {}
+
+	public LKW getLkw() {
+		return lkw;
+	}
+
+	public LocalDate getRentDate() {
+		return rentDate;
+	}
+
 }

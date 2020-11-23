@@ -14,14 +14,13 @@ import java.util.List;
 public abstract class ItemOrder extends ShopOrder {
 
 	@OneToMany
-	List<ItemOrderEntry> orderWithStatus;
+	private List<ItemOrderEntry> orderWithStatus;
 
 	public ItemOrder(UserAccount userAccount, ContactInformation contactInformation) {
 		super(userAccount, contactInformation);
 		this.orderWithStatus = new ArrayList<>();
 	}
 
-	@SuppressWarnings({ "unused", "deprecation" })
 	protected ItemOrder() {}
 
 	@Override

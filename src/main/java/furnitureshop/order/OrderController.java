@@ -22,6 +22,7 @@ class OrderController {
 
 	OrderController(OrderManagement<ShopOrder> orderManagement) {
 		Assert.notNull(orderManagement, "OrderManagement must not be null");
+
 		this.orderManagement = orderManagement;
 	}
 
@@ -36,8 +37,8 @@ class OrderController {
 	}
 
 	/* In den Warenkorb hinzufügen-Funktion */
-	@PostMapping("/cart")
-	String addItem(@RequestParam("item") Item item, @RequestParam("number") int number, @ModelAttribute Cart cart) {
+	@PostMapping("/cart/{id}")
+	String addItem(@PathVariable("id") Item item, @RequestParam("number") int number, @ModelAttribute Cart cart) {
 		cart.addOrUpdateItem(item, Quantity.of(number));
 		return "redirect:/";
 	}

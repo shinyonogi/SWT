@@ -7,9 +7,9 @@ import javax.persistence.Id;
 @Entity
 public class ContactInformation {
 
-	@Id
-	@GeneratedValue
-	private Long id;
+	@Id	@GeneratedValue
+	private long id;
+
 	private String name;
 	private String address;
 	private String email;

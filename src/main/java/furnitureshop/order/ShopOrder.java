@@ -8,6 +8,7 @@ import javax.persistence.OneToOne;
 
 @Entity
 public class ShopOrder extends Order {
+
 	@OneToOne
 	private ContactInformation contactInformation;
 
@@ -18,4 +19,5 @@ public class ShopOrder extends Order {
 
 	@SuppressWarnings({ "unused", "deprecation" })
 	protected ShopOrder() { }
+
 }

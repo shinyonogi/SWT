@@ -1,19 +1,19 @@
 package furnitureshop.order;
 
-import com.mysema.commons.lang.Assert;
 import org.salespointframework.order.OrderLine;
+import org.springframework.util.Assert;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
 @Entity
 public class ItemOrderEntry {
 
 	@Id @GeneratedValue
-	private Long id;
+	private long id;
+
+	@Enumerated(EnumType.ORDINAL)
 	private OrderStatus status;
+
 	@OneToOne
 	private OrderLine orderline;
 
@@ -25,7 +25,6 @@ public class ItemOrderEntry {
 		this.orderline = orderline;
 	}
 
-	@SuppressWarnings({ "unused", "deprecation" })
 	protected ItemOrderEntry() { }
 
 	public OrderLine getOrderline() {
@@ -39,4 +38,5 @@ public class ItemOrderEntry {
 	public void setStatus(OrderStatus status) {
 		this.status = status;
 	}
+
 }

@@ -8,7 +8,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class OrderDataInitializor implements DataInitializer {
-	private UserAccountManagement userAccountManagement;
+
+	private final UserAccountManagement userAccountManagement;
 
 	OrderDataInitializor(UserAccountManagement userAccountManagement) {
 		this.userAccountManagement = userAccountManagement;
@@ -16,8 +17,11 @@ public class OrderDataInitializor implements DataInitializer {
 
 	@Override
 	public void initialize() {
-		if (!userAccountManagement.findByUsername("Dummy").isPresent()) {
-			userAccountManagement.create("Dummy", Password.UnencryptedPassword.of("123"));
+		if (userAccountManagement.findByUsername("Dummy").isPresent()) {
+			return;
 		}
+
+		userAccountManagement.create("Dummy", Password.UnencryptedPassword.of("123"));
 	}
+
 }

@@ -11,14 +11,15 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
+import java.util.Optional;
 
 @Service
 @Transactional
 public class OrderManager {
+
 	private final UserAccountManagement userAccountManagement;
 	private final BusinessTime businessTime;
 	private final OrderManagement<ShopOrder> orderManagement;
-	private UserAccount useraccount;
 
 	OrderManager(UserAccountManagement userAccountManagement, BusinessTime businessTime, OrderManagement<ShopOrder> orderManagement) {
 		this.userAccountManagement = userAccountManagement;
@@ -52,13 +53,20 @@ public class OrderManager {
 		return true;
 	}
 
-	public Order search(String id) {
-		useraccount = userAccountManagement.findByUsername("Dummy").get();
-		for (Order order : orderManagement.findBy(useraccount)) {
+	public Optional<Order> search(String id) {
+		final Optional<UserAccount> useraccount = userAccountManagement.findByUsername("Dummy");
+
+		if (useraccount.isEmpty()) {
+			return Optional.empty();
+		}
+
+		for (Order order : orderManagement.findBy(useraccount.get())) {
 			if (order.getId().getIdentifier().equals(id)) {
-				return order;
+				return Optional.of(order);
 			}
 		}
-		return null;
+
+		return Optional.empty();
 	}
+
 }
