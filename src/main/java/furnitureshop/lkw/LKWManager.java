@@ -9,6 +9,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -69,21 +70,21 @@ public class LKWManager {
 		// Check every available LKW in catalog
 		for (LKW lkw : findByType(type)) {
 			// Get entry of calender of that date
-			final CalendarEntry entry = lkw.getCalendar().getEntry(date);
+			final Optional<CalendarEntry> entry = lkw.getCalendar().getEntry(date);
 
+			// If no entry was found -> LKW is available
+			if (entry.isEmpty()) {
+				return true;
+			}
 			// If entry is a DeliveryEntry -> check if order could be added
-			if (entry instanceof DeliveryEntry) {
-				final DeliveryEntry delivery = (DeliveryEntry) entry;
+			else if (entry.get() instanceof DeliveryEntry) {
+				final DeliveryEntry delivery = (DeliveryEntry) entry.get();
 				final int quantity = delivery.getQuantity();
 
 				// Check if amount of deliveries is smaller that the maximum
 				if (delivery.getQuantity() < DeliveryEntry.MAX_DELIVERY) {
 					return true;
 				}
-			}
-			// If no entry was found -> LKW is available
-			else if (entry == null) {
-				return true;
 			}
 		}
 
@@ -99,24 +100,30 @@ public class LKWManager {
 	 *
 	 * @return The used {@code LKW} or {@code null} if none was found
 	 */
-	public LKW createDeliveryOrder(LocalDate date, LKWType type) {
+	public Optional<LKW> createDeliveryOrder(LocalDate date, LKWType type) {
 		Assert.notNull(date, "Date must not be null!");
 		Assert.notNull(type, "Type must not be null!");
 
 		// Check if the date is a work day
 		if (!WORK_DAYS.contains(date.getDayOfWeek())) {
-			return null;
+			return Optional.empty();
 		}
 
 		LKW available = null;
 
 		// Check every available LKW in catalog
 		for (LKW lkw : findByType(type)) {
-			final CalendarEntry entry = lkw.getCalendar().getEntry(date);
+			final Optional<CalendarEntry> entry = lkw.getCalendar().getEntry(date);
 
+			// If no entry was found, save for late
+			if (entry.isEmpty()) {
+				if (available == null) {
+					available = lkw;
+				}
+			}
 			// If entry is a DeliveryEntry -> check if order can be added -> Fewer LKWs
-			if (entry instanceof DeliveryEntry) {
-				final DeliveryEntry delivery = (DeliveryEntry) entry;
+			else if (entry.get() instanceof DeliveryEntry) {
+				final DeliveryEntry delivery = (DeliveryEntry) entry.get();
 				final int quantity = delivery.getQuantity();
 
 				// Check if amount of deliveries is smaller that the maximum
@@ -125,12 +132,8 @@ public class LKWManager {
 					delivery.setQuantity(quantity + 1);
 
 					// Return found LKW
-					return lkw;
+					return Optional.of(lkw);
 				}
-			}
-			// If no entry was found, save for late
-			else if (entry == null && available == null) {
-				available = lkw;
 			}
 		}
 
@@ -140,7 +143,7 @@ public class LKWManager {
 		}
 
 		// Return found LKW or null
-		return available;
+		return Optional.ofNullable(available);
 	}
 
 	/**
@@ -162,10 +165,10 @@ public class LKWManager {
 
 		// Check every available LKW in catalog
 		for (LKW lkw : findByType(type)) {
-			final CalendarEntry entry = lkw.getCalendar().getEntry(date);
+			final Optional<CalendarEntry> entry = lkw.getCalendar().getEntry(date);
 
 			// Check if no entry exists -> LKW available for rent
-			if (entry == null) {
+			if (entry.isPresent()) {
 				return true;
 			}
 		}
@@ -183,13 +186,13 @@ public class LKWManager {
 	 *
 	 * @return The used {@code LKW} or {@code null} if none was found
 	 */
-	public LKW createCharterOrder(LocalDate date, LKWType type) {
+	public Optional<LKW> createCharterOrder(LocalDate date, LKWType type) {
 		Assert.notNull(date, "Date must not be null!");
 		Assert.notNull(type, "Type must not be null!");
 
 		// Check if the date is a work day
 		if (!WORK_DAYS.contains(date.getDayOfWeek())) {
-			return null;
+			return Optional.empty();
 		}
 
 		// Check every available LKW in catalog
@@ -202,12 +205,12 @@ public class LKWManager {
 				calendar.addEntry(new CharterEntry(date));
 
 				// Return found LKW
-				return lkw;
+				return Optional.of(lkw);
 			}
 		}
 
 		// No LKW was found
-		return null;
+		return Optional.empty();
 	}
 
 	/**
@@ -224,21 +227,21 @@ public class LKWManager {
 
 		// Get calender and entry of date
 		final Calendar calendar = lkw.getCalendar();
-		final CalendarEntry entry = calendar.getEntry(date);
+		final Optional<CalendarEntry> entry = calendar.getEntry(date);
 
 		// If entry doesn't exists -> can't be canceled
-		if (entry == null) {
+		if (entry.isEmpty()) {
 			return false;
 		}
 		// If entry is CharterEntry -> remove entry
-		else if (entry instanceof CharterEntry) {
+		else if (entry.get() instanceof CharterEntry) {
 			calendar.removeEntry(date);
 
 			return true;
 		}
 		// If entry is DeliveryEntry -> decrease deliver count
-		else if (entry instanceof DeliveryEntry) {
-			final DeliveryEntry dilivery = (DeliveryEntry) entry;
+		else if (entry.get() instanceof DeliveryEntry) {
+			final DeliveryEntry dilivery = (DeliveryEntry) entry.get();
 			final int quantity = dilivery.getQuantity();
 
 			// Check if this was the only order

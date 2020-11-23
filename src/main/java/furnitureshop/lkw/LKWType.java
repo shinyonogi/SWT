@@ -4,6 +4,7 @@ import org.javamoney.moneta.Money;
 import org.salespointframework.core.Currencies;
 
 import javax.money.MonetaryAmount;
+import java.util.Optional;
 
 public enum LKWType {
 
@@ -69,16 +70,16 @@ public enum LKWType {
 	 *
 	 * @param name The name of the type
 	 *
-	 * @return The {@code LKWType} with this name or {@code null} if none was found
+	 * @return The {@code LKWType} with this name
 	 */
-	public static LKWType getByName(String name) {
+	public static Optional<LKWType> getByName(String name) {
 		for (LKWType type : LKWType.values()) {
 			if (type.name().equalsIgnoreCase(name) || type.getName().equalsIgnoreCase(name)) {
-				return type;
+				return Optional.of(type);
 			}
 		}
 
-		return null;
+		return Optional.empty();
 	}
 
 	/**
@@ -87,9 +88,9 @@ public enum LKWType {
 	 *
 	 * @param weight The minimum weight of the {@code LKW}
 	 *
-	 * @return The {@code LKWType} with the weight or {@code null} if none was found
+	 * @return The {@code LKWType} with the weight
 	 */
-	public static LKWType getByWeight(int weight) {
+	public static Optional<LKWType> getByWeight(int weight) {
 		LKWType minType = null;
 
 		for (LKWType type : LKWType.values()) {
@@ -98,7 +99,7 @@ public enum LKWType {
 			}
 		}
 
-		return minType;
+		return Optional.ofNullable(minType);
 	}
 
 }

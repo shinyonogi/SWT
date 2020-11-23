@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.Optional;
+
 @Controller
 public class LKWController {
 
@@ -35,16 +37,16 @@ public class LKWController {
 	@GetMapping("/lkw/checkout/{lkwtype}")
 	String getLKWCheckout(@PathVariable("lkwtype") String name, Model model) {
 		// Get type by name, used to ensure case insensitivity
-		final LKWType type = LKWType.getByName(name);
+		final Optional<LKWType> type = LKWType.getByName(name);
 
 		// Check if no type is found -> redirect to type overview
-		if (type == null) {
+		if (type.isEmpty()) {
 			return "redirect:/lkws";
 		}
 
 		// Add attributes to model to display form with default values and no errors
 		model.addAttribute("lkwform", new LKWCharterForm("", "", "", businessTime.getTime().toLocalDate()));
-		model.addAttribute("type", type);
+		model.addAttribute("type", type.get());
 		model.addAttribute("result", 0);
 
 		return "lkwCheckout";
@@ -53,16 +55,16 @@ public class LKWController {
 	@PostMapping(value = "/lkw/checkout/{lkwtype}", params = "check")
 	String checkLKWDate(@PathVariable("lkwtype") String name, @ModelAttribute("lkwform") LKWCharterForm form, Model model) {
 		// Get type by name, used to ensure case insensitivity
-		final LKWType type = LKWType.getByName(name);
+		final Optional<LKWType> type = LKWType.getByName(name);
 
 		// Check if no type is found -> redirect to type overview
-		if (type == null) {
+		if (type.isEmpty()) {
 			return "redirect:/lkws";
 		}
 
 		// Add old attributes to model to keep input
 		model.addAttribute("lkwform", form);
-		model.addAttribute("type", type);
+		model.addAttribute("type", type.get());
 
 		// Check if date is invalid or before current date
 		if (form.getDate() == null || !form.getDate().isAfter(businessTime.getTime().toLocalDate())) {
@@ -71,7 +73,7 @@ public class LKWController {
 			return "lkwCheckout";
 		}
 		// Check if LKW with given type is available on the date
-		if (!lkwManager.isCharterAvailable(form.getDate(), type)) {
+		if (!lkwManager.isCharterAvailable(form.getDate(), type.get())) {
 			// Display error message
 			model.addAttribute("result", 5);
 			return "lkwCheckout";
@@ -86,16 +88,16 @@ public class LKWController {
 	@PostMapping(value = "/lkw/checkout/{lkwtype}", params = "buy")
 	String checkoutLKW(@PathVariable("lkwtype") String name, @ModelAttribute("lkwform") LKWCharterForm form, Model model) {
 		// Get type by name, used to ensure case insensitivity
-		final LKWType type = LKWType.getByName(name);
+		final Optional<LKWType> type = LKWType.getByName(name);
 
 		// Check if no type is found -> redirect to type overview
-		if (type == null) {
+		if (type.isEmpty()) {
 			return "redirect:/lkws";
 		}
 
 		// Add old attributes to model to keep input
 		model.addAttribute("lkwform", form);
-		model.addAttribute("type", type);
+		model.addAttribute("type", type.get());
 
 		// Check if name is invalid
 		if (!StringUtils.hasText(form.getName())) {
@@ -121,18 +123,12 @@ public class LKWController {
 			model.addAttribute("result", 4);
 			return "lkwCheckout";
 		}
-		// Check if lkw with given type is available on the date
-		if (!lkwManager.isCharterAvailable(form.getDate(), type)) {
-			// Display error message
-			model.addAttribute("result", 5);
-			return "lkwCheckout";
-		}
 
 		// Create Calender entry and get used LKW
-		final LKW lkw = lkwManager.createCharterOrder(form.getDate(), type);
+		final Optional<LKW> lkw = lkwManager.createCharterOrder(form.getDate(), type.get());
 
-		// Should never be null (only if LKW is booked in the meantime)
-		if (lkw == null) {
+		// Check if lkw with given type is available on the date
+		if (lkw.isEmpty()) {
 			// Display error message
 			model.addAttribute("result", 5);
 			return "lkwCheckout";

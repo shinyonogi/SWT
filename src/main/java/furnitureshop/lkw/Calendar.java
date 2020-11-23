@@ -6,6 +6,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 @Entity
 public class Calendar {
@@ -47,9 +48,9 @@ public class Calendar {
 	 * @return {@code true} if the {@code Calender} contains an entry on that {@code Date}
 	 */
 	public boolean removeEntry(LocalDate date) {
-		final CalendarEntry entry = getEntry(date);
+		final Optional<CalendarEntry> entry = getEntry(date);
 
-		return entries.remove(entry);
+		return entry.map(entries::remove).orElse(false);
 	}
 
 	/**
@@ -60,7 +61,13 @@ public class Calendar {
 	 * @return {@code true} if the {@code Calender} contains an entry on that {@code Date}
 	 */
 	public boolean hasEntry(LocalDate date) {
-		return getEntry(date) != null;
+		for (CalendarEntry entry : entries) {
+			if (entry.getDate().equals(date)) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	/**
@@ -68,16 +75,16 @@ public class Calendar {
 	 *
 	 * @param date The date of the {@code Calender}
 	 *
-	 * @return The entry of the {@code Calender} of that {@code Date} or {@code null} if no entry exists
+	 * @return The entry of the {@code Calender} of that {@code Date}
 	 */
-	public CalendarEntry getEntry(LocalDate date) {
+	public Optional<CalendarEntry> getEntry(LocalDate date) {
 		for (CalendarEntry entry : entries) {
 			if (entry.getDate().equals(date)) {
-				return entry;
+				return Optional.of(entry);
 			}
 		}
 
-		return null;
+		return Optional.empty();
 	}
 
 	public long getId() {
