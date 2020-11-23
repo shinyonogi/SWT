@@ -11,6 +11,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.util.Assert;
 
+import java.util.Optional;
+
 
 @Controller
 @SessionAttributes("cart")
@@ -64,29 +66,49 @@ class OrderController {
 
 	/* Bezahlen-Funktion */
 	@PostMapping("/checkout/completeOrder")
-	String buy(@ModelAttribute("cart") Cart cart, @ModelAttribute("orderform") OrderForm orderForm) {
+	String buy(@ModelAttribute("cart") Cart cart, @ModelAttribute("orderform") OrderForm orderForm, Model model) {
 		ContactInformation contactInformation = new ContactInformation(orderForm.getName(), orderForm.getAddress(), orderForm.getEmail());
+		ItemOrder itemOrder;
 
 		// Delivery
 		if (orderForm.getIndex() == 1) {
-			if (!orderManager.orderDelieveryItem(cart, contactInformation)){
-				return "redirect:/checkout";
+			final Optional<Delivery> delivery = orderManager.orderDelieveryItem(cart, contactInformation);
+
+			if (delivery.isEmpty()){
+				model.addAttribute("orderform", orderForm);
+				return "orderCheckout";
 			}
-		}
-		// Pickup
-		if (orderForm.getIndex() == 0) {
-			if (!orderManager.orderPickupItem(cart, contactInformation)) {
-				return "redirect:/checkout";
+			model.addAttribute("deliveryDate", delivery.get().getDeliveryDate());
+			itemOrder = delivery.get();
+
+		} else if (orderForm.getIndex() == 0) { // Pickup
+			final Optional<Pickup> pickup = orderManager.orderPickupItem(cart, contactInformation);
+
+			if (pickup.isEmpty()) {
+				model.addAttribute("orderform", orderForm);
+				return "orderCheckout";
 			}
+			model.addAttribute("deliveryDate", null);
+			itemOrder = pickup.get();
+
+		} else {
+			model.addAttribute("orderform", orderForm);
+			return "orderCheckout";
 		}
 
+		model.addAttribute("order", itemOrder);
 		cart.clear();
-		return "redirect:/";
+		return "orderSummary";
 	}
 
-	@GetMapping("/orders")
+	@GetMapping("/checkOrder")
 	String getOrderPage(){
-		return "orders";
+		return "checkOrder";
+	}
+
+	@PostMapping("/checkOrder")
+	String getOrderOverview(@RequestParam("orderId") String orderId) {
+		return "";
 	}
 
 	@GetMapping("/customerOrders")

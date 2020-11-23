@@ -15,4 +15,8 @@ public class Delivery extends ItemOrder{
 	}
 
 	protected Delivery() {}
+
+	public LocalDate getDeliveryDate() {
+		return deliveryDate;
+	}
 }

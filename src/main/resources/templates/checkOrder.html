@@ -17,11 +17,11 @@
 	<div class="row">
 		<div class="col-4"></div>
 		<div class="col-4">
-			<div class="form-group">
- 	 			<label for="OrderNumber">Bitte Bestellnummer angeben:</label>
-  				<input type="text" class="form-control mb-2" id="OrderNumber">
-  				<a href="orderItems.html" class="btn btn-info" role="button">Bestellung ansehen</a>
-			</div>
+			<form class="form-group" th:method="post" th:action="@{/checkOrder}">
+ 	 			<label for="orderId">Bitte Bestellnummer angeben:</label>
+  				<input type="text" class="form-control mb-2" id="orderId" name="orderId">
+  				<button type="submit" class="btn btn-info" role="button">Bestellung ansehen</button>
+			</form>
 		</div>
 		<div class="col-4"></div>
 	</div>
