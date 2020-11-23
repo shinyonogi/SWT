@@ -1,0 +1,56 @@
+= Protokoll Gruppe 17
+
+Treffen am 23.11.2020
+
+Ort:      Discord +
+Beginn:   14:50 Uhr +
+Ende:     17:00 Uhr
+
+__Schriftführer:__ Marc Albrecht
+
+*Nächstes Treffen:* +
+26.11.2020, 13:00 Uhr, BigBlueButton
+
+__Teilnehmer:__
+//Tabellarisch oder Aufzählung, Kennzeichnung von Teilnehmern mit besonderer Rolle (z.B. Kunde)
+
+- Sebastian Jaster
+- Edgar Wolfert
+- Johannes Kaufmann
+- David Schroth
+- Marc Albrecht
+
+== Bemerkungen
+- Planung für die Unit Tests
+- Auswertung des Implementierungsfortschrittes
+- Bootstrap Nutzung in HTML/CSS für Einheitlichkeit
+- Erstellung des ersten Grobentwurfs des Entwurfsklassendiagramms
+
+== Tests
+- LKW Mietung nur möglich, wenn LKW verfügbar
+- Lieferanten entfernen -> dazugehörige Artikel entfernen
+- Order erstellen -> Order mit seiner ID bekommen
+- Artikel entfernen -> zugehörige Sets auch entfernen
+- Admininterface, Statistiken, Bestellungenübersicht nur Authentifizierung erreichbar
+- Artikelanzahl im Warenkorb ändern oder Artikel löschen
+
+== Planung des nächsten Sprints
+- Deadline: Di. 24.11.2020 23:59Uhr
+
+*Issue referenziert die Issue ID von GitHub*
+
+// See http://asciidoctor.org/docs/user-manual/=tables
+[option="headers"]
+|===
+|Issue |Titel |Beschreibung |Verantwortlicher |Status
+|#24   | Erstellung des Entwurfsklassendiagramms	| Überführung des Analyseklassendiagramms in ein Entwurfsklassendiagramm             | Sebastian		| Offen
+|#25   | Erstellung des Testplanes					| Jeder denkt sich einen Unit Test und einen Integrationstest für seine Aufgabe aus | Alle			| 6 Tests erstellt
+|#26   | Implementierung Inventarverwaltung		    | *Details in Issue | Edgar			| Fertig
+|#27   | Implementierung Lieferantenverwaltung		| *                 | David			| Fertig
+|#28   | Implementierung LKW-Verwaltung				| *                 | Marc			| Fertig
+|#29   | Implementierung Bestellverwaltung			| *                 | Johannes		| grundlegende Struktur Fertig
+|#30   | Implementierung Warenkorb					| *                 | Shintaro		| größtenteils Fertig
+|#31   | Implementierung Login					    | *                 | Sebastian		| Fertig
+|#32   | Erstellung von Dummy Data					| Dummy Data für Lieferanten, Möbel, LKWs | Sebastian	| Fertig
+
+|===
