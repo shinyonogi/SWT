@@ -6,15 +6,20 @@ import org.salespointframework.catalog.ProductIdentifier;
 
 import javax.money.MonetaryAmount;
 import javax.persistence.Entity;
+import javax.persistence.OneToOne;
 
 @Entity
 public abstract class Item extends Product {
-	private final int groupid;
-	private final String picture;
-	private final String variant;
-	private final String description;
-	private final Supplier supplier;
-	private final Category category;
+	private int groupid;
+	private String picture;
+	private String variant;
+	private String description;
+	@OneToOne
+	private Supplier supplier;
+	private Category category;
+
+	@SuppressWarnings({ "unused", "deprecation" })
+	protected Item() {}
 
 	public Item(int groupid, String name, MonetaryAmount customerPrice, String picture, String variant,
 				String description, Supplier supplier, Category category){

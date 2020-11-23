@@ -16,98 +16,19 @@
 <div class="container pt-3">
 
 	<div class="row">
-		
-		<div class="col-lg-4 col-md-6 mb-4">
+
+		<div th:each="item : ${items}" class="col-lg-4 col-md-6 mb-4">
 			<div class="card h-100">
-				<a href="itemView.html"><img class="card-img-top" src="../pics/sofa.png" alt=""></a>
+				<a href="itemView.html"><img class="card-img-top" th:src="${item.getPicture()}" alt=""></a>
 				<div class="card-body">
 					<h4 class="card-title">
-					<a href="itemView.html">Sofa</a>
+					<a href="itemView.html" th:text="${item.getName()}">Sofa</a>
 					</h4>
-					<h5>999,99€</h5>
-                	<p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam aspernatur!</p>
+					<h5 th:text="${item.getCustomerPrice()}">999,99€</h5>
+                	<p class="card-text" th:text="${item.getDescription()}">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam aspernatur!</p>
 				</div>
 				<div class="card-footer">
-					<small class="text-muted">extra info</small>
-				</div>
-			</div>
-		</div>
-		
-		<div class="col-lg-4 col-md-6 mb-4">
-			<div class="card h-100">
-				<a href="itemView.html"><img class="card-img-top" src="../pics/sofa.png" alt=""></a>
-				<div class="card-body">
-					<h4 class="card-title">
-					<a href="itemView.html">Sofa</a>
-					</h4>
-					<h5>999,99€</h5>
-                	<p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam aspernatur!</p>
-				</div>
-				<div class="card-footer">
-					<small class="text-muted">extra info</small>
-				</div>
-			</div>
-		</div>
-		
-		<div class="col-lg-4 col-md-6 mb-4">
-			<div class="card h-100">
-				<a href="itemView.html"><img class="card-img-top" src="../pics/sofa.png" alt=""></a>
-				<div class="card-body">
-					<h4 class="card-title">
-					<a href="itemView.html">Sofa</a>
-					</h4>
-					<h5>999,99€</h5>
-                	<p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam aspernatur!</p>
-				</div>
-				<div class="card-footer">
-					<small class="text-muted">extra info</small>
-				</div>
-			</div>
-		</div>
-		<div class="col-lg-4 col-md-6 mb-4">
-			<div class="card h-100">
-				<a href="itemView.html"><img class="card-img-top" src="../pics/sofa.png" alt=""></a>
-				<div class="card-body">
-					<h4 class="card-title">
-					<a href="itemView.html">Sofa</a>
-					</h4>
-					<h5>999,99€</h5>
-                	<p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam aspernatur!</p>
-				</div>
-				<div class="card-footer">
-					<small class="text-muted">extra info</small>
-				</div>
-			</div>
-		</div>
-		
-		<div class="col-lg-4 col-md-6 mb-4">
-			<div class="card h-100">
-				<a href="itemView.html"><img class="card-img-top" src="../pics/sofa.png" alt=""></a>
-				<div class="card-body">
-					<h4 class="card-title">
-					<a href="itemView.html">Sofa</a>
-					</h4>
-					<h5>999,99€</h5>
-                	<p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam aspernatur!</p>
-				</div>
-				<div class="card-footer">
-					<small class="text-muted">extra info</small>
-				</div>
-			</div>
-		</div>
-		
-		<div class="col-lg-4 col-md-6 mb-4">
-			<div class="card h-100">
-				<a href="itemView.html"><img class="card-img-top" src="../pics/sofa.png" alt=""></a>
-				<div class="card-body">
-					<h4 class="card-title">
-					<a href="itemView.html">Sofa</a>
-					</h4>
-					<h5>999,99€</h5>
-                	<p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam aspernatur!</p>
-				</div>
-				<div class="card-footer">
-					<small class="text-muted">extra info</small>
+					<small class="text-muted"></small>
 				</div>
 			</div>
 		</div>

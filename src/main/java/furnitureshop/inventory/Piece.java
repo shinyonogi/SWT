@@ -7,7 +7,10 @@ import javax.persistence.Entity;
 
 @Entity
 public class Piece extends Item{
-	private final int weight;
+	private int weight;
+
+	@SuppressWarnings({ "unused", "deprecation" })
+	protected Piece() {}
 
 	public Piece(int groupId, String name, MonetaryAmount customerPrice, String picture, String variant,
 			   String description, Supplier supplier, int weight, Category category){
