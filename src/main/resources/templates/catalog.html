@@ -22,7 +22,7 @@
 				<a href="itemView.html"><img class="card-img-top" th:src="${item.getPicture()}" alt=""></a>
 				<div class="card-body">
 					<h4 class="card-title">
-					<a href="itemView.html" th:text="${item.getName()}">Sofa</a>
+					<a th:href="@{/catalog/{category}/{id}(id=${item.id}, category=${item.category})}" th:text="${item.getName()}">Sofa</a>
 					</h4>
 					<h5 th:text="${item.getCustomerPrice()}">999,99€</h5>
                 	<p class="card-text" th:text="${item.getDescription()}">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam aspernatur!</p>
