@@ -41,21 +41,31 @@ class OrderController {
 	@PostMapping("/cart/{id}")
 	String addItem(@PathVariable("id") Item item, @RequestParam("number") int number, @ModelAttribute Cart cart) {
 		cart.addOrUpdateItem(item, Quantity.of(number));
+
 		return "redirect:/";
 	}
 
-	/* Warenkorb leer machen-Funktion */
-	@PostMapping("/cart/clear")
-	String clearCart(@ModelAttribute Cart cart) {
-		cart.clear();
+	/* Warenkorb bearbeiten-Funktion */
+	@PostMapping("/cart/change/{id}")
+	String editItem(@PathVariable("id") String chartItemId, @RequestParam("amount") int amount, @ModelAttribute Cart cart) {
+		cart.getItem(chartItemId).map(it -> {
+			if (amount <= 0){
+				cart.removeItem(chartItemId);
+			} else {
+				final int newValue = amount - it.getQuantity().getAmount().intValue();
+				cart.addOrUpdateItem(it.getProduct(), newValue);
+			}
+			return "redirect:/cart";
+		});
 
 		return "redirect:/cart";
 	}
 
-	/*Items löschen-Funktion */
+	/*Item löschen-Funktion */
 	@PostMapping("/cart/delete/{id}")
-	String deleteItem(@PathVariable("id") CartItem item, @ModelAttribute Cart cart) {
-		cart.removeItem(item.getId());
+	String deleteItem(@PathVariable("id") String chartItemId, @ModelAttribute Cart cart) {
+		cart.removeItem(chartItemId);
+
 		return "redirect:/cart";
 	}
 
