@@ -1,22 +1,19 @@
 package furnitureshop.order;
 
 import furnitureshop.inventory.Item;
-
-import org.salespointframework.catalog.Product;
+import furnitureshop.lkw.LKWType;
 import org.salespointframework.order.Cart;
 import org.salespointframework.order.CartItem;
 import org.salespointframework.order.OrderLine;
 import org.salespointframework.quantity.Quantity;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.util.Assert;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 
 @Controller
 @SessionAttributes("cart")
@@ -36,7 +33,7 @@ class OrderController {
 	}
 
 	@GetMapping("/cart")
-	String basket(){
+	String basket() {
 		return "cart";
 	}
 
@@ -63,89 +60,109 @@ class OrderController {
 	}
 
 	@GetMapping("/checkout")
-	String checkout(Model model) {
+	String checkout(Model model, @ModelAttribute("cart") Cart cart) {
 		model.addAttribute("orderform", new OrderForm("", "", "", 0));
+
+		final int weight = cart.get()
+				.map(CartItem::getProduct)
+				.filter(product -> product instanceof Item)
+				.map(product -> ((Item) product))
+				.mapToInt(Item::getWeight)
+				.sum();
+
+		final Optional<LKWType> type = LKWType.getByWeight(weight);
+
+		if (type.isEmpty()) {
+			return "redirect:/cart";
+		}
+
+		model.addAttribute("lkwtype", type.get());
+
 		return "orderCheckout";
 	}
 
 	/* Bezahlen-Funktion */
 	@PostMapping("/checkout/completeOrder")
 	String buy(@ModelAttribute("cart") Cart cart, @ModelAttribute("orderform") OrderForm orderForm, Model model) {
-		ContactInformation contactInformation = new ContactInformation(orderForm.getName(), orderForm.getAddress(), orderForm.getEmail());
-		ItemOrder itemOrder;
+		final ContactInformation contactInformation = new ContactInformation(orderForm.getName(), orderForm.getAddress(), orderForm.getEmail());
+
+		final ShopOrder stopOrder;
 
 		// Delivery
 		if (orderForm.getIndex() == 1) {
 			final Optional<Delivery> delivery = orderManager.orderDelieveryItem(cart, contactInformation);
 
-			if (delivery.isEmpty()){
+			if (delivery.isEmpty()) {
 				model.addAttribute("orderform", orderForm);
 				return "orderCheckout";
 			}
-			model.addAttribute("deliveryDate", delivery.get().getDeliveryDate());
-			itemOrder = delivery.get();
 
-		} else if (orderForm.getIndex() == 0) { // Pickup
+			model.addAttribute("deliveryDate", delivery.get().getDeliveryDate());
+			stopOrder = delivery.get();
+		}
+		// Pickup
+		else if (orderForm.getIndex() == 0) {
 			final Optional<Pickup> pickup = orderManager.orderPickupItem(cart, contactInformation);
 
 			if (pickup.isEmpty()) {
 				model.addAttribute("orderform", orderForm);
 				return "orderCheckout";
 			}
-			model.addAttribute("deliveryDate", null);
-			itemOrder = pickup.get();
 
+			model.addAttribute("deliveryDate", null);
+			stopOrder = pickup.get();
 		} else {
 			model.addAttribute("orderform", orderForm);
 			return "orderCheckout";
 		}
 
-		model.addAttribute("order", itemOrder);
+		model.addAttribute("charterDate", null);
+		model.addAttribute("order", stopOrder);
+
 		cart.clear();
+
 		return "orderSummary";
 	}
 
 	@GetMapping("/checkOrder")
-	String getOrderPage(){
+	String getOrderPage() {
 		return "orderSearch";
 	}
 
 	@PostMapping("/checkOrder")
 	String getOrderOverview(@RequestParam("orderId") String orderId, Model model) {
-		Optional<ShopOrder> shopOrder = orderManager.findById(orderId);
+		final Optional<ShopOrder> shopOrder = orderManager.findById(orderId);
 
-		if(shopOrder.isEmpty()) {
+		if (shopOrder.isEmpty()) {
 			return "redirect:/checkOrder";
 		}
 
-		List<Item> itemList = new ArrayList<>();
+		final List<Item> itemList = new ArrayList<>();
 
 		if (shopOrder.get() instanceof ItemOrder) {
-			for (OrderLine orderline : shopOrder.get().getOrderLines()){
-				Optional<Item> item = orderManager.findItemById(orderline.getProductIdentifier());
+			for (OrderLine orderline : shopOrder.get().getOrderLines()) {
+				final Optional<Item> item = orderManager.findItemById(orderline.getProductIdentifier());
 
-				if (item.isEmpty()){ continue; }
-
-				itemList.add(item.get());
+				item.ifPresent(itemList::add);
 			}
 			if (shopOrder.get() instanceof Delivery) {
 				model.addAttribute("deliveryDate", ((Delivery) shopOrder.get()).getDeliveryDate());
 			}
-		} else if (shopOrder.get() instanceof LKWCharter){
+		} else if (shopOrder.get() instanceof LKWCharter) {
 			// LKW Charter
 		}
-
 
 		model.addAttribute("contactInfo", shopOrder.get().getContactInformation());
 		model.addAttribute("items", itemList);
 		model.addAttribute("order", shopOrder.get());
+
 		return "orderOverview";
 	}
 
 	@GetMapping("/customerOrders")
-	String getCustomerOrders(Model model){
+	String getCustomerOrders(Model model) {
 		model.addAttribute("orders", orderManager.findAll());
-		return  "customerOrders";
+		return "customerOrders";
 	}
 
 }

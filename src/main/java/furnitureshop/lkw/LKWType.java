@@ -10,15 +10,15 @@ public enum LKWType {
 
 	SMALL(
 			"3,5t", 2000, "smalllkw.jpg",
-			Money.of(20, Currencies.EURO), Money.of(5, Currencies.EURO)
+			Money.of(19.99, Currencies.EURO), Money.of(4.99, Currencies.EURO)
 	),
 	MEDIUM(
 			"5,5t", 4000, "mediumlkw.jpg",
-			Money.of(50, Currencies.EURO), Money.of(10, Currencies.EURO)
+			Money.of(49.99, Currencies.EURO), Money.of(9.99, Currencies.EURO)
 	),
 	LARGE(
 			"7,5t", 6000, "largelkw.jpg",
-			Money.of(80, Currencies.EURO), Money.of(20, Currencies.EURO)
+			Money.of(79.99, Currencies.EURO), Money.of(19.99, Currencies.EURO)
 	);
 
 	// Displayname of the LKWType

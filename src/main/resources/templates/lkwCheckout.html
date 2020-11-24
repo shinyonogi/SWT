@@ -25,6 +25,7 @@
 				<div th:if="${result == 3}" th:text="#{lkw.status.email}">Ungültige E-Mail</div>
 				<div th:if="${result == 4}" th:text="#{lkw.status.date}">Ungültiges Datum</div>
 				<div th:if="${result == 5}" th:text="#{lkw.status.unavailable}">LKW nicht verfügbar</div>
+				<div th:if="${result == 6}" th:text="#{lkw.status.order}">Fehler bei der Bestellung</div>
 			</div>
 
 			<div class="alert alert-success" th:if="${result < 0}">
@@ -45,7 +46,7 @@
 					</div>
 					<div class="d-flex justify-content-between align-items-end pl-2 pr-2">
 						<h4 th:text="#{lkw.price}">Preis:</h4>
-						<h5 th:text="${type.getCharterPrice()} + ' ' + #{lkw.priceinfo}">10 EUR / Tag</h5>
+						<h5 th:text="${type.getCharterPrice()}">10 EUR</h5>
 					</div>
 				</div>
 			</div>
@@ -54,19 +55,19 @@
 		<div class="col-4 mt-3">
 			<form method="post" th:object="${lkwform}" th:action="@{/lkw/checkout/{name}(name=${type.name().toLowerCase()})}" role="form" class="form" id="form">
 				<div class="form-group">
-		    		<label for="name" th:text="#{lkw.name}">Name:</label>
-		    		<input type="text" name="name" th:value="*{name}" class="form-control" id="name" required th:placeholder="#{lkw.name.placeholder}">
+		    		<label for="name" th:text="#{order.name}">Name:</label>
+		    		<input type="text" name="name" th:value="*{name}" class="form-control" id="name" required th:placeholder="#{order.name.placeholder}">
 		  		</div>
 				<div class="form-group">
-					<label for="address" th:text="#{lkw.address}">Adresse:</label>
-					<input type="text" name="address" th:value="*{address}" class="form-control" id="address" required th:placeholder="#{lkw.address.placeholder}">
+					<label for="address" th:text="#{order.address}">Adresse:</label>
+					<input type="text" name="address" th:value="*{address}" class="form-control" id="address" required th:placeholder="#{order.address.placeholder}">
 				</div>
 		  		<div class="form-group">
-		    		<label for="email" th:text="#{lkw.email}">E-Mail:</label>
-		    		<input type="email" name="email" th:value="*{email}" class="form-control" id="email" required th:placeholder="#{lkw.email.placeholder}">
+		    		<label for="email" th:text="#{order.email}">E-Mail:</label>
+		    		<input type="email" name="email" th:value="*{email}" class="form-control" id="email" required th:placeholder="#{order.email.placeholder}">
 		  		</div>
 		  		<div class="form-group">
-					<label for="date" th:text="#{lkw.date}">Datum:</label>
+					<label for="date" th:text="#{order.date}">Datum:</label>
 					<div class="d-flex">
 						<input type="date" name="date" th:value="*{date}" class="form-control mr-md-2" id="date" required>
 						<button type="submit" th:text="#{lkw.check}" formnovalidate name="check" class="btn btn-info">Prüfen</button>

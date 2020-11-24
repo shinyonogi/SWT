@@ -1,5 +1,7 @@
 package furnitureshop.lkw;
 
+import furnitureshop.order.ContactInformation;
+import furnitureshop.order.LKWCharter;
 import org.salespointframework.time.BusinessTime;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -125,7 +127,7 @@ public class LKWController {
 		}
 
 		// Create Calender entry and get used LKW
-		final Optional<LKW> lkw = lkwManager.createCharterOrder(form.getDate(), type.get());
+		final Optional<LKW> lkw = lkwManager.createCharterLKW(form.getDate(), type.get());
 
 		// Check if lkw with given type is available on the date
 		if (lkw.isEmpty()) {
@@ -134,7 +136,18 @@ public class LKWController {
 			return "lkwCheckout";
 		}
 
-		//TODO Create and display Order
+		final ContactInformation contactInformation = new ContactInformation(form.getName(), form.getAddress(), form.getEmail());
+		final Optional<LKWCharter> order = lkwManager.createLKWOrder(lkw.get(), form.getDate(), contactInformation);
+
+		if (order.isEmpty()) {
+			// Display error message
+			model.addAttribute("result", 6);
+			return "lkwCheckout";
+		}
+
+		model.addAttribute("order", order.get());
+		model.addAttribute("charterDate", form.getDate());
+		model.addAttribute("deliveryDate", null);
 
 		return "redirect:/lkws";
 	}

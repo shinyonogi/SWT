@@ -14,6 +14,7 @@ import org.salespointframework.useraccount.UserAccountManagement;
 
 import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
@@ -31,6 +32,12 @@ public class OrderManager {
 
 	OrderManager(UserAccountManagement userAccountManagement, BusinessTime businessTime, OrderManagement<ShopOrder> orderManagement,
 				 ItemManager itemManager, LKWManager lkwManager) {
+		Assert.notNull(userAccountManagement, "UserAccountManagement must not be null");
+		Assert.notNull(businessTime, "BusinessTime must not be null");
+		Assert.notNull(orderManagement, "OrderManagement must not be null");
+		Assert.notNull(itemManager, "ItemManager must not be null");
+		Assert.notNull(lkwManager, "LKWManager must not be null");
+
 		this.userAccountManagement = userAccountManagement;
 		this.businessTime = businessTime;
 		this.orderManagement = orderManagement;

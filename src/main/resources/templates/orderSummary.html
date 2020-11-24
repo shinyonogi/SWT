@@ -19,7 +19,8 @@
         <tr>
             <th scope="col" style="width: 25%" th:text="#{order.overview.number}">Bestell-Nr.</th>
             <th scope="col" style="width: 25%" th:text="#{order.overview.date}">Bestelldatum</th>
-            <th th:if="${deliveryDate != null}" scope="col" style="width: 25%" th:text="#{order.overview.deliveryDate}">Lieferdatum</th>
+            <th th:if="${deliveryDate != null}" scope="col" style="width: 25%" th:text="#{order.overview.delivery}">Lieferdatum</th>
+            <th th:if="${charterDate != null}" scope="col" style="width: 25%" th:text="#{order.overview.charter}">Mietdatum</th>
             <th scope="col" style="width: 25%" th:text="#{order.overview.total}">Betrag</th>
         </tr>
         </thead>
@@ -28,6 +29,7 @@
             <td th:text="${order.getId()}">5318008</td>
             <td th:text="${order.getDateCreated()}">23.03.2021</td>
             <td th:if="${deliveryDate != null}" th:text="${deliveryDate}">23.03.2021</td>
+            <td th:if="${charterDate != null}" th:text="${charterDate}">23.03.2021</td>
             <td th:text="${order.getTotal()}">999,99€</td>
         </tr>
         </tbody>

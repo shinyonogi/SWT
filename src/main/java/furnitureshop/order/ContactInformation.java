@@ -14,7 +14,7 @@ public class ContactInformation {
 	private String address;
 	private String email;
 
-	ContactInformation(String name, String address, String email) {
+	public ContactInformation(String name, String address, String email) {
 		this.name = name;
 		this.address = address;
 		this.email = email;

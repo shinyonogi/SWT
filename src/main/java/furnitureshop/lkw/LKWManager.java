@@ -1,5 +1,7 @@
 package furnitureshop.lkw;
 
+import furnitureshop.order.ContactInformation;
+import furnitureshop.order.LKWCharter;
 import org.salespointframework.catalog.ProductIdentifier;
 import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
@@ -22,11 +24,13 @@ public class LKWManager {
 	);
 
 	private final LKWCatalog lkwCatalog;
+	//private final OrderManager orderManager;
 
-	LKWManager(LKWCatalog lkwCatalog) {
+	LKWManager(LKWCatalog lkwCatalog/*, OrderManager orderManager*/) {
 		Assert.notNull(lkwCatalog, "LKWCatalog must not be null!");
 
 		this.lkwCatalog = lkwCatalog;
+		//this.orderManager = orderManager;
 	}
 
 	/**
@@ -101,7 +105,7 @@ public class LKWManager {
 	 *
 	 * @return The used {@code LKW} or {@code null} if none was found
 	 */
-	public Optional<LKW> createDeliveryOrder(LocalDate date, LKWType type) {
+	public Optional<LKW> createDeliveryLKW(LocalDate date, LKWType type) {
 		Assert.notNull(date, "Date must not be null!");
 		Assert.notNull(type, "Type must not be null!");
 
@@ -187,7 +191,7 @@ public class LKWManager {
 	 *
 	 * @return The used {@code LKW} or {@code null} if none was found
 	 */
-	public Optional<LKW> createCharterOrder(LocalDate date, LKWType type) {
+	public Optional<LKW> createCharterLKW(LocalDate date, LKWType type) {
 		Assert.notNull(date, "Date must not be null!");
 		Assert.notNull(type, "Type must not be null!");
 
@@ -211,6 +215,11 @@ public class LKWManager {
 		}
 
 		// No LKW was found
+		return Optional.empty();
+	}
+
+	public Optional<LKWCharter> createLKWOrder(LKW lkw, LocalDate date, ContactInformation contactInformation) {
+		//return orderManager.orderLKW(date, lkw, contactInformation);
 		return Optional.empty();
 	}
 
