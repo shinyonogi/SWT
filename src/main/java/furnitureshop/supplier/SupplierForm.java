@@ -1,11 +1,11 @@
 package furnitureshop.supplier;
 
 public class SupplierForm {
-	
-	private String name;
-	private Double surcharge;		// this value is stored in % and converted in the Controller
-	
-	public SupplierForm(String name, Double surcharge) {
+
+	private final String name;
+	private final double surcharge;        // this value is stored in % and converted in the Controller
+
+	public SupplierForm(String name, double surcharge) {
 		this.name = name;
 		this.surcharge = surcharge;
 	}
@@ -13,16 +13,9 @@ public class SupplierForm {
 	public String getName() {
 		return name;
 	}
-	
-	public void setName(String name) {
-		this.name = name;
-	}
-	
-	public Double getSurcharge() {
+
+	public double getSurcharge() {
 		return surcharge;
 	}
-	
-	public void setSurcharge(Double surcharge) {
-		this.surcharge = surcharge;
-	}
+
 }

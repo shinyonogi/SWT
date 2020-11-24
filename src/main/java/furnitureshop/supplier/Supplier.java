@@ -1,5 +1,7 @@
 package furnitureshop.supplier;
 
+import org.springframework.util.Assert;
+
 import javax.persistence.*;
 
 @Entity
@@ -14,6 +16,9 @@ public class Supplier {
 	protected Supplier() {}
 
 	public Supplier(String name, double surcharge) {
+		Assert.notNull(name, "Name must not be null!");
+		Assert.isTrue(surcharge > 0, "Surcharge must greater than 0!");
+
 		this.name = name;
 		this.surcharge = surcharge;
 	}

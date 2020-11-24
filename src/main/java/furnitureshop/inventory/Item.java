@@ -55,7 +55,8 @@ public abstract class Item extends Product {
 	@Override
 	@SuppressWarnings("NullableProblems")
 	public MonetaryAmount getPrice() {
-		return super.getPrice().multiply(supplier.getSurcharge());
+		//TODO Round to 2 decimals
+		return super.getPrice().multiply(1 + supplier.getSurcharge());
 	}
 
 	public MonetaryAmount getSupplierPrice() {

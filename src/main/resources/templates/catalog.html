@@ -24,7 +24,7 @@
 					<h4 class="card-title">
 					<a th:href="@{/catalog/{category}/{id}(id=${item.id}, category=${item.category})}" th:text="${item.getName()}">Sofa</a>
 					</h4>
-					<h5 th:text="${item.getCustomerPrice()}">999,99€</h5>
+					<h5 th:text="${item.getPrice()}">999,99€</h5>
                 	<p class="card-text" th:text="${item.getDescription()}">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam aspernatur!</p>
 				</div>
 				<div class="card-footer">
