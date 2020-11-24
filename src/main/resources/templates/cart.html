@@ -16,8 +16,6 @@
 <div class="container pt-3">
 	<div th:unless="${cart.empty}">
 		<table class="table table bg-light pb-5">
-			<thead>
-			</thead>
 			<tbody>
 				<tr th:each="cartItem : ${cart}">
 					<td class="align-middle" style="width: 20%">
@@ -31,12 +29,14 @@
 					</td>
 					<td class="align-middle">
 						<form class="form-inline" th:method="post" th:action="@{/cart/change/{id}(id=${cartItem.getId()})}">
-							<input type="number" class="form-control" min="1" max="99" th:value="${cartItem.getQuantity()}" style="width: 60px">
-							<button type="submit" class="btn" th:text="#{cart.quantity}">Anzahl ändern</button>
+							<input name="amount" type="number" class="form-control" min="0" max="99" th:value="${cartItem.getQuantity()}" style="width: 60px">
+							<button type="submit" class="btn">&#10004;</button>
 						</form>
 					</td>
 					<td class="align-middle">
-						&#10060;
+						<form class="form-inline" th:method="post" th:action="@{/cart/delete/{id}(id=${cartItem.getId()})}">
+							<button type="submit" class="btn">&#10060;</button>
+						</form>
 					</td>
 				</tr>
 			</tbody>
