@@ -13,6 +13,7 @@ public class ItemDataInitializer implements DataInitializer {
 
 	ItemDataInitializer(ItemCatalog itemCatalog) {
 		Assert.notNull(itemCatalog, "ItemCatalog must not be null!");
+
 		this.itemCatalog = itemCatalog;
 	}
 
@@ -43,4 +44,5 @@ public class ItemDataInitializer implements DataInitializer {
 		itemCatalog.save(new Piece(5, "Tisch 1", Money.of(59.99, Currencies.EURO), "", "green",
 				"Ein grüner Tisch 1.", null, 30, Category.TABLE));
 	}
+
 }

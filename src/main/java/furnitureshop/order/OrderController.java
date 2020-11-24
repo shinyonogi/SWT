@@ -47,10 +47,10 @@ class OrderController {
 
 	/* Warenkorb bearbeiten-Funktion */
 	@PostMapping("/cart/change/{id}")
-	String editItem(@PathVariable("id") String chartItemId, @RequestParam("amount") int amount, @ModelAttribute Cart cart) {
-		cart.getItem(chartItemId).map(it -> {
+	String editItem(@PathVariable("id") String cartItemId, @RequestParam("amount") int amount, @ModelAttribute Cart cart) {
+		cart.getItem(cartItemId).map(it -> {
 			if (amount <= 0){
-				cart.removeItem(chartItemId);
+				cart.removeItem(cartItemId);
 			} else {
 				final int newValue = amount - it.getQuantity().getAmount().intValue();
 				cart.addOrUpdateItem(it.getProduct(), newValue);
@@ -63,8 +63,8 @@ class OrderController {
 
 	/*Item löschen-Funktion */
 	@PostMapping("/cart/delete/{id}")
-	String deleteItem(@PathVariable("id") String chartItemId, @ModelAttribute Cart cart) {
-		cart.removeItem(chartItemId);
+	String deleteItem(@PathVariable("id") String cartItemId, @ModelAttribute Cart cart) {
+		cart.removeItem(cartItemId);
 
 		return "redirect:/cart";
 	}

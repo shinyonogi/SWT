@@ -3,13 +3,16 @@ package furnitureshop.inventory;
 import furnitureshop.supplier.Supplier;
 import org.salespointframework.catalog.Product;
 import org.salespointframework.catalog.ProductIdentifier;
+import org.springframework.util.Assert;
 
 import javax.money.MonetaryAmount;
 import javax.persistence.*;
 
 @Entity
 public abstract class Item extends Product {
+
 	private int groupid;
+
 	private String picture;
 	private String variant;
 	private String description;
@@ -20,13 +23,20 @@ public abstract class Item extends Product {
 	@Enumerated(EnumType.ORDINAL)
 	private Category category;
 
-	@SuppressWarnings({ "unused", "deprecation" })
+	@SuppressWarnings({"unused", "deprecation"})
 	protected Item() {}
 
 	public Item(int groupid, String name, MonetaryAmount customerPrice, String picture, String variant,
-				String description, Supplier supplier, Category category){
-
+			String description, Supplier supplier, Category category) {
 		super(name, customerPrice);
+
+		Assert.notNull(name, "Name must not be null");
+		Assert.notNull(customerPrice, "CustomerPrice must not be null");
+		Assert.notNull(picture, "Picture must not be null");
+		Assert.notNull(variant, "Varient must not be null");
+		Assert.notNull(description, "Description must not be null");
+		Assert.notNull(supplier, "Supplier must not be null");
+		Assert.notNull(category, "Category must not be null");
 
 		this.groupid = groupid;
 		this.picture = picture;
@@ -36,21 +46,19 @@ public abstract class Item extends Product {
 		this.category = category;
 	}
 
-	abstract public int getWeight();
-
-	public ProductIdentifier getItemId() {
-		return super.getId();
-	}
+	public abstract int getWeight();
 
 	public int getGroupid() {
 		return groupid;
 	}
 
-	public String getItemName() {
-		return super.getName();
+	@Override
+	@SuppressWarnings("NullableProblems")
+	public MonetaryAmount getPrice() {
+		return super.getPrice().multiply(supplier.getSurcharge());
 	}
 
-	public MonetaryAmount getCustomerPrice() {
+	public MonetaryAmount getSupplierPrice() {
 		return super.getPrice();
 	}
 
@@ -73,4 +81,5 @@ public abstract class Item extends Product {
 	public Category getCategory() {
 		return category;
 	}
+
 }

@@ -9,16 +9,15 @@ public class Supplier {
 	private long id;
 	
 	private String name;
-	private Double surcharge;		// factor by which the price of furniture gets multiplied by
-	
-	
+	private double surcharge;		// factor by which the price of furniture gets multiplied by
+
 	protected Supplier() {}
-	
-	public Supplier(String name, Double surcharge) {
+
+	public Supplier(String name, double surcharge) {
 		this.name = name;
 		this.surcharge = surcharge;
 	}
-	
+
 	public long getId() {
 		return id;
 	}
@@ -27,12 +26,13 @@ public class Supplier {
 		return name;
 	}
 	
-	public Double getSurcharge() {
+	public double getSurcharge() {
 		return surcharge;
 	}
 	
 	// for website display
-	public Double getSurchargeInPercent() {
+	public double getSurchargeInPercent() {
 		return surcharge * 100;
 	}
+
 }

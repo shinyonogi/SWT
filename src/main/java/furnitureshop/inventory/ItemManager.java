@@ -12,30 +12,36 @@ import java.util.Optional;
 @Service
 @Transactional
 public class ItemManager {
+
 	private final ItemCatalog itemCatalog;
 
 	public ItemManager(ItemCatalog itemCatalog) {
 		Assert.notNull(itemCatalog, "ItemCatalog must not be null!");
+
 		this.itemCatalog = itemCatalog;
 	}
 
-	public Optional<Item> findById(ProductIdentifier id){
+	public Optional<Item> findById(ProductIdentifier id) {
 		Assert.notNull(id, "Id must not be null!");
+
 		return itemCatalog.findById(id);
 	}
 
-	public void addItem(Item item){
+	public void addItem(Item item) {
 		Assert.notNull(item, "Item must not be null!");
+
 		itemCatalog.save(item);
 	}
 
-	public void removeItem(Item item){
+	public void removeItem(Item item) {
 		Assert.notNull(item, "Item must not be null!");
+
 		itemCatalog.delete(item);
 	}
 
-	public Streamable<Item> findBySupplier(Supplier supplier){
+	public Streamable<Item> findBySupplier(Supplier supplier) {
 		Assert.notNull(supplier, "Supplier must not be null!");
+
 		return itemCatalog.findAll().filter(it -> it.getSupplier() == supplier);
 	}
 
@@ -43,7 +49,10 @@ public class ItemManager {
 		return itemCatalog.findAll();
 	}
 
-	public Streamable<Item> findAllByCategory(Category category){
+	public Streamable<Item> findAllByCategory(Category category) {
+		Assert.notNull(category, "Category must not be null!");
+
 		return itemCatalog.findAll().filter(it -> it.getCategory() == category);
 	}
+
 }
