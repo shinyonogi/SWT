@@ -18,13 +18,15 @@
 	<table class="table table-striped">
 		<thead>
 			<tr>
-				<th scope="col" style="width: 70%">Lieferant</th>
+				<th scope="col" style="width: 40%">Lieferant</th>
+				<th scope="col" style="width: 30%">Aufschlag</th>
 				<th scope="col" style="width: 30%"></th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr th:each="supplier : ${suppliers}">
 				<td th:text="${supplier.name}"></td>
+				<td th:text="${supplier.getSurchargeInPercent()} + '%'"></td>
 				<td>
 					<form th:action="@{/deleteSupplier/{id}(id=${supplier.id})}">
 						<button type="submit" class="btn btn-secondary">Lieferant entfernen</button>
@@ -39,9 +41,13 @@
 		<div class="col-4">
 			<form method="post" th:object="${supplierForm}" class="form pt-3" id="form">
 				<div class="form-group">
-		    		<label for="name">Neuer Lieferant:</label>
-		    		<input type="text" required th:field="*{name}" class="form-control" id="name">
+					<h4>Neuer Lieferant</h4>
+		    		<label for="name">Name:</label>
+		    		<input required type="text" th:field="*{name}" class="form-control mb-2" id="name" >
+		    		<label for="surcharge">Aufschlag in %</label>
+		    		<input required type="number" th:field="*{surcharge}" class="form-control" id="surcharge" min="0" step="0.01" style="width: 100px">
 		  			<button type="submit" class="btn btn-secondary mt-2 mb-3">Lieferant hinzufügen</button>
+					<div th:if="${result == 1}" class="alert alert-danger">Gleichnamiger Lieferant bereits vorhanden!</div>
 		  		</div>
 			</form>
 		</div>

@@ -23,6 +23,7 @@ public class SupplierController {
 		
 		model.addAttribute("suppliers", supplierManager.findAll());
 		model.addAttribute("supplierForm", supplierForm);
+		model.addAttribute("result", 0);
 		
 		return "suppliers";
 	}
@@ -32,7 +33,18 @@ public class SupplierController {
 		
 		model.addAttribute("supplierForm", supplierForm);
 		
-		supplierManager.addSupplier(new Supplier(supplierForm.getName(), 0));
+		// checks if a supplier with the same name is already in the repository
+		Iterable<Supplier> suppliers = supplierManager.findAll();
+		for(Supplier supplier : suppliers) {
+			if (supplier.getName().contentEquals(supplierForm.getName())) {
+				// display error message
+				model.addAttribute("result", 1);
+				return "suppliers";
+			}
+		}
+		
+		// adds the created supplier to the repository while converting the surcharge value from percent to decimal
+		supplierManager.addSupplier(new Supplier(supplierForm.getName(), supplierForm.getSurcharge() / 100));
 		
 		return "redirect:/suppliers";
 	}
