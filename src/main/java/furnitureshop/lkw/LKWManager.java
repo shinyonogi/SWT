@@ -2,7 +2,9 @@ package furnitureshop.lkw;
 
 import furnitureshop.order.ContactInformation;
 import furnitureshop.order.LKWCharter;
+import furnitureshop.order.OrderManager;
 import org.salespointframework.catalog.ProductIdentifier;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,13 +26,14 @@ public class LKWManager {
 	);
 
 	private final LKWCatalog lkwCatalog;
-	//private final OrderManager orderManager;
+	private final OrderManager orderManager;
 
-	LKWManager(LKWCatalog lkwCatalog/*, OrderManager orderManager*/) {
+	LKWManager(LKWCatalog lkwCatalog, @Lazy OrderManager orderManager) {
 		Assert.notNull(lkwCatalog, "LKWCatalog must not be null!");
+		Assert.notNull(orderManager, "OrderManager must not be null!");
 
 		this.lkwCatalog = lkwCatalog;
-		//this.orderManager = orderManager;
+		this.orderManager = orderManager;
 	}
 
 	/**
@@ -219,8 +222,7 @@ public class LKWManager {
 	}
 
 	public Optional<LKWCharter> createLKWOrder(LKW lkw, LocalDate date, ContactInformation contactInformation) {
-		//return orderManager.orderLKW(date, lkw, contactInformation);
-		return Optional.empty();
+		return orderManager.orderLKW(date, lkw, contactInformation);
 	}
 
 	/**
@@ -279,6 +281,8 @@ public class LKWManager {
 		return lkwCatalog.findAll();
 	}
 
-	public Optional<LKW> findById(ProductIdentifier productId) { return lkwCatalog.findById(productId); }
+	public Optional<LKW> findById(ProductIdentifier productId) {
+		return lkwCatalog.findById(productId);
+	}
 
 }

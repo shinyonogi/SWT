@@ -149,7 +149,7 @@ public class LKWController {
 		model.addAttribute("charterDate", form.getDate());
 		model.addAttribute("deliveryDate", null);
 
-		return "redirect:/lkws";
+		return "orderSummary";
 	}
 
 }

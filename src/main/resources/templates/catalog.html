@@ -19,7 +19,7 @@
 
 		<div th:each="item : ${items}" class="col-lg-4 col-md-6 mb-4">
 			<div class="card h-100">
-				<a href="itemView.html"><img class="card-img-top" th:src="${item.getPicture()}" alt=""></a>
+				<img class="card-img-top" th:src="${item.getPicture()}" alt="">
 				<div class="card-body">
 					<h4 class="card-title">
 					<a th:href="@{/catalog/{category}/{id}(id=${item.id}, category=${item.category})}" th:text="${item.getName()}">Sofa</a>
