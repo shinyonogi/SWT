@@ -9,9 +9,6 @@ public class AdminController {
 
 	public AdminController() {}
 
-	@GetMapping("/")
-	String index() { return "index"; }
-
 	@GetMapping("/login")
 	String getLogin() {
 		return "login";
