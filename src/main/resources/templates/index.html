@@ -18,8 +18,8 @@
 		<div class="masthead-content">
 			<div class="container">
 				<h1 class="masthead-heading mb-0">THE BEST FURNITURE.</h1>
-				<h2 class="masthead-subheading mb-0">Entdecke neue Möbel!</h2>
-				<a th:href="@{/catalog}" class="btn btn-primary btn-lg rounded-pill mt-5" role="button">Zum Katalog</a>
+				<h2 class="masthead-subheading mb-0" th:text="#{index.subslogan}">Entdecke neue Möbel!</h2>
+				<a th:href="@{/catalog}" class="btn btn-primary btn-lg rounded-pill mt-5" role="button" th:text="#{index.shop.catalog}">Zum Katalog</a>
 			</div>
 		</div>
 	</header>
@@ -34,9 +34,9 @@
 				</div>
 				<div class="col-lg-6 order-lg-1">
 					<div class="p-5">
-						<h2 class="display-4">Wunderschöne Tische...</h2>
-						<p>Mit den unseren Tischen & Schreibtischen richtest du dich hübsch ein - egal ob zum Arbeiten oder zum Essen. <br> Schau vorbei!</p>
-						<a th:href="@{/catalog/table}" class="btn btn-outline-primary" role="button">Tische kaufen</a>
+						<h2 class="display-4" th:text="#{index.slogan.table}">Wunderschöne Tische...</h2>
+						<p th:text="#{index.description.table}">Mit den unseren Tischen & Schreibtischen richtest du dich hübsch ein - egal ob zum Arbeiten oder zum Essen. <br> Schau vorbei!</p>
+						<a th:href="@{/catalog/table}" class="btn btn-outline-primary" role="button" th:text="#{index.shop.table}">Tische kaufen</a>
 					</div>
 				</div>
 			</div>
@@ -53,9 +53,9 @@
 				</div>
 				<div class="col-lg-6">
 					<div class="p-5">
-						<h2 class="display-4">Geile Stühle...</h2>
-						<p>In unserem großen Sortiment findest du bequeme und schöne Stühle für dein Zuhause - vom Esszimmerstuhl bis zum Sessel. Schau mal!</p>
-						<a th:href="@{/catalog/chair}" class="btn btn-outline-primary" role="button">Stühle kaufen</a>
+						<h2 class="display-4" th:text="#{index.slogan.chair}">Geile Stühle...</h2>
+						<p th:text="#{index.description.chair}">In unserem großen Sortiment findest du bequeme und schöne Stühle für dein Zuhause - vom Esszimmerstuhl bis zum Sessel. Schau mal!</p>
+						<a th:href="@{/catalog/chair}" class="btn btn-outline-primary" role="button" th:text="#{index.shop.chair}">Stühle kaufen</a>
 					</div>
 				</div>
 			</div>
@@ -72,9 +72,9 @@
 				</div>
 				<div class="col-lg-6 order-lg-1">
 					<div class="p-5">
-						<h2 class="display-4">Neue Girlfriend...?</h2>
-						<p>Dir ist nach Kuscheln auf einem neuen Stoffsofa? Dann bist du bei uns richtig! Bei uns findest du ein breites Sortiment moderner, aktueller und traditioneller Sofas zu erschwinglichen Preisen.</p>
-						<a th:href="@{/catalog/couch}" class="btn btn-outline-primary" role="button">Couchen kaufen</a>
+						<h2 class="display-4" th:text="#{index.slogan.couch}">Neue Girlfriend...?</h2>
+						<p th:text="#{index.description.couch}">Dir ist nach Kuscheln auf einem neuen Stoffsofa? Dann bist du bei uns richtig! Bei uns findest du ein breites Sortiment moderner, aktueller und traditioneller Sofas zu erschwinglichen Preisen.</p>
+						<a th:href="@{/catalog/couch}" class="btn btn-outline-primary" role="button" th:text="#{index.shop.couch}">Couchen kaufen</a>
 					</div>
 				</div>
 			</div>
@@ -91,9 +91,9 @@
 				</div>
 				<div class="col-lg-6">
 					<div class="p-5">
-						<h2 class="display-4">Kein Bock auf Lieferung zu warten...?</h2>
-						<p>Ihr könnt auch LKWs Mieten. <br>Liefere deine Ware selber nach Hause!</p>
-						<a th:href="@{/lkws}" class="btn btn-outline-primary" role="button">LKW Mieten</a>
+						<h2 class="display-4" th:text="#{index.slogan.lkw}">Kein Bock auf Lieferung zu warten...?</h2>
+						<p th:text="#{index.description.lkw}">Du kannst auch LKWs Mieten. <br>Liefere deine Ware selber nach Hause!</p>
+						<a th:href="@{/lkws}" class="btn btn-outline-primary" role="button" th:text="#{index.shop.lkw}">LKW Mieten</a>
 					</div>
 				</div>
 			</div>
