@@ -6,7 +6,7 @@
 [cols="1, 3, 3"]
 |===
 |Version | Bearbeitungsdatum   | Autor 
-|...	| ... | ...
+|0.1	|25.11.2020 | David Schroth, Marc Albrecht, Sebastian Jaster, Edgar Wolfert, Johannes Kaufmann, Shintaro Onogi
 |===
 
 == Einführung und Ziele
