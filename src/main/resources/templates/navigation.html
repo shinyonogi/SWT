@@ -10,11 +10,10 @@
 </head>
 <body>
 <div th:fragment="navigation" class="container">
-    <div class="p-4">
-        <h1>Möbel-Hier</h1>
-        <p th:text="#{shop.slogan}">Die besten Möbel.</p>
-    </div>
-    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+    <nav class="navbar navbar-expand-sm navbar-light bg-light">
+        <a class="navbar-brand" th:href=@{/}>
+            <img th:src="@{/resources/img/logo.png}" src="../static/resources/img/logo.png" width="100" height="50" alt="LKW"/>
+        </a>
         <ul class="navbar-nav">
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" th:href="@{/catalog}" th:text="#{navbar.catalog}" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
