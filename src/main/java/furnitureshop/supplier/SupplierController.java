@@ -13,17 +13,17 @@ import java.util.Optional;
 @Controller
 public class SupplierController {
 
-	private final SupplierManager supplierManager;
+	private final SupplierService supplierService;
 
-	SupplierController(SupplierManager supplierManager) {
-		Assert.notNull(supplierManager, "SupplierManager must not be null!");
+	SupplierController(SupplierService supplierService) {
+		Assert.notNull(supplierService, "SupplierService must not be null!");
 
-		this.supplierManager = supplierManager;
+		this.supplierService = supplierService;
 	}
 
 	@GetMapping("/suppliers")
 	String getSupplierList(Model model) {
-		model.addAttribute("suppliers", supplierManager.findAll());
+		model.addAttribute("suppliers", supplierService.findAll());
 		model.addAttribute("supplierForm", new SupplierForm("", 5));
 		model.addAttribute("result", 0);
 
@@ -33,10 +33,11 @@ public class SupplierController {
 	@PostMapping("/suppliers")
 	String addSupplier(@ModelAttribute("supplierForm") SupplierForm form, Model model) {
 		// checks if a supplier with the same name is already in the repository
-		final Optional<Supplier> suppliers = supplierManager.findByName(form.getName());
+		final Optional<Supplier> suppliers = supplierService.findByName(form.getName());
 
 		if (suppliers.isPresent()) {
 			// display error message
+			model.addAttribute("suppliers", supplierService.findAll());
 			model.addAttribute("supplierForm", form);
 			model.addAttribute("result", 1);
 
@@ -44,14 +45,14 @@ public class SupplierController {
 		}
 
 		// adds the created supplier to the repository while converting the surcharge value from percent to decimal
-		supplierManager.addSupplier(new Supplier(form.getName(), form.getSurcharge() / 100));
+		supplierService.addSupplier(new Supplier(form.getName(), form.getSurcharge() / 100));
 
 		return "redirect:/suppliers";
 	}
 
 	@GetMapping("/deleteSupplier/{id}")
 	String deleteSupplier(@PathVariable long id) {
-		supplierManager.deleteSupplierById(id);
+		supplierService.deleteSupplierById(id);
 
 		return "redirect:/suppliers";
 	}

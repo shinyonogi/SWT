@@ -11,17 +11,17 @@ import java.util.Optional;
 @Controller
 public class ItemController {
 
-	private final ItemManager itemManager;
+	private final ItemService itemService;
 
-	public ItemController(ItemManager itemManager) {
-		Assert.notNull(itemManager, "ItemManager must not be null");
+	public ItemController(ItemService itemService) {
+		Assert.notNull(itemService, "ItemService must not be null");
 
-		this.itemManager = itemManager;
+		this.itemService = itemService;
 	}
 
 	@GetMapping("/catalog")
 	String getCatalog(Model model) {
-		model.addAttribute("items", itemManager.findAll());
+		model.addAttribute("items", itemService.findAll());
 
 		return "catalog";
 	}
@@ -31,7 +31,7 @@ public class ItemController {
 		final Optional<Category> cat = Category.getByName(category);
 
 		if (cat.isPresent()) {
-			model.addAttribute("items", itemManager.findAllByCategory(cat.get()));
+			model.addAttribute("items", itemService.findAllByCategory(cat.get()));
 			return "catalog";
 		}
 

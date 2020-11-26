@@ -11,11 +11,11 @@ import java.util.Optional;
 
 @Service
 @Transactional
-public class ItemManager {
+public class ItemService {
 
 	private final ItemCatalog itemCatalog;
 
-	public ItemManager(ItemCatalog itemCatalog) {
+	public ItemService(ItemCatalog itemCatalog) {
 		Assert.notNull(itemCatalog, "ItemCatalog must not be null!");
 
 		this.itemCatalog = itemCatalog;

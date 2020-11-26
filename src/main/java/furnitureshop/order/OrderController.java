@@ -19,12 +19,12 @@ import java.util.Optional;
 @SessionAttributes("cart")
 class OrderController {
 
-	private final OrderManager orderManager;
+	private final OrderService orderService;
 
-	OrderController(OrderManager orderManager) {
-		Assert.notNull(orderManager, "OrderManager must not be null");
+	OrderController(OrderService orderService) {
+		Assert.notNull(orderService, "OrderService must not be null");
 
-		this.orderManager = orderManager;
+		this.orderService = orderService;
 	}
 
 	@ModelAttribute("cart")
@@ -100,7 +100,7 @@ class OrderController {
 
 		// Delivery
 		if (orderForm.getIndex() == 1) {
-			final Optional<Delivery> delivery = orderManager.orderDelieveryItem(cart, contactInformation);
+			final Optional<Delivery> delivery = orderService.orderDelieveryItem(cart, contactInformation);
 
 			if (delivery.isEmpty()) {
 				model.addAttribute("orderform", orderForm);
@@ -112,7 +112,7 @@ class OrderController {
 		}
 		// Pickup
 		else if (orderForm.getIndex() == 0) {
-			final Optional<Pickup> pickup = orderManager.orderPickupItem(cart, contactInformation);
+			final Optional<Pickup> pickup = orderService.orderPickupItem(cart, contactInformation);
 
 			if (pickup.isEmpty()) {
 				model.addAttribute("orderform", orderForm);
@@ -141,7 +141,7 @@ class OrderController {
 
 	@PostMapping("/checkOrder")
 	String getOrderOverview(@RequestParam("orderId") String orderId, Model model) {
-		final Optional<ShopOrder> shopOrder = orderManager.findById(orderId);
+		final Optional<ShopOrder> shopOrder = orderService.findById(orderId);
 
 		if (shopOrder.isEmpty()) {
 			return "redirect:/checkOrder";
@@ -151,7 +151,7 @@ class OrderController {
 
 		if (shopOrder.get() instanceof ItemOrder) {
 			for (OrderLine orderline : shopOrder.get().getOrderLines()) {
-				final Optional<Item> item = orderManager.findItemById(orderline.getProductIdentifier());
+				final Optional<Item> item = orderService.findItemById(orderline.getProductIdentifier());
 
 				item.ifPresent(itemList::add);
 			}
@@ -171,7 +171,7 @@ class OrderController {
 
 	@GetMapping("/customerOrders")
 	String getCustomerOrders(Model model) {
-		model.addAttribute("orders", orderManager.findAll());
+		model.addAttribute("orders", orderService.findAll());
 		return "customerOrders";
 	}
 

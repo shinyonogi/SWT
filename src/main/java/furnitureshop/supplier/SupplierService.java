@@ -8,11 +8,11 @@ import java.util.Optional;
 
 @Service
 @Transactional
-public class SupplierManager {
+public class SupplierService {
 
 	private final SupplierRepository supplierRepository;
 
-	SupplierManager(SupplierRepository supplierRepository) {
+	SupplierService(SupplierRepository supplierRepository) {
 		Assert.notNull(supplierRepository, "SupplierRepository must not be null!");
 
 		this.supplierRepository = supplierRepository;

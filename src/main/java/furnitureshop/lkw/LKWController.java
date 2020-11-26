@@ -17,14 +17,14 @@ import java.util.Optional;
 @Controller
 public class LKWController {
 
-	private final LKWManager lkwManager;
+	private final LKWService lkwService;
 	private final BusinessTime businessTime;
 
-	LKWController(LKWManager lkwManager, BusinessTime businessTime) {
-		Assert.notNull(lkwManager, "LKWManager must not be null!");
+	LKWController(LKWService lkwService, BusinessTime businessTime) {
+		Assert.notNull(lkwService, "LKWService must not be null!");
 		Assert.notNull(businessTime, "BusinessTime must not be null!");
 
-		this.lkwManager = lkwManager;
+		this.lkwService = lkwService;
 		this.businessTime = businessTime;
 	}
 
@@ -75,7 +75,7 @@ public class LKWController {
 			return "lkwCheckout";
 		}
 		// Check if LKW with given type is available on the date
-		if (!lkwManager.isCharterAvailable(form.getDate(), type.get())) {
+		if (!lkwService.isCharterAvailable(form.getDate(), type.get())) {
 			// Display error message
 			model.addAttribute("result", 5);
 			return "lkwCheckout";
@@ -127,7 +127,7 @@ public class LKWController {
 		}
 
 		// Create Calender entry and get used LKW
-		final Optional<LKW> lkw = lkwManager.createCharterLKW(form.getDate(), type.get());
+		final Optional<LKW> lkw = lkwService.createCharterLKW(form.getDate(), type.get());
 
 		// Check if lkw with given type is available on the date
 		if (lkw.isEmpty()) {
@@ -137,7 +137,7 @@ public class LKWController {
 		}
 
 		final ContactInformation contactInformation = new ContactInformation(form.getName(), form.getAddress(), form.getEmail());
-		final Optional<LKWCharter> order = lkwManager.createLKWOrder(lkw.get(), form.getDate(), contactInformation);
+		final Optional<LKWCharter> order = lkwService.createLKWOrder(lkw.get(), form.getDate(), contactInformation);
 
 		if (order.isEmpty()) {
 			// Display error message

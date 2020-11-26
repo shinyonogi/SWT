@@ -2,7 +2,7 @@ package furnitureshop.lkw;
 
 import furnitureshop.order.ContactInformation;
 import furnitureshop.order.LKWCharter;
-import furnitureshop.order.OrderManager;
+import furnitureshop.order.OrderService;
 import org.salespointframework.catalog.ProductIdentifier;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.util.Streamable;
@@ -18,7 +18,7 @@ import java.util.Optional;
 
 @Service
 @Transactional
-public class LKWManager {
+public class LKWService {
 
 	// Days where LKWs are available
 	private static final List<DayOfWeek> WORK_DAYS = Arrays.asList(
@@ -26,14 +26,14 @@ public class LKWManager {
 	);
 
 	private final LKWCatalog lkwCatalog;
-	private final OrderManager orderManager;
+	private final OrderService orderService;
 
-	LKWManager(LKWCatalog lkwCatalog, @Lazy OrderManager orderManager) {
+	LKWService(LKWCatalog lkwCatalog, @Lazy OrderService orderService) {
 		Assert.notNull(lkwCatalog, "LKWCatalog must not be null!");
-		Assert.notNull(orderManager, "OrderManager must not be null!");
+		Assert.notNull(orderService, "OrderManager must not be null!");
 
 		this.lkwCatalog = lkwCatalog;
-		this.orderManager = orderManager;
+		this.orderService = orderService;
 	}
 
 	/**
@@ -222,7 +222,7 @@ public class LKWManager {
 	}
 
 	public Optional<LKWCharter> createLKWOrder(LKW lkw, LocalDate date, ContactInformation contactInformation) {
-		return orderManager.orderLKW(date, lkw, contactInformation);
+		return orderService.orderLKW(date, lkw, contactInformation);
 	}
 
 	/**

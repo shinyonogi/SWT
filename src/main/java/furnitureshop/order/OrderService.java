@@ -1,10 +1,10 @@
 package furnitureshop.order;
 
 import furnitureshop.inventory.Item;
-import furnitureshop.inventory.ItemManager;
+import furnitureshop.inventory.ItemService;
 import furnitureshop.lkw.LKW;
 
-import furnitureshop.lkw.LKWManager;
+import furnitureshop.lkw.LKWService;
 import org.salespointframework.catalog.ProductIdentifier;
 import org.salespointframework.order.Cart;
 import org.salespointframework.order.OrderManagement;
@@ -22,27 +22,27 @@ import java.util.Optional;
 
 @Service
 @Transactional
-public class OrderManager {
+public class OrderService {
 
 	private final UserAccountManagement userAccountManagement;
 	private final BusinessTime businessTime;
 	private final OrderManagement<ShopOrder> orderManagement;
-	private final ItemManager itemManager;
-	private final LKWManager lkwManager;
+	private final ItemService itemService;
+	private final LKWService lkwService;
 
-	OrderManager(UserAccountManagement userAccountManagement, BusinessTime businessTime, OrderManagement<ShopOrder> orderManagement,
-				 ItemManager itemManager, LKWManager lkwManager) {
+	OrderService(UserAccountManagement userAccountManagement, BusinessTime businessTime, OrderManagement<ShopOrder> orderManagement,
+				 ItemService itemService, LKWService lkwService) {
 		Assert.notNull(userAccountManagement, "UserAccountManagement must not be null");
 		Assert.notNull(businessTime, "BusinessTime must not be null");
 		Assert.notNull(orderManagement, "OrderManagement must not be null");
-		Assert.notNull(itemManager, "ItemManager must not be null");
-		Assert.notNull(lkwManager, "LKWManager must not be null");
+		Assert.notNull(itemService, "ItemService must not be null");
+		Assert.notNull(lkwService, "LKWService must not be null");
 
 		this.userAccountManagement = userAccountManagement;
 		this.businessTime = businessTime;
 		this.orderManagement = orderManagement;
-		this.itemManager = itemManager;
-		this.lkwManager = lkwManager;
+		this.itemService = itemService;
+		this.lkwService = lkwService;
 	}
 
 	public Optional<Pickup> orderPickupItem(Cart cart, ContactInformation contactInformation) {
@@ -117,11 +117,11 @@ public class OrderManager {
 	}
 
 	public Optional<Item> findItemById(ProductIdentifier productId) {
-		return itemManager.findById(productId);
+		return itemService.findById(productId);
 	}
 
 	public Optional<LKW> findLKWById(ProductIdentifier productId) {
-		return lkwManager.findById(productId);
+		return lkwService.findById(productId);
 	}
 
 }
