@@ -1,0 +1,49 @@
+= Protokoll Gruppe 17
+
+Treffen am 26.11.2020
+
+Ort:      Big Blue Button
+Beginn:   13:00 Uhr 
+Ende:     13:50 Uhr
+
+__Schriftführer:__ Johannes Kaufmann
+
+*Nächstes Treffen:* +
+30.11.2020, 14:50 Uhr, privater Discord Server
+
+__Teilnehmer:__
+//Tabellarisch oder Aufzählung, Kennzeichnung von Teilnehmern mit besonderer Rolle (z.B. Kunde)
+
+- David Schroth
+- Edgar Wolfert
+- Marc Albrecht
+- Sebastian Jaster
+- Shintaro Onogi
+- Johannes Kaufmann
+
+== Bemerkungen
+- Bemerkung zur Service-Controller-Repository Struktur von Spring und dabei der Hinweis, dass die Namensgebung beim Inventar noch nicht der Konvention entspricht
+- Testplan war nicht vollständig, da der Unterpunkt "Testfälle und Verantwortlichkeiten" nicht ausgefüllt wurde und die Integrationstests konkretisiert werden müssen
+- Jeder sollte bis zum nächsten mal 3 Unittests und 3 Integrationstests konkret machen sollen
+- Prototyp bis zur Meilenstein-Abgabe beenden
+- Nach Belieben Funktionen des Videoshops erweitern
+- Absprache, dass bei der Stornierung auch die Anzahl einzelner Artikel reduziert werden können soll
+- Besprechung der Übungspräsentation der Software am Mittwoch den 16.12.2020 in der 3.DS
+- Entwicklerdokumentation Punkte 1, 3 und 5 sollen ausgefüllt werden (erledigt)
+
+
+== Aktueller Stand
+- Prototyp ausreichend fertig
+- GUI muss einheitlich gestaltet werden, ist aber funktional schon vorhanden
+- Dokumentation größten Teils vollständig
+
+
+== Planung des nächsten Sprints
+
+// See http://asciidoctor.org/docs/user-manual/=tables
+[option="headers"]
+|===
+|Issue |Titel |Beschreibung |Verantwortlicher |Status
+|issue#25     |Erstellung des Testplans     |Alle Gruppenmitglieder sollen je 3 Unit- und Integrationstests erstellen            |alle                |offen
+|Issue#39	  |Beschreibung der Klassen     |Alle Gruppenmitglieder beschreiben in der Entwicklerdokumentation die ihnen zugeordneten Klassen  |alle|offen
+|===
