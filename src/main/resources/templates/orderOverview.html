@@ -32,7 +32,7 @@
 					<h3 th:text="${item.getName()}">Sofa</h3>
 				</td>
 				<td class="align-middle">
-					<h5 th:text="${item.getCustomerPrice()}">999,99€</h5>
+					<h5 th:text="${item.getPrice()}">999,99€</h5>
 				</td>
 				<td sec:authorize="hasRole('EMPLOYEE')" class="align-middle">
 					<div class="dropdown">
