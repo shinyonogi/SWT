@@ -63,5 +63,6 @@ Jede testbezogene Aufgabe muss einem Ansprechpartner zugeordnet werden.
 [options="headers"]
 |===
 |ID |Anwendungsfall |Vorbedingungen |Eingabe |Ausgabe
-|…  |…              |…              |…       |…
+|I-01  |UC230              |Warenkorb ist leer              |Der Kunde fügt einen Stuhl zum Warenkorb hinzu       |Der Stuhl wird im Warenkorb angezeigt
+|U-01|LKWManager.createDeliveryLKW(LocalDate, LKWType)|Es existiert genau ein freier kleiner LKW|Gültiges Datum, LKWType=SMALL |Es existiert kein freier kleiner LKW
 |===
