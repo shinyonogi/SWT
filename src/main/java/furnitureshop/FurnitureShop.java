@@ -55,10 +55,10 @@ public class FurnitureShop {
 		@Override
 		protected void configure(HttpSecurity http) throws Exception {
 			http.csrf().disable();  // for lab purposes, that's ok!
-			http.authorizeRequests().antMatchers("/admin/**").hasRole("EMPLOYEE").and()
-					.formLogin().loginPage("/login").permitAll()
+			http.authorizeRequests()
+					.antMatchers("/admin/**").hasRole("EMPLOYEE")
 					.and()
-					.logout().permitAll();
+					.formLogin().loginPage("/login").permitAll();
 		}
 	}
 }
