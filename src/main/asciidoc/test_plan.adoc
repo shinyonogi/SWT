@@ -65,4 +65,13 @@ Jede testbezogene Aufgabe muss einem Ansprechpartner zugeordnet werden.
 |ID |Anwendungsfall |Vorbedingungen |Eingabe |Ausgabe
 |I-01  |UC230              |Warenkorb ist leer              |Der Kunde fügt einen Stuhl zum Warenkorb hinzu       |Der Stuhl wird im Warenkorb angezeigt
 |U-01|LKWManager.createDeliveryLKW(LocalDate, LKWType)|Es existiert genau ein freier kleiner LKW|Gültiges Datum, LKWType=SMALL |Es existiert kein freier kleiner LKW
+|I-01 |UC400 |Nutzer ist nicht eingeloggt |Nutzer versucht auf die Admin Route zuzugreifen |Nutzer wird auf Login-Seite weitergeleitet
+|I-02 |UC400 |Nutzer ist nicht eingeloggt |Nutzer versucht auf das Admin-Interface zuzugreifen |Nutzer wird auf Login-Seite weitergeleitet
+|I-03 |UC010 |Nutzer ist nicht eingeloggt |Nutzer versucht Logout Seite aufzurufen | Nutzer wird auf Login-Seite weitergeleitet ohne das Logout Nachricht angezeigt wird
+|I-04 |UC010 |Nutzer ist nicht eingeloggt |Nutzer versucht Login Seite aufzurufen | Nutzer erreicht die Login-Seite
+|I-05 |UC010 |Nutzer ist nicht eingeloggt |Nutzer meldet sich auf der Login-Seite mit falschen Zugangsdaten an |Nutzer wird auf die Fehler-Login Seite weitergeleitet
+|I-06 |UC010 |Nutzer ist nicht eingeloggt |Nutzer meldet sich mit korrekten Zugangsdaten auf der Login-Seite an |Nutzer ist gegenüber dem System authentifiziert mit der Rolle Mitarbeiter
+|I-07 |UC400 |Mitarbeiter ist eingeloggt |Mitarbeiter ruft das Admin-Interface auf |Mitarbeiter erreicht das Admin-Interface
+|I-08 |UC010 |Mitarbeiter ist eingeloggt |Mitarbeiter ruft die Login-Seite über /login auf| Mitarbeiter wird auf das Admin-Interface weitergeleitet
+|I-09 |UC010 |Mitarbeiter ist eingeloggt |Mitarbeiter ruft die Logout-Seite auf | Mitarbeiter wird auf die Logout Seite weitergeleitet und ist nicht mehr gegenüber dem System authentifiziert.
 |===
