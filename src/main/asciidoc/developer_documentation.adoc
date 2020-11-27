@@ -181,7 +181,31 @@ wird die Art der Verwendung dieser externen Klasse in der Spalte *Art der Verwen
 [options="header"]
 |===
 |Klasse/Enumeration (Analysemodell) |Klasse/Enumeration (Entwurfsmodell) |Art der Verwendung
-|...|...|...
+|Möbelgeschäft |Furnitureshop |-
+|Item |Item |-
+|Set |Set |-
+|Teil |Piece |-
+|Kategorie |Category |-
+|Inventar |ItemService |-
+|Warenkorb |- |Session Attribute
+|WarenkorbEintrag |- |Class Attribute
+|LieferantManager |SupplierService |-
+|Lieferant |Supplier |-
+|LKWManager |LKWService |-
+|LKW |LKW |-
+|Kalender |Calendar |-
+|Kalendereintrag |CalendarEntry |-
+|Mieteintrag |CharterEntry |-
+|Liefereintrag |DeliveryEntry |-
+|BestellManager |OrderService |-
+|Bestellung |ShopOrder |-
+|Kontaktinformationen |ContactInformation |-
+|BestellEintrag |- |ClassAttribute
+|Bestellstatus |OrderStatus |-
+|ItemBestellung |ItemOrder |-
+|Lieferung |LKWCharter |-
+|Abholung |Pickup |-
+|LKWMietung |Delivery |-
 |===
 
 == Laufzeitsicht
