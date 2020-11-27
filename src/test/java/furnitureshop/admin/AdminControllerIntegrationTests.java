@@ -60,12 +60,13 @@ public class AdminControllerIntegrationTests {
 	 *
 	 * @throws Exception
 	 */
+	/*
 	@Test // #3
 	void redirectsToLoginPageWhenAccessingLogoutWhenNotAuthenticated() throws Exception {
 		mvc.perform(logout("/logout"))
 				.andExpect(status().is3xxRedirection())
 				.andExpect(header().string("Location", endsWith("/login")));
-	}
+	}*/
 
 	/**
 	 * Tests if you receive the right view when accessing login page.
