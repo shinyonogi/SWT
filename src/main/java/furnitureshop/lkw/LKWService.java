@@ -30,7 +30,7 @@ public class LKWService {
 
 	LKWService(LKWCatalog lkwCatalog, @Lazy OrderService orderService) {
 		Assert.notNull(lkwCatalog, "LKWCatalog must not be null!");
-		Assert.notNull(orderService, "OrderManager must not be null!");
+		Assert.notNull(orderService, "OrderService must not be null!");
 
 		this.lkwCatalog = lkwCatalog;
 		this.orderService = orderService;
@@ -106,7 +106,7 @@ public class LKWService {
 	 * @param date The {@code Date} to be used
 	 * @param type The type of the {@code LKW} to be used
 	 *
-	 * @return The used {@code LKW} or {@code null} if none was found
+	 * @return The used {@code LKW}
 	 */
 	public Optional<LKW> createDeliveryLKW(LocalDate date, LKWType type) {
 		Assert.notNull(date, "Date must not be null!");
@@ -192,7 +192,7 @@ public class LKWService {
 	 * @param date The {@code Date} to be used
 	 * @param type The type of the {@code LKW} to be used
 	 *
-	 * @return The used {@code LKW} or {@code null} if none was found
+	 * @return The used {@code LKW}
 	 */
 	public Optional<LKW> createCharterLKW(LocalDate date, LKWType type) {
 		Assert.notNull(date, "Date must not be null!");

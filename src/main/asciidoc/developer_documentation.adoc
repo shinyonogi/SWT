@@ -139,7 +139,17 @@ image:models/design/LKW.png[Klassendiagramm - LKW]
 [options="header"]
 |=== 
 |Klasse/Enumeration |Description
-|...|...
+|Calender           |Kalender eines LKWs mit Kalendereintrag pro Tag
+|CalenderEntry      |Eintrag eines Kalenders zur Speicherung, ob der LKW an einem Tag benutzt wird
+|CharterEntry       |Kalendereintrag, wenn ein Kunde den LKW mietet
+|DeliveryEntry      |Kalendereintrag, wenn der LKW zur Auslieferung genutzt wird
+|LKW                |Repräsentiert einen physischen LKW im Code und in der Datenbank
+|LKWCatalog         |Ein Salespoint Calalog, wo alle LKWs gespeichert werden
+|LKWCharterForm     |Form welches die Nutzereingaben der LKW-Vermietungsseite beinhaltet
+|LKWController      |Ein Spring MVC Controller der das Routing für die LKW Bestellung regelt
+|LKWDataInitializer |Ein Spring MVC DataInitializer der LKWs zur Datenbank hinzufügt
+|LKWService         |Ein Spring MVC Service der alle An/Abfragen bezüglich LKWs und deren Kalender regelt
+|LKWType            |Enum welches die einzelnen verfügbaren LKW Typen repräsentiert
 |===
 
 === Supplier

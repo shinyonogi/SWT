@@ -17,23 +17,23 @@ Es sollen dabei Anwendungsteile für die unterschiedlichsten Szenarien und Anwen
 
 == Zu testende Funktionalitäten
 
-=== Integrationstests
-- _I-1:_ LKW Mietung nur möglich, wenn LKW verfügbar
-- _I-2:_ Entfernen von Artikel bei Entfernen von Lieferanten
-- _I-3:_ Order aufrufen anhand seiner ID
-- _I-4:_ Entfernen von Sets bei Entfernen von Teilartikeln
-- _I-5:_ Admininterface, Statistiken, Bestellungenübersicht nur Authentifizierung erreichbar
-- _I-6:_ Artikelanzahl im Warenkorb ändern oder Artikel löschen
+=== Funktionstests
+- LKW Mietung nur möglich, wenn LKW verfügbar
+- Entfernen von Artikel bei Entfernen von Lieferanten
+- Order aufrufen anhand seiner ID
+- Entfernen von Sets bei Entfernen von Teilartikeln
+- Admininterface, Statistiken, Bestellungenübersicht nur Authentifizierung erreichbar
+- Artikelanzahl im Warenkorb ändern oder Artikel löschen
 
-=== JUnit-Tests
-- _U-1:_ Item, Piece, Set
-- _U-2:_ Calender, CalenderEntry
-- _U-3:_ LKW
-- _U-4:_ ShopOrder, ItemOrder, Pickup, LKWCharter
-- _U-5:_ ContactInformation
-- _U-6:_ ItemOrderEntry
-- _U-7:_ Supplier
-- _U-8 - U-12:_ Controller-Tests
+=== Klassen-Tests
+- Item, Piece, Set
+- Calender, CalenderEntry, CharterEntry, DeliveryEntry
+- LKW
+- ShopOrder, ItemOrder, Pickup, LKWCharter
+- ContactInformation
+- ItemOrderEntry
+- Supplier
+- Controller, Manager
 
 == Nicht zu testende Funktionalitäten
 - Spring
@@ -62,16 +62,37 @@ Jede testbezogene Aufgabe muss einem Ansprechpartner zugeordnet werden.
 // See http://asciidoctor.org/docs/user-manual/#tables
 [options="headers"]
 |===
-|ID |Anwendungsfall |Vorbedingungen |Eingabe |Ausgabe
-|I-01  |UC230              |Warenkorb ist leer              |Der Kunde fügt einen Stuhl zum Warenkorb hinzu       |Der Stuhl wird im Warenkorb angezeigt
-|U-01|LKWManager.createDeliveryLKW(LocalDate, LKWType)|Es existiert genau ein freier kleiner LKW|Gültiges Datum, LKWType=SMALL |Es existiert kein freier kleiner LKW
-|I-01 |UC400 |Nutzer ist nicht eingeloggt |Nutzer versucht auf die Admin Route zuzugreifen |Nutzer wird auf Login-Seite weitergeleitet
-|I-02 |UC400 |Nutzer ist nicht eingeloggt |Nutzer versucht auf das Admin-Interface zuzugreifen |Nutzer wird auf Login-Seite weitergeleitet
-|I-03 |UC010 |Nutzer ist nicht eingeloggt |Nutzer versucht Logout Seite aufzurufen | Nutzer wird auf Login-Seite weitergeleitet ohne das Logout Nachricht angezeigt wird
-|I-04 |UC010 |Nutzer ist nicht eingeloggt |Nutzer versucht Login Seite aufzurufen | Nutzer erreicht die Login-Seite
-|I-05 |UC010 |Nutzer ist nicht eingeloggt |Nutzer meldet sich auf der Login-Seite mit falschen Zugangsdaten an |Nutzer wird auf die Fehler-Login Seite weitergeleitet
-|I-06 |UC010 |Nutzer ist nicht eingeloggt |Nutzer meldet sich mit korrekten Zugangsdaten auf der Login-Seite an |Nutzer ist gegenüber dem System authentifiziert mit der Rolle Mitarbeiter
-|I-07 |UC400 |Mitarbeiter ist eingeloggt |Mitarbeiter ruft das Admin-Interface auf |Mitarbeiter erreicht das Admin-Interface
-|I-08 |UC010 |Mitarbeiter ist eingeloggt |Mitarbeiter ruft die Login-Seite über /login auf| Mitarbeiter wird auf das Admin-Interface weitergeleitet
-|I-09 |UC010 |Mitarbeiter ist eingeloggt |Mitarbeiter ruft die Logout-Seite auf | Mitarbeiter wird auf die Logout Seite weitergeleitet und ist nicht mehr gegenüber dem System authentifiziert.
+|ID   |Anwendungsfall |Vorbedingungen |Eingabe |Ausgabe
+//Integrationstests
+
+//Warenkorb
+|I-01 |UC230              |Warenkorb ist leer              |Der Kunde fügt einen Stuhl zum Warenkorb hinzu       |Der Stuhl wird im Warenkorb angezeigt
+
+//Admin/Login
+|I-02 |UC400 |Nutzer ist nicht eingeloggt |Nutzer versucht auf die Admin Route zuzugreifen |Nutzer wird auf Login-Seite weitergeleitet
+|I-03 |UC400 |Nutzer ist nicht eingeloggt |Nutzer versucht auf das Admin-Interface zuzugreifen |Nutzer wird auf Login-Seite weitergeleitet
+|I-04 |UC010 |Nutzer ist nicht eingeloggt |Nutzer versucht Logout Seite aufzurufen | Nutzer wird auf Login-Seite weitergeleitet, ohne das die Logout Nachricht angezeigt wird
+|I-05 |UC010 |Nutzer ist nicht eingeloggt |Nutzer versucht Login Seite aufzurufen | Nutzer erreicht die Login-Seite
+|I-06 |UC010 |Nutzer ist nicht eingeloggt |Nutzer meldet sich auf der Login-Seite mit falschen Zugangsdaten an |Nutzer wird auf die Fehler-Login Seite weitergeleitet
+|I-07 |UC010 |Nutzer ist nicht eingeloggt |Nutzer meldet sich mit korrekten Zugangsdaten auf der Login-Seite an |Nutzer ist gegenüber dem System authentifiziert mit der Rolle Mitarbeiter
+|I-08 |UC400 |Mitarbeiter ist eingeloggt  |Mitarbeiter ruft das Admin-Interface auf |Mitarbeiter erreicht das Admin-Interface
+|I-09 |UC010 |Mitarbeiter ist eingeloggt  |Mitarbeiter ruft die Login-Seite über /login auf| Mitarbeiter wird auf das Admin-Interface weitergeleitet
+|I-10 |UC010 |Mitarbeiter ist eingeloggt  |Mitarbeiter ruft die Logout-Seite auf | Mitarbeiter wird auf die Logout Seite weitergeleitet und ist nicht mehr gegenüber dem System authentifiziert.
+
+//LKW
+|I-11 |UC520 |--- |Nutzer versucht die LKW Übersichtsseite aufzurufen                      |Nutzer wird auf die LKW Übersichtsseite weitergeleitet
+|I-12 |UC520 |--- |Nutzer versucht die LKW Mietungsseite mit gültigem LKW Typ aufzurufen   |Nutzer wird auf die Bestellseite weitergeleitet
+|I-13 |UC520 |--- |Nutzer versucht die LKW Mietungsseite mit ungültigem LKW Typ aufzurufen |Nutzer wird auf die LKW Übersichtsseite weitergeleitet
+|I-14 |UC520 |--- |Nutzer versucht einen LKW mit ungültigen Eingabedaten (Name, Adresse, E-Mail, Datum) zu mieten                           |Dem Nutzer wird angezeigt, dass die Daten falsch sein
+|I-15 |UC520 |Es existiert ein kleiner LKW an dem Datum mit dem Typ  |Nutzer versucht einen kleinen LKW mit gültigen Eingabedaten zu mieten |Die Bestellung wird aufgegeben
+|I-16 |UC520 |Es existiert kein kleiner LKW an dem Datum mit dem Typ |Nutzer versucht einen kleinen LKW mit gültigen Eingabedaten zu mieten |Dem Nutzer wird über die fehlende Verfügbarkeit informiert
+
+
+//Unittests (bei Methodenaufrufen Leerzeichen vor dem Punkt für Zeilenumbruch, sonst ist das zu lang ^^)
+
+//LKW
+|U-01 |LKWService .createCharterLKW(LocalDate, LKWType)              |Es existiert kein freier kleiner LKW für das Datum|Gültiges Datum, LKWType=SMALL |Es existiert kein freier kleiner LKW
+|U-02 |LKWService .createDeliveryLKW(LocalDate, LKWType)             |Es existiert ein freier kleiner LKW mit weniger als der maximalen Anzahl an Lieferungen pro Tag|Gültiges Datum, LKWType=SMALL |LKW welcher bereits Lieferungen hat, aber noch nicht voll benutzt war
+|U-03 |LKWService .findNextAvailableDeliveryDate(LocalDate, LKWType) |Es existiert ein kleiner LKW am Montag, aber nicht davor|Gültiges Samstag Datum, LKWType=SMALL |Montagsdatum
+|U-04 |LKWService .cancelOrder(LKW, LocalDate)                       |Es existiert ein CharterEintrag in dem LKW Kalender an dem Tag|Gültiger LKW, Gültiges Datum |Der Eintrag wird gelöscht und der LKW ist wieder verfügbar
 |===
