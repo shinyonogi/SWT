@@ -107,6 +107,17 @@ public class AdminControllerIntegrationTests {
 		mvc.perform(formLogin("/login").user("admin").password("admin"))
 				.andExpect(status().is3xxRedirection())
 				.andExpect(authenticated().withRoles("EMPLOYEE"));
+	}
+
+	/**
+	 * Tests if you can access Admin Overview when logged in.
+	 * Expect to get admin view.
+	 *
+	 * @throws Exception
+	 */
+	@Test // #7
+	@WithMockUser(roles = "EMPLOYEE")
+	void returnsModelAndViewWhenAccessingAdminOverviewWhenAuthenticated() throws Exception {
 		mvc.perform(get("/admin/overview").with(user("admin").roles("EMPLOYEE")))
 				.andExpect(status().isOk())
 				.andExpect(view().name("admin"));
@@ -118,7 +129,7 @@ public class AdminControllerIntegrationTests {
 	 *
 	 * @throws Exception
 	 */
-	@Test // #7
+	@Test // #8
 	@WithMockUser(roles = "EMPLOYEE")
 	void redirectsToAdminOverviewPageWhenAccessingLoginAfterAuthentication() throws Exception {
 		mvc.perform(get("/login"))
@@ -133,7 +144,7 @@ public class AdminControllerIntegrationTests {
 	 *
 	 * @throws Exception
 	 */
-	@Test // #8
+	@Test // #9
 	@WithMockUser(roles = "EMPLOYEE")
 	void redirectsToLoginWhenAccessingLogoutAfterAuthenticationAndRemovesRoles() throws Exception {
 		mvc.perform(logout("/logout"))
