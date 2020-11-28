@@ -187,8 +187,8 @@ wird die Art der Verwendung dieser externen Klasse in der Spalte *Art der Verwen
 |Teil |Piece |-
 |Kategorie |Category |-
 |Inventar |ItemService |-
-|Warenkorb |- |Session Attribute
-|WarenkorbEintrag |- |Class Attribute
+|Warenkorb |Salespoint.Cart |Session Attribute
+|WarenkorbEintrag |Salespoint.CartItem |Method Parameter (bei Salespoint.Cart)
 |LieferantManager |SupplierService |-
 |Lieferant |Supplier |-
 |LKWManager |LKWService |-
@@ -200,7 +200,7 @@ wird die Art der Verwendung dieser externen Klasse in der Spalte *Art der Verwen
 |BestellManager |OrderService |-
 |Bestellung |ShopOrder |-
 |Kontaktinformationen |ContactInformation |-
-|BestellEintrag |- |ClassAttribute
+|BestellEintrag |Salespoint.OrderLine |ClassAttribute (bei ItemOrderEntry)
 |Bestellstatus |OrderStatus |-
 |ItemBestellung |ItemOrder |-
 |Lieferung |LKWCharter |-
