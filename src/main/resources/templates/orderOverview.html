@@ -26,7 +26,7 @@
 		<tbody>
 			<tr th:if="${!items.isEmpty()}" th:each="item : ${items}">
 				<td class="align-middle" style="width: 20%">
-					<img th:src="${item.getPicture()}" class="img-fluid" style="width: 150px">
+					<img th:src="@{${item.getPicture()}}" class="img-fluid" style="width: 150px">
 				</td>
 				<td class="align-middle">
 					<h3 th:text="${item.getName()}">Sofa</h3>

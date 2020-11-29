@@ -4,7 +4,7 @@ import java.util.Optional;
 
 public enum Category {
 
-	CHAIR, TABLE, COUCH;
+	CHAIR, TABLE, COUCH, SET;
 
 	public static Optional<Category> getByName(String name) {
 		for (Category type : Category.values()) {
