@@ -15,20 +15,20 @@
 
 <div class="container">
 	<div class="card mt-4 mb-5">
-		<img class="card-img-top img-fluid" src="../pics/sofa.png" alt="">
+		<img class="card-img-top img-fluid" th:src="@{/resources/img/{pic}(pic=${item.getPicture()})}" alt="">
 		<div class="card-body">
 			<h3 class="card-title" th:text="${item.getName()}">Sofa</h3>
 			<h4 th:text="${item.getPrice()}">999,99€</h4>
 			<p class="card-text" th:text="${item.getDescription()}"></p>
 			<form class="form-inline">
 				<div class="dropdown mr-2">
-					<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown">
+					<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" th:text="${item.getVariant()}">
 						Ausführung
 					</button>
 					<div class="dropdown-menu">
-						<a class="dropdown-item" href="#">grau</a>
-						<a class="dropdown-item" href="#">blau</a>
-						<a class="dropdown-item" href="#">rot</a>
+						<div th:each="item : ${variants}">
+							<a class="dropdown-item" th:text="${item.getVariant()}" th:href="@{/catalog/{category}/{id}(id=${item.id}, category=${item.category})}">blau</a>
+						</div>
 					</div>
 				</div>
 			</form>

@@ -32,26 +32,18 @@ public class ItemDataInitializer implements DataInitializer {
 
 		final Supplier supplier = supplierRepository.findAll().iterator().next();
 
-		itemCatalog.save(new Piece(1, "Stuhl 1", Money.of(59.99, Currencies.EURO), "", "blue",
-				"Ein blauer Stuhl 1.", supplier, 5, Category.CHAIR));
-		itemCatalog.save(new Piece(1, "Stuhl 1", Money.of(59.99, Currencies.EURO), "", "red",
-				"Ein roter Stuhl 1.", supplier, 5, Category.CHAIR));
-		itemCatalog.save(new Piece(2, "Stuhl 2", Money.of(45.87, Currencies.EURO), "", "blue",
-				"Ein blauer Stuhl 2.", supplier, 5, Category.CHAIR));
+		itemCatalog.save(new Piece(1, "Stuhl 1", Money.of(59.99, Currencies.EURO), "chair_2.jpg", "schwarz",
+				"Stuhl 1 in schwarz.", supplier, 5, Category.CHAIR));
 
-		itemCatalog.save(new Piece(3, "Sofa 1", Money.of(139.99, Currencies.EURO), "", "mikrofaser grau",
-				"Ein Sofa 1.", supplier, 50, Category.COUCH));
-		itemCatalog.save(new Piece(3, "Sofa 1", Money.of(159.99, Currencies.EURO), "", "lederoptik",
-				"Ein sofa 1.", supplier, 50, Category.COUCH));
-		itemCatalog.save(new Piece(4, "Sofa 2", Money.of(259.99, Currencies.EURO), "", "mikrofaser blau",
-				"Ein Sofa 2.", supplier, 80, Category.COUCH));
+		itemCatalog.save(new Piece(2, "Sofa 1", Money.of(259.99, Currencies.EURO), "sofa_2_green.jpg", "grün",
+				"Sofa 1 in grün.", supplier, 50, Category.COUCH));
+		itemCatalog.save(new Piece(2, "Sofa 1", Money.of(259.99, Currencies.EURO), "sofa_2_red.jpg", "rot",
+				"Sofa 1 in rot.", supplier, 50, Category.COUCH));
+		itemCatalog.save(new Piece(2, "Sofa 1", Money.of(259.99, Currencies.EURO), "sofa_2_white.jpg", "weiß",
+				"Sofa 1 in weiß.", supplier, 80, Category.COUCH));
 
-		itemCatalog.save(new Piece(5, "Tisch 1", Money.of(59.99, Currencies.EURO), "", "blue",
-				"Ein blauer Tisch 1.", supplier, 30, Category.TABLE));
-		itemCatalog.save(new Piece(5, "Tisch 1", Money.of(59.99, Currencies.EURO), "", "red",
-				"Ein roter Tisch 1.", supplier, 30, Category.TABLE));
-		itemCatalog.save(new Piece(5, "Tisch 1", Money.of(59.99, Currencies.EURO), "", "green",
-				"Ein grüner Tisch 1.", supplier, 30, Category.TABLE));
+		itemCatalog.save(new Piece(3, "Tisch 1", Money.of(89.99, Currencies.EURO), "table_2.jpg", "weiß",
+				"Tisch 1 in weiß.", supplier, 30, Category.TABLE));
 	}
 
 }
