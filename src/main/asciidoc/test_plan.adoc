@@ -77,7 +77,7 @@ Jede testbezogene Aufgabe muss einem Ansprechpartner zugeordnet werden.
 |I-07 |UC400 |Nutzer ist nicht eingeloggt |Nutzer versucht auf die Admin Route zuzugreifen |Nutzer wird auf Login-Seite weitergeleitet
 |I-08 |UC400 |Nutzer ist nicht eingeloggt |Nutzer versucht auf das Admin-Interface zuzugreifen |Nutzer wird auf Login-Seite weitergeleitet
 |I-09 |UC010 |Nutzer ist nicht eingeloggt |Nutzer versucht Logout Seite aufzurufen | Nutzer wird auf Login-Seite weitergeleitet, ohne das die Logout Nachricht angezeigt wird
-|I-010 |UC010 |Nutzer ist nicht eingeloggt |Nutzer versucht Login Seite aufzurufen | Nutzer erreicht die Login-Seite
+|I-10 |UC010 |Nutzer ist nicht eingeloggt |Nutzer versucht Login Seite aufzurufen | Nutzer erreicht die Login-Seite
 |I-11 |UC010 |Nutzer ist nicht eingeloggt |Nutzer meldet sich auf der Login-Seite mit falschen Zugangsdaten an |Nutzer wird auf die Fehler-Login Seite weitergeleitet
 |I-12 |UC010 |Nutzer ist nicht eingeloggt |Nutzer meldet sich mit korrekten Zugangsdaten auf der Login-Seite an |Nutzer ist gegenüber dem System authentifiziert mit der Rolle Mitarbeiter
 |I-13 |UC400 |Mitarbeiter ist eingeloggt  |Mitarbeiter ruft das Admin-Interface auf |Mitarbeiter erreicht das Admin-Interface
@@ -92,6 +92,11 @@ Jede testbezogene Aufgabe muss einem Ansprechpartner zugeordnet werden.
 |I-20 |UC520 |Es existiert ein kleiner LKW an dem Datum mit dem Typ  |Nutzer versucht einen kleinen LKW mit gültigen Eingabedaten zu mieten |Die Bestellung wird aufgegeben
 |I-21 |UC520 |Es existiert kein kleiner LKW an dem Datum mit dem Typ |Nutzer versucht einen kleinen LKW mit gültigen Eingabedaten zu mieten |Dem Nutzer wird über die fehlende Verfügbarkeit informiert
 
+//Inventory
+|I-22 |UC200 |Es existieren mehrere Artikel unterschiedlicher Kategorien im Katalog |Ein Nutzer klickt auf Katalog und wählt eine Kategorie aus| Dem Nutzer werden nur Artikel der Kategorie angezeigt
+|I-23 |UC210 |Der Nutzer befindet sich auf einer der Katalog Seiten |Der Nutzer klickt auf einen Artikel| Der Nutzer ist auf einer Detail Seite des Artikels
+|I-24 |UC220 |Der Nutzer befindet sich auf der Detail Seite eines Artikels |Der Nutzer klickt auf das Dropdown Menü und wählt eine andere Variante aus| Der Nutzer ist auf der Detail Seite des Artikels mit der ausgewählten Variante
+|I-25 |UC430 |Im ItemCatalog existiert ein Item welches Teil eines Sets ist |Ein Mitarbeiter entfernt den Lieferanten des Items | Das Item und alle Sets die das Item beinhalten verschwinden aus dem Katalog
 
 //Unittests (bei Methodenaufrufen Leerzeichen vor dem Punkt für Zeilenumbruch, sonst ist das zu lang ^^)
 

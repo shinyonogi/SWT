@@ -128,9 +128,16 @@ image:models/design/Admin.png[Klassendiagramm - Admin]
 image:models/design/Inventory.png[Klassendiagramm - Inventory]
 
 [options="header"]
-|=== 
+|===
 |Klasse/Enumeration |Description
-|...|...
+|Category           |Ein Enum, welches die verfügbaren Kategorien repräsentiert
+|Item               |Ein Salespoint Product, welches entweder ein Piece oder ein Set repräsentiert
+|ItemCatalog        |Ein Salespoint Catalog, welcher alle Items des Inventars speichert
+|ItemController     |Ein Spring MVC Controller der das Routing für Items regelt
+|ItemDataInitializer|Ein Spring MVC DataInitializer der Items zur Datenbank hinzufügt
+|ItemService        |Ein Spring MVC Service der alle An/Abfragen bezüglich Items regelt
+|Piece              |Ein einzelnes Möbelstück
+|Set                |Eine Liste von zusammengehörigen Möbelstücken
 |===
 
 === LKW
