@@ -66,26 +66,31 @@ Jede testbezogene Aufgabe muss einem Ansprechpartner zugeordnet werden.
 //Integrationstests
 
 //Warenkorb
-|I-01 |UC230              |Warenkorb ist leer              |Der Kunde fügt einen Stuhl zum Warenkorb hinzu       |Der Stuhl wird im Warenkorb angezeigt
+|I-01 |UC100              |---                                        |Nutzer versucht die Warenkorb-Seite aufzurufen       |Nutzer erreicht die Warenkorb-Seite
+|I-02 |UC110              |Es existiert einen Stuhl im Warenkorb      |Nutzer enfernt den Stuhl aus dem Warenkorb           |Der Stuhl wird nicht mehr im Warenkorb angezeigt
+|I-03 |UC110              |Es befinden sich  2 x Stuhl 1 im Warenkorb |Nutzer entfernt 1 x Stuhl 1 aus dem Warenkorb      |Die Anzahl vom Stuhl 1 im Wanrekob wird auf 1 verringert
+|I-04 |UC230              |Warenkorb ist leer                         |Nutzer fügt einen Stuhl zum Warenkorb hinzu          |Der Stuhl wird im Warenkorb angezeigt
+|I-05 |UC230              |Es befindet sich 1 x Stuhl 1 im Warenkorb  |Nutzer fügt 1 x Stuhl 1 zum Warenkorb hinzu          |Die Anzahl vom Stuhl 1 im Wanrekob wird auf 2 erhöht
+|I-06 |UC120              |Es exisitert einen Stuhl im Warenkob       |Nutzer versucht die Checkout-Seite aufzurufen        |Nutzer erreicht die Checkout-Seite
 
 //Admin/Login
-|I-02 |UC400 |Nutzer ist nicht eingeloggt |Nutzer versucht auf die Admin Route zuzugreifen |Nutzer wird auf Login-Seite weitergeleitet
-|I-03 |UC400 |Nutzer ist nicht eingeloggt |Nutzer versucht auf das Admin-Interface zuzugreifen |Nutzer wird auf Login-Seite weitergeleitet
-|I-04 |UC010 |Nutzer ist nicht eingeloggt |Nutzer versucht Logout Seite aufzurufen | Nutzer wird auf Login-Seite weitergeleitet, ohne das die Logout Nachricht angezeigt wird
-|I-05 |UC010 |Nutzer ist nicht eingeloggt |Nutzer versucht Login Seite aufzurufen | Nutzer erreicht die Login-Seite
-|I-06 |UC010 |Nutzer ist nicht eingeloggt |Nutzer meldet sich auf der Login-Seite mit falschen Zugangsdaten an |Nutzer wird auf die Fehler-Login Seite weitergeleitet
-|I-07 |UC010 |Nutzer ist nicht eingeloggt |Nutzer meldet sich mit korrekten Zugangsdaten auf der Login-Seite an |Nutzer ist gegenüber dem System authentifiziert mit der Rolle Mitarbeiter
-|I-08 |UC400 |Mitarbeiter ist eingeloggt  |Mitarbeiter ruft das Admin-Interface auf |Mitarbeiter erreicht das Admin-Interface
-|I-09 |UC010 |Mitarbeiter ist eingeloggt  |Mitarbeiter ruft die Login-Seite über /login auf| Mitarbeiter wird auf das Admin-Interface weitergeleitet
-|I-10 |UC010 |Mitarbeiter ist eingeloggt  |Mitarbeiter ruft die Logout-Seite auf | Mitarbeiter wird auf die Logout Seite weitergeleitet und ist nicht mehr gegenüber dem System authentifiziert.
+|I-07 |UC400 |Nutzer ist nicht eingeloggt |Nutzer versucht auf die Admin Route zuzugreifen |Nutzer wird auf Login-Seite weitergeleitet
+|I-08 |UC400 |Nutzer ist nicht eingeloggt |Nutzer versucht auf das Admin-Interface zuzugreifen |Nutzer wird auf Login-Seite weitergeleitet
+|I-09 |UC010 |Nutzer ist nicht eingeloggt |Nutzer versucht Logout Seite aufzurufen | Nutzer wird auf Login-Seite weitergeleitet, ohne das die Logout Nachricht angezeigt wird
+|I-010 |UC010 |Nutzer ist nicht eingeloggt |Nutzer versucht Login Seite aufzurufen | Nutzer erreicht die Login-Seite
+|I-11 |UC010 |Nutzer ist nicht eingeloggt |Nutzer meldet sich auf der Login-Seite mit falschen Zugangsdaten an |Nutzer wird auf die Fehler-Login Seite weitergeleitet
+|I-12 |UC010 |Nutzer ist nicht eingeloggt |Nutzer meldet sich mit korrekten Zugangsdaten auf der Login-Seite an |Nutzer ist gegenüber dem System authentifiziert mit der Rolle Mitarbeiter
+|I-13 |UC400 |Mitarbeiter ist eingeloggt  |Mitarbeiter ruft das Admin-Interface auf |Mitarbeiter erreicht das Admin-Interface
+|I-14 |UC010 |Mitarbeiter ist eingeloggt  |Mitarbeiter ruft die Login-Seite über /login auf| Mitarbeiter wird auf das Admin-Interface weitergeleitet
+|I-15 |UC010 |Mitarbeiter ist eingeloggt  |Mitarbeiter ruft die Logout-Seite auf | Mitarbeiter wird auf die Logout Seite weitergeleitet und ist nicht mehr gegenüber dem System authentifiziert.
 
 //LKW
-|I-11 |UC520 |--- |Nutzer versucht die LKW Übersichtsseite aufzurufen                      |Nutzer wird auf die LKW Übersichtsseite weitergeleitet
-|I-12 |UC520 |--- |Nutzer versucht die LKW Mietungsseite mit gültigem LKW Typ aufzurufen   |Nutzer wird auf die Bestellseite weitergeleitet
-|I-13 |UC520 |--- |Nutzer versucht die LKW Mietungsseite mit ungültigem LKW Typ aufzurufen |Nutzer wird auf die LKW Übersichtsseite weitergeleitet
-|I-14 |UC520 |--- |Nutzer versucht einen LKW mit ungültigen Eingabedaten (Name, Adresse, E-Mail, Datum) zu mieten                           |Dem Nutzer wird angezeigt, dass die Daten falsch sein
-|I-15 |UC520 |Es existiert ein kleiner LKW an dem Datum mit dem Typ  |Nutzer versucht einen kleinen LKW mit gültigen Eingabedaten zu mieten |Die Bestellung wird aufgegeben
-|I-16 |UC520 |Es existiert kein kleiner LKW an dem Datum mit dem Typ |Nutzer versucht einen kleinen LKW mit gültigen Eingabedaten zu mieten |Dem Nutzer wird über die fehlende Verfügbarkeit informiert
+|I-16 |UC520 |--- |Nutzer versucht die LKW Übersichtsseite aufzurufen                      |Nutzer wird auf die LKW Übersichtsseite weitergeleitet
+|I-17 |UC520 |--- |Nutzer versucht die LKW Mietungsseite mit gültigem LKW Typ aufzurufen   |Nutzer wird auf die Bestellseite weitergeleitet
+|I-18 |UC520 |--- |Nutzer versucht die LKW Mietungsseite mit ungültigem LKW Typ aufzurufen |Nutzer wird auf die LKW Übersichtsseite weitergeleitet
+|I-19 |UC520 |--- |Nutzer versucht einen LKW mit ungültigen Eingabedaten (Name, Adresse, E-Mail, Datum) zu mieten                           |Dem Nutzer wird angezeigt, dass die Daten falsch sein
+|I-20 |UC520 |Es existiert ein kleiner LKW an dem Datum mit dem Typ  |Nutzer versucht einen kleinen LKW mit gültigen Eingabedaten zu mieten |Die Bestellung wird aufgegeben
+|I-21 |UC520 |Es existiert kein kleiner LKW an dem Datum mit dem Typ |Nutzer versucht einen kleinen LKW mit gültigen Eingabedaten zu mieten |Dem Nutzer wird über die fehlende Verfügbarkeit informiert
 
 
 //Unittests (bei Methodenaufrufen Leerzeichen vor dem Punkt für Zeilenumbruch, sonst ist das zu lang ^^)
