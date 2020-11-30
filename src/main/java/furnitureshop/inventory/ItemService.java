@@ -55,7 +55,7 @@ public class ItemService {
 		return itemCatalog.findAll().filter(it -> it.getCategory() == category);
 	}
 
-	public Streamable<Item> findVariants(Optional<Item> item){
+	public Streamable<Item> findAllByGroupId(Optional<Item> item){
 		return itemCatalog.findAll().filter(it -> it.getGroupid() == item.get().getGroupid());
 	}
 

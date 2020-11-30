@@ -57,7 +57,7 @@ public class ItemDataInitializer implements DataInitializer {
 		Set1_items.add(Sofa1_grey);
 
 		Set Set1 = new Set(4, "Set 1", Money.of(299.99, Currencies.EURO), "/resources/img/set_1.jpg", "black",
-				"Set bestehend aus Sofa 1 in schwarz und Stuhl 1.", supplier, Category.SET, Set1_items);
+				"Set bestehend aus Sofa 1 und Stuhl 1.", supplier, Category.SET, Set1_items);
 
 		itemCatalog.save(Stuhl1);
 		itemCatalog.save(Sofa1_green);

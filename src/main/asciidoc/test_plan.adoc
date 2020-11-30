@@ -105,10 +105,9 @@ Jede testbezogene Aufgabe muss einem Ansprechpartner zugeordnet werden.
 
 //Supplier
 |I-29 | UC420 | Mitarbeiter ist eingeloggt und befindet sich im Admin-Bereich | Mitarbeiter versucht, die Monatsstatistik aufzurufen | Mitarbeiter landet auf der Seite der Monatsstatistik
-|I-30 | UC420 | Mitarbeiter ist eingeloggt und der Einkaufsbetrag eines Lieferanten beträgt 0€  | Ein Möbelstück desselben Lieferanten wird bestellt | In der Monatsstatistik wird der Preis des Möbelstücks als Einkaufsbetrag des Lieferanten angezeigt
-|I-31 | UC430 | Mitarbeiter ist eingeloggt und befindet sich im Admin-Bereich | Mitarbeiter versucht, die Lieferantenseite aufzurufen | Mitarbeiter landet auf der Lieferantenseite
-|I-32 | UC430 | Mitarbeiter ist eingeloggt und auf der Lieferantenseite | Mitarbeiter versucht, einen (nicht bereits vorhandenen) Lieferanten mit gültigen Eingabedaten hinzuzufügen | Der Lieferant wird hinzugefügt
-|I-33 | UC430 | Mitarbeiter ist eingeloggt und auf der Lieferantenseite | Mitarbeiter versucht, einen vorhandenen Lieferanten zu entfernen | Der Lieferant wird entfernt
+|I-30 | UC430 | Mitarbeiter ist eingeloggt und befindet sich im Admin-Bereich | Mitarbeiter versucht, die Lieferantenseite aufzurufen | Mitarbeiter landet auf der Lieferantenseite
+|I-31 | UC430 | Mitarbeiter ist eingeloggt und auf der Lieferantenseite | Mitarbeiter versucht, einen (nicht bereits vorhandenen) Lieferanten mit gültigen Eingabedaten hinzuzufügen | Der Lieferant wird hinzugefügt
+|I-32 | UC430 | Mitarbeiter ist eingeloggt und auf der Lieferantenseite | Mitarbeiter versucht, einen vorhandenen Lieferanten zu entfernen | Der Lieferant wird entfernt
 
 //Unittests (bei Methodenaufrufen Leerzeichen vor dem Punkt für Zeilenumbruch, sonst ist das zu lang ^^)
 
@@ -119,15 +118,22 @@ Jede testbezogene Aufgabe muss einem Ansprechpartner zugeordnet werden.
 |U-04 |LKWService .cancelOrder(LKW, LocalDate)                       |Es existiert ein CharterEintrag in dem LKW Kalender an dem Tag |Gültiger LKW, Gültiges Datum |Der Eintrag wird gelöscht und der LKW ist wieder verfügbar
 
 //Order
-// Der Nutzer sucht eine Bestellung anhand einer Bestellnummer 
 |U-05 |OrderService .findById(String id)                             | existierende Bestellung und eine bekannte Bestellnummer | Bestellungnummer | Die dazu passende Bestellung  
-// Stellt sicher, dass alle Bestellungen richtig gespeichert werden
+//Der Nutzer sucht eine Bestellung anhand einer Bestellnummer 
 |U-06 |OrderService .findAll() |Es existieren verschiedene Bestellungen | - | alle erstellten Bestellungen 
-// Testet ob Bestellungen richtig ausgeführt werden können
+//Stellt sicher, dass alle Bestellungen richtig gespeichert werden
 |U-07 |OrderService .orderDeliveryItem(Cart, ContactInformation) | - | Warenkorb mit Items und Kontaktinformationen| eine Order vom Typ Delivery mit passendem Lieferdatum und einem zugeordnetem LKW 
+//Testet ob Bestellungen richtig ausgeführt werden können
 
 //Supplier
 |U-08 | SupplierService .addSupplier(Supplier) | Es existiert bereits ein gleichnamiger Lieferant | Lieferant | Gleichnamiger Lieferant bereits vorhanden
-|U-09 | SupplierService .findByName(String) | Es existiert mindestens ein Lieferant | Name eines existierenden Lieferanten | Der gesuchte Lieferant
-|U-10 | SupplierService .findAll() | Es existieren mehrere Lieferanten | - | Alle vorhandenen Lieferanten 
+|U-09 | SupplierService .findByName(String) | Es existiert mindestens ein Lieferant | Name eines existierenden Lieferanten | der gesuchte Lieferant
+|U-10 | SupplierService .findAll() | Es existieren mehrere Lieferanten | - | Alle vorhandenen Lieferanten
+
+//Inventory
+|U-11 | ItemService .findAll()                      |Es existieren mehrere Items | - | Alle Items aus dem Katalog
+|U-12 | ItemService .findById(ProductIdentifier)    |Es existieren mehrere Items | Gültige Id von Item im Katalog| Gibt nur das gesuchte Item zurück
+|U-13 | ItemService .findAllByGroupId(Item)         |Es existieren mehrere Items mit gleicher groupId und unterschiedlicher Varianten| Gültiges Item von dem mehrere Varianten im Katalog existieren | Gibt alle Items mit gleicher GroupId zurück
+|U-14 | ItemService .findAllByCategory(Category)    |Es existieren mehrere Items unterschiedlicher Kategorien| Gültige Kategorie | Gibt nur Items der gesuchten Kategorie zurück
+
 |===
