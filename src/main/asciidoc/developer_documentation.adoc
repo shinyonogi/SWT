@@ -223,7 +223,7 @@ wird die Art der Verwendung dieser externen Klasse in der Spalte *Art der Verwen
 |BestellManager |OrderService |-
 |Bestellung |ShopOrder |-
 |Kontaktinformationen |ContactInformation |-
-|BestellEintrag |Salespoint.OrderLine |ClassAttribute (bei ItemOrderEntry)
+|BestellEintrag |ItemOrderEntry |-
 |Bestellstatus |OrderStatus |-
 |ItemBestellung |ItemOrder |-
 |Lieferung |LKWCharter |-
