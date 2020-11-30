@@ -164,8 +164,13 @@ image:models/design/Supplier.png[Klassendiagramm - Supplier]
 
 [options="header"]
 |=== 
-|Klasse/Enumeration |Description
-|...|...
+|Klasse/Enumeration     |Description
+|Supplier               |Ein Lieferant des Möbelgeschäfts mit Name und Preisaufschlag
+|SupplierDataInitializer|Ein Spring MVC DataInitializer, der Lieferanten dem "SupplierRepository" hinzufügt
+|SupplierForm           |Ein Formular, dass als Zwischenablage für die Eingaben beim Hinzufügen eines Lieferanten dient
+|SupplierService        |Ein Spring MVC Service, der die Lieferanten im Repository verwaltet
+|SupplierController     |Ein Spring MVC Controller, der das Routing für den Lieferantenbereich regelt
+
 |===
 
 === Order
