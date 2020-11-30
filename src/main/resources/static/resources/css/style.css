@@ -26,6 +26,26 @@ header.masthead .masthead-content .masthead-subheading {
   font-size: 2rem;
 }
 
+header.cart-header {
+    position: relative;
+    overflow: hidden;
+    padding-top: 3rem;
+    padding-bottom: 2rem;
+}
+
+.cart-empty-header {
+     background-image: url("../img/shopping-cart.png");
+     background-repeat: no-repeat;
+     background-position: center center;
+     background-attachment: scroll;
+     background-size: cover;
+     position: relative;
+     height: 720px;
+     overflow: hidden;
+     padding-top: calc(7rem + 72px);
+     padding-bottom: 7rem;
+}
+
 @media (min-width: 992px) {
   header.masthead {
     padding-top: calc(10rem + 55px);
