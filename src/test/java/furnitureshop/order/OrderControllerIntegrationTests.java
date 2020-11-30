@@ -1,6 +1,5 @@
-/* package videoshop.orders;
+package furnitureshop.order;
 
-import static org.hamcrest.CoreMatchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -24,5 +23,3 @@ class OrderControllerIntegrationTests {
 			.andExpect(view().name("cart"));
 	}
 }
-
- */
