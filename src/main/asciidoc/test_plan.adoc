@@ -98,6 +98,11 @@ Jede testbezogene Aufgabe muss einem Ansprechpartner zugeordnet werden.
 |I-24 |UC220 |Der Nutzer befindet sich auf der Detail Seite eines Artikels |Der Nutzer klickt auf das Dropdown Menü und wählt eine andere Variante aus |Der Nutzer ist auf der Detail Seite des Artikels mit der ausgewählten Variante
 |I-25 |UC430 |Im ItemCatalog existiert ein Item welches Teil eines Sets ist |Ein Mitarbeiter entfernt den Lieferanten des Items |Das Item und alle Sets die das Item beinhalten verschwinden aus dem Katalog
 
+//Order
+|I-26 | UC310 | Der Nutzer hat eine Bestellung getätigt und befindet sich auf der Bestellansichtsseite der entsprechenden Bestellung | Der Nutzer ändert den Bestellstatus der Bestellung zu storniert | Der Status wird entsprechend geändert, der LKW falls nötig auch storniert und dem Nutzer wird die Stornierung bestätigt
+|I-27 | UC300 | Der Nutzer kennt eine valide Bestellnummer und befindet sich auf der checkOrder Seite | Nutzer gibt die valide Bestellnummer ein | Dem Nutzer wird die richtige Bestellung korrekt formatiert angezeigt
+|I-28 | UC120 | Der Nutzer hat einen Artikel im Warenkorb und auf Bestellen geklickt| Der Nutzer trägt alle Kontaktinformationen richtig ein und wählt einen Liefertyp | Dem Nutzer wird eine Bestellübersicht mit der Bestellnummer gegeben
+
 //Unittests (bei Methodenaufrufen Leerzeichen vor dem Punkt für Zeilenumbruch, sonst ist das zu lang ^^)
 
 //LKW
@@ -105,4 +110,9 @@ Jede testbezogene Aufgabe muss einem Ansprechpartner zugeordnet werden.
 |U-02 |LKWService .createDeliveryLKW(LocalDate, LKWType)             |Es existiert ein freier kleiner LKW mit weniger als der maximalen Anzahl an Lieferungen pro Tag |Gültiges Datum, LKWType=SMALL |LKW welcher bereits Lieferungen hat, aber noch nicht voll benutzt war
 |U-03 |LKWService .findNextAvailableDeliveryDate(LocalDate, LKWType) |Es existiert ein kleiner LKW am Montag, aber nicht davor |Gültiges Samstag Datum, LKWType=SMALL |Montagsdatum
 |U-04 |LKWService .cancelOrder(LKW, LocalDate)                       |Es existiert ein CharterEintrag in dem LKW Kalender an dem Tag |Gültiger LKW, Gültiges Datum |Der Eintrag wird gelöscht und der LKW ist wieder verfügbar
+
+//Order
+|U-05 |OrderService .findById(String id)                             |Der Nutzer sucht eine Bestellung anhand einer Bestellnummer | existierende Bestellung und eine bekannte Bestellnummer | Bestellungnummer | Die dazu passende Bestellung
+|U-06 |OrderService .findAll() | Stellt sicher, dass alle Bestellungen richtig gespeichert werden |Es existieren verschiedene Bestellungen | - | alle erstellten Bestellungen
+|U-07 |OrderService .orderDeliveryItem(Cart, ContactInformation) | Testet ob Bestellungen richtig ausgeführt werden können | - | Warenkorb mit Items und Kontaktinformationen| eine Order vom Typ Delivery mit passendem Lieferdatum und einem zugeordnetem LKW
 |===
