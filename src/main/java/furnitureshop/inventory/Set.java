@@ -5,13 +5,14 @@ import org.springframework.util.Assert;
 
 import javax.money.MonetaryAmount;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import java.util.List;
 
 @Entity
 public class Set extends Item {
 
-	@OneToMany
+	@OneToMany(fetch = FetchType.EAGER)
 	private List<Item> items;
 
 	protected Set() {}

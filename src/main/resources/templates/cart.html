@@ -52,7 +52,7 @@
 				-->
 					<tr class="mt-3 mb-3" th:each="cartItem : ${cart}">
 						<td class="align-middle">
-							<img th:src="@{/resources/img/{pic}(pic=${cartItem.getProduct().getPicture()})}" class="img-fluid rounded" style="width: 300px">
+							<img th:src="@{${cartItem.getProduct().getPicture()}}" class="img-fluid rounded" style="width: 300px">
 						</td>
 						<td class="align-middle" style="width: 50%">
 							<h3 th:text="${cartItem.getProductName()}">Sofa</h3>

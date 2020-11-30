@@ -14,7 +14,7 @@
 
 	<div class="container">
 		<div class="card mt-4 mb-5">
-			<img class="card-img-top img-fluid" th:src="@{/resources/img/{pic}(pic=${item.getPicture()})}" alt="">
+			<img class="card-img-top img-fluid" th:src="@{${item.getPicture()}}" alt="">
 			<div class="card-body">
 				<h3 class="card-title" th:text="${item.getName()}">Sofa</h3>
 				<h4 th:text="${item.getPrice()}">999,99€</h4>
