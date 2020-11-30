@@ -117,20 +117,28 @@ Jede testbezogene Aufgabe muss einem Ansprechpartner zugeordnet werden.
 | U-02 | LKWService.createDeliveryLKW(LocalDate, LKWType)              | Es existiert ein freier kleiner LKW mit weniger als der maximalen Anzahl an Lieferungen pro Tag | Gültiges Datum, LKWType=SMALL | LKW welcher bereits Lieferungen hat, aber noch nicht voll benutzt war
 | U-03 | LKWService .findNextAvailableDeliveryDate(LocalDate, LKWType) | Es existiert ein kleiner LKW am Montag, aber nicht davor | Gültiges Samstag Datum, LKWType=SMALL | Montagsdatum
 | U-04 | LKWService.cancelOrder(LKW, LocalDate)                        | Es existiert ein CharterEintrag in dem LKW Kalender an dem Tag | Gültiger LKW, Gültiges Datum | Der Eintrag wird gelöscht und der LKW ist wieder verfügbar
+| U-05 | Calendar.addEntry(CalendarEntry) | Kalender besitzt Eintrag am Freitag | Der Nutzer möchte einen Eintrag am Freitag anlegen | Nicht möglich, da bereits ein Eintrag exisitiert
+| U-06 | Calendar.addEntry(CalendarEntry) | Kalender besitzt freien Eintrag am Mittwoch | Der Nutzer möchte einen Eintrag am Mittwoch anlegen | Der Eintrag wird erfolgreich angelegt.
+| U-07 | Calendar.removeEntry(CalendarEntry) | Kalender besitzt einen Eintrag am Freitag | Der Nutzer möchte den Eintrag vom Freitag entfernen | Der Eintrag wird entfernt
+| U-08 | Calendar.removeEntry(CalendarEntry) | Kalender besitzt derzeit keine Einträge | Nutzer möchte Eintrag am Mittwoch entfernen | Entfernen nicht möglich, da der Eintrag nicht vorhanden ist
+| U-09 | Calendar.hasEntry(LocalDate) | Kalender besitzt einen Eintrag am Mittwoch | Nutzer möchte wissen ob Eintrag am Mittwoch existiert | Der Eintrag existiert
+| U-10 | Calendar.hasEntry(LocalDate) | Kalender besitzt einen Eintrag am Mittwoch | Nutzer möchte wissen ob Eintrag am Donnerstag existiert | Es existiert kein Eintrag
+| U-11 | Calendar.getEntry(LocalDate) | Kalender besitzt einen Eintrag am Freitag | Nutzer möchte Eintrag vom Donnerstag holen | Nutzer erhält einen leeren Eintrag
+| U-12 | Calendar.getEntry(LocalDate) | Kalender besitzt einen Eintrag am Mittwoch | Nutzer möchte Eintrag vom Mittwoch holen | Nutzer erhält den Eintrag vom Mittwoch
 
 //Order
-| U-05 | OrderService.findById(String)                            | Existierende Bestellung und eine bekannte Bestellnummer | Bestellungnummer | Die dazu passende Bestellung
-| U-06 | OrderService.findAll()                                   | Es existieren verschiedene Bestellungen | - | Alle erstellten Bestellungen
-| U-07 | OrderService.orderDeliveryItem(Cart, ContactInformation) | - | Warenkorb mit Items und Kontaktinformationen | Eine Order vom Typ Delivery mit passendem Lieferdatum und einem zugeordnetem LKW
+| U-13 | OrderService.findById(String)                            | Existierende Bestellung und eine bekannte Bestellnummer | Bestellungnummer | Die dazu passende Bestellung
+| U-14 | OrderService.findAll()                                   | Es existieren verschiedene Bestellungen | - | Alle erstellten Bestellungen
+| U-15 | OrderService.orderDeliveryItem(Cart, ContactInformation) | - | Warenkorb mit Items und Kontaktinformationen | Eine Order vom Typ Delivery mit passendem Lieferdatum und einem zugeordnetem LKW
 
 //Supplier
-| U-08 | SupplierService.addSupplier(Supplier) | Es existiert bereits ein gleichnamiger Lieferant | Lieferant | Gleichnamiger Lieferant bereits vorhanden
-| U-09 | SupplierService.findByName(String)    | Es existiert mindestens ein Lieferant | Name eines existierenden Lieferanten | der gesuchte Lieferant
-| U-10 | SupplierService.findAll()             | Es existieren mehrere Lieferanten | - | Alle vorhandenen Lieferanten
+| U-16 | SupplierService.addSupplier(Supplier) | Es existiert bereits ein gleichnamiger Lieferant | Lieferant | Gleichnamiger Lieferant bereits vorhanden
+| U-17 | SupplierService.findByName(String)    | Es existiert mindestens ein Lieferant | Name eines existierenden Lieferanten | der gesuchte Lieferant
+| U-18 | SupplierService.findAll()             | Es existieren mehrere Lieferanten | - | Alle vorhandenen Lieferanten
 
 //Inventory
-| U-11 | ItemService.findAll()                   | Es existieren mehrere Items | - | Alle Items aus dem Katalog
-| U-12 | ItemService.findById(ProductIdentifier) | Es existieren mehrere Items | Gültige Id von Item im Katalog | Gibt nur das gesuchte Item zurück
-| U-13 | ItemService.findAllByGroupId(Item)      | Es existieren mehrere Items mit gleicher groupId und unterschiedlicher Varianten | Gültiges Item von dem mehrere Varianten im Katalog existieren | Gibt alle Items mit gleicher GroupId zurück
-| U-14 | ItemService.findAllByCategory(Category) | Es existieren mehrere Items unterschiedlicher Kategorien | Gültige Kategorie | Gibt nur Items der gesuchten Kategorie zurück
+| U-19 | ItemService.findAll()                   | Es existieren mehrere Items | - | Alle Items aus dem Katalog
+| U-20 | ItemService.findById(ProductIdentifier) | Es existieren mehrere Items | Gültige Id von Item im Katalog | Gibt nur das gesuchte Item zurück
+| U-21 | ItemService.findAllByGroupId(Item)      | Es existieren mehrere Items mit gleicher groupId und unterschiedlicher Varianten | Gültiges Item von dem mehrere Varianten im Katalog existieren | Gibt alle Items mit gleicher GroupId zurück
+| U-22 | ItemService.findAllByCategory(Category) | Es existieren mehrere Items unterschiedlicher Kategorien | Gültige Kategorie | Gibt nur Items der gesuchten Kategorie zurück
 |===
