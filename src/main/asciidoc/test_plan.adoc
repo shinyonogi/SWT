@@ -103,6 +103,12 @@ Jede testbezogene Aufgabe muss einem Ansprechpartner zugeordnet werden.
 |I-27 | UC300 | Der Nutzer kennt eine valide Bestellnummer und befindet sich auf der checkOrder Seite | Nutzer gibt die valide Bestellnummer ein | Dem Nutzer wird die richtige Bestellung korrekt formatiert angezeigt
 |I-28 | UC120 | Der Nutzer hat einen Artikel im Warenkorb und auf Bestellen geklickt| Der Nutzer trägt alle Kontaktinformationen richtig ein und wählt einen Liefertyp | Dem Nutzer wird eine Bestellübersicht mit der Bestellnummer gegeben
 
+//Supplier
+|I-29 | UC420 | Mitarbeiter ist eingeloggt und befindet sich im Admin-Bereich | Mitarbeiter versucht, die Monatsstatistik aufzurufen | Mitarbeiter landet auf der Seite der Monatsstatistik
+|I-30 | UC430 | Mitarbeiter ist eingeloggt und befindet sich im Admin-Bereich | Mitarbeiter versucht, die Lieferantenseite aufzurufen | Mitarbeiter landet auf der Lieferantenseite
+|I-31 | UC430 | Mitarbeiter ist eingeloggt und auf der Lieferantenseite | Mitarbeiter versucht, einen (nicht bereits vorhandenen) Lieferanten mit gültigen Eingabedaten hinzuzufügen | Der Lieferant wird hinzugefügt
+|I-32 | UC430 | Mitarbeiter ist eingeloggt und auf der Lieferantenseite | Mitarbeiter versucht, einen vorhandenen Lieferanten zu entfernen | Der Lieferant wird entfernt
+
 //Unittests (bei Methodenaufrufen Leerzeichen vor dem Punkt für Zeilenumbruch, sonst ist das zu lang ^^)
 
 //LKW
@@ -112,7 +118,15 @@ Jede testbezogene Aufgabe muss einem Ansprechpartner zugeordnet werden.
 |U-04 |LKWService .cancelOrder(LKW, LocalDate)                       |Es existiert ein CharterEintrag in dem LKW Kalender an dem Tag |Gültiger LKW, Gültiges Datum |Der Eintrag wird gelöscht und der LKW ist wieder verfügbar
 
 //Order
-|U-05 |OrderService .findById(String id)                             |Der Nutzer sucht eine Bestellung anhand einer Bestellnummer | existierende Bestellung und eine bekannte Bestellnummer | Bestellungnummer | Die dazu passende Bestellung
-|U-06 |OrderService .findAll() | Stellt sicher, dass alle Bestellungen richtig gespeichert werden |Es existieren verschiedene Bestellungen | - | alle erstellten Bestellungen
-|U-07 |OrderService .orderDeliveryItem(Cart, ContactInformation) | Testet ob Bestellungen richtig ausgeführt werden können | - | Warenkorb mit Items und Kontaktinformationen| eine Order vom Typ Delivery mit passendem Lieferdatum und einem zugeordnetem LKW
+|U-05 |OrderService .findById(String id)                             | existierende Bestellung und eine bekannte Bestellnummer | Bestellungnummer | Die dazu passende Bestellung  
+//Der Nutzer sucht eine Bestellung anhand einer Bestellnummer 
+|U-06 |OrderService .findAll() |Es existieren verschiedene Bestellungen | - | alle erstellten Bestellungen 
+//Stellt sicher, dass alle Bestellungen richtig gespeichert werden
+|U-07 |OrderService .orderDeliveryItem(Cart, ContactInformation) | - | Warenkorb mit Items und Kontaktinformationen| eine Order vom Typ Delivery mit passendem Lieferdatum und einem zugeordnetem LKW 
+//Testet ob Bestellungen richtig ausgeführt werden können
+
+//Supplier
+|U-08 | SupplierService .addSupplier(Supplier) | Es existiert bereits ein gleichnamiger Lieferant | Lieferant | Gleichnamiger Lieferant bereits vorhanden
+|U-09 | SupplierService .findByName(String) | Es existiert mindestens ein Lieferant | Name eines existierenden Lieferanten | der gesuchte Lieferant
+|U-10 | SupplierService .findAll() | Es existieren mehrere Lieferanten | - | Alle vorhandenen Lieferanten 
 |===
