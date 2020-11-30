@@ -222,7 +222,7 @@ public class LKWService {
 	}
 
 	public Optional<LKWCharter> createLKWOrder(LKW lkw, LocalDate date, ContactInformation contactInformation) {
-		return orderService.orderLKW(date, lkw, contactInformation);
+		return orderService.orderLKW(lkw, date, contactInformation);
 	}
 
 	/**

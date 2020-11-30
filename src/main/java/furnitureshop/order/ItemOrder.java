@@ -1,5 +1,6 @@
 package furnitureshop.order;
 
+import furnitureshop.inventory.Item;
 import org.salespointframework.catalog.Product;
 import org.salespointframework.order.OrderLine;
 import org.salespointframework.quantity.Quantity;
@@ -24,10 +25,14 @@ public abstract class ItemOrder extends ShopOrder {
 
 	protected ItemOrder() {}
 
-	@Override
-	public OrderLine addOrderLine(Product product, Quantity quantity) {
-		OrderLine orderLine = super.addOrderLine(product, quantity);
-		orderWithStatus.add(new ItemOrderEntry(orderLine, OrderStatus.OPEN));
+	public OrderLine addOrderLine(Item item, Quantity quantity) {
+		final OrderLine orderLine = super.addOrderLine(item, quantity);
+
+		final int amount = quantity.getAmount().intValue();
+		for (int i = 0; i < amount; i++) {
+			orderWithStatus.add(new ItemOrderEntry(item, OrderStatus.OPEN));
+		}
+
 		return orderLine;
 	}
 
@@ -35,16 +40,19 @@ public abstract class ItemOrder extends ShopOrder {
 		for (ItemOrderEntry entry : orderWithStatus) {
 			entry.setStatus(status);
 		}
+
 		return true;
 	}
 
-	/*
-	public boolean changeStatus(OrderLine orderLine, OrderStatus status) {
-		if (orderWithStatus.containsKey(orderLine)) {
-			orderWithStatus.replace(orderLine, status);
-			return true;
-		} else {
-			throw new IllegalArgumentException("Orderline ist nicht in der Order enthalten");
+	public boolean changeStatus(Product product, OrderStatus oldStatus, OrderStatus newStatus) {
+		for (ItemOrderEntry order : orderWithStatus) {
+			if (order.getProduct().equals(product) && order.getStatus() == oldStatus) {
+				order.setStatus(newStatus);
+				return true;
+			}
 		}
-	}*/
+
+		return false;
+	}
+
 }

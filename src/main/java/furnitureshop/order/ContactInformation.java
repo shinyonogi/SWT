@@ -1,5 +1,7 @@
 package furnitureshop.order;
 
+import org.springframework.util.Assert;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -15,6 +17,10 @@ public class ContactInformation {
 	private String email;
 
 	public ContactInformation(String name, String address, String email) {
+		Assert.notNull(name, "Name must not be null!");
+		Assert.notNull(address, "Address must not be null!");
+		Assert.notNull(email, "Email must not be null!");
+
 		this.name = name;
 		this.address = address;
 		this.email = email;

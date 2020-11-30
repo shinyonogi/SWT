@@ -3,10 +3,12 @@ package furnitureshop.order;
 import furnitureshop.inventory.Item;
 import furnitureshop.inventory.ItemService;
 import furnitureshop.lkw.LKW;
-
 import furnitureshop.lkw.LKWService;
+import furnitureshop.lkw.LKWType;
+
 import org.salespointframework.catalog.ProductIdentifier;
 import org.salespointframework.order.Cart;
+import org.salespointframework.order.CartItem;
 import org.salespointframework.order.OrderManagement;
 import org.salespointframework.time.BusinessTime;
 import org.salespointframework.useraccount.UserAccount;
@@ -31,7 +33,7 @@ public class OrderService {
 	private final LKWService lkwService;
 
 	OrderService(UserAccountManagement userAccountManagement, BusinessTime businessTime, OrderManagement<ShopOrder> orderManagement,
-				 ItemService itemService, LKWService lkwService) {
+			ItemService itemService, LKWService lkwService) {
 		Assert.notNull(userAccountManagement, "UserAccountManagement must not be null");
 		Assert.notNull(businessTime, "BusinessTime must not be null");
 		Assert.notNull(orderManagement, "OrderManagement must not be null");
@@ -48,37 +50,66 @@ public class OrderService {
 	public Optional<Pickup> orderPickupItem(Cart cart, ContactInformation contactInformation) {
 		final Optional<UserAccount> useraccount = getDummyUser();
 
-		if (useraccount.isEmpty()) { return Optional.empty(); }
+		if (useraccount.isEmpty()) {
+			return Optional.empty();
+		}
 
-		Pickup order = new Pickup(useraccount.get(), contactInformation);
+		final Pickup order = new Pickup(useraccount.get(), contactInformation);
 		cart.addItemsTo(order);
 		orderManagement.save(order);
+
 		return Optional.of(order);
 	}
 
 	public Optional<Delivery> orderDelieveryItem(Cart cart, ContactInformation contactInformation) {
-		LocalDate deliveryDate = LocalDate.now().plusDays(2);
-		//@ToDo  get real deliveryDate from LKWManager
-		//@Todo  calculate total weight and get the resulting LKW
-		//@Todo  split order or mass delivery
 		final Optional<UserAccount> userAccount = getDummyUser();
 
-		if (userAccount.isEmpty()) { return Optional.empty(); }
+		if (userAccount.isEmpty()) {
+			return Optional.empty();
+		}
 
-		Delivery order = new Delivery(userAccount.get(), deliveryDate, contactInformation);
+		int weight = 0;
+		for (CartItem cartItem : cart) {
+			if (!(cartItem.getProduct() instanceof Item)) {
+				continue;
+			}
+
+			final Item item = (Item) cartItem.getProduct();
+			weight += item.getWeight();
+		}
+
+		final Optional<LKWType> optional = LKWType.getByWeight(weight);
+		final LKWType type;
+
+		if (optional.isPresent()) {
+			type = optional.get();
+		} else if (weight > 0) {
+			type = LKWType.LARGE;
+		} else {
+			type = null;
+		}
+
+		LocalDate deliveryDate = businessTime.getTime().toLocalDate().plusDays(2);
+		deliveryDate = lkwService.findNextAvailableDeliveryDate(deliveryDate, type);
+
+		final Delivery order = new Delivery(userAccount.get(), contactInformation, deliveryDate);
 		order.changeAllStatus(OrderStatus.PAID);
 		cart.addItemsTo(order);
 		orderManagement.save(order);
+
 		return Optional.of(order);
 	}
 
-	public Optional<LKWCharter> orderLKW(LocalDate rentDate, LKW lkw, ContactInformation contactInformation) {
+	public Optional<LKWCharter> orderLKW(LKW lkw, LocalDate rentDate, ContactInformation contactInformation) {
 		final Optional<UserAccount> userAccount = getDummyUser();
 
-		if (userAccount.isEmpty()) { return Optional.empty(); }
+		if (userAccount.isEmpty()) {
+			return Optional.empty();
+		}
 
-		LKWCharter order = new LKWCharter(userAccount.get(), rentDate, contactInformation, lkw);
+		final LKWCharter order = new LKWCharter(userAccount.get(), contactInformation, lkw, rentDate);
 		orderManagement.save(order);
+
 		return Optional.of(order);
 	}
 

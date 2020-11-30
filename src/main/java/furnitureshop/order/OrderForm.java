@@ -26,5 +26,8 @@ public class OrderForm {
 		return email;
 	}
 
-	public int getIndex() { return index; }
+	public int getIndex() {
+		return index;
+	}
+
 }
