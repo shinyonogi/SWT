@@ -1,0 +1,30 @@
+= Protokoll Gruppe 17
+
+Treffen am 30.11.2020
+
+Ort:      Discord +
+Beginn:   18:00 Uhr +
+Ende:     18:50 Uhr
+
+__Schriftführer:__ Marc Albrecht
+
+*Nächstes Treffen:* +
+03.12.2020, 13:00 Uhr, BigBlueButton
+
+__Teilnehmer:__
+//Tabellarisch oder Aufzählung, Kennzeichnung von Teilnehmern mit besonderer Rolle (z.B. Kunde)
+
+- Sebastian Jaster
+- Edgar Wolfert
+- Johannes Kaufmann
+- David Schroth
+- Marc Albrecht
+- Shintaro Onogi
+
+== Bemerkungen
+- Auswertung des Testplans
+- Planung der nächsten Wochen
+- Erstellung von JUnit-Tests für seine Komponente bis Donnerstag
+
+== Planung des nächsten Sprints
+- Deadline: Di. 01.12.2020 23:59 Uhr

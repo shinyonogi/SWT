@@ -62,78 +62,75 @@ Jede testbezogene Aufgabe muss einem Ansprechpartner zugeordnet werden.
 // See http://asciidoctor.org/docs/user-manual/#tables
 [options="headers"]
 |===
-|ID   |Anwendungsfall |Vorbedingungen |Eingabe |Ausgabe
+| ID   | Anwendungsfall | Vorbedingungen | Eingabe | Ausgabe
 //Integrationstests
 
 //Warenkorb
-|I-01 |UC100 |---                                        |Nutzer versucht die Warenkorb-Seite aufzurufen   |Nutzer erreicht die Warenkorb-Seite
-|I-02 |UC110 |Es existiert einen Stuhl im Warenkorb      |Nutzer enfernt den Stuhl aus dem Warenkorb       |Der Stuhl wird nicht mehr im Warenkorb angezeigt
-|I-03 |UC110 |Es befinden sich  2 x Stuhl 1 im Warenkorb |Nutzer entfernt 1 x Stuhl 1 aus dem Warenkorb    |Die Anzahl vom Stuhl 1 im Wanrekob wird auf 1 verringert
-|I-04 |UC230 |Warenkorb ist leer                         |Nutzer fügt einen Stuhl zum Warenkorb hinzu      |Der Stuhl wird im Warenkorb angezeigt
-|I-05 |UC230 |Es befindet sich 1 x Stuhl 1 im Warenkorb  |Nutzer fügt 1 x Stuhl 1 zum Warenkorb hinzu      |Die Anzahl vom Stuhl 1 im Wanrekob wird auf 2 erhöht
-|I-06 |UC120 |Es exisitert einen Stuhl im Warenkob       |Nutzer versucht die Checkout-Seite aufzurufen    |Nutzer erreicht die Checkout-Seite
+| I-01 | UC100 | ---                                        | Nutzer versucht die Warenkorb-Seite aufzurufen | Nutzer erreicht die Warenkorb-Seite
+| I-02 | UC110 | Es existiert einen Stuhl im Warenkorb      | Nutzer enfernt den Stuhl aus dem Warenkorb     | Der Stuhl wird nicht mehr im Warenkorb angezeigt
+| I-03 | UC110 | Es befinden sich  2 x Stuhl 1 im Warenkorb | Nutzer entfernt 1 x Stuhl 1 aus dem Warenkorb  | Die Anzahl vom Stuhl 1 im Wanrekob wird auf 1 verringert
+| I-04 | UC230 | Warenkorb ist leer                         | Nutzer fügt einen Stuhl zum Warenkorb hinzu    | Der Stuhl wird im Warenkorb angezeigt
+| I-05 | UC230 | Es befindet sich 1 x Stuhl 1 im Warenkorb  | Nutzer fügt 1 x Stuhl 1 zum Warenkorb hinzu    | Die Anzahl vom Stuhl 1 im Wanrekob wird auf 2 erhöht
+| I-06 | UC120 | Es exisitert einen Stuhl im Warenkob       | Nutzer versucht die Checkout-Seite aufzurufen  | Nutzer erreicht die Checkout-Seite
 
 //Admin/Login
-|I-07 |UC400 |Nutzer ist nicht eingeloggt |Nutzer versucht auf die Admin Route zuzugreifen |Nutzer wird auf Login-Seite weitergeleitet
-|I-08 |UC400 |Nutzer ist nicht eingeloggt |Nutzer versucht auf das Admin-Interface zuzugreifen |Nutzer wird auf Login-Seite weitergeleitet
-|I-09 |UC010 |Nutzer ist nicht eingeloggt |Nutzer versucht Logout Seite aufzurufen |Nutzer wird auf Login-Seite weitergeleitet, ohne das die Logout Nachricht angezeigt wird
-|I-10 |UC010 |Nutzer ist nicht eingeloggt |Nutzer versucht Login Seite aufzurufen |Nutzer erreicht die Login-Seite
-|I-11 |UC010 |Nutzer ist nicht eingeloggt |Nutzer meldet sich auf der Login-Seite mit falschen Zugangsdaten an |Nutzer wird auf die Fehler-Login Seite weitergeleitet
-|I-12 |UC010 |Nutzer ist nicht eingeloggt |Nutzer meldet sich mit korrekten Zugangsdaten auf der Login-Seite an |Nutzer ist gegenüber dem System authentifiziert mit der Rolle Mitarbeiter
-|I-13 |UC400 |Mitarbeiter ist eingeloggt  |Mitarbeiter ruft das Admin-Interface auf |Mitarbeiter erreicht das Admin-Interface
-|I-14 |UC010 |Mitarbeiter ist eingeloggt  |Mitarbeiter ruft die Login-Seite über /login auf |Mitarbeiter wird auf das Admin-Interface weitergeleitet
-|I-15 |UC010 |Mitarbeiter ist eingeloggt  |Mitarbeiter ruft die Logout-Seite auf |Mitarbeiter wird auf die Logout Seite weitergeleitet und ist nicht mehr gegenüber dem System authentifiziert.
+| I-07 | UC400 | Nutzer ist nicht eingeloggt | Nutzer versucht auf die Admin Route zuzugreifen | Nutzer wird auf Login-Seite weitergeleitet
+| I-08 | UC400 | Nutzer ist nicht eingeloggt | Nutzer versucht auf das Admin-Interface zuzugreifen | Nutzer wird auf Login-Seite weitergeleitet
+| I-09 | UC010 | Nutzer ist nicht eingeloggt | Nutzer versucht Logout Seite aufzurufen | Nutzer wird auf Login-Seite weitergeleitet, ohne das die Logout Nachricht angezeigt wird
+| I-10 | UC010 | Nutzer ist nicht eingeloggt | Nutzer versucht Login Seite aufzurufen | Nutzer erreicht die Login-Seite
+| I-11 | UC010 | Nutzer ist nicht eingeloggt | Nutzer meldet sich auf der Login-Seite mit falschen Zugangsdaten an | Nutzer wird auf die Fehler-Login Seite weitergeleitet
+| I-12 | UC010 | Nutzer ist nicht eingeloggt | Nutzer meldet sich mit korrekten Zugangsdaten auf der Login-Seite an | Nutzer ist gegenüber dem System authentifiziert mit der Rolle Mitarbeiter
+| I-13 | UC400 | Mitarbeiter ist eingeloggt  | Mitarbeiter ruft das Admin-Interface auf | Mitarbeiter erreicht das Admin-Interface
+| I-14 | UC010 | Mitarbeiter ist eingeloggt  | Mitarbeiter ruft die Login-Seite über /login auf | Mitarbeiter wird auf das Admin-Interface weitergeleitet
+| I-15 | UC010 | Mitarbeiter ist eingeloggt  | Mitarbeiter ruft die Logout-Seite auf | Mitarbeiter wird auf die Logout Seite weitergeleitet und ist nicht mehr gegenüber dem System authentifiziert.
 
 //LKW
-|I-16 |UC520 |--- |Nutzer versucht die LKW Übersichtsseite aufzurufen                      |Nutzer wird auf die LKW Übersichtsseite weitergeleitet
-|I-17 |UC520 |--- |Nutzer versucht die LKW Mietungsseite mit gültigem LKW Typ aufzurufen   |Nutzer wird auf die Bestellseite weitergeleitet
-|I-18 |UC520 |--- |Nutzer versucht die LKW Mietungsseite mit ungültigem LKW Typ aufzurufen |Nutzer wird auf die LKW Übersichtsseite weitergeleitet
-|I-19 |UC520 |Nutzer befindet sich auf der Mietseite des LKWs        |Nutzer versucht einen LKW mit ungültigen Eingabedaten (Name, Adresse, E-Mail, Datum) zu mieten |Dem Nutzer wird angezeigt, dass die Daten falsch sein
-|I-20 |UC520 |Es existiert ein kleiner LKW an dem Datum mit dem Typ  |Nutzer versucht einen kleinen LKW mit gültigen Eingabedaten zu mieten |Die Bestellung wird aufgegeben
-|I-21 |UC520 |Es existiert kein kleiner LKW an dem Datum mit dem Typ |Nutzer versucht einen kleinen LKW mit gültigen Eingabedaten zu mieten |Dem Nutzer wird über die fehlende Verfügbarkeit informiert
+| I-16 | UC520 | --- | Nutzer versucht die LKW Übersichtsseite aufzurufen                      | Nutzer wird auf die LKW Übersichtsseite weitergeleitet
+| I-17 | UC520 | --- | Nutzer versucht die LKW Mietungsseite mit gültigem LKW Typ aufzurufen   | Nutzer wird auf die Bestellseite weitergeleitet
+| I-18 | UC520 | --- | Nutzer versucht die LKW Mietungsseite mit ungültigem LKW Typ aufzurufen | Nutzer wird auf die LKW Übersichtsseite weitergeleitet
+| I-19 | UC520 | Nutzer befindet sich auf der Mietseite des LKWs        | Nutzer versucht einen LKW mit ungültigen Eingabedaten (Name, Adresse, E-Mail, Datum) zu mieten | Dem Nutzer wird angezeigt, dass die Daten falsch sein
+| I-20 | UC520 | Es existiert ein kleiner LKW an dem Datum mit dem Typ  | Nutzer versucht einen kleinen LKW mit gültigen Eingabedaten zu mieten | Die Bestellung wird aufgegeben
+| I-21 | UC520 | Es existiert kein kleiner LKW an dem Datum mit dem Typ | Nutzer versucht einen kleinen LKW mit gültigen Eingabedaten zu mieten | Dem Nutzer wird über die fehlende Verfügbarkeit informiert
 
 //Inventory
-|I-22 |UC200 |Es existieren mehrere Artikel unterschiedlicher Kategorien im Katalog |Ein Nutzer klickt auf Katalog und wählt eine Kategorie aus |Dem Nutzer werden nur Artikel der Kategorie angezeigt
-|I-23 |UC210 |Der Nutzer befindet sich auf einer der Katalog Seiten |Der Nutzer klickt auf einen Artikel |Der Nutzer ist auf einer Detail Seite des Artikels
-|I-24 |UC220 |Der Nutzer befindet sich auf der Detail Seite eines Artikels |Der Nutzer klickt auf das Dropdown Menü und wählt eine andere Variante aus |Der Nutzer ist auf der Detail Seite des Artikels mit der ausgewählten Variante
-|I-25 |UC430 |Im ItemCatalog existiert ein Item welches Teil eines Sets ist |Ein Mitarbeiter entfernt den Lieferanten des Items |Das Item und alle Sets die das Item beinhalten verschwinden aus dem Katalog
+| I-22 | UC200 | Es existieren mehrere Artikel unterschiedlicher Kategorien im Katalog | Ein Nutzer klickt auf Katalog und wählt eine Kategorie aus | Dem Nutzer werden nur Artikel der Kategorie angezeigt
+| I-23 | UC210 | Der Nutzer befindet sich auf einer der Katalog Seiten | Der Nutzer klickt auf einen Artikel | Der Nutzer ist auf einer Detail Seite des Artikels
+| I-24 | UC220 | Der Nutzer befindet sich auf der Detail Seite eines Artikels | Der Nutzer klickt auf das Dropdown Menü und wählt eine andere Variante aus | Der Nutzer ist auf der Detail Seite des Artikels mit der ausgewählten Variante
+| I-25 | UC430 | Im ItemCatalog existiert ein Item welches Teil eines Sets ist | Ein Mitarbeiter entfernt den Lieferanten des Items | Das Item und alle Sets die das Item beinhalten verschwinden aus dem Katalog
 
 //Order
-|I-26 | UC310 | Der Nutzer hat eine Bestellung getätigt und befindet sich auf der Bestellansichtsseite der entsprechenden Bestellung | Der Nutzer ändert den Bestellstatus der Bestellung zu storniert | Der Status wird entsprechend geändert, der LKW falls nötig auch storniert und dem Nutzer wird die Stornierung bestätigt
-|I-27 | UC300 | Der Nutzer kennt eine valide Bestellnummer und befindet sich auf der checkOrder Seite | Nutzer gibt die valide Bestellnummer ein | Dem Nutzer wird die richtige Bestellung korrekt formatiert angezeigt
-|I-28 | UC120 | Der Nutzer hat einen Artikel im Warenkorb und auf Bestellen geklickt| Der Nutzer trägt alle Kontaktinformationen richtig ein und wählt einen Liefertyp | Dem Nutzer wird eine Bestellübersicht mit der Bestellnummer gegeben
+| I-26 | UC310 | Der Nutzer hat eine Bestellung getätigt und befindet sich auf der Bestellansichtsseite der entsprechenden Bestellung | Der Nutzer ändert den Bestellstatus der Bestellung zu storniert | Der Status wird entsprechend geändert, der LKW falls nötig auch storniert und dem Nutzer wird die Stornierung bestätigt
+| I-27 | UC300 | Der Nutzer kennt eine valide Bestellnummer und befindet sich auf der checkOrder Seite | Nutzer gibt die valide Bestellnummer ein | Dem Nutzer wird die richtige Bestellung korrekt formatiert angezeigt
+| I-28 | UC120 | Der Nutzer hat einen Artikel im Warenkorb und auf Bestellen geklickt| Der Nutzer trägt alle Kontaktinformationen richtig ein und wählt einen Liefertyp | Dem Nutzer wird eine Bestellübersicht mit der Bestellnummer gegeben
 
 //Supplier
-|I-29 | UC420 | Mitarbeiter ist eingeloggt und befindet sich im Admin-Bereich | Mitarbeiter versucht, die Monatsstatistik aufzurufen | Mitarbeiter landet auf der Seite der Monatsstatistik
-|I-30 | UC430 | Mitarbeiter ist eingeloggt und befindet sich im Admin-Bereich | Mitarbeiter versucht, die Lieferantenseite aufzurufen | Mitarbeiter landet auf der Lieferantenseite
-|I-31 | UC430 | Mitarbeiter ist eingeloggt und auf der Lieferantenseite | Mitarbeiter versucht, einen (nicht bereits vorhandenen) Lieferanten mit gültigen Eingabedaten hinzuzufügen | Der Lieferant wird hinzugefügt
-|I-32 | UC430 | Mitarbeiter ist eingeloggt und auf der Lieferantenseite | Mitarbeiter versucht, einen vorhandenen Lieferanten zu entfernen | Der Lieferant wird entfernt
+| I-29 | UC420 | Mitarbeiter ist eingeloggt und befindet sich im Admin-Bereich | Mitarbeiter versucht, die Monatsstatistik aufzurufen | Mitarbeiter landet auf der Seite der Monatsstatistik
+| I-30 | UC420 | Mitarbeiter ist eingeloggt und der Einkaufsbetrag eines Lieferanten beträgt 0€ | Ein Möbelstück desselben Lieferanten wird bestellt | In der Monatsstatistik wird der Preis des Möbelstücks als Einkaufsbetrag des Lieferanten angezeigt
+| I-31 | UC430 | Mitarbeiter ist eingeloggt und befindet sich im Admin-Bereich | Mitarbeiter versucht, die Lieferantenseite aufzurufen | Mitarbeiter landet auf der Lieferantenseite
+| I-32 | UC430 | Mitarbeiter ist eingeloggt und auf der Lieferantenseite | Mitarbeiter versucht, einen (nicht bereits vorhandenen) Lieferanten mit gültigen Eingabedaten hinzuzufügen | Der Lieferant wird hinzugefügt
+| I-33 | UC430 | Mitarbeiter ist eingeloggt und auf der Lieferantenseite | Mitarbeiter versucht, einen vorhandenen Lieferanten zu entfernen | Der Lieferant wird entfernt
 
 //Unittests (bei Methodenaufrufen Leerzeichen vor dem Punkt für Zeilenumbruch, sonst ist das zu lang ^^)
 
 //LKW
-|U-01 |LKWService .createCharterLKW(LocalDate, LKWType)              |Es existiert kein freier kleiner LKW für das Datum |Gültiges Datum, LKWType=SMALL |Es existiert kein freier kleiner LKW
-|U-02 |LKWService .createDeliveryLKW(LocalDate, LKWType)             |Es existiert ein freier kleiner LKW mit weniger als der maximalen Anzahl an Lieferungen pro Tag |Gültiges Datum, LKWType=SMALL |LKW welcher bereits Lieferungen hat, aber noch nicht voll benutzt war
-|U-03 |LKWService .findNextAvailableDeliveryDate(LocalDate, LKWType) |Es existiert ein kleiner LKW am Montag, aber nicht davor |Gültiges Samstag Datum, LKWType=SMALL |Montagsdatum
-|U-04 |LKWService .cancelOrder(LKW, LocalDate)                       |Es existiert ein CharterEintrag in dem LKW Kalender an dem Tag |Gültiger LKW, Gültiges Datum |Der Eintrag wird gelöscht und der LKW ist wieder verfügbar
+| U-01 | LKWService.createCharterLKW(LocalDate, LKWType)               | Es existiert kein freier kleiner LKW für das Datum | Gültiges Datum, LKWType=SMALL | Es existiert kein freier kleiner LKW
+| U-02 | LKWService.createDeliveryLKW(LocalDate, LKWType)              | Es existiert ein freier kleiner LKW mit weniger als der maximalen Anzahl an Lieferungen pro Tag | Gültiges Datum, LKWType=SMALL | LKW welcher bereits Lieferungen hat, aber noch nicht voll benutzt war
+| U-03 | LKWService .findNextAvailableDeliveryDate(LocalDate, LKWType) | Es existiert ein kleiner LKW am Montag, aber nicht davor | Gültiges Samstag Datum, LKWType=SMALL | Montagsdatum
+| U-04 | LKWService.cancelOrder(LKW, LocalDate)                        | Es existiert ein CharterEintrag in dem LKW Kalender an dem Tag | Gültiger LKW, Gültiges Datum | Der Eintrag wird gelöscht und der LKW ist wieder verfügbar
 
 //Order
-|U-05 |OrderService .findById(String id)                             | existierende Bestellung und eine bekannte Bestellnummer | Bestellungnummer | Die dazu passende Bestellung  
-//Der Nutzer sucht eine Bestellung anhand einer Bestellnummer 
-|U-06 |OrderService .findAll() |Es existieren verschiedene Bestellungen | - | alle erstellten Bestellungen 
-//Stellt sicher, dass alle Bestellungen richtig gespeichert werden
-|U-07 |OrderService .orderDeliveryItem(Cart, ContactInformation) | - | Warenkorb mit Items und Kontaktinformationen| eine Order vom Typ Delivery mit passendem Lieferdatum und einem zugeordnetem LKW 
-//Testet ob Bestellungen richtig ausgeführt werden können
+| U-05 | OrderService.findById(String)                            | Existierende Bestellung und eine bekannte Bestellnummer | Bestellungnummer | Die dazu passende Bestellung
+| U-06 | OrderService.findAll()                                   | Es existieren verschiedene Bestellungen | - | Alle erstellten Bestellungen
+| U-07 | OrderService.orderDeliveryItem(Cart, ContactInformation) | - | Warenkorb mit Items und Kontaktinformationen | Eine Order vom Typ Delivery mit passendem Lieferdatum und einem zugeordnetem LKW
 
 //Supplier
-|U-08 | SupplierService .addSupplier(Supplier) | Es existiert bereits ein gleichnamiger Lieferant | Lieferant | Gleichnamiger Lieferant bereits vorhanden
-|U-09 | SupplierService .findByName(String) | Es existiert mindestens ein Lieferant | Name eines existierenden Lieferanten | der gesuchte Lieferant
-|U-10 | SupplierService .findAll() | Es existieren mehrere Lieferanten | - | Alle vorhandenen Lieferanten
+| U-08 | SupplierService.addSupplier(Supplier) | Es existiert bereits ein gleichnamiger Lieferant | Lieferant | Gleichnamiger Lieferant bereits vorhanden
+| U-09 | SupplierService.findByName(String)    | Es existiert mindestens ein Lieferant | Name eines existierenden Lieferanten | der gesuchte Lieferant
+| U-10 | SupplierService.findAll()             | Es existieren mehrere Lieferanten | - | Alle vorhandenen Lieferanten
 
 //Inventory
-|U-11 | ItemService .findAll()                      |Es existieren mehrere Items | - | Alle Items aus dem Katalog
-|U-12 | ItemService .findById(ProductIdentifier)    |Es existieren mehrere Items | Gültige Id von Item im Katalog| Gibt nur das gesuchte Item zurück
-|U-13 | ItemService .findAllByGroupId(Item)         |Es existieren mehrere Items mit gleicher groupId und unterschiedlicher Varianten| Gültiges Item von dem mehrere Varianten im Katalog existieren | Gibt alle Items mit gleicher GroupId zurück
-|U-14 | ItemService .findAllByCategory(Category)    |Es existieren mehrere Items unterschiedlicher Kategorien| Gültige Kategorie | Gibt nur Items der gesuchten Kategorie zurück
-
+| U-11 | ItemService.findAll()                   | Es existieren mehrere Items | - | Alle Items aus dem Katalog
+| U-12 | ItemService.findById(ProductIdentifier) | Es existieren mehrere Items | Gültige Id von Item im Katalog | Gibt nur das gesuchte Item zurück
+| U-13 | ItemService.findAllByGroupId(Item)      | Es existieren mehrere Items mit gleicher groupId und unterschiedlicher Varianten | Gültiges Item von dem mehrere Varianten im Katalog existieren | Gibt alle Items mit gleicher GroupId zurück
+| U-14 | ItemService.findAllByCategory(Category) | Es existieren mehrere Items unterschiedlicher Kategorien | Gültige Kategorie | Gibt nur Items der gesuchten Kategorie zurück
 |===
