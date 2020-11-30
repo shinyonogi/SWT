@@ -174,7 +174,18 @@ image:models/design/Order.png[Klassendiagramm - Order]
 [options="header"]
 |=== 
 |Klasse/Enumeration |Description
-|...|...
+|OrderForm|Speichert den Input des Nutzers bei Abschluss einer Bestellung zur weiteren Verwendung
+|OrderStatus| Eine Enumeration die die möglichen Zustände einer Bestellung erfasst
+|KontaktInformation| Speichert die Kontaktinformationen eines Kunden
+|ItemOrderEntry| Mapt einen Bestelleintrag auf einen dazugehörigen Status
+|ItemOrder| Erweitert die Salespoint Order Klasse zur spezifischen Implementierung von Itembestellungen
+|Delivery| Erweitert ItemOrder um Bestellungen mit anschließender Lieferung zu implementieren
+|Pickup| Erweitert Itemorder um Bestellungen mit anschließender Abholung im Lager zu implementieren
+|LKWCharter| Erweitert eine Shoporder um das Mieten von LKW´s zu unterstützen
+|ShopOrder| Erweitert die Salespoint Order Klasse um die Verknüpfung zu Kontaktinformationen
+|OrderDataInitializer| Ein Spring MVC DataInitializer der einen Dummy-Nutzer erstellt, auf den alle Bestellungen registriert sind, da keine Nutzeraccounts für die Bestellungen notwending sein sollen
+|OrderController| Ein Spring MVC Controller der den Warenkorb inklusive des Routings handhabt
+|OrderService| Ein Spring MVC Service der die Logik hinter allen Bestellungen managed
 |===
 
 === Rückverfolgbarkeit zwischen Analyse- und Entwurfsmodell
