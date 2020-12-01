@@ -60,7 +60,17 @@ class LKWControllerIntegrationTests {
 	}
 
 	@Test
-	void returnsModelAndViewOnLkwCheckInvalidDate() throws Exception {
+	void redirectsToLkwOverviewCheckWithInvalidType() throws Exception {
+		mvc.perform(post("/lkw/checkout/unknown")
+				.param("check", "").param("date", String.valueOf(oldDate)))
+				.andDo(print())
+				.andExpect(status().is3xxRedirection())
+				.andExpect(redirectedUrl("/lkws"))
+				.andExpect(view().name("redirect:/lkws"));
+	}
+
+	@Test
+	void returnsModelAndViewOnLkwCheckWithInvalidDate() throws Exception {
 		mvc.perform(post("/lkw/checkout/{type}", LKWType.SMALL)
 				.param("check", "").param("date", String.valueOf(oldDate)))
 				.andDo(print())
@@ -71,7 +81,7 @@ class LKWControllerIntegrationTests {
 	}
 
 	@Test
-	void returnsModelAndViewOnLkwCheckWeekend() throws Exception {
+	void returnsModelAndViewOnLkwCheckWithWeekend() throws Exception {
 		mvc.perform(post("/lkw/checkout/{type}", LKWType.SMALL)
 				.param("check", "").param("date", String.valueOf(weekendDate)))
 				.andDo(print())
@@ -82,7 +92,7 @@ class LKWControllerIntegrationTests {
 	}
 
 	@Test
-	void returnsModelAndViewOnLkwCheckValid() throws Exception {
+	void returnsModelAndViewOnLkwCheckWithValidData() throws Exception {
 		mvc.perform(post("/lkw/checkout/{type}", LKWType.SMALL)
 				.param("check", "").param("date", String.valueOf(validDate)))
 				.andDo(print())
@@ -93,7 +103,17 @@ class LKWControllerIntegrationTests {
 	}
 
 	@Test
-	void returnsModelAndViewOnLkwCheckoutValidData() throws Exception {
+	void redirectsToLkwOverviewCheckoutWithInvalidType() throws Exception {
+		mvc.perform(post("/lkw/checkout/unknown")
+				.param("buy", "").param("date", String.valueOf(oldDate)))
+				.andDo(print())
+				.andExpect(status().is3xxRedirection())
+				.andExpect(redirectedUrl("/lkws"))
+				.andExpect(view().name("redirect:/lkws"));
+	}
+
+	@Test
+	void returnsModelAndViewOnLkwCheckoutWithValidData() throws Exception {
 		mvc.perform(post("/lkw/checkout/{type}", LKWType.SMALL)
 				.param("buy", "").param("name", "name")
 				.param("address", "address").param("email", "email@email.de")
@@ -105,7 +125,7 @@ class LKWControllerIntegrationTests {
 	}
 
 	@Test
-	void returnsModelAndViewOnLkwCheckoutInvalidName() throws Exception {
+	void returnsModelAndViewOnLkwCheckoutWithInvalidName() throws Exception {
 		mvc.perform(post("/lkw/checkout/{type}", LKWType.SMALL)
 				.param("buy", "").param("name", "")
 				.param("address", "address").param("email", "email@email.de")
@@ -118,7 +138,7 @@ class LKWControllerIntegrationTests {
 	}
 
 	@Test
-	void returnsModelAndViewOnLkwCheckoutInvalidAddress() throws Exception {
+	void returnsModelAndViewOnLkwCheckoutWithInvalidAddress() throws Exception {
 		mvc.perform(post("/lkw/checkout/{type}", LKWType.SMALL)
 				.param("buy", "").param("name", "name")
 				.param("address", "").param("email", "email@email.de")
@@ -131,7 +151,7 @@ class LKWControllerIntegrationTests {
 	}
 
 	@Test
-	void returnsModelAndViewOnLkwCheckoutInvalidEmail() throws Exception {
+	void returnsModelAndViewOnLkwCheckoutWithInvalidEmail() throws Exception {
 		mvc.perform(post("/lkw/checkout/{type}", LKWType.SMALL)
 				.param("buy", "").param("name", "name")
 				.param("address", "address").param("email", "email")
@@ -144,7 +164,7 @@ class LKWControllerIntegrationTests {
 	}
 
 	@Test
-	void returnsModelAndViewOnLkwCheckoutInvalidDate() throws Exception {
+	void returnsModelAndViewOnLkwCheckoutWithInvalidDate() throws Exception {
 		mvc.perform(post("/lkw/checkout/{type}", LKWType.SMALL)
 				.param("buy", "").param("name", "name")
 				.param("address", "address").param("email", "email@email.de")
@@ -157,7 +177,7 @@ class LKWControllerIntegrationTests {
 	}
 
 	@Test
-	void returnsModelAndViewOnLkwCheckoutWeekend() throws Exception {
+	void returnsModelAndViewOnLkwCheckoutWithWeekend() throws Exception {
 		mvc.perform(post("/lkw/checkout/{type}", LKWType.SMALL)
 				.param("buy", "").param("name", "name")
 				.param("address", "address").param("email", "email@email.de")

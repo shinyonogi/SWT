@@ -1,7 +1,6 @@
 package furnitureshop.lkw;
 
 import org.salespointframework.catalog.Product;
-import org.salespointframework.core.Currencies;
 import org.springframework.util.Assert;
 
 import javax.persistence.*;
@@ -19,7 +18,7 @@ public class LKW extends Product {
 	protected LKW() {}
 
 	public LKW(LKWType type) {
-		super("lkw", Currencies.ZERO_EURO);
+		super("lkw", type.getCharterPrice());
 
 		Assert.notNull(type, "Type must not be null!");
 
