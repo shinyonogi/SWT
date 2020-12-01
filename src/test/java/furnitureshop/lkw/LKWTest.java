@@ -26,7 +26,7 @@ public class LKWTest {
 		try {
 			new LKW(null);
 			fail("LKW.LKW() should throw an IllegalArgumentException if the type argument is invalid!");
-		} catch (IllegalArgumentException ignored) {
+		} catch (NullPointerException | IllegalArgumentException ignored) {
 			// IllegalArgumentException correctly thrown
 		}
 	}

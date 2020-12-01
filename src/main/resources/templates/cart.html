@@ -36,49 +36,47 @@
 		</div>
 	</div>
 
-	<div class="container mt-3">
-		<div th:unless="${cart.empty}">
-			<table class="table bg-light pb-5">
-				<!--
-				<thead class="thead-dark">
-					<tr>
-						<th scope="col" class="text-black">Product</th>
-						<th scope="col" class="text-black"></th>
-						<th scope="col" class="text-black">Price</th>
-						<th scope="col" class="text-black">Quantity</th>
-						<th scope="col" class="text-black"></th>
-					</tr>
-				</thead>
-				-->
-					<tr class="mt-3 mb-3" th:each="cartItem : ${cart}">
-						<td class="align-middle">
-							<img th:src="@{${cartItem.getProduct().getPicture()}}" class="img-fluid rounded" style="width: 300px">
-						</td>
-						<td class="align-middle" style="width: 50%">
-							<h3 th:text="${cartItem.getProductName()}">Sofa</h3>
-						</td>
-						<td class="align-middle">
-							<h5 th:text="${cartItem.getPrice()}">999,99€</h5>
-						</td>
-						<td class="align-middle">
-							<form class="form-inline" th:method="post" th:action="@{/cart/change/{id}(id=${cartItem.getId()})}">
-								<input name="amount" type="number" class="form-control" min="0" max="99" th:value="${cartItem.getQuantity()}" style="width: 60px">
-								<button type="submit" class="btn">&#10004;</button>
-							</form>
-						</td>
-						<td class="align-middle">
-							<form class="form-inline" th:method="post" th:action="@{/cart/delete/{id}(id=${cartItem.getId()})}">
-								<button type="submit" class="btn">&#10060;</button>
-							</form>
-						</td>
-					</tr>
-			</table>
-			<div class="float-right mt-3 mb-3">
-				<h2 th:text="#{cart.price} + ' ' + ${cart.getPrice()}"></h2>
-				<div>
-				<a th:href="@{/catalog}"  class="btn btn-dark btn-lg rounded-pill mt-3 mr-3" role="button" th:text="#{cart.continue}">Continue Shopping</a>
-				<a th:href="@{/checkout}" class="btn btn-primary btn-lg rounded-pill mt-3" role="button" th:text="#{cart.checkout}">Bestellen</a>
-				</div>
+	<div class="container mt-3" th:unless="${cart.empty}">
+		<table class="table bg-light pb-5">
+			<!--
+			<thead class="thead-dark">
+				<tr>
+					<th scope="col" class="text-black">Product</th>
+					<th scope="col" class="text-black"></th>
+					<th scope="col" class="text-black">Price</th>
+					<th scope="col" class="text-black">Quantity</th>
+					<th scope="col" class="text-black"></th>
+				</tr>
+			</thead>
+			-->
+				<tr class="mt-3 mb-3" th:each="cartItem : ${cart}">
+					<td class="align-middle">
+						<img th:src="@{${cartItem.getProduct().getPicture()}}" class="img-fluid rounded" style="width: 300px">
+					</td>
+					<td class="align-middle" style="width: 50%">
+						<h3 th:text="${cartItem.getProductName()}">Sofa</h3>
+					</td>
+					<td class="align-middle">
+						<h5 th:text="${cartItem.getPrice()}">999,99€</h5>
+					</td>
+					<td class="align-middle">
+						<form class="form-inline" th:method="post" th:action="@{/cart/change/{id}(id=${cartItem.getId()})}">
+							<input name="amount" type="number" class="form-control" min="0" max="99" th:value="${cartItem.getQuantity()}" style="width: 60px">
+							<button type="submit" class="btn">&#10004;</button>
+						</form>
+					</td>
+					<td class="align-middle">
+						<form class="form-inline" th:method="post" th:action="@{/cart/delete/{id}(id=${cartItem.getId()})}">
+							<button type="submit" class="btn">&#10060;</button>
+						</form>
+					</td>
+				</tr>
+		</table>
+		<div class="float-right mt-3 mb-3">
+			<h2 th:text="#{cart.price} + ' ' + ${cart.getPrice()}"></h2>
+			<div>
+			<a th:href="@{/catalog}"  class="btn btn-dark btn-lg rounded-pill mt-3 mr-3" role="button" th:text="#{cart.continue}">Continue Shopping</a>
+			<a th:href="@{/checkout}" class="btn btn-primary btn-lg rounded-pill mt-3" role="button" th:text="#{cart.checkout}">Bestellen</a>
 			</div>
 		</div>
 	</div>

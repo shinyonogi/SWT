@@ -1,5 +1,6 @@
 package furnitureshop.lkw;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -8,11 +9,16 @@ import java.util.Optional;
 
 public class CalendarTests {
 
-	Calendar calendar = new Calendar();
-	LocalDate friday = LocalDate.of(2021, 4, 2);
-	LocalDate wednesday = LocalDate.of(2021, 4, 7);
-	LocalDate thursday = LocalDate.of(2021, 4, 8);
+	Calendar calendar;
+	LocalDate friday, wednesday, thursday;
 
+	@BeforeEach
+	void setUp() {
+		calendar = new Calendar();
+		friday = LocalDate.of(2021, 4, 2);
+		wednesday = LocalDate.of(2021, 4, 7);
+		thursday = LocalDate.of(2021, 4, 8);
+	}
 
 	@Test // U-05 U-06
 	public void addEntryIfEntryAlreadyExists() {
