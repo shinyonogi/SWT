@@ -42,7 +42,7 @@ public class ItemController {
 	String getItemDetails(Model model, @PathVariable("category") Category category, @PathVariable("itemId") Optional<Item> item) {
 		if (item.isPresent()) {
 			model.addAttribute("item", item.get());
-			model.addAttribute("variants", itemService.findAllByGroupId(item));
+			model.addAttribute("variants", itemService.findAllByGroupId(item.get().getGroupid()));
 			return "itemView";
 		}
 

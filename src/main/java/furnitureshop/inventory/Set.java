@@ -1,18 +1,18 @@
 package furnitureshop.inventory;
 
 import furnitureshop.supplier.Supplier;
+import org.hibernate.engine.internal.Cascade;
 import org.springframework.util.Assert;
 
 import javax.money.MonetaryAmount;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 import java.util.List;
 
 @Entity
 public class Set extends Item {
 
-	@OneToMany(fetch = FetchType.EAGER)
+	@ManyToMany
 	private List<Item> items;
 
 	protected Set() {}
@@ -30,4 +30,7 @@ public class Set extends Item {
 		return items.stream().mapToInt(Item::getWeight).sum();
 	}
 
+	public List<Item> getItems() {
+		return items;
+	}
 }

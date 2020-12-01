@@ -1,5 +1,9 @@
 package furnitureshop.supplier;
 
+import furnitureshop.inventory.Item;
+import furnitureshop.inventory.ItemService;
+import furnitureshop.inventory.Set;
+import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -11,11 +15,14 @@ import java.util.Optional;
 public class SupplierService {
 
 	private final SupplierRepository supplierRepository;
+	private final ItemService itemService;
 
-	SupplierService(SupplierRepository supplierRepository) {
+	SupplierService(SupplierRepository supplierRepository, ItemService itemService) {
 		Assert.notNull(supplierRepository, "SupplierRepository must not be null!");
+		Assert.notNull(itemService, "ItemService must not be null!");
 
 		this.supplierRepository = supplierRepository;
+		this.itemService = itemService;
 	}
 
 	public void addSupplier(Supplier supplier) {
@@ -24,14 +31,16 @@ public class SupplierService {
 		supplierRepository.save(supplier);
 	}
 
-	public void deleteSupplier(Supplier supplier) {
-		Assert.notNull(supplier, "Supplier must not be null!");
-
-		supplierRepository.delete(supplier);
-	}
-
-	public void deleteSupplierById(long supplierId) {
-		supplierRepository.deleteById(supplierId);
+	public boolean deleteSupplierById(long supplierId) {
+		Optional<Supplier> supplier = supplierRepository.findById(supplierId);
+		return supplier.map(supp -> {
+			Streamable<Item> items = itemService.findBySupplier(supp);
+			for (Item it : items){
+				itemService.removeItem(it);
+			}
+			supplierRepository.delete(supp);
+			return true;
+		}).orElse(false);
 	}
 
 	public Optional<Supplier> findByName(String name) {

@@ -50,10 +50,9 @@ public class SupplierController {
 		return "redirect:/suppliers";
 	}
 
-	@GetMapping("/deleteSupplier/{id}")
-	String deleteSupplier(@PathVariable long id) {
+	@PostMapping("/deleteSupplier/{id}")
+	String deleteSupplier(@PathVariable("id") long id){
 		supplierService.deleteSupplierById(id);
-
 		return "redirect:/suppliers";
 	}
 

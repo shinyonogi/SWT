@@ -21,7 +21,7 @@ public abstract class Item extends Product {
 	private String variant;
 	private String description;
 
-	@OneToOne(cascade = CascadeType.ALL)
+	@ManyToOne
 	private Supplier supplier;
 
 	@Enumerated(EnumType.ORDINAL)

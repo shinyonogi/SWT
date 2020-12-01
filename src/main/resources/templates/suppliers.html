@@ -28,7 +28,7 @@
 				<td th:text="${supplier.name}"></td>
 				<td th:text="${supplier.getSurchargeInPercent()} + '%'"></td>
 				<td>
-					<form th:action="@{/deleteSupplier/{id}(id=${supplier.id})}">
+					<form th:method="post" th:action="@{/deleteSupplier/{id}(id=${supplier.id})}">
 						<button type="submit" class="btn btn-secondary">Lieferant entfernen</button>
 					</form>
 				</td>

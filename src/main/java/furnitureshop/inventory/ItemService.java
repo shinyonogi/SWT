@@ -7,7 +7,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 @Service
 @Transactional
@@ -29,13 +32,14 @@ public class ItemService {
 
 	public void addItem(Item item) {
 		Assert.notNull(item, "Item must not be null!");
-
 		itemCatalog.save(item);
 	}
 
 	public void removeItem(Item item) {
 		Assert.notNull(item, "Item must not be null!");
-
+		for (Item it : findAllSetsByItem(item)){
+			removeItem(it);
+		}
 		itemCatalog.delete(item);
 	}
 
@@ -55,8 +59,21 @@ public class ItemService {
 		return itemCatalog.findAll().filter(it -> it.getCategory() == category);
 	}
 
-	public Streamable<Item> findAllByGroupId(Optional<Item> item){
-		return itemCatalog.findAll().filter(it -> it.getGroupid() == item.get().getGroupid());
+	public List<Set> findAllSetsByItem(Item item) {
+		List<Set> sets = new ArrayList<>();
+		for (Item it : findAll()){
+			if (it instanceof Set){
+				Set set = (Set) it;
+				if (set.getItems().contains(item)) {
+					sets.add(set);
+				}
+			}
+		}
+		return sets;
+	}
+
+	public Streamable<Item> findAllByGroupId(int groupId){
+		return itemCatalog.findAll().filter(it -> it.getGroupid() == groupId);
 	}
 
 }

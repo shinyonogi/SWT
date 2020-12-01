@@ -9,6 +9,7 @@ import org.salespointframework.core.DataInitializer;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 @Order(20)
@@ -32,10 +33,13 @@ public class ItemDataInitializer implements DataInitializer {
 			return;
 		}
 
-		final Supplier supplier = supplierRepository.findAll().iterator().next();
+		Iterator<Supplier> iterator = supplierRepository.findAll().iterator();
+		Supplier supplier = iterator.next();
 
 		Piece Stuhl1 = new Piece(1, "Stuhl 1", Money.of(59.99, Currencies.EURO), "/resources/img/chair_2.jpg", "schwarz",
 				"Stuhl 1 in schwarz.", supplier, 5, Category.CHAIR);
+
+		supplier = iterator.next();
 
 		Piece Sofa1_green = new Piece(2, "Sofa 1", Money.of(259.99, Currencies.EURO), "/resources/img/sofa_2_green.jpg", "grün",
 				"Sofa 1 in grün.", supplier, 50, Category.COUCH);
@@ -49,6 +53,8 @@ public class ItemDataInitializer implements DataInitializer {
 		Piece Sofa1_grey = new Piece(2, "Sofa 1", Money.of(259.99, Currencies.EURO), "/resources/img/sofa_2_grey.jpg", "grau",
 				"Sofa 1 in grau.", supplier, 80, Category.COUCH);
 
+		supplier = iterator.next();
+
 		Piece Tisch1 = new Piece(3, "Tisch 1", Money.of(89.99, Currencies.EURO), "/resources/img/table_2.jpg", "weiß",
 				"Tisch 1 in weiß.", supplier, 30, Category.TABLE);
 
@@ -56,8 +62,11 @@ public class ItemDataInitializer implements DataInitializer {
 		Set1_items.add(Stuhl1);
 		Set1_items.add(Sofa1_grey);
 
+		Supplier setSupplier = new Supplier("Set Supplier", 0.05);
+		supplierRepository.save(setSupplier);
+
 		Set Set1 = new Set(4, "Set 1", Money.of(299.99, Currencies.EURO), "/resources/img/set_1.jpg", "black",
-				"Set bestehend aus Sofa 1 und Stuhl 1.", supplier, Category.SET, Set1_items);
+				"Set bestehend aus Sofa 1 und Stuhl 1.", setSupplier, Category.SET, Set1_items);
 
 		itemCatalog.save(Stuhl1);
 		itemCatalog.save(Sofa1_green);
