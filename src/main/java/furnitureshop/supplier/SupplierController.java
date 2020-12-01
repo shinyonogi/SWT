@@ -21,7 +21,7 @@ public class SupplierController {
 		this.supplierService = supplierService;
 	}
 
-	@GetMapping("/suppliers")
+	@GetMapping("/admin/suppliers")
 	String getSupplierList(Model model) {
 		model.addAttribute("suppliers", supplierService.findAll());
 		model.addAttribute("supplierForm", new SupplierForm("", 5));
@@ -30,7 +30,7 @@ public class SupplierController {
 		return "suppliers";
 	}
 
-	@PostMapping("/suppliers")
+	@PostMapping("/admin/suppliers")
 	String addSupplier(@ModelAttribute("supplierForm") SupplierForm form, Model model) {
 		// checks if a supplier with the same name is already in the repository
 		final Optional<Supplier> suppliers = supplierService.findByName(form.getName());
@@ -47,16 +47,16 @@ public class SupplierController {
 		// adds the created supplier to the repository while converting the surcharge value from percent to decimal
 		supplierService.addSupplier(new Supplier(form.getName(), form.getSurcharge() / 100));
 
-		return "redirect:/suppliers";
+		return "redirect:/admin/suppliers";
 	}
 
-	@PostMapping("/deleteSupplier/{id}")
+	@PostMapping("/admin/supplier/delete/{id}")
 	String deleteSupplier(@PathVariable("id") long id){
 		supplierService.deleteSupplierById(id);
-		return "redirect:/suppliers";
+		return "redirect:/admin/suppliers";
 	}
 
-	@GetMapping("/statistic")
+	@GetMapping("/admin/statistic")
 	String getMonthlyStatistic() {
 		return "monthlyStatistic";
 	}

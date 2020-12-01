@@ -169,7 +169,7 @@ class OrderController {
 		return "orderOverview";
 	}
 
-	@GetMapping("/customerOrders")
+	@GetMapping("/admin/orders")
 	String getCustomerOrders(Model model) {
 		model.addAttribute("orders", orderService.findAll());
 		return "customerOrders";
