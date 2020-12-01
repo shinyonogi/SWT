@@ -64,7 +64,7 @@ public class LKWServiceTest {
 		assertEquals(validDate, available, "LKWService.findNextAvailableDeliveryDate() should find the correct date!");
 
 		available = lkwService.findNextAvailableDeliveryDate(validDate, LKWType.SMALL);
-		assertEquals(available, validDate, "LKWService.findNextAvailableDeliveryDate() should find the correct date!");
+		assertEquals(validDate, available, "LKWService.findNextAvailableDeliveryDate() should find the correct date!");
 	}
 
 	@Test

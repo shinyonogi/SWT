@@ -10,7 +10,6 @@ import org.springframework.util.Assert;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 @Service
 @Transactional
@@ -22,12 +21,6 @@ public class ItemService {
 		Assert.notNull(itemCatalog, "ItemCatalog must not be null!");
 
 		this.itemCatalog = itemCatalog;
-	}
-
-	public Optional<Item> findById(ProductIdentifier id) {
-		Assert.notNull(id, "Id must not be null!");
-
-		return itemCatalog.findById(id);
 	}
 
 	public void addItem(Item item) {
@@ -43,20 +36,30 @@ public class ItemService {
 		itemCatalog.delete(item);
 	}
 
+	public Streamable<Item> findAll() {
+		return itemCatalog.findAll();
+	}
+
 	public Streamable<Item> findBySupplier(Supplier supplier) {
 		Assert.notNull(supplier, "Supplier must not be null!");
 
 		return itemCatalog.findAll().filter(it -> it.getSupplier() == supplier);
 	}
 
-	public Streamable<Item> findAll() {
-		return itemCatalog.findAll();
+	public Optional<Item> findById(ProductIdentifier id) {
+		Assert.notNull(id, "Id must not be null!");
+
+		return itemCatalog.findById(id);
 	}
 
 	public Streamable<Item> findAllByCategory(Category category) {
 		Assert.notNull(category, "Category must not be null!");
 
 		return itemCatalog.findAll().filter(it -> it.getCategory() == category);
+	}
+
+	public Streamable<Item> findAllByGroupId(int groupId){
+		return itemCatalog.findAll().filter(it -> it.getGroupid() == groupId);
 	}
 
 	public List<Set> findAllSetsByItem(Item item) {
@@ -70,10 +73,6 @@ public class ItemService {
 			}
 		}
 		return sets;
-	}
-
-	public Streamable<Item> findAllByGroupId(int groupId){
-		return itemCatalog.findAll().filter(it -> it.getGroupid() == groupId);
 	}
 
 }

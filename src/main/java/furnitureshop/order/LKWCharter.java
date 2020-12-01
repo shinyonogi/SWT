@@ -5,13 +5,13 @@ import org.salespointframework.useraccount.UserAccount;
 import org.springframework.util.Assert;
 
 import javax.persistence.Entity;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import java.time.LocalDate;
 
 @Entity
 public class LKWCharter extends ShopOrder {
 
-	@OneToOne
+	@ManyToOne
 	private LKW lkw;
 
 	private LocalDate rentDate;
