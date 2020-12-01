@@ -40,12 +40,12 @@ public class LKWTest {
 
 	@Test
 	void testLkwIsProduct() {
-		assertTrue(Product.class.isAssignableFrom(LKW.class), "LKW must extend Product!");
+		assertTrue(Product.class.isAssignableFrom(LKW.class), "LKW must extends Product!");
 	}
 
 	@Test
 	void testLkwIsEntity() {
-		assertTrue(LKW.class.isAnnotationPresent(Entity.class), "LKW must habe @Entity!");
+		assertTrue(LKW.class.isAnnotationPresent(Entity.class), "LKW must have @Entity!");
 	}
 
 }
