@@ -18,21 +18,21 @@ public class AdminController {
 	/**
 	 * Creates a new {@link AdminController}
 	 */
-	public AdminController() {}
+	public AdminController() {
+		// Do nothing because AdminController has no dependencies regarding other services.
+	}
 
 	/**
 	 * Gets the login view except when user is already authenticated
 	 * then it redirects to {@code getAdminInterface()}
 	 *
-	 * @param authentication
+	 * @param authentication provides the current authentication context
 	 * @return login view or redirect to admin overview when logged in
 	 */
 	@GetMapping("/login")
 	String getLogin(Authentication authentication) {
-		if(authentication != null) {
-			if (authentication.isAuthenticated()) {
-				return "redirect:/admin/overview";
-			}
+		if(authentication != null && authentication.isAuthenticated()) {
+			return "redirect:/admin/overview";
 		}
 		return "login";
 	}
