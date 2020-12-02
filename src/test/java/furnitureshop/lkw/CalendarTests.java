@@ -3,6 +3,8 @@ package furnitureshop.lkw;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import javax.persistence.Entity;
+
 import static org.junit.jupiter.api.Assertions.*;
 import java.time.LocalDate;
 import java.util.Optional;
@@ -19,6 +21,12 @@ public class CalendarTests {
 		wednesday = LocalDate.of(2021, 4, 7);
 		thursday = LocalDate.of(2021, 4, 8);
 	}
+
+	@Test
+	void calendarIsEntity() {
+		assertTrue(Calendar.class.isAnnotationPresent(Entity.class), "Calendar must have @Entity!");
+	}
+
 
 	@Test // U-05 U-06
 	public void addEntryIfEntryAlreadyExists() {

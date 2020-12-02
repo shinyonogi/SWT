@@ -23,18 +23,15 @@ public class LKWTests {
 
 	@Test
 	void testConstructorWithInvalidType() {
-		try {
-			new LKW(null);
-			fail("LKW.LKW() should throw an IllegalArgumentException if the type argument is invalid!");
-		} catch (NullPointerException | IllegalArgumentException ignored) {
-			// IllegalArgumentException correctly thrown
-		}
+		assertThrows(NullPointerException.class, () -> new LKW(null),
+				"LKW.LKW() should throw an NullPointerException if the type argument is invalid!"
+		);
 	}
 
 	@Test
 	void testCorrectType() {
 		for (int i = 0; i < LKWType.values().length; i++) {
-			assertSame(lkws[i].getType(), LKWType.values()[i], "LKW.getType() should return the correct type!");
+			assertSame(LKWType.values()[i], lkws[i].getType(), "LKW.getType() should return the correct type!");
 		}
 	}
 

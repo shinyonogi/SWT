@@ -23,11 +23,13 @@ public class LKWServiceTests {
 	LKWService lkwService;
 
 	LocalDate weekendDate, validDate;
+	LKWType type;
 
 	@BeforeEach
 	void setUp() {
 		weekendDate = LocalDate.of(2023, 3, 19);
 		validDate = LocalDate.of(2023, 3, 20);
+		type = LKWType.SMALL;
 
 		lkwCatalog.deleteAll();
 		for (LKWType type : LKWType.values()) {
@@ -51,79 +53,61 @@ public class LKWServiceTests {
 
 	@Test
 	void testFindNextAvailableDeliveryDate() {
-		try {
-			lkwService.findNextAvailableDeliveryDate(null, LKWType.SMALL);
-			fail("LKWService.findNextAvailableDeliveryDate() should throw an IllegalArgumentException if the date argument is invalid!");
-		} catch (IllegalArgumentException ignored) {
-			// IllegalArgumentException correctly thrown
-		}
+		assertThrows(IllegalArgumentException.class, () -> lkwService.findNextAvailableDeliveryDate(null, type),
+				"LKWService.findNextAvailableDeliveryDate() should throw an IllegalArgumentException if the date argument is invalid!"
+		);
 
-		try {
-			lkwService.findNextAvailableDeliveryDate(validDate, null);
-			fail("LKWService.findNextAvailableDeliveryDate() should throw an IllegalArgumentException if the type argument is invalid!");
-		} catch (IllegalArgumentException ignored) {
-			// IllegalArgumentException correctly thrown
-		}
+		assertThrows(IllegalArgumentException.class, () -> lkwService.findNextAvailableDeliveryDate(validDate, null),
+				"LKWService.findNextAvailableDeliveryDate() should throw an IllegalArgumentException if the type argument is invalid!"
+		);
 
-		LocalDate available = lkwService.findNextAvailableDeliveryDate(weekendDate, LKWType.SMALL);
-		assertEquals(available, validDate, "LKWService.findNextAvailableDeliveryDate() should find the correct date!");
+		LocalDate available = lkwService.findNextAvailableDeliveryDate(weekendDate, type);
+		assertEquals(validDate, available, "LKWService.findNextAvailableDeliveryDate() should find the correct date!");
 
-		available = lkwService.findNextAvailableDeliveryDate(validDate, LKWType.SMALL);
-		assertEquals(available, validDate, "LKWService.findNextAvailableDeliveryDate() should find the correct date!");
+		available = lkwService.findNextAvailableDeliveryDate(validDate, type);
+		assertEquals(validDate, available, "LKWService.findNextAvailableDeliveryDate() should find the correct date!");
 	}
 
 	@Test
 	void testIsDeliveryAvailable() {
-		try {
-			lkwService.isDeliveryAvailable(null, LKWType.SMALL);
-			fail("LKWService.isDeliveryAvailable() should throw an IllegalArgumentException if the date argument is invalid!");
-		} catch (IllegalArgumentException ignored) {
-			// IllegalArgumentException correctly thrown
-		}
+		assertThrows(IllegalArgumentException.class, () -> lkwService.isDeliveryAvailable(null, type),
+				"LKWService.isDeliveryAvailable() should throw an IllegalArgumentException if the date argument is invalid!"
+		);
 
-		try {
-			lkwService.isDeliveryAvailable(validDate, null);
-			fail("LKWService.isDeliveryAvailable() should throw an IllegalArgumentException if the type argument is invalid!");
-		} catch (IllegalArgumentException ignored) {
-			// IllegalArgumentException correctly thrown
-		}
+		assertThrows(IllegalArgumentException.class, () -> lkwService.isDeliveryAvailable(validDate, null),
+				"LKWService.isDeliveryAvailable() should throw an IllegalArgumentException if the type argument is invalid!"
+		);
 
-		assertFalse(lkwService.isDeliveryAvailable(weekendDate, LKWType.SMALL), "LKW must not be available!");
-		assertTrue(lkwService.isDeliveryAvailable(validDate, LKWType.SMALL), "LKW must be available!");
+		assertFalse(lkwService.isDeliveryAvailable(weekendDate, type), "LKW must not be available!");
+		assertTrue(lkwService.isDeliveryAvailable(validDate, type), "LKW must be available!");
 
-		lkwService.createCharterLKW(validDate, LKWType.SMALL);
-		assertTrue(lkwService.isDeliveryAvailable(validDate, LKWType.SMALL), "LKW must be available!");
+		lkwService.createCharterLKW(validDate, type);
+		assertTrue(lkwService.isDeliveryAvailable(validDate, type), "LKW must be available!");
 
 		for (int i = 0; i < DeliveryEntry.MAX_DELIVERY; i++) {
-			lkwService.createDeliveryLKW(validDate, LKWType.SMALL);
+			lkwService.createDeliveryLKW(validDate, type);
 		}
 
-		assertFalse(lkwService.isDeliveryAvailable(validDate, LKWType.SMALL), "LKW must not be available!");
+		assertFalse(lkwService.isDeliveryAvailable(validDate, type), "LKW must not be available!");
 	}
 
 	@Test
 	void testCreateDeliveryLKW() {
-		try {
-			lkwService.createDeliveryLKW(null, LKWType.SMALL);
-			fail("LKWService.createDeliveryLKW() should throw an IllegalArgumentException if the date argument is invalid!");
-		} catch (IllegalArgumentException ignored) {
-			// IllegalArgumentException correctly thrown
-		}
+		assertThrows(IllegalArgumentException.class, () -> lkwService.createDeliveryLKW(null, type),
+				"LKWService.createDeliveryLKW() should throw an IllegalArgumentException if the date argument is invalid!"
+		);
 
-		try {
-			lkwService.createDeliveryLKW(validDate, null);
-			fail("LKWService.createDeliveryLKW() should throw an IllegalArgumentException if the type argument is invalid!");
-		} catch (IllegalArgumentException ignored) {
-			// IllegalArgumentException correctly thrown
-		}
+		assertThrows(IllegalArgumentException.class, () -> lkwService.createDeliveryLKW(validDate, null),
+				"LKWService.createDeliveryLKW() should throw an IllegalArgumentException if the type argument is invalid!"
+		);
 
-		assertTrue(lkwService.createDeliveryLKW(weekendDate, LKWType.SMALL).isEmpty(), "LKW must not be available!");
+		assertTrue(lkwService.createDeliveryLKW(weekendDate, type).isEmpty(), "LKW must not be available!");
 
-		final Optional<LKW> lkw = lkwService.createDeliveryLKW(validDate, LKWType.SMALL);
+		final Optional<LKW> lkw = lkwService.createDeliveryLKW(validDate, type);
 		assertTrue(lkw.isPresent(), "LKW must be available");
 
 		for (int i = 1; i < 4; i++) {
-			final Optional<LKW> other = lkwService.createDeliveryLKW(validDate, LKWType.SMALL);
+			final Optional<LKW> other = lkwService.createDeliveryLKW(validDate, type);
 			assertTrue(other.isPresent(), "LKW must be available");
 			assertEquals(lkw.get(), other.get(), "LKWs must be the same");
 
@@ -131,112 +115,95 @@ public class LKWServiceTests {
 			assertEquals(i + 1, entry.getQuantity(), "Quantity must be valid");
 		}
 
-		final Optional<LKW> charter = lkwService.createCharterLKW(validDate, LKWType.SMALL);
+		final Optional<LKW> charter = lkwService.createCharterLKW(validDate, type);
 		assertTrue(charter.isPresent(), "LKW must be available");
 
-		Optional<LKW> other = lkwService.createDeliveryLKW(validDate, LKWType.SMALL);
+		Optional<LKW> other = lkwService.createDeliveryLKW(validDate, type);
 		assertTrue(other.isEmpty(), "LKW must not be available");
 
 		lkwService.cancelOrder(charter.get(), validDate);
 
 		for (int i = 0; i < DeliveryEntry.MAX_DELIVERY; i++) {
-			other = lkwService.createDeliveryLKW(validDate, LKWType.SMALL);
+			other = lkwService.createDeliveryLKW(validDate, type);
 			assertTrue(other.isPresent(), "LKW must be available");
 			assertNotEquals(lkw.get(), other.get(), "LKWs must not be the same");
 		}
 
-		other = lkwService.createDeliveryLKW(validDate, LKWType.SMALL);
+		other = lkwService.createDeliveryLKW(validDate, type);
 		assertTrue(other.isEmpty(), "LKW must not be available");
 	}
 
 	@Test
 	void testIsCharterAvailable() {
-		try {
-			lkwService.isCharterAvailable(null, LKWType.SMALL);
-			fail("LKWService.isCharterAvailable() should throw an IllegalArgumentException if the date argument is invalid!");
-		} catch (IllegalArgumentException ignored) {
-			// IllegalArgumentException correctly thrown
-		}
+		assertThrows(IllegalArgumentException.class, () -> lkwService.isCharterAvailable(null, type),
+				"LKWService.isCharterAvailable() should throw an IllegalArgumentException if the date argument is invalid!"
+		);
 
-		try {
-			lkwService.isCharterAvailable(validDate, null);
-			fail("LKWService.isCharterAvailable() should throw an IllegalArgumentException if the type argument is invalid!");
-		} catch (IllegalArgumentException ignored) {
-			// IllegalArgumentException correctly thrown
-		}
+		assertThrows(IllegalArgumentException.class, () -> lkwService.isCharterAvailable(validDate, null),
+				"LKWService.isCharterAvailable() should throw an IllegalArgumentException if the type argument is invalid!"
+		);
 
-		assertFalse(lkwService.isCharterAvailable(weekendDate, LKWType.SMALL), "LKW must not be available!");
-		assertTrue(lkwService.isCharterAvailable(validDate, LKWType.SMALL), "LKW must be available!");
+		assertFalse(lkwService.isCharterAvailable(weekendDate, type), "LKW must not be available!");
 
-		lkwService.createCharterLKW(validDate, LKWType.SMALL);
-		assertTrue(lkwService.isCharterAvailable(validDate, LKWType.SMALL), "LKW must be available!");
+		assertTrue(lkwService.isCharterAvailable(validDate, type), "LKW must be available!");
 
-		final Optional<LKW> lkw = lkwService.createCharterLKW(validDate, LKWType.SMALL);
+		lkwService.createCharterLKW(validDate, type);
+		assertTrue(lkwService.isCharterAvailable(validDate, type), "LKW must be available!");
+
+		final Optional<LKW> lkw = lkwService.createCharterLKW(validDate, type);
 		assertTrue(lkw.isPresent(), "LKW must be available");
-		assertFalse(lkwService.isCharterAvailable(validDate, LKWType.SMALL), "LKW must not be available!");
+		assertFalse(lkwService.isCharterAvailable(validDate, type), "LKW must not be available!");
 
 		lkwService.cancelOrder(lkw.get(), validDate);
-		assertTrue(lkwService.isCharterAvailable(validDate, LKWType.SMALL), "LKW must be available!");
+		assertTrue(lkwService.isCharterAvailable(validDate, type), "LKW must be available!");
 
-		lkwService.createDeliveryLKW(validDate, LKWType.SMALL);
-		assertFalse(lkwService.isCharterAvailable(validDate, LKWType.SMALL), "LKW must not be available!");
+		lkwService.createDeliveryLKW(validDate, type);
+		assertFalse(lkwService.isCharterAvailable(validDate, type), "LKW must not be available!");
 	}
 
 	@Test
 	void testCreateCharterLKW() {
-		try {
-			lkwService.createCharterLKW(null, LKWType.SMALL);
-			fail("LKWService.createCharterLKW() should throw an IllegalArgumentException if the date argument is invalid!");
-		} catch (IllegalArgumentException ignored) {
-			// IllegalArgumentException correctly thrown
-		}
+		assertThrows(IllegalArgumentException.class, () -> lkwService.createCharterLKW(null, type),
+				"LKWService.createCharterLKW() should throw an IllegalArgumentException if the date argument is invalid!"
+		);
 
-		try {
-			lkwService.createCharterLKW(validDate, null);
-			fail("LKWService.createCharterLKW() should throw an IllegalArgumentException if the type argument is invalid!");
-		} catch (IllegalArgumentException ignored) {
-			// IllegalArgumentException correctly thrown
-		}
+		assertThrows(IllegalArgumentException.class, () -> lkwService.createCharterLKW(validDate, null),
+				"LKWService.createCharterLKW() should throw an IllegalArgumentException if the type argument is invalid!"
+		);
 
-		assertTrue(lkwService.createCharterLKW(weekendDate, LKWType.SMALL).isEmpty(), "LKW must not be available!");
+		assertTrue(lkwService.createCharterLKW(weekendDate, type).isEmpty(), "LKW must not be available!");
 
-		assertTrue(lkwService.createCharterLKW(validDate, LKWType.SMALL).isPresent(), "LKW must be available");
+		assertTrue(lkwService.createCharterLKW(validDate, type).isPresent(), "LKW must be available");
 
-		final Optional<LKW> lkw = lkwService.createCharterLKW(validDate, LKWType.SMALL);
+		final Optional<LKW> lkw = lkwService.createCharterLKW(validDate, type);
 		assertTrue(lkw.isPresent(), "LKW must be available");
 
-		assertTrue(lkwService.createCharterLKW(validDate, LKWType.SMALL).isEmpty(), "LKW must not be available");
+		assertTrue(lkwService.createCharterLKW(validDate, type).isEmpty(), "LKW must not be available");
 
 		lkwService.cancelOrder(lkw.get(), validDate);
-		assertTrue(lkwService.createDeliveryLKW(validDate, LKWType.SMALL).isPresent(), "LKW must be available");
+		assertTrue(lkwService.createDeliveryLKW(validDate, type).isPresent(), "LKW must be available");
 
-		assertTrue(lkwService.createCharterLKW(validDate, LKWType.SMALL).isEmpty(), "LKW must not be available");
+		assertTrue(lkwService.createCharterLKW(validDate, type).isEmpty(), "LKW must not be available");
 	}
 
 	@Test
 	void testCancelOrder() {
-		try {
-			lkwService.cancelOrder(null, validDate);
-			fail("LKWService.cancelOrder() should throw an IllegalArgumentException if the LKW argument is invalid!");
-		} catch (IllegalArgumentException ignored) {
-			// IllegalArgumentException correctly thrown
-		}
+		assertThrows(IllegalArgumentException.class, () -> lkwService.cancelOrder(null, validDate),
+				"LKWService.cancelOrder() should throw an IllegalArgumentException if the LKW argument is invalid!"
+		);
 
-		try {
-			lkwService.cancelOrder(new LKW(), null);
-			fail("LKWService.cancelOrder() should throw an IllegalArgumentException if the type argument is invalid!");
-		} catch (IllegalArgumentException ignored) {
-			// IllegalArgumentException correctly thrown
-		}
+		assertThrows(IllegalArgumentException.class, () -> lkwService.cancelOrder(new LKW(), null),
+				"LKWService.cancelOrder() should throw an IllegalArgumentException if the date argument is invalid!"
+		);
 
-		final Optional<LKW> delivery1 = lkwService.createDeliveryLKW(validDate, LKWType.SMALL);
+		final Optional<LKW> delivery1 = lkwService.createDeliveryLKW(validDate, type);
 		assertTrue(delivery1.isPresent(), "LKW must be available");
 
-		final Optional<LKW> delivery2 = lkwService.createDeliveryLKW(validDate, LKWType.SMALL);
+		final Optional<LKW> delivery2 = lkwService.createDeliveryLKW(validDate, type);
 		assertTrue(delivery2.isPresent(), "LKW must be available");
 		assertEquals(delivery1.get(), delivery2.get(), "LKWs must be the same");
 
-		final Optional<LKW> charter = lkwService.createCharterLKW(validDate, LKWType.SMALL);
+		final Optional<LKW> charter = lkwService.createCharterLKW(validDate, type);
 		assertTrue(charter.isPresent(), "LKW must be available");
 
 		assertTrue(lkwService.cancelOrder(charter.get(), validDate), "LKW must be available");
@@ -248,8 +215,10 @@ public class LKWServiceTests {
 		final DeliveryEntry entry = (DeliveryEntry) delivery2.get().getCalendar().getEntry(validDate).get();
 		assertEquals(1, entry.getQuantity(), "Quantity must be valid");
 
-		assertTrue(lkwService.cancelOrder(delivery1.get(), validDate), "LKW must be available");
-		assertFalse(delivery1.get().getCalendar().hasEntry(validDate), "LKW must not have an entry");
+		assertTrue(lkwService.cancelOrder(delivery2.get(), validDate), "LKW must be available");
+		assertFalse(delivery2.get().getCalendar().hasEntry(validDate), "LKW must not have an entry");
+
+		assertFalse(lkwService.cancelOrder(delivery2.get(), validDate), "LKW must not have an entry");
 	}
 
 }
