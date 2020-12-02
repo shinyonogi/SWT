@@ -8,7 +8,7 @@ import javax.persistence.Entity;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class LKWTest {
+public class LKWTests {
 
 	LKW[] lkws;
 

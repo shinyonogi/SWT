@@ -34,7 +34,6 @@ class LKWControllerIntegrationTests {
 	@Test
 	void returnsModelAndViewOnLkwOverview() throws Exception {
 		mvc.perform(get("/lkws"))
-				.andDo(print())
 				.andExpect(status().isOk())
 				.andExpect(model().attribute("types", is(LKWType.values())))
 				.andExpect(view().name("lkws"));
@@ -43,7 +42,6 @@ class LKWControllerIntegrationTests {
 	@Test
 	void returnsModelAndViewOnLkwCheckout() throws Exception {
 		mvc.perform(get("/lkw/checkout/{type}", LKWType.SMALL))
-				.andDo(print())
 				.andExpect(status().isOk())
 				.andExpect(model().attribute("type", is(LKWType.SMALL)))
 				.andExpect(model().attribute("result", is(0)))
@@ -53,7 +51,6 @@ class LKWControllerIntegrationTests {
 	@Test
 	void redirectsToLkwOverviewWithInvalidType() throws Exception {
 		mvc.perform(get("/lkw/checkout/unknown"))
-				.andDo(print())
 				.andExpect(status().is3xxRedirection())
 				.andExpect(redirectedUrl("/lkws"))
 				.andExpect(view().name("redirect:/lkws"));
@@ -63,7 +60,6 @@ class LKWControllerIntegrationTests {
 	void redirectsToLkwOverviewCheckWithInvalidType() throws Exception {
 		mvc.perform(post("/lkw/checkout/unknown")
 				.param("check", "").param("date", String.valueOf(oldDate)))
-				.andDo(print())
 				.andExpect(status().is3xxRedirection())
 				.andExpect(redirectedUrl("/lkws"))
 				.andExpect(view().name("redirect:/lkws"));
@@ -73,7 +69,6 @@ class LKWControllerIntegrationTests {
 	void returnsModelAndViewOnLkwCheckWithInvalidDate() throws Exception {
 		mvc.perform(post("/lkw/checkout/{type}", LKWType.SMALL)
 				.param("check", "").param("date", String.valueOf(oldDate)))
-				.andDo(print())
 				.andExpect(status().isOk())
 				.andExpect(model().attribute("type", is(LKWType.SMALL)))
 				.andExpect(model().attribute("result", is(4)))
@@ -84,7 +79,6 @@ class LKWControllerIntegrationTests {
 	void returnsModelAndViewOnLkwCheckWithWeekend() throws Exception {
 		mvc.perform(post("/lkw/checkout/{type}", LKWType.SMALL)
 				.param("check", "").param("date", String.valueOf(weekendDate)))
-				.andDo(print())
 				.andExpect(status().isOk())
 				.andExpect(model().attribute("type", is(LKWType.SMALL)))
 				.andExpect(model().attribute("result", is(5)))
@@ -95,7 +89,6 @@ class LKWControllerIntegrationTests {
 	void returnsModelAndViewOnLkwCheckWithValidData() throws Exception {
 		mvc.perform(post("/lkw/checkout/{type}", LKWType.SMALL)
 				.param("check", "").param("date", String.valueOf(validDate)))
-				.andDo(print())
 				.andExpect(status().isOk())
 				.andExpect(model().attribute("type", is(LKWType.SMALL)))
 				.andExpect(model().attribute("result", is(-1)))
@@ -106,7 +99,6 @@ class LKWControllerIntegrationTests {
 	void redirectsToLkwOverviewCheckoutWithInvalidType() throws Exception {
 		mvc.perform(post("/lkw/checkout/unknown")
 				.param("buy", "").param("date", String.valueOf(oldDate)))
-				.andDo(print())
 				.andExpect(status().is3xxRedirection())
 				.andExpect(redirectedUrl("/lkws"))
 				.andExpect(view().name("redirect:/lkws"));
@@ -118,7 +110,6 @@ class LKWControllerIntegrationTests {
 				.param("buy", "").param("name", "name")
 				.param("address", "address").param("email", "email@email.de")
 				.param("date", String.valueOf(validDate)))
-				.andDo(print())
 				.andExpect(status().isOk())
 				.andExpect(model().attribute("charterDate", is(validDate)))
 				.andExpect(view().name("orderSummary"));
@@ -130,7 +121,6 @@ class LKWControllerIntegrationTests {
 				.param("buy", "").param("name", "")
 				.param("address", "address").param("email", "email@email.de")
 				.param("date", String.valueOf(validDate)))
-				.andDo(print())
 				.andExpect(status().isOk())
 				.andExpect(model().attribute("type", is(LKWType.SMALL)))
 				.andExpect(model().attribute("result", is(1)))
@@ -143,7 +133,6 @@ class LKWControllerIntegrationTests {
 				.param("buy", "").param("name", "name")
 				.param("address", "").param("email", "email@email.de")
 				.param("date", String.valueOf(validDate)))
-				.andDo(print())
 				.andExpect(status().isOk())
 				.andExpect(model().attribute("type", is(LKWType.SMALL)))
 				.andExpect(model().attribute("result", is(2)))
@@ -156,7 +145,6 @@ class LKWControllerIntegrationTests {
 				.param("buy", "").param("name", "name")
 				.param("address", "address").param("email", "email")
 				.param("date", String.valueOf(validDate)))
-				.andDo(print())
 				.andExpect(status().isOk())
 				.andExpect(model().attribute("type", is(LKWType.SMALL)))
 				.andExpect(model().attribute("result", is(3)))
@@ -169,7 +157,6 @@ class LKWControllerIntegrationTests {
 				.param("buy", "").param("name", "name")
 				.param("address", "address").param("email", "email@email.de")
 				.param("date", String.valueOf(oldDate)))
-				.andDo(print())
 				.andExpect(status().isOk())
 				.andExpect(model().attribute("type", is(LKWType.SMALL)))
 				.andExpect(model().attribute("result", is(4)))
@@ -182,7 +169,6 @@ class LKWControllerIntegrationTests {
 				.param("buy", "").param("name", "name")
 				.param("address", "address").param("email", "email@email.de")
 				.param("date", String.valueOf(weekendDate)))
-				.andDo(print())
 				.andExpect(status().isOk())
 				.andExpect(model().attribute("type", is(LKWType.SMALL)))
 				.andExpect(model().attribute("result", is(5)))

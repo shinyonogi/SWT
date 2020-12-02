@@ -90,7 +90,7 @@ public class LKWService {
 				final int quantity = delivery.getQuantity();
 
 				// Check if amount of deliveries is smaller that the maximum
-				if (delivery.getQuantity() < DeliveryEntry.MAX_DELIVERY) {
+				if (quantity < DeliveryEntry.MAX_DELIVERY) {
 					return true;
 				}
 			}
@@ -138,6 +138,7 @@ public class LKWService {
 				if (quantity < DeliveryEntry.MAX_DELIVERY) {
 					// Add order to entry
 					delivery.setQuantity(quantity + 1);
+					lkwCatalog.save(lkw);
 
 					// Return found LKW
 					return Optional.of(lkw);
@@ -147,7 +148,11 @@ public class LKWService {
 
 		// Use saved LKW, add order to entry
 		if (available != null) {
-			available.getCalendar().addEntry(new DeliveryEntry(date));
+			final DeliveryEntry delivery = new DeliveryEntry(date);
+			delivery.setQuantity(1);
+
+			available.getCalendar().addEntry(delivery);
+			lkwCatalog.save(available);
 		}
 
 		// Return found LKW or null
@@ -211,6 +216,7 @@ public class LKWService {
 			if (!calendar.hasEntry(date)) {
 				// Add order to entry
 				calendar.addEntry(new CharterEntry(date));
+				lkwCatalog.save(lkw);
 
 				// Return found LKW
 				return Optional.of(lkw);
@@ -248,23 +254,26 @@ public class LKWService {
 		// If entry is CharterEntry -> remove entry
 		else if (entry.get() instanceof CharterEntry) {
 			calendar.removeEntry(date);
+			lkwCatalog.save(lkw);
 
 			return true;
 		}
 		// If entry is DeliveryEntry -> decrease deliver count
 		else if (entry.get() instanceof DeliveryEntry) {
-			final DeliveryEntry dilivery = (DeliveryEntry) entry.get();
-			final int quantity = dilivery.getQuantity();
+			final DeliveryEntry delivery = (DeliveryEntry) entry.get();
+			final int quantity = delivery.getQuantity();
 
 			// Check if this was the only order
 			if (quantity <= 1) {
 				// Remove entry from calender
 				calendar.removeEntry(date);
+				lkwCatalog.save(lkw);
 				return true;
 			}
 
 			// Decrease delivery count
-			dilivery.setQuantity(quantity - 1);
+			delivery.setQuantity(quantity - 1);
+			lkwCatalog.save(lkw);
 
 			return true;
 		}

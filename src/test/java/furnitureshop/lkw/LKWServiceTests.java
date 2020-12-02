@@ -5,17 +5,17 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-@DirtiesContext
+//@DirtiesContext
 @ContextConfiguration(classes = FurnitureShop.class)
-public class LKWServiceTest {
+public class LKWServiceTests {
 
 	@Autowired
 	LKWCatalog lkwCatalog;
@@ -23,13 +23,19 @@ public class LKWServiceTest {
 	@Autowired
 	LKWService lkwService;
 
-	LocalDate oldDate, weekendDate, validDate;
+	LocalDate weekendDate, validDate;
 
 	@BeforeEach
 	void setUp() {
-		oldDate = LocalDate.of(2000, 1, 1);
 		weekendDate = LocalDate.of(2023, 3, 19);
 		validDate = LocalDate.of(2023, 3, 20);
+
+		lkwCatalog.deleteAll();
+		for (LKWType type : LKWType.values()) {
+			for (int i = 0; i < 2; i++) {
+				lkwCatalog.save(new LKW(type));
+			}
+		}
 	}
 
 	@Test
@@ -82,6 +88,18 @@ public class LKWServiceTest {
 		} catch (IllegalArgumentException ignored) {
 			// IllegalArgumentException correctly thrown
 		}
+
+		assertFalse(lkwService.isDeliveryAvailable(weekendDate, LKWType.SMALL), "LKW must not be available!");
+		assertTrue(lkwService.isDeliveryAvailable(validDate, LKWType.SMALL), "LKW must be available!");
+
+		lkwService.createCharterLKW(validDate, LKWType.SMALL);
+		assertTrue(lkwService.isDeliveryAvailable(validDate, LKWType.SMALL), "LKW must be available!");
+
+		for (int i = 0; i < DeliveryEntry.MAX_DELIVERY; i++) {
+			lkwService.createDeliveryLKW(validDate, LKWType.SMALL);
+		}
+
+		assertFalse(lkwService.isDeliveryAvailable(validDate, LKWType.SMALL), "LKW must not be available!");
 	}
 
 	@Test
@@ -99,6 +117,34 @@ public class LKWServiceTest {
 		} catch (IllegalArgumentException ignored) {
 			// IllegalArgumentException correctly thrown
 		}
+
+		assertTrue(lkwService.createDeliveryLKW(weekendDate,LKWType.SMALL).isEmpty(), "LKW must not be available!");
+
+		final Optional<LKW> lkw = lkwService.createDeliveryLKW(validDate, LKWType.SMALL);
+		assertTrue(lkw.isPresent(), "LKW must be available");
+
+		for (int i = 0; i < 3; i++) {
+			final Optional<LKW> other = lkwService.createDeliveryLKW(validDate, LKWType.SMALL);
+			assertTrue(other.isPresent(), "LKW must be available");
+			assertEquals(lkw.get(), other.get(), "LKWs must be the same");
+		}
+
+		final Optional<LKW> charter = lkwService.createCharterLKW(validDate, LKWType.SMALL);
+		assertTrue(charter.isPresent(), "LKW must be available");
+
+		Optional<LKW> other = lkwService.createDeliveryLKW(validDate, LKWType.SMALL);
+		assertTrue(other.isEmpty(), "LKW must not be available");
+
+		lkwService.cancelOrder(charter.get(), validDate);
+
+		for (int i = 0; i < DeliveryEntry.MAX_DELIVERY; i++) {
+			other = lkwService.createDeliveryLKW(validDate, LKWType.SMALL);
+			assertTrue(other.isPresent(), "LKW must be available");
+			assertNotEquals(lkw.get(), other.get(), "LKWs must not be the same");
+		}
+
+		other = lkwService.createDeliveryLKW(validDate, LKWType.SMALL);
+		assertTrue(other.isEmpty(), "LKW must not be available");
 	}
 
 	@Test
@@ -116,6 +162,22 @@ public class LKWServiceTest {
 		} catch (IllegalArgumentException ignored) {
 			// IllegalArgumentException correctly thrown
 		}
+
+		assertFalse(lkwService.isCharterAvailable(weekendDate, LKWType.SMALL), "LKW must not be available!");
+		assertTrue(lkwService.isCharterAvailable(validDate, LKWType.SMALL), "LKW must be available!");
+
+		lkwService.createCharterLKW(validDate, LKWType.SMALL);
+		assertTrue(lkwService.isCharterAvailable(validDate, LKWType.SMALL), "LKW must be available!");
+
+		final Optional<LKW> lkw = lkwService.createCharterLKW(validDate, LKWType.SMALL);
+		assertTrue(lkw.isPresent(), "LKW must be available");
+		assertFalse(lkwService.isCharterAvailable(validDate, LKWType.SMALL), "LKW must not be available!");
+
+		lkwService.cancelOrder(lkw.get(), validDate);
+		assertTrue(lkwService.isCharterAvailable(validDate, LKWType.SMALL), "LKW must be available!");
+
+		lkwService.createDeliveryLKW(validDate, LKWType.SMALL);
+		assertFalse(lkwService.isCharterAvailable(validDate, LKWType.SMALL), "LKW must not be available!");
 	}
 
 	@Test
