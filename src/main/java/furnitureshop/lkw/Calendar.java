@@ -4,6 +4,7 @@ import org.springframework.util.Assert;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -22,11 +23,11 @@ public class Calendar {
 	}
 
 	/**
-	 * Adds an entry to the {@code Calender}
+	 * Adds an entry to the {@link Calendar}
 	 *
-	 * @param entry The new {@code CalenderEntry}
+	 * @param entry The new {@link CalendarEntry}
 	 *
-	 * @return {@code true} if no entry was found on that {@code Date}
+	 * @return {@code true} if no entry was found on that {@link LocalDate}
 	 */
 	public boolean addEntry(CalendarEntry entry) {
 		Assert.notNull(entry, "Entry must not be null!");
@@ -41,11 +42,11 @@ public class Calendar {
 	}
 
 	/**
-	 * Removes an entry from the {@code Calender}
+	 * Removes an entry from the {@link Calendar}
 	 *
-	 * @param date The date which should be removed
+	 * @param date The {@link LocalDate} which should be removed
 	 *
-	 * @return {@code true} if the {@code Calender} contains an entry on that {@code Date}
+	 * @return {@code true} if the {@link Calendar} contains an entry on that {@link LocalDate}
 	 */
 	public boolean removeEntry(LocalDate date) {
 		final Optional<CalendarEntry> entry = getEntry(date);
@@ -54,11 +55,11 @@ public class Calendar {
 	}
 
 	/**
-	 * Checks if an entry exists in the {@code Calender}
+	 * Checks if an entry exists in the {@link Calendar}
 	 *
-	 * @param date The date which should be checked
+	 * @param date The {@link LocalDate} which should be checked
 	 *
-	 * @return {@code true} if the {@code Calender} contains an entry on that {@code Date}
+	 * @return {@code true} if the {@link Calendar} contains an entry on that {@link LocalDate}
 	 */
 	public boolean hasEntry(LocalDate date) {
 		for (CalendarEntry entry : entries) {
@@ -71,11 +72,11 @@ public class Calendar {
 	}
 
 	/**
-	 * Gets an entry from the {@code Calender}
+	 * Gets an entry from the {@link Calendar}
 	 *
-	 * @param date The date of the {@code Calender}
+	 * @param date The {@link LocalDate} of the {@link Calendar}
 	 *
-	 * @return The entry of the {@code Calender} of that {@code Date}
+	 * @return The {@link CalendarEntry} of the {@link Calendar} of that {@link LocalDate}
 	 */
 	public Optional<CalendarEntry> getEntry(LocalDate date) {
 		for (CalendarEntry entry : entries) {
@@ -91,8 +92,8 @@ public class Calendar {
 		return id;
 	}
 
-	public Iterable<CalendarEntry> getEntries() {
-		return entries;
+	public List<CalendarEntry> getEntries() {
+		return Collections.unmodifiableList(entries);
 	}
 
 }

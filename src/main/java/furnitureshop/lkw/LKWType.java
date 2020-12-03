@@ -65,12 +65,12 @@ public enum LKWType {
 	}
 
 	/**
-	 * Finds an {@code LKWType} by its case insensitivity Enum-Name or Displayname.
-	 * Similar to {@code LKWType.valueOf()} but with no Exception.
+	 * Finds an {@link LKWType} by its case insensitivity Enum-Name or Displayname.
+	 * Similar to {@code LKWType.valueOf()} but with no {@link Exception}.
 	 *
 	 * @param name The name of the type
 	 *
-	 * @return The {@code LKWType} with this name
+	 * @return The {@link LKWType} with this name
 	 */
 	public static Optional<LKWType> getByName(String name) {
 		for (LKWType type : LKWType.values()) {
@@ -83,12 +83,12 @@ public enum LKWType {
 	}
 
 	/**
-	 * Finds an {@code LKWType} by its weight. Used to find an {@code LKW} which can transport the weight.
-	 * Returns the next biggest {@code LKWType} to fit the weight.
+	 * Finds an {@link LKWType} by its weight. Used to find an {@link LKW} which can transport the weight.
+	 * Returns the next biggest {@link LKWType} to fit the weight.
 	 *
-	 * @param weight The minimum weight of the {@code LKW}
+	 * @param weight The minimum weight of the {@link LKW}
 	 *
-	 * @return The {@code LKWType} with the weight
+	 * @return The {@link LKWType} with the weight
 	 */
 	public static Optional<LKWType> getByWeight(int weight) {
 		LKWType minType = null;

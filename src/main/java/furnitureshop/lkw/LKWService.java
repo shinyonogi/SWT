@@ -37,12 +37,12 @@ public class LKWService {
 	}
 
 	/**
-	 * Finds the next available {@code Date} to deliver an order
+	 * Finds the next available {@link LocalDate} to deliver an order
 	 *
-	 * @param date The earliest {@code Date} to deliver
-	 * @param type The type of the {@code LKW} to be used
+	 * @param date The earliest {@link LocalDate} to deliver
+	 * @param type The {@link LKWType} of the {@link LKW} to be used
 	 *
-	 * @return The next available {@code Date}
+	 * @return The next available {@link LocalDate}
 	 */
 	public LocalDate findNextAvailableDeliveryDate(LocalDate date, LKWType type) {
 		Assert.notNull(date, "Date must not be null!");
@@ -59,12 +59,12 @@ public class LKWService {
 	}
 
 	/**
-	 * Checks if an order can be deliver on that {@code Date}
+	 * Checks if an order can be deliver on that {@link LocalDate}
 	 *
-	 * @param date The {@code Date} to be checked
-	 * @param type The type of the {@code LKW} to be used
+	 * @param date The {@link LocalDate} to be checked
+	 * @param type The type of the {@link LKW} to be used
 	 *
-	 * @return {@code true} if an {@code LKW} was found
+	 * @return {@code true} if an {@link LKW} was found
 	 */
 	public boolean isDeliveryAvailable(LocalDate date, LKWType type) {
 		Assert.notNull(date, "Date must not be null!");
@@ -101,12 +101,12 @@ public class LKWService {
 	}
 
 	/**
-	 * Create a DeliveryOrder on a {@code Date} for a specific type of {@code LKW}
+	 * Create a {@link DeliveryEntry} on a {@link LocalDate} for a specific type of {@link LKW}
 	 *
-	 * @param date The {@code Date} to be used
-	 * @param type The type of the {@code LKW} to be used
+	 * @param date The {@link LocalDate} to be used
+	 * @param type The {@link LKWType} of the {@link LKW} to be used
 	 *
-	 * @return The used {@code LKW}
+	 * @return The used {@link LKW}
 	 */
 	public Optional<LKW> createDeliveryLKW(LocalDate date, LKWType type) {
 		Assert.notNull(date, "Date must not be null!");
@@ -160,12 +160,12 @@ public class LKWService {
 	}
 
 	/**
-	 * Checks if an {@code LKW} can be rent on that {@code Date}
+	 * Checks if an {@link LKW} can be rent on that {@link LocalDate}
 	 *
-	 * @param date The {@code Date} to be checked
-	 * @param type The type of the {@code LKW} to be used
+	 * @param date The {@link LocalDate} to be checked
+	 * @param type The {@link LKWType} of the {@link LKW} to be used
 	 *
-	 * @return {@code true} if an {@code LKW} was found
+	 * @return {@code true} if an {@link LKW} was found
 	 */
 	public boolean isCharterAvailable(LocalDate date, LKWType type) {
 		Assert.notNull(date, "Date must not be null!");
@@ -192,12 +192,12 @@ public class LKWService {
 
 
 	/**
-	 * Create a CharterOrder on a {@code Date} for a specific type of {@code LKW}
+	 * Create a {@link CharterEntry} on a {@link LocalDate} for a specific type of {@link LKW}
 	 *
-	 * @param date The {@code Date} to be used
-	 * @param type The type of the {@code LKW} to be used
+	 * @param date The {@link LocalDate} to be used
+	 * @param type The {@link LKWType} of the {@link LKW} to be used
 	 *
-	 * @return The used {@code LKW}
+	 * @return The used {@link LKW}
 	 */
 	public Optional<LKW> createCharterLKW(LocalDate date, LKWType type) {
 		Assert.notNull(date, "Date must not be null!");
@@ -232,12 +232,12 @@ public class LKWService {
 	}
 
 	/**
-	 * Cancels a Order for specific {@code LKW} and {@code Date}
+	 * Cancels a Order for specific {@link LKW} and {@link LocalDate}
 	 *
-	 * @param lkw The {@code LKW} to be canceled
-	 * @param date The {@code Date} of the Order
+	 * @param lkw  The {@link LKW} to be canceled
+	 * @param date The {@link LocalDate} of the Order
 	 *
-	 * @return {@code true} if the {@code LKW} was used on that {@code Date}
+	 * @return {@code true} if the {@link LKW} was used on that {@link LocalDate}
 	 */
 	public boolean cancelOrder(LKW lkw, LocalDate date) {
 		Assert.notNull(lkw, "LKW must not be null!");

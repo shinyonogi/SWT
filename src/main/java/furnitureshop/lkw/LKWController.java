@@ -37,9 +37,9 @@ public class LKWController {
 	}
 
 	@GetMapping("/lkw/checkout/{lkwtype}")
-	String getLKWCheckout(@PathVariable("lkwtype") String name, Model model) {
+	String getLKWCheckout(@PathVariable("lkwtype") String typeName, Model model) {
 		// Get type by name, used to ensure case insensitivity
-		final Optional<LKWType> type = LKWType.getByName(name);
+		final Optional<LKWType> type = LKWType.getByName(typeName);
 
 		// Check if no type is found -> redirect to type overview
 		if (type.isEmpty()) {
@@ -55,9 +55,9 @@ public class LKWController {
 	}
 
 	@PostMapping(value = "/lkw/checkout/{lkwtype}", params = "check")
-	String checkLKWDate(@PathVariable("lkwtype") String name, @ModelAttribute("lkwform") LKWCharterForm form, Model model) {
+	String checkLKWDate(@PathVariable("lkwtype") String typeName, @ModelAttribute("lkwform") LKWCharterForm form, Model model) {
 		// Get type by name, used to ensure case insensitivity
-		final Optional<LKWType> type = LKWType.getByName(name);
+		final Optional<LKWType> type = LKWType.getByName(typeName);
 
 		// Check if no type is found -> redirect to type overview
 		if (type.isEmpty()) {
@@ -88,9 +88,9 @@ public class LKWController {
 	}
 
 	@PostMapping(value = "/lkw/checkout/{lkwtype}", params = "buy")
-	String checkoutLKW(@PathVariable("lkwtype") String name, @ModelAttribute("lkwform") LKWCharterForm form, Model model) {
+	String checkoutLKW(@PathVariable("lkwtype") String typeName, @ModelAttribute("lkwform") LKWCharterForm form, Model model) {
 		// Get type by name, used to ensure case insensitivity
-		final Optional<LKWType> type = LKWType.getByName(name);
+		final Optional<LKWType> type = LKWType.getByName(typeName);
 
 		// Check if no type is found -> redirect to type overview
 		if (type.isEmpty()) {
