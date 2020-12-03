@@ -27,7 +27,9 @@ public class SupplierService {
 
 	public void addSupplier(Supplier supplier) {
 		Assert.notNull(supplier, "Supplier must not be null!");
-
+		for (Supplier s : findAll()) {
+			if(s.getName().contentEquals(supplier.getName())) return;
+		}
 		supplierRepository.save(supplier);
 	}
 
@@ -35,7 +37,7 @@ public class SupplierService {
 		Optional<Supplier> supplier = supplierRepository.findById(supplierId);
 		return supplier.map(supp -> {
 			Streamable<Item> items = itemService.findBySupplier(supp);
-			for (Item it : items){
+			for (Item it : items) {
 				itemService.removeItem(it);
 			}
 			supplierRepository.delete(supp);
@@ -55,6 +57,10 @@ public class SupplierService {
 
 	public Iterable<Supplier> findAll() {
 		return supplierRepository.findAll();
+	}
+	
+	public void deleteAll() {
+		supplierRepository.deleteAll();
 	}
 
 	public void analyse() {

@@ -32,13 +32,13 @@ public class SupplierController {
 
 	@PostMapping("/admin/suppliers")
 	String addSupplier(@ModelAttribute("supplierForm") SupplierForm form, Model model) {
-		// checks if a supplier with the same name is already in the repository
 		final Optional<Supplier> suppliers = supplierService.findByName(form.getName());
 
+		// checks if a supplier with the same name is already in the repository
 		if (suppliers.isPresent()) {
-			// display error message
 			model.addAttribute("suppliers", supplierService.findAll());
 			model.addAttribute("supplierForm", form);
+			// display error message
 			model.addAttribute("result", 1);
 
 			return "suppliers";

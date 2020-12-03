@@ -17,5 +17,4 @@ public class SupplierForm {
 	public double getSurcharge() {
 		return surcharge;
 	}
-
 }
