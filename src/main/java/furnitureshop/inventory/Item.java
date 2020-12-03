@@ -6,7 +6,10 @@ import org.salespointframework.catalog.Product;
 import org.springframework.util.Assert;
 
 import javax.money.MonetaryAmount;
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.ManyToOne;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
@@ -27,7 +30,7 @@ public abstract class Item extends Product {
 	@Enumerated(EnumType.ORDINAL)
 	private Category category;
 
-	@SuppressWarnings({"unused", "deprecation"})
+	@SuppressWarnings("deprecation")
 	protected Item() {}
 
 	public Item(int groupid, String name, MonetaryAmount customerPrice, String picture, String variant,
@@ -50,21 +53,24 @@ public abstract class Item extends Product {
 		this.category = category;
 	}
 
-	public abstract int getWeight();
-
-	public int getGroupid() {
-		return groupid;
-	}
-
 	@Override
+	@SuppressWarnings("NullableProblems")
 	public MonetaryAmount getPrice() {
-		MonetaryAmount price = super.getPrice().multiply(1.0 + supplier.getSurcharge());
-		double roundedPrice = BigDecimal.valueOf(price.getNumber().doubleValue()).setScale(2, RoundingMode.HALF_EVEN).stripTrailingZeros().doubleValue();
-		return Money.of(roundedPrice, EURO);
+		final MonetaryAmount temp = getSupplierPrice().multiply(1.0 + supplier.getSurcharge());
+
+		final BigDecimal price = temp.getNumber().numberValue(BigDecimal.class)
+				.setScale(2, RoundingMode.HALF_EVEN)
+				.stripTrailingZeros();
+
+		return Money.of(price, EURO);
 	}
 
 	public MonetaryAmount getSupplierPrice() {
 		return super.getPrice();
+	}
+
+	public int getGroupid() {
+		return groupid;
 	}
 
 	public String getPicture() {
@@ -86,5 +92,7 @@ public abstract class Item extends Product {
 	public Category getCategory() {
 		return category;
 	}
+
+	public abstract int getWeight();
 
 }

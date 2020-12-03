@@ -51,8 +51,14 @@ public class SupplierController {
 	}
 
 	@PostMapping("/admin/supplier/delete/{id}")
-	String deleteSupplier(@PathVariable("id") long id){
+	String deleteSupplier(@PathVariable("id") long id) {
+		final Optional<Supplier> setSupplier = supplierService.findByName("Set Supplier");
+		if (setSupplier.isPresent() && setSupplier.get().getId() == id) {
+			return "redirect:/admin/suppliers";
+		}
+
 		supplierService.deleteSupplierById(id);
+
 		return "redirect:/admin/suppliers";
 	}
 
