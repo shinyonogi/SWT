@@ -21,7 +21,7 @@ public class Delivery extends ItemOrder {
 
 		Assert.notNull(deliveryDate, "LKW must not be null!");
 		Assert.notNull(deliveryDate, "DeliveryDate must not be null!");
-
+		this.lkw = lkw;
 		this.deliveryDate = deliveryDate;
 	}
 
