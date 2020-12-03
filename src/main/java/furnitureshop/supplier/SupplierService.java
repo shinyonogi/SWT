@@ -25,12 +25,16 @@ public class SupplierService {
 		this.itemService = itemService;
 	}
 
-	public void addSupplier(Supplier supplier) {
+	public boolean addSupplier(Supplier supplier) {
 		Assert.notNull(supplier, "Supplier must not be null!");
-		for (Supplier s : findAll()) {
-			if(s.getName().contentEquals(supplier.getName())) return;
+
+		if (findByName(supplier.getName()).isPresent()) {
+			return false;
 		}
+
 		supplierRepository.save(supplier);
+
+		return true;
 	}
 
 	public boolean deleteSupplierById(long supplierId) {
@@ -58,7 +62,7 @@ public class SupplierService {
 	public Streamable<Supplier> findAll() {
 		return supplierRepository.findAll();
 	}
-	
+
 	public void deleteAll() {
 		supplierRepository.deleteAll();
 	}

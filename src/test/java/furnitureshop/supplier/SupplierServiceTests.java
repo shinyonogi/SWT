@@ -1,11 +1,14 @@
 package furnitureshop.supplier;
 
 import furnitureshop.FurnitureShop;
+import furnitureshop.inventory.ItemCatalog;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
+
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,18 +22,32 @@ public class SupplierServiceTests {
 	@Autowired
 	SupplierService supplierService;
 
-	Supplier testSupplier;
+	@Autowired
+	ItemCatalog itemCatalog;
+
+	Supplier testSupplier, defaultSupplier, defaultSupplier2;
 
 	@BeforeEach
 	void setUp() {
+		itemCatalog.deleteAll();
+		supplierRepository.deleteAll();
+
+		defaultSupplier = new Supplier("default1", 0);
+		defaultSupplier2 = new Supplier("default2", 0.2);
 		testSupplier = new Supplier("test", 1);
-		//(SQL error) supplierRepository.deleteAll();
+
+		supplierRepository.save(defaultSupplier);
+		supplierRepository.save(defaultSupplier2);
 	}
 
 	@Test
 	void testAddSupplier() {
-		supplierService.addSupplier(testSupplier);
-		Supplier storedSupplier = supplierRepository.findById(testSupplier.getId()).get();
+		assertTrue(supplierService.addSupplier(testSupplier));
+
+		final Optional<Supplier> optional = supplierRepository.findById(testSupplier.getId());
+		assertTrue(optional.isPresent());
+
+		Supplier storedSupplier = optional.get();
 		assertEquals(testSupplier.getId(), storedSupplier.getId(), "supplier id mismatch");
 
 		// duplicate test
@@ -46,9 +63,11 @@ public class SupplierServiceTests {
 
 	@Test
 	void testDeleteSupplierById() {
-		supplierRepository.save(testSupplier);
-		supplierService.deleteSupplierById(testSupplier.getId());
-		assertTrue(supplierRepository.findById(testSupplier.getId()).isEmpty(), "supplier was not deleted correctly");
+		assertTrue(supplierService.deleteSupplierById(defaultSupplier.getId()));
+
+		assertTrue(supplierRepository.findById(defaultSupplier.getId()).isEmpty(), "supplier was not deleted correctly");
+
+		assertFalse(supplierService.deleteSupplierById(defaultSupplier.getId()));
 	}
 	/*
 	@Test
@@ -60,7 +79,7 @@ public class SupplierServiceTests {
 
 	@Test
 	void testFindAll() {
-		assertEquals(supplierRepository.findAll().toList(), supplierService.findAll().toList());
+		assertEquals(2, supplierRepository.count());
 	}
 
 }
