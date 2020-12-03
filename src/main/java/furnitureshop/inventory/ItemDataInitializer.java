@@ -30,13 +30,14 @@ public class ItemDataInitializer implements DataInitializer {
 
 	@Override
 	public void initialize() {
-		if (!itemCatalog.findAll().isEmpty()) {
+		if (itemCatalog.count() > 0) {
 			return;
 		}
 
-		Iterator<Supplier> iterator = supplierRepository.findAll().iterator();
+		final Iterator<Supplier> iterator = supplierRepository.findAll().iterator();
+		final List<Item> items = new ArrayList<>();
+
 		Supplier supplier = iterator.next();
-		List<Item> items = new ArrayList<>();
 
 		Piece stuhl1 = new Piece(1, "Stuhl 1", Money.of(59.99, Currencies.EURO), "/resources/img/chair_2.jpg", "schwarz",
 				"Stuhl 1 in schwarz.", supplier, 5, Category.CHAIR);
@@ -62,7 +63,7 @@ public class ItemDataInitializer implements DataInitializer {
 		items.add(new Piece(3, "Tisch 1", Money.of(89.99, Currencies.EURO), "/resources/img/table_2.jpg", "weiß",
 				"Tisch 1 in weiß.", supplier, 30, Category.TABLE));
 
-		Supplier setSupplier = new Supplier("Set Supplier", 0.05);
+		final Supplier setSupplier = new Supplier("Set Supplier", 0.05);
 		supplierRepository.save(setSupplier);
 
 		items.add(new Set(4, "Set 1", Money.of(299.99, Currencies.EURO), "/resources/img/set_1.jpg", "black",

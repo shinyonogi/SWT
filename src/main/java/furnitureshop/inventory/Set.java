@@ -1,12 +1,13 @@
 package furnitureshop.inventory;
 
 import furnitureshop.supplier.Supplier;
-import org.hibernate.engine.internal.Cascade;
 import org.springframework.util.Assert;
 
 import javax.money.MonetaryAmount;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Entity
@@ -22,7 +23,7 @@ public class Set extends Item {
 
 		Assert.notNull(items, "Items must not be null!");
 
-		this.items = items;
+		this.items = new ArrayList<>(items);
 	}
 
 	@Override
@@ -31,6 +32,7 @@ public class Set extends Item {
 	}
 
 	public List<Item> getItems() {
-		return items;
+		return Collections.unmodifiableList(items);
 	}
+
 }

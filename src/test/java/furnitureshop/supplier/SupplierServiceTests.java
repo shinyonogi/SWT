@@ -31,7 +31,7 @@ public class SupplierServiceTests {
 	void testAddSupplier() {
 		supplierService.addSupplier(testSupplier);
 		Supplier storedSupplier = supplierRepository.findById(testSupplier.getId()).get();
-		assertEquals(storedSupplier.getId(), testSupplier.getId(), "supplier id mismatch");
+		assertEquals(testSupplier.getId(), storedSupplier.getId(), "supplier id mismatch");
 
 		// duplicate test
 		supplierService.addSupplier(testSupplier);
@@ -60,6 +60,7 @@ public class SupplierServiceTests {
 
 	@Test
 	void testFindAll() {
-		assertEquals(supplierRepository.findAll(), supplierService.findAll());
+		assertEquals(supplierRepository.findAll().toList(), supplierService.findAll().toList());
 	}
+
 }

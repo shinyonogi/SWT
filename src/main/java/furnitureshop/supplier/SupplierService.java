@@ -55,7 +55,7 @@ public class SupplierService {
 		return Optional.empty();
 	}
 
-	public Iterable<Supplier> findAll() {
+	public Streamable<Supplier> findAll() {
 		return supplierRepository.findAll();
 	}
 	

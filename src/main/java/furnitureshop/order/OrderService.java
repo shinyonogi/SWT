@@ -10,6 +10,7 @@ import org.salespointframework.catalog.ProductIdentifier;
 import org.salespointframework.order.Cart;
 import org.salespointframework.order.CartItem;
 import org.salespointframework.order.OrderManagement;
+import org.salespointframework.quantity.Quantity;
 import org.salespointframework.time.BusinessTime;
 import org.salespointframework.useraccount.UserAccount;
 import org.salespointframework.useraccount.UserAccountManagement;
@@ -92,7 +93,12 @@ public class OrderService {
 		LocalDate deliveryDate = businessTime.getTime().toLocalDate().plusDays(2);
 		deliveryDate = lkwService.findNextAvailableDeliveryDate(deliveryDate, type);
 
-		final Delivery order = new Delivery(userAccount.get(), contactInformation, deliveryDate);
+		final Optional<LKW> lkw = lkwService.createDeliveryLKW(deliveryDate, type);
+		if (lkw.isEmpty()) {
+			return Optional.empty();
+		}
+
+		final Delivery order = new Delivery(userAccount.get(), contactInformation, lkw.get(), deliveryDate);
 		order.changeAllStatus(OrderStatus.PAID);
 		cart.addItemsTo(order);
 		orderManagement.save(order);
@@ -108,6 +114,7 @@ public class OrderService {
 		}
 
 		final LKWCharter order = new LKWCharter(userAccount.get(), contactInformation, lkw, rentDate);
+		order.addOrderLine(lkw, Quantity.of(1));
 		orderManagement.save(order);
 
 		return Optional.of(order);

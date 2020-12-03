@@ -17,7 +17,7 @@ public class LKWDataInitializer implements DataInitializer {
 
 	@Override
 	public void initialize() {
-		if (!lkwCatalog.findAll().isEmpty()) {
+		if (lkwCatalog.count() > 0L) {
 			return;
 		}
 
