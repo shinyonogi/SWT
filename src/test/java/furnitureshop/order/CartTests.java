@@ -84,10 +84,10 @@ public class CartTests {
 	@Test
 	void checkIfAnItemCanBeRemovedTest() {
 
-		String result = orderController.addItem(Stuhl1, 1, cart);
+		orderController.addItem(Stuhl1, 1, cart);
 		try {
-			String result_2 = orderController.editItem(Stuhl1.getId().toString(), 0, cart);
-			assertEquals(result_2, "redirect:/cart");
+			String result = orderController.editItem(Stuhl1.getId().toString(), 0, cart);
+			assertEquals(result, "redirect:/cart");
 			Optional<CartItem> item = cart.getItem(Stuhl1.getId().toString());
 			assertFalse(item.isPresent());
 		} catch (NullPointerException ignored) {}
@@ -105,7 +105,7 @@ public class CartTests {
 	@Test
 	void checkIfTheNumberOfProductsCanBeReducedTest() {
 
-		String result = orderController.addItem(Stuhl1, 2, cart);
+		orderController.addItem(Stuhl1, 2, cart);
 		try {
 			String result = orderController.editItem(Stuhl1.getId().toString(), 1, cart);
 			assertEquals(result, "redirect:/cart");
@@ -128,7 +128,7 @@ public class CartTests {
 		orderController.addItem(Stuhl1, 1, cart);
 		try {
 			String result = orderController.editItem(Stuhl1.getId().toString(), 2, cart);
-			assertEquals(result, "redirect:/");
+			assertEquals(result, "redirect:/cart");
 		} catch (NullPointerException ignored) {}
 	}
 
