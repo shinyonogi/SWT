@@ -8,6 +8,15 @@ Es werden Klassen sowie komplexe Strukturen getestet und auf Fehler überprüft.
 Das Dokument soll dabei einen Überblick geben, was und wie getestet wird und wer dafür zuständig ist.
 Es sollen dabei Anwendungsteile für die unterschiedlichsten Szenarien und Anwender getestet werden, um einen reibungslosen Ablauf zu garantieren.
 
+== Aufbau der Testbezeichner
+Nach welchem Schema sind die Tests benannt?
+
+*Bsp.*
+
+*U - Unit Test, I - Integrationstest*
+
+*U-1, U-2, I-1*
+
 == Test Gegenstände
 - Möbelgeschäftstruktur
 - Inventarmanagement
