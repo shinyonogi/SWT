@@ -15,11 +15,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * A Spring MVC controller to manage the {@link Cart}
+ *
+ * @author Shintaro Onogi
+ * @version 1.0
+ */
+
 @Controller
 @SessionAttributes("cart")
 class OrderController {
 
 	private final OrderService orderService;
+
+	/**
+	 * Creates a new {@link OrderController} with the given {@link OrderService}.
+	 *
+	 * @param orderService must not be {@literal null}.
+	 */
 
 	OrderController(OrderService orderService) {
 		Assert.notNull(orderService, "OrderService must not be null");
@@ -27,17 +40,38 @@ class OrderController {
 		this.orderService = orderService;
 	}
 
+	/**
+	 * Creates a new {@link Cart} instance to be stored in the session
+	 * annotation).
+	 *
+	 * @return a new {@link Cart} instance.
+	 */
+
 	@ModelAttribute("cart")
 	Cart initializeCart() {
 		return new Cart();
 	}
+
+	/**
+	 * User can be directed to the view cart
+	 *
+	 * @return the view cart
+	 */
 
 	@GetMapping("/cart")
 	String basket() {
 		return "cart";
 	}
 
-	/* In den Warenkorb hinzufügen-Funktion */
+	/**
+	 * Adds a {@link Item} to the {@link Cart}.
+	 *
+	 * @param item the disc that should be added to the cart (may be {@literal null}).
+	 * @param number number of items that should be added to the cart.
+	 * @param cart must not be {@literal null}.
+	 * @return the view index
+	 */
+
 	@PostMapping("/cart/{id}")
 	String addItem(@PathVariable("id") Item item, @RequestParam("number") int number, @ModelAttribute Cart cart) {
 		cart.addOrUpdateItem(item, Quantity.of(number));
@@ -45,7 +79,15 @@ class OrderController {
 		return "redirect:/";
 	}
 
-	/* Warenkorb bearbeiten-Funktion */
+	/**
+	 * Changes the quantity of {@link Item} in the {@link Cart}
+	 *
+	 * @param cartItemId the product identifier of the item in the cart
+	 * @param amount the new quantity of the item in the cart
+	 * @param cart can be null/empty if every product is going to be removed, cannot be null if a product is going to be added
+	 * @return the view cart
+	 */
+
 	@PostMapping("/cart/change/{id}")
 	String editItem(@PathVariable("id") String cartItemId, @RequestParam("amount") int amount, @ModelAttribute Cart cart) {
 		cart.getItem(cartItemId).map(it -> {
@@ -61,7 +103,13 @@ class OrderController {
 		return "redirect:/cart";
 	}
 
-	/*Item löschen-Funktion */
+	/**
+	 * Deletes a certain {@link Item} in the {@link Cart}
+	 *
+	 * @param cartItemId the product identifier of the item in the cart
+	 * @param cart can be null/empty if every product is going to be removed
+	 * @return the view cart
+	 */
 	@PostMapping("/cart/delete/{id}")
 	String deleteItem(@PathVariable("id") String cartItemId, @ModelAttribute Cart cart) {
 		cart.removeItem(cartItemId);

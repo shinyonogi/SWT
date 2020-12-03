@@ -22,6 +22,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+/**
+ * Tests for {@link OrderController} (cart)
+ *
+ * @author Shintaro Onogi
+ * @version 1.0
+ */
+
 @SpringBootTest
 @ContextConfiguration(classes = FurnitureShop.class)
 public class CartTests {
@@ -43,6 +50,13 @@ public class CartTests {
 		assertTrue(cart.isEmpty());
 	}
 
+	/**
+	 * checkIfAnItemCanBeAddedTest method
+	 *
+	 * Tests if you can add an item to cart
+	 * Expects the item to be present in the cart
+	 */
+
 	/*
 	@Test
 	void checkIfAnItemCanBeAddedTest() {
@@ -57,27 +71,56 @@ public class CartTests {
 		} catch (NullPointerException ignored) {}
 	}
 
+	 */
+
+	/**
+	 * checkIfAnItemCanBeRemovedTest method
+	 *
+	 * Tests if you can delete/remove an item from the cart
+	 * Expects the item to be not present in the cart
+	 */
+
+	/*
 	@Test
 	void checkIfAnItemCanBeRemovedTest() {
 
-		orderController.addItem(Stuhl1, 1, cart);
+		String result = orderController.addItem(Stuhl1, 1, cart);
 		try {
-			String result = orderController.editItem(Stuhl1.getId().toString(), 0, cart);
-			assertEquals(result, "redirect:/");
+			String result_2 = orderController.editItem(Stuhl1.getId().toString(), 0, cart);
+			assertEquals(result_2, "redirect:/cart");
 			Optional<CartItem> item = cart.getItem(Stuhl1.getId().toString());
 			assertFalse(item.isPresent());
 		} catch (NullPointerException ignored) {}
 	}
+	*/
 
+	/**
+	 * checkIfTheNumberOfProductsCanBeReducedTest method
+	 *
+	 * Tests if the quantity of the same product in the cart can be reduced
+	 * Expects the quantity to be reduced from 2 to 1
+	 */
+
+	/*
 	@Test
 	void checkIfTheNumberOfProductsCanBeReducedTest() {
 
-		orderController.addItem(Stuhl1, 2, cart);
+		String result = orderController.addItem(Stuhl1, 2, cart);
 		try {
 			String result = orderController.editItem(Stuhl1.getId().toString(), 1, cart);
-			assertEquals(result, "redirect:/");
+			assertEquals(result, "redirect:/cart");
 		} catch (NullPointerException ignored) {}
 	}
+	*/
+
+	/**
+	 * checkIfTheNumberOfProductsCanBeIncreasedTest method
+	 *
+	 * Tests if the number of the same product in the cart can be increased
+	 * Expects the quantity to be increased from 1 to 2
+	 */
+
+	/*
 
 	@Test
 	void checkIfTheNumberOfProductsCanBeIncreasedTest() {
@@ -89,6 +132,17 @@ public class CartTests {
 		} catch (NullPointerException ignored) {}
 	}
 
+	*/
+
+	/**
+	 * checkIfTheUserCanGotoCheckoutPage
+	 *
+	 * Tests if the customer can reach the checkout page if a product exists in the cart
+	 * Expects to be directed to /orderCheckout
+	 */
+
+	/*
+
 	@Test
 	void checkIfTheUserCanGotoCheckoutPage() {
 
@@ -96,7 +150,5 @@ public class CartTests {
 		String result = orderController.checkout(null, cart);
 		assertEquals(result, "orderCheckout");
 	}
-
-	 */
-
+	*/
 }
