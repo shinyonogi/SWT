@@ -30,7 +30,8 @@ import org.springframework.test.web.servlet.MockMvc;
 @ContextConfiguration(classes = FurnitureShop.class)
 public class OrderControllerIntegrationTests {
 
-	@Autowired MockMvc mvc;
+	@Autowired
+	MockMvc mvc;
 
 	Supplier supplier;
 	Item item;

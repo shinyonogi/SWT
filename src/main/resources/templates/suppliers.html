@@ -28,7 +28,7 @@
 				<td th:text="${supplier.name}"></td>
 				<td th:text="${supplier.getSurchargeInPercent()} + '%'"></td>
 				<td>
-					<form th:method="post" th:action="@{/admin/supplier/delete/{id}(id=${supplier.id})}">
+					<form th:method="post" th:action="@{/admin/supplier/delete/{id}(id=${supplier.id})}" th:unless="${supplier.getName().equals('Set Supplier')}">
 						<button type="submit" class="btn btn-secondary">Lieferant entfernen</button>
 					</form>
 				</td>

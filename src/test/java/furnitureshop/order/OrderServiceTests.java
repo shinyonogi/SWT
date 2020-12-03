@@ -29,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @ContextConfiguration(classes = FurnitureShop.class)
-public class OrderServiceUnitTest {
+public class OrderServiceTests {
 
 	@Autowired
 	OrderManagement<ShopOrder> orderManagement;

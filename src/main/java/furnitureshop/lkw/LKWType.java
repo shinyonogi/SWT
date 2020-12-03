@@ -67,7 +67,7 @@ public enum LKWType {
 
 	/**
 	 * Finds an {@link LKWType} by its case insensitivity Enum-Name or Displayname.
-	 * Similar to {@code LKWType.valueOf()} but with no {@link Exception}.
+	 * Similar to {@link LKWType#valueOf(String)} but with no {@link Exception}.
 	 *
 	 * @param name The name of the type
 	 *
