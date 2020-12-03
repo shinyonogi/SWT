@@ -2,6 +2,7 @@ package furnitureshop.lkw;
 
 import org.javamoney.moneta.Money;
 import org.salespointframework.core.Currencies;
+import org.springframework.util.Assert;
 
 import javax.money.MonetaryAmount;
 import java.util.Optional;
@@ -73,6 +74,8 @@ public enum LKWType {
 	 * @return The {@link LKWType} with this name
 	 */
 	public static Optional<LKWType> getByName(String name) {
+		Assert.hasText(name, "Name must not be null");
+
 		for (LKWType type : LKWType.values()) {
 			if (type.name().equalsIgnoreCase(name) || type.getName().equalsIgnoreCase(name)) {
 				return Optional.of(type);
@@ -91,6 +94,8 @@ public enum LKWType {
 	 * @return The {@link LKWType} with the weight
 	 */
 	public static Optional<LKWType> getByWeight(int weight) {
+		Assert.isTrue(weight >= 0, "Weight must be greater than 0");
+
 		LKWType minType = null;
 
 		for (LKWType type : LKWType.values()) {
