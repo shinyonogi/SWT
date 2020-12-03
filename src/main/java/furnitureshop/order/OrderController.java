@@ -90,7 +90,7 @@ class OrderController {
 
 	@PostMapping("/cart/change/{id}")
 	String editItem(@PathVariable("id") String cartItemId, @RequestParam("amount") int amount, @ModelAttribute Cart cart) {
-		cart.getItem(cartItemId).map(it -> {
+		return cart.getItem(cartItemId).map(it -> {
 			if (amount <= 0){
 				cart.removeItem(cartItemId);
 			} else {
@@ -98,9 +98,7 @@ class OrderController {
 				cart.addOrUpdateItem(it.getProduct(), newValue);
 			}
 			return "redirect:/cart";
-		});
-
-		return "redirect:/cart";
+		}).orElse("redirect:/cart");
 	}
 
 	/**
