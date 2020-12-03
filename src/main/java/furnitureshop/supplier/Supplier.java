@@ -3,6 +3,7 @@ package furnitureshop.supplier;
 import org.springframework.util.Assert;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 public class Supplier {
@@ -38,6 +39,24 @@ public class Supplier {
 	// for website display
 	public double getSurchargeInPercent() {
 		return surcharge * 100;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof Supplier)) {
+			return false;
+		}
+
+		Supplier supplier = (Supplier) o;
+		return id == supplier.id;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id);
 	}
 
 }

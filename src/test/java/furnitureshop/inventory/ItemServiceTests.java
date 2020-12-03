@@ -20,7 +20,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @ContextConfiguration(classes = FurnitureShop.class)
-
 public class ItemServiceTests {
 
 	@Autowired
@@ -33,7 +32,6 @@ public class ItemServiceTests {
 	ItemService itemservice;
 
 	ProductIdentifier id;
-
 
 	@BeforeEach
 	void setUp() {
@@ -100,7 +98,7 @@ public class ItemServiceTests {
 	@Test
 	void findAllByGroupIdBySizeTest() {
 		assertEquals(itemservice.findAllByGroupId(1).stream().count(), 1, "ItemService.findAll() should find all items by groupIDs!/Number of items in catalog is wrong!");
-		assertEquals(itemservice.findAllByGroupId(2).stream().count(), 4, "ItemService.findAll() should find all items by groupIDs!/Number of items in catalog is wrong!") ;
+		assertEquals(itemservice.findAllByGroupId(2).stream().count(), 4, "ItemService.findAll() should find all items by groupIDs!/Number of items in catalog is wrong!");
 		assertEquals(itemservice.findAllByGroupId(3).stream().count(), 1, "ItemService.findAll() should find all items by groupIDs!/Number of items in catalog is wrong!");
 		assertEquals(itemservice.findAllByGroupId(4).stream().count(), 1, "ItemService.findAll() should find all items by groupIDs!/Number of items in catalog is wrong!");
 

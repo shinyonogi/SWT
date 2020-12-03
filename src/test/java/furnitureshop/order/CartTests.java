@@ -4,23 +4,13 @@ import furnitureshop.FurnitureShop;
 import furnitureshop.inventory.Category;
 import furnitureshop.inventory.Piece;
 import furnitureshop.supplier.Supplier;
-import furnitureshop.supplier.SupplierRepository;
 import org.javamoney.moneta.Money;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.salespointframework.core.Currencies;
 import org.salespointframework.order.Cart;
-import org.salespointframework.order.CartItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
-
-import java.util.Iterator;
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Tests for {@link OrderController} (cart)
@@ -28,26 +18,23 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * @author Shintaro Onogi
  * @version 1.0
  */
-
 @SpringBootTest
 @ContextConfiguration(classes = FurnitureShop.class)
 public class CartTests {
 
 	@Autowired
-	SupplierRepository supplierRepository;
+	OrderController orderController;
 
-	@Autowired OrderController orderController;
-
-	Iterator<Supplier> iterator = supplierRepository.findAll().iterator();
-	Supplier supplier = iterator.next();
-	Cart cart = new Cart();
-	Piece Stuhl1 = new Piece(1, "Stuhl 1", Money.of(59.99, Currencies.EURO), "/resources/img/chair_2.jpg", "schwarz",
-			"Stuhl 1 in schwarz.", supplier, 5, Category.CHAIR);
+	Cart cart;
+	Piece Stuhl1;
 
 	@BeforeEach
 	void setUp() {
-		cart.clear();
-		assertTrue(cart.isEmpty());
+		final Supplier supplier = new Supplier("test", 0.1);
+
+		cart = new Cart();
+		Stuhl1 = new Piece(1, "Stuhl 1", Money.of(59.99, Currencies.EURO), "/resources/img/chair_2.jpg", "schwarz",
+				"Stuhl 1 in schwarz.", supplier, 5, Category.CHAIR);
 	}
 
 	/**

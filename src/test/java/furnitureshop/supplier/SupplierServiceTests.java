@@ -1,49 +1,49 @@
 package furnitureshop.supplier;
 
-import static org.junit.jupiter.api.Assertions.*;
-
+import furnitureshop.FurnitureShop;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ContextConfiguration;
 
-import furnitureshop.inventory.ItemService;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
+@ContextConfiguration(classes = FurnitureShop.class)
 public class SupplierServiceTests {
 
 	@Autowired
 	SupplierRepository supplierRepository;
-	
+
 	@Autowired
-	ItemService itemService;
-	
 	SupplierService supplierService;
-	Supplier testSupplier = new Supplier("test", 1);
-	
+
+	Supplier testSupplier;
+
 	@BeforeEach
 	void setUp() {
-		supplierService = new SupplierService(supplierRepository, itemService);
+		testSupplier = new Supplier("test", 1);
 		//(SQL error) supplierRepository.deleteAll();
 	}
-	
+
 	@Test
 	void testAddSupplier() {
 		supplierService.addSupplier(testSupplier);
 		Supplier storedSupplier = supplierRepository.findById(testSupplier.getId()).get();
 		assertEquals(storedSupplier.getId(), testSupplier.getId(), "supplier id mismatch");
-		
+
 		// duplicate test
 		supplierService.addSupplier(testSupplier);
 		boolean supplierFound = false;
-		for(Supplier supplier : supplierRepository.findAll()) {
-			if(supplier.getId() == testSupplier.getId()) {
+		for (Supplier supplier : supplierRepository.findAll()) {
+			if (supplier.getId() == testSupplier.getId()) {
 				assertFalse(supplierFound, "testSupplier was found twice");
 				supplierFound = true;
 			}
 		}
 	}
-	
+
 	@Test
 	void testDeleteSupplierById() {
 		supplierRepository.save(testSupplier);
@@ -57,9 +57,9 @@ public class SupplierServiceTests {
 		Supplier foundSupplier = supplierService.findByName(testSupplier.getName()).get();
 		assertEquals(foundSupplier.getId(), testSupplier.getId(), "supplier id mismatch");
 	}*/
-	
+
 	@Test
 	void testFindAll() {
-		 assertEquals(supplierRepository.findAll(), supplierService.findAll());
+		assertEquals(supplierRepository.findAll(), supplierService.findAll());
 	}
 }
