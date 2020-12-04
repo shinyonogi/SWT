@@ -1,9 +1,7 @@
 package furnitureshop.order;
 
 import furnitureshop.FurnitureShop;
-import furnitureshop.inventory.Category;
-import furnitureshop.inventory.ItemService;
-import furnitureshop.inventory.Piece;
+import furnitureshop.inventory.*;
 import furnitureshop.lkw.LKW;
 import furnitureshop.lkw.LKWService;
 import furnitureshop.lkw.LKWType;
@@ -35,7 +33,7 @@ public class OrderServiceTests {
 	OrderManagement<ShopOrder> orderManagement;
 
 	@Autowired
-	ItemService itemService;
+	ItemCatalog itemCatalog;
 
 	@Autowired
 	SupplierRepository supplierRepository;
@@ -56,16 +54,25 @@ public class OrderServiceTests {
 		for (ShopOrder order : orderManagement.findBy(orderService.getDummyUser().get())) {
 			orderManagement.delete(order);
 		}
-		Iterator<Supplier> iterator = supplierRepository.findAll().iterator();
-		Supplier supplier = iterator.next();
 
-		Piece Stuhl1 = new Piece(1, "Stuhl 1", Money.of(59.99, Currencies.EURO), "", "schwarz",
+		itemCatalog.deleteAll();
+		supplierRepository.deleteAll();
+
+		final Supplier supplier = new Supplier("test", 0.2);
+		supplierRepository.save(supplier);
+
+		Piece stuhl1 = new Piece(1, "Stuhl 1", Money.of(59.99, Currencies.EURO), "", "schwarz",
 				"", supplier, 5, Category.CHAIR);
-		Piece Sofa1_green = new Piece(2, "Sofa 1", Money.of(259.99, Currencies.EURO), "", "grün",
+		Piece sofa1_green = new Piece(2, "Sofa 1", Money.of(259.99, Currencies.EURO), "", "grün",
 				"", supplier, 50, Category.COUCH);
+
+		itemCatalog.save(stuhl1);
+		itemCatalog.save(sofa1_green);
+
 		this.exampleCart = new Cart();
-		exampleCart.addOrUpdateItem(Stuhl1, 1);
-		exampleCart.addOrUpdateItem(Sofa1_green, 10);
+
+		exampleCart.addOrUpdateItem(stuhl1, 1);
+		exampleCart.addOrUpdateItem(sofa1_green, 10);
 	}
 
 	@Test
