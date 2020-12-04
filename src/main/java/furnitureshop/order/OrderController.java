@@ -4,15 +4,12 @@ import furnitureshop.inventory.Item;
 import furnitureshop.lkw.LKWType;
 import org.salespointframework.order.Cart;
 import org.salespointframework.order.CartItem;
-import org.salespointframework.order.OrderLine;
 import org.salespointframework.quantity.Quantity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -66,9 +63,10 @@ class OrderController {
 	/**
 	 * Adds a {@link Item} to the {@link Cart}.
 	 *
-	 * @param item the disc that should be added to the cart (may be {@literal null}).
+	 * @param item   the disc that should be added to the cart (may be {@literal null}).
 	 * @param number number of items that should be added to the cart.
-	 * @param cart must not be {@literal null}.
+	 * @param cart   must not be {@literal null}.
+	 *
 	 * @return the view index
 	 */
 
@@ -83,15 +81,16 @@ class OrderController {
 	 * Changes the quantity of {@link Item} in the {@link Cart}
 	 *
 	 * @param cartItemId the product identifier of the item in the cart
-	 * @param amount the new quantity of the item in the cart
-	 * @param cart can be null/empty if every product is going to be removed, cannot be null if a product is going to be added
+	 * @param amount     the new quantity of the item in the cart
+	 * @param cart       can be null/empty if every product is going to be removed, cannot be null if a product is going to be added
+	 *
 	 * @return the view cart
 	 */
 
 	@PostMapping("/cart/change/{id}")
 	String editItem(@PathVariable("id") String cartItemId, @RequestParam("amount") int amount, @ModelAttribute Cart cart) {
 		return cart.getItem(cartItemId).map(it -> {
-			if (amount <= 0){
+			if (amount <= 0) {
 				cart.removeItem(cartItemId);
 			} else {
 				final int newValue = amount - it.getQuantity().getAmount().intValue();
@@ -105,7 +104,8 @@ class OrderController {
 	 * Deletes a certain {@link Item} in the {@link Cart}
 	 *
 	 * @param cartItemId the product identifier of the item in the cart
-	 * @param cart can be null/empty if every product is going to be removed
+	 * @param cart       can be null/empty if every product is going to be removed
+	 *
 	 * @return the view cart
 	 */
 	@PostMapping("/cart/delete/{id}")
@@ -193,24 +193,24 @@ class OrderController {
 			return "redirect:/checkOrder";
 		}
 
-		final List<Item> itemList = new ArrayList<>();
+		final ShopOrder order = shopOrder.get();
 
-		if (shopOrder.get() instanceof ItemOrder) {
-			for (OrderLine orderline : shopOrder.get().getOrderLines()) {
-				final Optional<Item> item = orderService.findItemById(orderline.getProductIdentifier());
+		if (order instanceof ItemOrder) {
+			model.addAttribute("items", ((ItemOrder) order).getOrderEntries());
+			model.addAttribute("statuses", OrderStatus.values());
 
-				item.ifPresent(itemList::add);
+			if (order instanceof Delivery) {
+				model.addAttribute("lkw", ((Delivery) order).getLkw());
+				model.addAttribute("deliveryDate", ((Delivery) order).getDeliveryDate());
 			}
-			if (shopOrder.get() instanceof Delivery) {
-				model.addAttribute("deliveryDate", ((Delivery) shopOrder.get()).getDeliveryDate());
-			}
-		} else if (shopOrder.get() instanceof LKWCharter) {
-			// LKW Charter
+		} else if (order instanceof LKWCharter) {
+			model.addAttribute("lkw", ((LKWCharter) order).getLkw());
+			model.addAttribute("charterDate", ((LKWCharter) order).getRentDate());
+		} else {
+			return "redirect:/checkOrder";
 		}
 
-		model.addAttribute("contactInfo", shopOrder.get().getContactInformation());
-		model.addAttribute("items", itemList);
-		model.addAttribute("order", shopOrder.get());
+		model.addAttribute("order", order);
 
 		return "orderOverview";
 	}

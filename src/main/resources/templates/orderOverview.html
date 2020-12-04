@@ -15,40 +15,47 @@
 
 <div class="container pt-3">
 
-	<p th:text="'Name: ' + ${contactInfo.getName()}"></p>
-	<p th:text="'Adresse: ' + ${contactInfo.getAddress()}"></p>
-	<p th:text="'Email: ' + ${contactInfo.getEmail()}"></p>
-	<p th:if="${deliveryDate}" th:text="'Lieferdatum: ' + ${deliveryDate}"></p>
-	<p th:text="'Gesamtpreis: ' + ${order.getTotal()}"></p>
-	<p th:text="'Bestelldatum: ' + ${order.getDateCreated()}"></p>
+	<p th:text="'Name: ' + ${order.getContactInformation().getName()}"></p>
+	<p th:text="'Adresse: ' + ${order.getContactInformation().getAddress()}"></p>
+	<p th:text="'Email: ' + ${order.getContactInformation().getEmail()}"></p>
+	<p th:text="'Bestellnummer: ' + ${order.getId()}"></p>
+	<p th:text="'Bestelldatum: ' + ${#temporals.format(order.getDateCreated(), 'dd.MM.yyyy HH:mm:ss')}"></p>
 
-	<table class="table bg-light pb-5">
+	<p th:if="${charterDate}" th:text="'Mietdatum: ' + ${#temporals.format(charterDate, 'dd.MM.yyyy')}"></p>
+	<p th:if="${charterDate}" th:text="'Mietpreis: ' + ${order.getTotal()}"></p>
+
+	<p th:if="${deliveryDate}" th:text="'Lieferdatum: ' + ${#temporals.format(deliveryDate, 'dd.MM.yyyy')}"></p>
+	<p th:if="${deliveryDate}" th:text="'Itempreis: ' + ${order.getTotal().subtract(lkw.getType().getDelieveryPrice())}"></p>
+	<p th:if="${deliveryDate}" th:text="'Lieferpreis: ' + ${lkw.getType().getDelieveryPrice()}"></p>
+
+	<p th:if="${charterDate == null}" th:text="'Gesamtpreis: ' + ${order.getTotal()}"></p>
+
+	<table th:if="${items}" class="table bg-light pb-5">
 		<tbody>
-			<tr th:if="${!items.isEmpty()}" th:each="item : ${items}">
+			<tr th:each="item : ${items}">
 				<td class="align-middle" style="width: 20%">
-					<img th:src="@{${item.getPicture()}}" class="img-fluid" style="width: 150px">
+					<img th:src="@{${item.getItem().getPicture()}}" class="img-fluid" style="width: 150px">
 				</td>
 				<td class="align-middle">
-					<h3 th:text="${item.getName()}">Sofa</h3>
+					<h3 th:text="${item.getItem().getName()}">Sofa</h3>
 				</td>
 				<td class="align-middle">
-					<h5 th:text="${item.getPrice()}">999,99€</h5>
+					<h5 th:text="${item.getItem().getPrice()}">999,99€</h5>
+				</td>
+				<td class="align-middle">
+					<h5 th:text="${item.getStatus().name().toLowerCase()}">999,99€</h5>
 				</td>
 				<td sec:authorize="hasRole('EMPLOYEE')" class="align-middle">
 					<div class="dropdown">
 						<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							Status ändern
 						</button>
-							<div class="dropdown-menu">
-								<a class="dropdown-item" href="#">eingegangen</a>
-								<a class="dropdown-item" href="#">eingelagert</a>
-								<a class="dropdown-item" href="#">bezahlt</a>
-								<a class="dropdown-item" href="#">abgeschlossen</a>
-								<a class="dropdown-item" href="#">storniert</a>
-							</div>
+						<div class="dropdown-menu">
+							<a class="dropdown-item" href="#" th:each="s : ${statuses}" th:text="${s.name().toLowerCase()}">eingegangen</a>
+						</div>
 					</div>
 				</td>
-				<td sec:authorize="!hasRole('EMPLOYEE')" class="align-middle">
+				<td sec:authorize="!hasRole('EMPLOYEE')" th:unless="${item.getStatus() == T(furnitureshop.order.OrderStatus).COMPLETED || item.getStatus() == T(furnitureshop.order.OrderStatus).COMPLETED}" class="align-middle">
 					<button type="button" class="btn btn-secondary">Artikel stornieren</button>
 				</td>
 			</tr>

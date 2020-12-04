@@ -4,6 +4,7 @@ import furnitureshop.lkw.LKW;
 import org.salespointframework.useraccount.UserAccount;
 import org.springframework.util.Assert;
 
+import javax.money.MonetaryAmount;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import java.time.LocalDate;
@@ -33,6 +34,12 @@ public class Delivery extends ItemOrder {
 
 	public LocalDate getDeliveryDate() {
 		return deliveryDate;
+	}
+
+	@Override
+	@SuppressWarnings("NullableProblems")
+	public MonetaryAmount getTotal() {
+		return super.getTotal().add(lkw.getType().getDelieveryPrice());
 	}
 
 }

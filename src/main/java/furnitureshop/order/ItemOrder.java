@@ -8,14 +8,16 @@ import org.salespointframework.useraccount.UserAccount;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Entity
 public abstract class ItemOrder extends ShopOrder {
 
-	@OneToMany(cascade = CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<ItemOrderEntry> orderWithStatus;
 
 	public ItemOrder(UserAccount userAccount, ContactInformation contactInformation) {
@@ -25,12 +27,16 @@ public abstract class ItemOrder extends ShopOrder {
 
 	protected ItemOrder() {}
 
-	public OrderLine addOrderLine(Item item, Quantity quantity) {
-		final OrderLine orderLine = super.addOrderLine(item, quantity);
+	@Override
+	@SuppressWarnings("NullableProblems")
+	public OrderLine addOrderLine(Product product, Quantity quantity) {
+		final OrderLine orderLine = super.addOrderLine(product, quantity);
 
-		final int amount = quantity.getAmount().intValue();
-		for (int i = 0; i < amount; i++) {
-			orderWithStatus.add(new ItemOrderEntry(item, OrderStatus.OPEN));
+		if (product instanceof Item) {
+			final int amount = quantity.getAmount().intValue();
+			for (int i = 0; i < amount; i++) {
+				orderWithStatus.add(new ItemOrderEntry((Item) product, OrderStatus.OPEN));
+			}
 		}
 
 		return orderLine;
@@ -46,13 +52,17 @@ public abstract class ItemOrder extends ShopOrder {
 
 	public boolean changeStatus(Product product, OrderStatus oldStatus, OrderStatus newStatus) {
 		for (ItemOrderEntry order : orderWithStatus) {
-			if (order.getProduct().equals(product) && order.getStatus() == oldStatus) {
+			if (order.getItem().equals(product) && order.getStatus() == oldStatus) {
 				order.setStatus(newStatus);
 				return true;
 			}
 		}
 
 		return false;
+	}
+
+	public List<ItemOrderEntry> getOrderEntries() {
+		return Collections.unmodifiableList(orderWithStatus);
 	}
 
 }

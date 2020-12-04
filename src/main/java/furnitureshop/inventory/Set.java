@@ -5,6 +5,7 @@ import org.springframework.util.Assert;
 
 import javax.money.MonetaryAmount;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,7 +14,7 @@ import java.util.List;
 @Entity
 public class Set extends Item {
 
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER)
 	private List<Item> items;
 
 	protected Set() {}

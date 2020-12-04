@@ -99,8 +99,8 @@ public class OrderService {
 		}
 
 		final Delivery order = new Delivery(userAccount.get(), contactInformation, lkw.get(), deliveryDate);
-		order.changeAllStatus(OrderStatus.PAID);
 		cart.addItemsTo(order);
+		order.changeAllStatus(OrderStatus.PAID);
 		orderManagement.save(order);
 
 		return Optional.of(order);

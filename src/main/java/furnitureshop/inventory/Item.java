@@ -59,8 +59,7 @@ public abstract class Item extends Product {
 		final MonetaryAmount temp = getSupplierPrice().multiply(1.0 + supplier.getSurcharge());
 
 		final BigDecimal price = temp.getNumber().numberValue(BigDecimal.class)
-				.setScale(2, RoundingMode.HALF_EVEN)
-				.stripTrailingZeros();
+				.setScale(2, RoundingMode.HALF_EVEN);
 
 		return Money.of(price, EURO);
 	}

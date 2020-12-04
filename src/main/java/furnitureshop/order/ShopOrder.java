@@ -1,7 +1,6 @@
 package furnitureshop.order;
 
 import org.salespointframework.order.Order;
-import org.salespointframework.payment.Cash;
 import org.salespointframework.useraccount.UserAccount;
 import org.springframework.util.Assert;
 
@@ -23,10 +22,11 @@ public abstract class ShopOrder extends Order {
 		this.contactInformation = contactInformation;
 	}
 
-	@SuppressWarnings({ "unused", "deprecation" })
+	@SuppressWarnings("deprecation")
 	protected ShopOrder() { }
 
 	public ContactInformation getContactInformation() {
 		return contactInformation;
 	}
+
 }

@@ -1,8 +1,6 @@
 package furnitureshop.order;
 
 import furnitureshop.inventory.Item;
-import org.salespointframework.catalog.Product;
-import org.salespointframework.order.OrderLine;
 import org.springframework.util.Assert;
 
 import javax.persistence.*;
@@ -13,7 +11,7 @@ public class ItemOrderEntry {
 	@Id @GeneratedValue
 	private long id;
 
-	@OneToOne(cascade = CascadeType.ALL)
+	@ManyToOne
 	private Item item;
 
 	@Enumerated(EnumType.ORDINAL)
@@ -29,7 +27,7 @@ public class ItemOrderEntry {
 
 	protected ItemOrderEntry() { }
 
-	public Item getProduct() {
+	public Item getItem() {
 		return item;
 	}
 
