@@ -5,6 +5,7 @@ import furnitureshop.lkw.LKWType;
 import org.salespointframework.order.Cart;
 import org.salespointframework.order.CartItem;
 import org.salespointframework.quantity.Quantity;
+import org.salespointframework.time.BusinessTime;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.Assert;
@@ -24,6 +25,7 @@ import java.util.Optional;
 class OrderController {
 
 	private final OrderService orderService;
+	private final BusinessTime businessTime;
 
 	/**
 	 * Creates a new {@link OrderController} with the given {@link OrderService}.
@@ -31,10 +33,12 @@ class OrderController {
 	 * @param orderService must not be {@literal null}.
 	 */
 
-	OrderController(OrderService orderService) {
+	OrderController(OrderService orderService, BusinessTime businessTime) {
 		Assert.notNull(orderService, "OrderService must not be null");
+		Assert.notNull(businessTime, "OrderService must not be null");
 
 		this.orderService = orderService;
+		this.businessTime = businessTime;
 	}
 
 	/**
@@ -205,6 +209,7 @@ class OrderController {
 			}
 		} else if (order instanceof LKWCharter) {
 			model.addAttribute("lkw", ((LKWCharter) order).getLkw());
+			model.addAttribute("cancelable", ((LKWCharter) order).getRentDate().isAfter(businessTime.getTime().toLocalDate()));
 			model.addAttribute("charterDate", ((LKWCharter) order).getRentDate());
 		} else {
 			return "redirect:/checkOrder";
