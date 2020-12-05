@@ -9,41 +9,41 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
 <body>
-<div th:fragment="navigation" class="container">
-    <nav class="navbar navbar-expand-sm navbar-light bg-light">
-        <a class="navbar-brand" th:href=@{/}>
-            <img th:src="@{/resources/img/logo.png}" src="../static/resources/img/logo.png" width="100" height="50" alt="LKW"/>
-        </a>
-        <ul class="navbar-nav">
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" th:href="@{/catalog}" th:text="#{navbar.catalog}" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Katalog
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" th:href="@{/catalog/chair}" th:text="#{navbar.catalog.chair}">Chair</a>
-                    <a class="dropdown-item" th:href="@{/catalog/table}" th:text="#{navbar.catalog.table}">Table</a>
-                    <a class="dropdown-item" th:href="@{/catalog/couch}" th:text="#{navbar.catalog.couch}">Couch</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" th:href="@{/catalog}">Alles</a>
-                </div>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" th:href="@{/cart}" th:text="#{navbar.cart}">Warenkorb</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" th:href="@{/checkOrder}" th:text="#{navbar.orders}">Bestellungen</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" th:href="@{/lkws}" th:text="#{navbar.lkw}">LKW mieten</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" th:href="@{/admin/overview}" th:text="#{navbar.admin}">Admin</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" th:href="@{/logout}"  sec:authorize="${hasRole('EMPLOYEE')}" th:text="#{navbar.logout}">Logout</a>
-            </li>
-        </ul>
-    </nav>
-</div>
+    <div th:fragment="navigation" class="container">
+        <nav class="navbar navbar-expand-sm navbar-light bg-light">
+            <a class="navbar-brand" th:href=@{/}>
+                <img th:src="@{/resources/img/logo.png}" src="../static/resources/img/logo.png" width="100" height="50" alt="LKW"/>
+            </a>
+            <ul class="navbar-nav">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" th:href="@{/catalog}" th:text="#{navbar.catalog}" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Katalog
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" th:href="@{/catalog/chair}" th:text="#{navbar.catalog.chair}">Chair</a>
+                        <a class="dropdown-item" th:href="@{/catalog/table}" th:text="#{navbar.catalog.table}">Table</a>
+                        <a class="dropdown-item" th:href="@{/catalog/couch}" th:text="#{navbar.catalog.couch}">Couch</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" th:href="@{/catalog}">Alles</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/cart}" th:text="#{navbar.cart}">Warenkorb</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/checkOrder}" th:text="#{navbar.orders}">Bestellungen</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/lkws}" th:text="#{navbar.lkw}">LKW mieten</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/admin/overview}" th:text="#{navbar.admin}">Admin</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/logout}" sec:authorize="${hasRole('EMPLOYEE')}" th:text="#{navbar.logout}">Logout</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
 </body>
 </html>

@@ -1,24 +1,24 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  	<title th:text="#{item.catalog}"></title>
-  	<meta charset="utf-8">
-  	<meta name="viewport" content="width=device-width, initial-scale=1">
-  	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-	<link th:href="@{/resources/css/style.css}" rel="stylesheet"
-		  href="../static/resources/css/style.css" type="text/css"/>
+    <title th:text="#{item.catalog}"></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link th:href="@{/resources/css/style.css}" rel="stylesheet"
+          href="../static/resources/css/style.css" type="text/css"/>
 </head>
 <body>
-	<nav th:include="navigation :: navigation"></nav>
+    <nav th:include="navigation :: navigation"></nav>
 
-	<div class="container pt-3">
-		<div class="row">
+    <div class="container pt-3">
+        <div class="row">
 
             <div th:each="item : ${items}" class="col-lg-4 col-md-6 mb-4">
-                <div class="card h-100">
+                <div class="card h-100 bg-light">
                     <a class="card-img-top" th:href="@{/catalog/{category}/{id}(id=${item.getId()}, category=${item.getCategory().name().toLowerCase()})}">
                         <img class="img-fluid" th:src="@{${item.getPicture()}}"
                              src="../static/resources/img/chair_1.jpg" alt="Artikel"/>
@@ -26,11 +26,11 @@
 
                     <div class="card-body">
                         <h4 class="card-title" th:text="${item.getName()}">Name</h4>
-						<del><h5 class="text-danger" th:text="${item.getPieceTotal() ?: ''}"></h5></del>
+                        <del><h5 class="text-danger" th:text="${item.getPieceTotal() ?: ''}"></h5></del>
                         <h5 class="text-primary" th:text="#{item.price} + ' ' + ${item.getPrice()}">999,99€</h5>
                         <p class="card-text" th:text="${item.getDescription()}">Lorem ipsum</p>
-						<a class="btn btn-primary" th:href="@{/catalog/{category}/{id}(id=${item.getId()}, category=${item.getCategory().name().toLowerCase()})}" th:text="#{item.detail.btn}">Artikel ansehen</a>
-					</div>
+                        <a class="btn btn-primary" th:href="@{/catalog/{category}/{id}(id=${item.getId()}, category=${item.getCategory().name().toLowerCase()})}" th:text="#{item.detail.btn}">Artikel ansehen</a>
+                    </div>
                     <!--
                     <div class="card-footer">
                         <small class="text-muted" th:text="${item.getDescription()}"></small>

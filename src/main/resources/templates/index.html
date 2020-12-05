@@ -1,110 +1,110 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-	<title>Moebelkaufhaus</title>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-	<link th:href="@{/resources/css/style.css}" rel="stylesheet"
-		  href="../static/resources/css/style.css" type="text/css"/>
+    <title>Moebelkaufhaus</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link th:href="@{/resources/css/style.css}" rel="stylesheet"
+          href="../static/resources/css/style.css" type="text/css"/>
 </head>
 <body>
-	<nav th:include="navigation :: navigation"></nav>
+    <nav th:include="navigation :: navigation"></nav>
 
-	<header class="masthead text-center text-white">
-		<div class="masthead-content">
-			<div class="container">
-				<h1 class="masthead-heading mb-0">THE BEST FURNITURE.</h1>
-				<h2 class="masthead-subheading mb-0" th:text="#{index.subslogan}">Entdecke neue Möbel!</h2>
-				<a th:href="@{/catalog}" class="btn btn-primary btn-lg rounded-pill mt-5" role="button" th:text="#{index.shop.catalog}">Zum Katalog</a>
-			</div>
-		</div>
-	</header>
+    <header class="masthead text-center text-white">
+        <div class="masthead-content">
+            <div class="container">
+                <h1 class="masthead-heading mb-0">THE BEST FURNITURE.</h1>
+                <h2 class="masthead-subheading mb-0" th:text="#{index.subslogan}">Entdecke neue Möbel!</h2>
+                <a th:href="@{/catalog}" class="btn btn-primary btn-lg rounded-pill mt-5" role="button" th:text="#{index.shop.catalog}">Zum Katalog</a>
+            </div>
+        </div>
+    </header>
 
-	<section>
-		<div class="container">
-			<div class="row align-items-center">
-				<div class="col-lg-6 order-lg-2">
-					<div class="p-5">
-						<img class="img-fluid rounded-circle" th:src="@{/resources/img/table_1.jpeg}" src="../static/resources/img/table_1.jpeg" alt="tisch"/>
-					</div>
-				</div>
-				<div class="col-lg-6 order-lg-1">
-					<div class="p-5">
-						<h2 class="display-4" th:text="#{index.slogan.table}">Wunderschöne Tische...</h2>
-						<p th:text="#{index.description.table}">Mit den unseren Tischen & Schreibtischen richtest du dich hübsch ein - egal ob zum Arbeiten oder zum Essen. <br> Schau vorbei!</p>
-						<a th:href="@{/catalog/table}" class="btn btn-outline-primary" role="button" th:text="#{index.shop.table}">Tische kaufen</a>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
+    <section>
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 order-lg-2">
+                    <div class="p-5">
+                        <img class="img-fluid rounded-circle" th:src="@{/resources/img/table_1.jpeg}" src="../static/resources/img/table_1.jpeg" alt="tisch"/>
+                    </div>
+                </div>
+                <div class="col-lg-6 order-lg-1">
+                    <div class="p-5">
+                        <h2 class="display-4" th:text="#{index.slogan.table}">Wunderschöne Tische...</h2>
+                        <p th:text="#{index.description.table}">Mit den unseren Tischen & Schreibtischen richtest du dich hübsch ein - egal ob zum Arbeiten oder zum Essen. <br> Schau vorbei!</p>
+                        <a th:href="@{/catalog/table}" class="btn btn-outline-primary" role="button" th:text="#{index.shop.table}">Tische kaufen</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-	<section>
-		<div class="container">
-			<div class="row align-items-center">
-				<div class="col-lg-6">
-					<div class="p-5">
-						<img class="img-fluid rounded-circle" th:src="@{/resources/img/chair_1.jpg}" src="../static/resources/img/chair_1.jpg" alt="stuhl"/>
-					</div>
-				</div>
-				<div class="col-lg-6">
-					<div class="p-5">
-						<h2 class="display-4" th:text="#{index.slogan.chair}">Geile Stühle...</h2>
-						<p th:text="#{index.description.chair}">In unserem großen Sortiment findest du bequeme und schöne Stühle für dein Zuhause - vom Esszimmerstuhl bis zum Sessel. Schau mal!</p>
-						<a th:href="@{/catalog/chair}" class="btn btn-outline-primary" role="button" th:text="#{index.shop.chair}">Stühle kaufen</a>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
+    <section>
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="p-5">
+                        <img class="img-fluid rounded-circle" th:src="@{/resources/img/chair_1.jpg}" src="../static/resources/img/chair_1.jpg" alt="stuhl"/>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="p-5">
+                        <h2 class="display-4" th:text="#{index.slogan.chair}">Geile Stühle...</h2>
+                        <p th:text="#{index.description.chair}">In unserem großen Sortiment findest du bequeme und schöne Stühle für dein Zuhause - vom Esszimmerstuhl bis zum Sessel. Schau mal!</p>
+                        <a th:href="@{/catalog/chair}" class="btn btn-outline-primary" role="button" th:text="#{index.shop.chair}">Stühle kaufen</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-	<section>
-		<div class="container">
-			<div class="row align-items-center">
-				<div class="col-lg-6 order-lg-2">
-					<div class="p-5">
-						<img class="img-fluid rounded-circle" th:src="@{/resources/img/sofa_1.jpg}" src="../static/resources/img/sofa_1.jpg" alt="couch"/>
-					</div>
-				</div>
-				<div class="col-lg-6 order-lg-1">
-					<div class="p-5">
-						<h2 class="display-4" th:text="#{index.slogan.couch}">Neue Girlfriend...?</h2>
-						<p th:text="#{index.description.couch}">Dir ist nach Kuscheln auf einem neuen Stoffsofa? Dann bist du bei uns richtig! Bei uns findest du ein breites Sortiment moderner, aktueller und traditioneller Sofas zu erschwinglichen Preisen.</p>
-						<a th:href="@{/catalog/couch}" class="btn btn-outline-primary" role="button" th:text="#{index.shop.couch}">Couchen kaufen</a>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
+    <section>
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 order-lg-2">
+                    <div class="p-5">
+                        <img class="img-fluid rounded-circle" th:src="@{/resources/img/sofa_1.jpg}" src="../static/resources/img/sofa_1.jpg" alt="couch"/>
+                    </div>
+                </div>
+                <div class="col-lg-6 order-lg-1">
+                    <div class="p-5">
+                        <h2 class="display-4" th:text="#{index.slogan.couch}">Neue Girlfriend...?</h2>
+                        <p th:text="#{index.description.couch}">Dir ist nach Kuscheln auf einem neuen Stoffsofa? Dann bist du bei uns richtig! Bei uns findest du ein breites Sortiment moderner, aktueller und traditioneller Sofas zu erschwinglichen Preisen.</p>
+                        <a th:href="@{/catalog/couch}" class="btn btn-outline-primary" role="button" th:text="#{index.shop.couch}">Couchen kaufen</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-	<section>
-		<div class="container">
-			<div class="row align-items-center">
-				<div class="col-lg-6">
-					<div class="p-5">
-						<img class="img-fluid rounded-circle" th:src="@{/resources/img/largelkw.jpg}" src="../static/resources/img/largelkw.jpg" alt="LKW"/>
-					</div>
-				</div>
-				<div class="col-lg-6">
-					<div class="p-5">
-						<h2 class="display-4" th:text="#{index.slogan.lkw}">Kein Bock auf Lieferung zu warten...?</h2>
-						<p th:text="#{index.description.lkw}">Du kannst auch LKWs Mieten. <br>Liefere deine Ware selber nach Hause!</p>
-						<a th:href="@{/lkws}" class="btn btn-outline-primary" role="button" th:text="#{index.shop.lkw}">LKW Mieten</a>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
+    <section>
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="p-5">
+                        <img class="img-fluid rounded-circle" th:src="@{/resources/img/largelkw.jpg}" src="../static/resources/img/largelkw.jpg" alt="LKW"/>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="p-5">
+                        <h2 class="display-4" th:text="#{index.slogan.lkw}">Kein Bock auf Lieferung zu warten...?</h2>
+                        <p th:text="#{index.description.lkw}">Du kannst auch LKWs Mieten. <br>Liefere deine Ware selber nach Hause!</p>
+                        <a th:href="@{/lkws}" class="btn btn-outline-primary" role="button" th:text="#{index.shop.lkw}">LKW Mieten</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-	<footer class="py-1 bg-white">
-		<div class="container">
-			<p class="m-0 text-center text-black small">Copyright &copy; Möbel-Hier 2020</p>
-		</div>
-	</footer>
+    <footer class="py-1 bg-white">
+        <div class="container">
+            <p class="m-0 text-center text-black small">Copyright &copy; Möbel-Hier 2020</p>
+        </div>
+    </footer>
 
 </body>
 </html> 

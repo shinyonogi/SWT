@@ -1,70 +1,70 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title th:text="#{checkout.title}">Admin Login</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <title th:text="#{checkout.title}">Admin Login</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
 <body>
 
-<nav th:include="navigation :: navigation"></nav>
+    <nav th:include="navigation :: navigation"></nav>
 
-<div class="container">
-	<div class="row">
-		<div class="col-2"></div>
-		<div class="col-4 mt-3">
-			<div class="border bg-light rounded p-1">
-				<h2 class="pt-2 pl-2">Übersicht</h2>
-				<div class="pt-3">
-					<div class="d-flex justify-content-between align-items-end pl-2 pr-2">
-						<h5>Artikelgesamtpreis:</h5>
-						<h5 th:text="${cart.getPrice()}">10 EUR</h5>
-					</div>
-					<div class="d-flex justify-content-between align-items-end pl-2 pr-2">
-						<h5>ggf. zzgl. Lieferkosten:</h5>
-						<h5 th:text="${lkwtype.getDelieveryPrice()}">10 EUR</h5>
-					</div>
-				</div>
-			</div>
+    <div class="container">
+        <div class="row">
+            <div class="col-2"></div>
+            <div class="col-4 mt-3">
+                <div class="border bg-light rounded p-1">
+                    <h2 class="pt-2 pl-2">Übersicht</h2>
+                    <div class="pt-3">
+                        <div class="d-flex justify-content-between align-items-end pl-2 pr-2">
+                            <h5>Artikelgesamtpreis:</h5>
+                            <h5 th:text="${cart.getPrice()}">10 EUR</h5>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-end pl-2 pr-2">
+                            <h5>ggf. zzgl. Lieferkosten:</h5>
+                            <h5 th:text="${lkwtype.getDelieveryPrice()}">10 EUR</h5>
+                        </div>
+                    </div>
+                </div>
 
-		</div>
-		<div class="col-4 mt-3">
-			<form class="form" th:object="${orderform}" th:method="post" th:action="@{/checkout/completeOrder}">
-				<div class="form-group">
-					<label for="name" th:text="#{order.name}">Name:</label>
-					<input type="text" name="name" th:value="*{name}" class="form-control" id="name" required th:placeholder="#{order.name.placeholder}">
-				</div>
-				<div class="form-group">
-					<label for="address" th:text="#{order.address}">Adresse:</label>
-					<input type="text" name="address" th:value="*{address}" class="form-control" id="address" required th:placeholder="#{order.address.placeholder}">
-				</div>
-				<div class="form-group">
-					<label for="email" th:text="#{order.email}">E-Mail:</label>
-					<input type="email" name="email" th:value="*{email}" class="form-control" id="email" required th:placeholder="#{order.email.placeholder}">
-				</div>
-		  		<div class="custom-control custom-radio custom-control-inline">
-					<input class="form-check-input" type="radio" name="orderType1" id="orderType1" value="1" th:field="*{index}">
-					<label class="form-check-label" for="orderType1" th:text="#{checkout.delivery}">
-					    Lieferung
-					</label>
-				</div>
-				<div class="custom-control custom-radio custom-control-inline">
-					<input class="form-check-input" type="radio" name="orderType2" id="orderType2" value="0" th:field="*{index}">
-					<label class="form-check-label" for="orderType2" th:text="#{checkout.pickup}">
-				    	Abholung
-				  	</label>
-				</div>
+            </div>
+            <div class="col-4 mt-3">
+                <form class="form" th:object="${orderform}" th:method="post" th:action="@{/checkout/completeOrder}">
+                    <div class="form-group">
+                        <label for="name" th:text="#{order.name}">Name:</label>
+                        <input type="text" name="name" th:value="*{name}" class="form-control" id="name" required th:placeholder="#{order.name.placeholder}">
+                    </div>
+                    <div class="form-group">
+                        <label for="address" th:text="#{order.address}">Adresse:</label>
+                        <input type="text" name="address" th:value="*{address}" class="form-control" id="address" required th:placeholder="#{order.address.placeholder}">
+                    </div>
+                    <div class="form-group">
+                        <label for="email" th:text="#{order.email}">E-Mail:</label>
+                        <input type="email" name="email" th:value="*{email}" class="form-control" id="email" required th:placeholder="#{order.email.placeholder}">
+                    </div>
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input class="form-check-input" type="radio" name="orderType1" id="orderType1" value="1" th:field="*{index}">
+                        <label class="form-check-label" for="orderType1" th:text="#{checkout.delivery}">
+                            Lieferung
+                        </label>
+                    </div>
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input class="form-check-input" type="radio" name="orderType2" id="orderType2" value="0" th:field="*{index}">
+                        <label class="form-check-label" for="orderType2" th:text="#{checkout.pickup}">
+                            Abholung
+                        </label>
+                    </div>
 
-		  		<button type="submit" class="btn btn-info mt-3" th:text="#{checkout.complete}">Bestellung abschicken</button>
-			</form>
-		</div>
-		<div class="col-2"></div>
-	</div>
-</div>
+                    <button type="submit" class="btn btn-info mt-3" th:text="#{checkout.complete}">Bestellung abschicken</button>
+                </form>
+            </div>
+            <div class="col-2"></div>
+        </div>
+    </div>
 
 </body>
 </html> 

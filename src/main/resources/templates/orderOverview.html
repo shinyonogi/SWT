@@ -1,111 +1,111 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-  <title>Bestellungen</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <title>Bestellungen</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
 <body>
 
-<nav th:include="navigation :: navigation"></nav>
+    <nav th:include="navigation :: navigation"></nav>
 
-<div class="container pt-3">
+    <div class="container pt-3">
 
-	<p th:text="'Name: ' + ${order.getContactInformation().getName()}"></p>
-	<p th:text="'Adresse: ' + ${order.getContactInformation().getAddress()}"></p>
-	<p th:text="'Email: ' + ${order.getContactInformation().getEmail()}"></p>
-	<p th:text="'Bestellnummer: ' + ${order.getId()}"></p>
-	<p th:text="'Bestelldatum: ' + ${#temporals.format(order.getDateCreated(), 'dd.MM.yyyy HH:mm:ss')}"></p>
+        <p th:text="'Name: ' + ${order.getContactInformation().getName()}"></p>
+        <p th:text="'Adresse: ' + ${order.getContactInformation().getAddress()}"></p>
+        <p th:text="'Email: ' + ${order.getContactInformation().getEmail()}"></p>
+        <p th:text="'Bestellnummer: ' + ${order.getId()}"></p>
+        <p th:text="'Bestelldatum: ' + ${#temporals.format(order.getDateCreated(), 'dd.MM.yyyy HH:mm:ss')}"></p>
 
-	<p th:if="${charterDate}" th:text="'Mietdatum: ' + ${#temporals.format(charterDate, 'dd.MM.yyyy')}"></p>
-	<p th:if="${charterDate}" th:text="'Mietpreis: ' + ${order.getTotal()}"></p>
+        <p th:if="${charterDate}" th:text="'Mietdatum: ' + ${#temporals.format(charterDate, 'dd.MM.yyyy')}"></p>
+        <p th:if="${charterDate}" th:text="'Mietpreis: ' + ${order.getTotal()}"></p>
 
-	<p th:if="${deliveryDate}" th:text="'Lieferdatum: ' + ${#temporals.format(deliveryDate, 'dd.MM.yyyy')}"></p>
-	<p th:if="${deliveryDate}" th:text="'Itempreis: ' + ${order.getTotal().subtract(lkw.getType().getDelieveryPrice())}"></p>
-	<p th:if="${deliveryDate}" th:text="'Lieferpreis: ' + ${lkw.getType().getDelieveryPrice()}"></p>
+        <p th:if="${deliveryDate}" th:text="'Lieferdatum: ' + ${#temporals.format(deliveryDate, 'dd.MM.yyyy')}"></p>
+        <p th:if="${deliveryDate}" th:text="'Itempreis: ' + ${order.getTotal().subtract(lkw.getType().getDelieveryPrice())}"></p>
+        <p th:if="${deliveryDate}" th:text="'Lieferpreis: ' + ${lkw.getType().getDelieveryPrice()}"></p>
 
-	<p th:if="${charterDate == null}" th:text="'Gesamtpreis: ' + ${order.getTotal()}"></p>
+        <p th:if="${charterDate == null}" th:text="'Gesamtpreis: ' + ${order.getTotal()}"></p>
 
-	<table th:if="${items}" class="table table-hover" style="table-layout: fixed">
-        <thead class="thead-light">
-			<tr class="text-center">
-				<th scope="col"></th>
-				<th scope="col" style="width: 40%">Artikel</th>
-				<th scope="col">Preis</th>
-				<th scope="col">Status</th>
-				<th scope="col"></th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr th:each="item : ${items}" class="text-center">
-				<td class="align-middle">
-					<img th:src="@{${item.getItem().getPicture()}}" class="img-fluid rounded" style="height: 150px"
-						 src="../static/resources/img/chair_1.jpg" alt="Artikel">
-				</td>
-				<td class="align-middle">
-					<h5 th:text="${item.getItem().getName()}">Sofa</h5>
-				</td>
-				<td class="align-middle">
-					<h5 th:text="${item.getItem().getPrice()}">999,99€</h5>
-				</td>
-				<td class="align-middle">
-					<h5 th:text="${item.getStatus().name().toLowerCase()}">paid</h5>
-				</td>
-				<td class="align-middle">
-					<div class="dropdown" sec:authorize="hasRole('EMPLOYEE')">
-						<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							Status ändern
-						</button>
-						<div class="dropdown-menu">
-							<a class="dropdown-item" href="#" th:each="s : ${statuses}" th:text="${s.name().toLowerCase()}">eingegangen</a>
-						</div>
-					</div>
-					<div sec:authorize="!hasRole('EMPLOYEE')" th:unless="${item.getStatus() == T(furnitureshop.order.OrderStatus).COMPLETED || item.getStatus() == T(furnitureshop.order.OrderStatus).COMPLETED}">
-						<button type="button" class="btn btn-secondary">Artikel stornieren</button>
-					</div>
-				</td>
-			</tr>
-		</tbody>
-	</table>
+        <table th:if="${items}" class="table table-hover" style="table-layout: fixed">
+            <thead class="thead-light">
+            <tr class="text-center">
+                <th scope="col"></th>
+                <th scope="col" style="width: 40%">Artikel</th>
+                <th scope="col">Preis</th>
+                <th scope="col">Status</th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item : ${items}" class="table-light text-center">
+                <td class="align-middle">
+                    <img th:src="@{${item.getItem().getPicture()}}" class="img-fluid rounded" style="height: 150px"
+                         src="../static/resources/img/chair_1.jpg" alt="Artikel">
+                </td>
+                <td class="align-middle">
+                    <h5 th:text="${item.getItem().getName()}">Sofa</h5>
+                </td>
+                <td class="align-middle">
+                    <h5 th:text="${item.getItem().getPrice()}">999,99€</h5>
+                </td>
+                <td class="align-middle">
+                    <h5 th:text="${item.getStatus().name().toLowerCase()}">paid</h5>
+                </td>
+                <td class="align-middle">
+                    <div class="dropdown" sec:authorize="hasRole('EMPLOYEE')">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Status ändern
+                        </button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="#" th:each="s : ${statuses}" th:text="${s.name().toLowerCase()}">eingegangen</a>
+                        </div>
+                    </div>
+                    <div sec:authorize="!hasRole('EMPLOYEE')" th:unless="${item.getStatus() == T(furnitureshop.order.OrderStatus).COMPLETED || item.getStatus() == T(furnitureshop.order.OrderStatus).COMPLETED}">
+                        <button type="button" class="btn btn-secondary">Artikel stornieren</button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
 
-	<table th:unless="${items}" class="table table-hover" style="table-layout: fixed">
-        <thead class="thead-light">
-			<tr class="text-center">
-				<th scope="col"></th>
-				<th scope="col" style="width: 30%">LKW</th>
-				<th scope="col">Preis</th>
-				<th scope="col">Status</th>
-				<th scope="col"></th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr class="text-center">
-				<td class="align-middle">
-					<img class="img-fluid rounded" th:src="@{${lkw.getType().getPicture()}}" style="height: 150px"
-						 src="../static/resources/img/smalllkw.jpg" alt="LKW"/>
-				</td>
-				<td class="align-middle">
-					<h5 th:text="#{lkw.size} + ' ' + ${lkw.getType().getName()}">LKW</h5>
-				</td>
-				<td class="align-middle">
-					<h5 th:text="${lkw.getType().getCharterPrice()}">999,99€</h5>
-				</td>
+        <table th:unless="${items}" class="table table-hover" style="table-layout: fixed">
+            <thead class="thead-light">
+            <tr class="text-center">
+                <th scope="col"></th>
+                <th scope="col" style="width: 30%">LKW</th>
+                <th scope="col">Preis</th>
+                <th scope="col">Status</th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="mt-3 mb-3 table-light text-center">
+                <td class="align-middle">
+                    <img class="img-fluid rounded" th:src="@{${lkw.getType().getPicture()}}" style="height: 150px"
+                         src="../static/resources/img/smalllkw.jpg" alt="LKW"/>
+                </td>
+                <td class="align-middle">
+                    <h5 th:text="#{lkw.size} + ' ' + ${lkw.getType().getName()}">LKW</h5>
+                </td>
+                <td class="align-middle">
+                    <h5 th:text="${lkw.getType().getCharterPrice()}">999,99€</h5>
+                </td>
                 <td class="align-middle">
                     <h5>paid</h5>
                 </td>
-				<td class="align-middle">
-					<div th:if="${cancelable}">
-						<button type="button" class="btn btn-secondary">LKW stornieren</button>
-					</div>
-				</td>
-			</tr>
-		</tbody>
-	</table>
+                <td class="align-middle">
+                    <div th:if="${cancelable}">
+                        <button type="button" class="btn btn-secondary">LKW stornieren</button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
 
-</div>
+    </div>
 </body>
 </html> 

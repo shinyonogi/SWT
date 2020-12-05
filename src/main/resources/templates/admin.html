@@ -1,23 +1,23 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>Admin</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <title>Admin</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
 <body>
 
-<nav th:include="navigation :: navigation"></nav>
+    <nav th:include="navigation :: navigation"></nav>
 
-<div class="container pt-3">
-	<a th:href="@{/admin/orders}" class="btn btn-info" role="button" th:text="#{admin.overview.customerOrders}">Kundenbestellungen</a>
-	<a th:href="@{/admin/statistic}" class="btn btn-info" role="button" th:text="#{admin.overview.statistic}">Monatsstatistik</a>
-	<a th:href="@{/admin/suppliers}" class="btn btn-info" role="button" th:text="#{admin.overview.suppliers}">Lieferanten</a>
-</div>
+    <div class="container pt-3">
+        <a th:href="@{/admin/orders}" class="btn btn-info" role="button" th:text="#{admin.overview.customerOrders}">Kundenbestellungen</a>
+        <a th:href="@{/admin/statistic}" class="btn btn-info" role="button" th:text="#{admin.overview.statistic}">Monatsstatistik</a>
+        <a th:href="@{/admin/suppliers}" class="btn btn-info" role="button" th:text="#{admin.overview.suppliers}">Lieferanten</a>
+    </div>
 
 </body>
 </html> 
