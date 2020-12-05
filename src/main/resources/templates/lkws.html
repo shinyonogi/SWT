@@ -11,10 +11,30 @@
 </head>
 <body>
 
-<nav th:include="navigation :: navigation"></nav>
+	<nav th:include="navigation :: navigation"></nav>
 
-<div class="container pt-3">
+	<div class="container pt-3">
+		<div class="row">
 
+			<div th:each="type : ${types}" class="col-lg-4 col-md-6 mb-4">
+				<div class="card h-100">
+					<a class="card-img-top" th:href="@{/lkw/checkout/{name}(name=${type.name().toLowerCase()})}">
+						<img class="img-fluid" th:src="@{${type.getPicture()}}"
+							 src="../static/resources/img/smalllkw.jpg" alt="LKW"/>
+					</a>
+					<div class="card-body">
+						<h4 class="card-title">
+							<a th:href="@{/lkw/checkout/{name}(name=${type.name().toLowerCase()})}" th:text="#{lkw.size} + ' ' + ${type.getName()}">3,5t</a>
+						</h4>
+						<h5 th:text="${type.getCharterPrice()} + ' ' + #{lkw.priceinfo}">10 EUR / Tag</h5>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+	<!--<div class="container pt-3">
 	<table class="table table bg-light pb-5">
 		<tbody>
 			<tr th:each="type : ${types}">
@@ -37,7 +57,7 @@
 		</tbody>
 	</table>
 	
-</div>
+</div> -->
 
 </body>
 </html> 

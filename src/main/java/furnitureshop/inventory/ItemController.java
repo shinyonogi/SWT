@@ -39,7 +39,7 @@ public class ItemController {
 	}
 
 	@GetMapping("/catalog/{category}/{itemId}")
-	String getItemDetails(Model model, @PathVariable("category") Category category, @PathVariable("itemId") Optional<Item> item) {
+	String getItemDetails(Model model, @PathVariable("category") String category, @PathVariable("itemId") Optional<Item> item) {
 		if (item.isPresent()) {
 			model.addAttribute("item", item.get());
 			model.addAttribute("variants", itemService.findAllByGroupId(item.get().getGroupid()));

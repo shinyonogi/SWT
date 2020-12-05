@@ -36,7 +36,7 @@
 
 			<div class="border bg-light rounded p-1">
 				<div class="align-middle text-center">
-					<img class="img-fluid" th:src="@{/resources/img/{image}(image=${type.getPicture()})}"
+					<img class="img-fluid" th:src="@{${type.getPicture()}}"
 						 src="../static/resources/img/smalllkw.jpg" alt="LKW"/>
 				</div>
 				<div class="pt-3">

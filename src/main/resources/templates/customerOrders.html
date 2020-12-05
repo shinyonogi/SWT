@@ -13,21 +13,21 @@
 
 <nav th:include="navigation :: navigation"></nav>
 
-<div class="container">
-	<table class="table table-striped">
-		<thead>
+<div class="container pt-3">
+	<table class="table table-hover" style="table-layout: fixed">
+		<thead class="thead-light">
 			<tr>
-				<th scope="col" style="width: 25%" th:text="#{order.overview.number}">Bestell-Nr.</th>
-				<th scope="col" style="width: 25%" th:text="#{order.overview.date}">Bestelldatum</th>
-				<th scope="col" style="width: 25%" th:text="#{order.overview.total}">Betrag</th>
-				<th scope="col" style="width: 25%" th:text="#{order.overview.status}">Status</th>
-				<th scope="col" style="width: 25%"></th>
+				<th scope="col" th:text="#{order.overview.number}" style="width: 30%">Bestell-Nr.</th>
+				<th scope="col" th:text="#{order.overview.date}">Bestelldatum</th>
+				<th scope="col" th:text="#{order.overview.total}">Betrag</th>
+				<th scope="col" th:text="#{order.overview.status}" style="width: 15%">Status</th>
+				<th scope="col"></th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr th:each="order : ${orders}">
 				<td th:text="${order.getId()}">5318008</td>
-				<td th:text="${order.getDateCreated()}">23.03.2021</td>
+				<td th:text=" ${#temporals.format(order.getDateCreated(), 'dd.MM.yyyy HH:mm:ss')}">23.03.2021</td>
 				<td th:text="${order.getTotal()}">999,99€</td>
 				<td>TBD</td>
 				<td>

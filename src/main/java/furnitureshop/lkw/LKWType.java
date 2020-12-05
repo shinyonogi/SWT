@@ -40,7 +40,7 @@ public enum LKWType {
 	LKWType(String name, int weight, String picture, MonetaryAmount charterPrice, MonetaryAmount delieveryPrice) {
 		this.name = name;
 		this.weight = weight;
-		this.picture = picture;
+		this.picture = "/resources/img/" + picture;
 		this.charterPrice = charterPrice;
 		this.delieveryPrice = delieveryPrice;
 	}

@@ -19,9 +19,10 @@
 
             <div th:each="item : ${items}" class="col-lg-4 col-md-6 mb-4">
                 <div class="card h-100">
-					<a th:href="@{/catalog/{category}/{id}(id=${item.id}, category=${item.category})}">
-					<img class="card-img-top" th:src="@{${item.getPicture()}}" th:width="300" th:height="300">
-					</a>
+                    <a class="card-img-top" th:href="@{/catalog/{category}/{id}(id=${item.getId()}, category=${item.getCategory().name().toLowerCase()})}">
+                        <img class="img-fluid" th:src="@{${item.getPicture()}}" src="../static/resources/img/chair_1.jpg" alt="Artikel"/>
+                    </a>
+
                     <div class="card-body">
                         <h4 class="card-title">
                         <p th:text="${item.getName()}">Name</p>
@@ -33,13 +34,14 @@
 					</div>
                     <!--
                     <div class="card-footer">
-                        <small class="text-muted"></small>
+                        <small class="text-muted" th:text="${item.getDescription()}"></small>
 				    </div>
 				    -->
-			    </div>
-			</div>
-		</div>
-	</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
 
 </body>
 </html> 

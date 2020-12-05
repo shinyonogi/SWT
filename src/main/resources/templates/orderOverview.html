@@ -30,23 +30,33 @@
 
 	<p th:if="${charterDate == null}" th:text="'Gesamtpreis: ' + ${order.getTotal()}"></p>
 
-	<table th:if="${items}" class="table bg-light pb-5">
+	<table th:if="${items}" class="table table-hover" style="table-layout: fixed">
+        <thead class="thead-light">
+			<tr class="text-center">
+				<th scope="col"></th>
+				<th scope="col" style="width: 40%">Artikel</th>
+				<th scope="col">Preis</th>
+				<th scope="col">Status</th>
+				<th scope="col"></th>
+			</tr>
+		</thead>
 		<tbody>
-			<tr th:each="item : ${items}">
-				<td class="align-middle" style="width: 20%">
-					<img th:src="@{${item.getItem().getPicture()}}" class="img-fluid" style="width: 150px">
+			<tr th:each="item : ${items}" class="text-center">
+				<td class="align-middle">
+					<img th:src="@{${item.getItem().getPicture()}}" class="img-fluid rounded" style="height: 150px"
+						 src="../static/resources/img/chair_1.jpg" alt="Artikel">
 				</td>
 				<td class="align-middle">
-					<h3 th:text="${item.getItem().getName()}">Sofa</h3>
+					<h5 th:text="${item.getItem().getName()}">Sofa</h5>
 				</td>
 				<td class="align-middle">
 					<h5 th:text="${item.getItem().getPrice()}">999,99€</h5>
 				</td>
 				<td class="align-middle">
-					<h5 th:text="${item.getStatus().name().toLowerCase()}">999,99€</h5>
+					<h5 th:text="${item.getStatus().name().toLowerCase()}">paid</h5>
 				</td>
-				<td sec:authorize="hasRole('EMPLOYEE')" class="align-middle">
-					<div class="dropdown">
+				<td class="align-middle">
+					<div class="dropdown" sec:authorize="hasRole('EMPLOYEE')">
 						<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							Status ändern
 						</button>
@@ -54,28 +64,43 @@
 							<a class="dropdown-item" href="#" th:each="s : ${statuses}" th:text="${s.name().toLowerCase()}">eingegangen</a>
 						</div>
 					</div>
-				</td>
-				<td sec:authorize="!hasRole('EMPLOYEE')" th:unless="${item.getStatus() == T(furnitureshop.order.OrderStatus).COMPLETED || item.getStatus() == T(furnitureshop.order.OrderStatus).COMPLETED}" class="align-middle">
-					<button type="button" class="btn btn-secondary">Artikel stornieren</button>
+					<div sec:authorize="!hasRole('EMPLOYEE')" th:unless="${item.getStatus() == T(furnitureshop.order.OrderStatus).COMPLETED || item.getStatus() == T(furnitureshop.order.OrderStatus).COMPLETED}">
+						<button type="button" class="btn btn-secondary">Artikel stornieren</button>
+					</div>
 				</td>
 			</tr>
 		</tbody>
 	</table>
 
-	<table th:unless="${items}" class="table bg-light pb-5">
+	<table th:unless="${items}" class="table table-hover" style="table-layout: fixed">
+        <thead class="thead-light">
+			<tr class="text-center">
+				<th scope="col"></th>
+				<th scope="col" style="width: 30%">LKW</th>
+				<th scope="col">Preis</th>
+				<th scope="col">Status</th>
+				<th scope="col"></th>
+			</tr>
+		</thead>
 		<tbody>
-			<tr>
-				<td class="align-middle" style="width: 20%">
-					<img th:src="@{/resources/img/{image}(image=${lkw.getType().getPicture()})}" class="img-fluid" style="width: 150px">
+			<tr class="text-center">
+				<td class="align-middle">
+					<img class="img-fluid rounded" th:src="@{${lkw.getType().getPicture()}}" style="height: 150px"
+						 src="../static/resources/img/smalllkw.jpg" alt="LKW"/>
 				</td>
 				<td class="align-middle">
-					<h3 th:text="${lkw.getType().getName()}">LKW</h3>
+					<h5 th:text="#{lkw.size} + ' ' + ${lkw.getType().getName()}">LKW</h5>
 				</td>
 				<td class="align-middle">
 					<h5 th:text="${lkw.getType().getCharterPrice()}">999,99€</h5>
 				</td>
-				<td th:if="${cancelable}" class="align-middle">
-					<button type="button" class="btn btn-secondary">LKW stornieren</button>
+                <td class="align-middle">
+                    <h5>paid</h5>
+                </td>
+				<td class="align-middle">
+					<div th:if="${cancelable}">
+						<button type="button" class="btn btn-secondary">LKW stornieren</button>
+					</div>
 				</td>
 			</tr>
 		</tbody>
