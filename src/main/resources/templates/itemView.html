@@ -12,30 +12,31 @@
 <body>
     <nav th:include="navigation :: navigation"></nav>
 
-    <div class="container">
-        <div class="card mt-4 mb-5">
-            <img class="card-img-top img-fluid" th:src="@{${item.getPicture()}}" alt="">
-            <div class="card-body">
-                <h3 class="card-title" th:text="${item.getName()}">Sofa</h3>
-                <h4 th:text="${item.getPrice()}">999,99€</h4>
-                <p class="card-text" th:text="${item.getDescription()}"></p>
-                <form class="form-inline">
-                    <div class="dropdown mr-2">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" th:text="${item.getVariant()}">
-                            Ausführung
-                        </button>
-                        <div class="dropdown-menu">
-                            <div th:each="item : ${variants}">
-                                <a class="dropdown-item" th:text="${item.getVariant()}" th:href="@{/catalog/{category}/{id}(id=${item.id}, category=${item.category})}">blau</a>
-                            </div>
+    <div class="container pt-3">
+        <div class="card bg-light">
+            <div class="card-body h-100 d-flex p-0">
+                <div style="flex: 5" class="p-4">
+                    <h3 class="card-title" th:text="${item.getName()}">Sofa</h3>
+                    <h4 th:text="${item.getPrice()}">999,99€</h4>
+                    <p class="card-text" th:text="${item.getDescription()}"></p>
+
+                    <div class="mt-4">
+                        <h5>Varianten:</h5>
+                        <div th:each="item : ${variants}" class="d-inline">
+                            <a class="btn btn-primary" th:text="${item.getVariant()}" th:href="@{/catalog/{category}/{id}(id=${item.getId()}, category=${item.getCategory().name().toLowerCase()})}">blau</a>
                         </div>
                     </div>
-                </form>
-                <br><br>
-                <form class="form-inline" th:action="@{/cart/{id}(id=${item.getId()})}" method="post">
-                    <input name="number" type="number" class="form-control mr-2" min="1" max="99" value="1" style="width: 60px">
-                    <button type="submit" class="btn btn-info" role="button">zum Warenkorb hinzufügen</button>
-                </form>
+
+                    <form class="form-inline mt-3" th:action="@{/cart/{id}(id=${item.getId()})}" method="post">
+                        <input name="number" type="number" class="form-control mr-2" min="1" max="99" value="1" style="width: 70px">
+                        <button type="submit" class="btn btn-info" role="button">zum Warenkorb hinzufügen</button>
+                    </form>
+                </div>
+
+                <div style="flex: 3">
+                    <img class="img-fluid" th:src="@{${item.getPicture()}}"
+                         src="../static/resources/img/chair_1.jpg" alt="Artikel">
+                </div>
             </div>
         </div>
     </div>

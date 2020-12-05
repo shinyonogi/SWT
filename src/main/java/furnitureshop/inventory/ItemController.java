@@ -41,6 +41,12 @@ public class ItemController {
 	@GetMapping("/catalog/{category}/{itemId}")
 	String getItemDetails(Model model, @PathVariable("category") String category, @PathVariable("itemId") Optional<Item> item) {
 		if (item.isPresent()) {
+			final Optional<Category> cat = Category.getByName(category);
+
+			if (cat.isEmpty() || cat.get() != item.get().getCategory()) {
+				return "redirect:/catalog";
+			}
+
 			model.addAttribute("item", item.get());
 			model.addAttribute("variants", itemService.findAllByGroupId(item.get().getGroupid()));
 			return "itemView";
