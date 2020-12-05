@@ -16,6 +16,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * This class manages all activies to find, order or cancel a {@link LKW}
+ * Its also the bridge between all LKW components and the rest of the System
+ */
 @Service
 @Transactional
 public class LKWService {
@@ -25,9 +29,20 @@ public class LKWService {
 			DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY, DayOfWeek.THURSDAY, DayOfWeek.FRIDAY
 	);
 
+	// The LKWCatalog where all LKWs are stored
 	private final LKWCatalog lkwCatalog;
+
+	// A reference to the OrderService to create CharterOrders
 	private final OrderService orderService;
 
+	/**
+	 * Creates a new instance of an {@link LKWService}
+	 *
+	 * @param lkwCatalog The {@link LKWCatalog} for all {@link LKW}s
+	 * @param orderService The {@link OrderService} to create orders
+	 *
+	 * @throws IllegalArgumentException If the {@code lkwCatalog} or {@code orderService} is {@code null}
+	 */
 	LKWService(LKWCatalog lkwCatalog, @Lazy OrderService orderService) {
 		Assert.notNull(lkwCatalog, "LKWCatalog must not be null!");
 		Assert.notNull(orderService, "OrderService must not be null!");
@@ -43,6 +58,8 @@ public class LKWService {
 	 * @param type The {@link LKWType} of the {@link LKW} to be used
 	 *
 	 * @return The next available {@link LocalDate}
+	 *
+	 * @throws IllegalArgumentException If the {@code date} or {@code type} is {@code null}
 	 */
 	public LocalDate findNextAvailableDeliveryDate(LocalDate date, LKWType type) {
 		Assert.notNull(date, "Date must not be null!");
@@ -65,6 +82,8 @@ public class LKWService {
 	 * @param type The type of the {@link LKW} to be used
 	 *
 	 * @return {@code true} if an {@link LKW} was found
+	 *
+	 * @throws IllegalArgumentException If the {@code date} or {@code type} is {@code null}
 	 */
 	public boolean isDeliveryAvailable(LocalDate date, LKWType type) {
 		Assert.notNull(date, "Date must not be null!");
@@ -107,6 +126,8 @@ public class LKWService {
 	 * @param type The {@link LKWType} of the {@link LKW} to be used
 	 *
 	 * @return The used {@link LKW}
+	 *
+	 * @throws IllegalArgumentException If the {@code date} or {@code type} is {@code null}
 	 */
 	public Optional<LKW> createDeliveryLKW(LocalDate date, LKWType type) {
 		Assert.notNull(date, "Date must not be null!");
@@ -166,6 +187,8 @@ public class LKWService {
 	 * @param type The {@link LKWType} of the {@link LKW} to be used
 	 *
 	 * @return {@code true} if an {@link LKW} was found
+	 *
+	 * @throws IllegalArgumentException If the {@code date} or {@code type} is {@code null}
 	 */
 	public boolean isCharterAvailable(LocalDate date, LKWType type) {
 		Assert.notNull(date, "Date must not be null!");
@@ -198,6 +221,8 @@ public class LKWService {
 	 * @param type The {@link LKWType} of the {@link LKW} to be used
 	 *
 	 * @return The used {@link LKW}
+	 *
+	 * @throws IllegalArgumentException If the {@code date} or {@code type} is {@code null}
 	 */
 	public Optional<LKW> createCharterLKW(LocalDate date, LKWType type) {
 		Assert.notNull(date, "Date must not be null!");
@@ -227,10 +252,6 @@ public class LKWService {
 		return Optional.empty();
 	}
 
-	public Optional<LKWCharter> createLKWOrder(LKW lkw, LocalDate date, ContactInformation contactInformation) {
-		return orderService.orderLKW(lkw, date, contactInformation);
-	}
-
 	/**
 	 * Cancels a Order for specific {@link LKW} and {@link LocalDate}
 	 *
@@ -238,6 +259,8 @@ public class LKWService {
 	 * @param date The {@link LocalDate} of the Order
 	 *
 	 * @return {@code true} if the {@link LKW} was used on that {@link LocalDate}
+	 *
+	 * @throws IllegalArgumentException If the {@code lkw} or {@code date} is {@code null}
 	 */
 	public boolean cancelOrder(LKW lkw, LocalDate date) {
 		Assert.notNull(lkw, "LKW must not be null!");
@@ -280,6 +303,10 @@ public class LKWService {
 
 		// Unknow Entrytype
 		throw new IllegalStateException("Invalid CalenderEntry Type");
+	}
+
+	public Optional<LKWCharter> createLKWOrder(LKW lkw, LocalDate date, ContactInformation contactInformation) {
+		return orderService.orderLKW(lkw, date, contactInformation);
 	}
 
 	public Streamable<LKW> findByType(LKWType type) {

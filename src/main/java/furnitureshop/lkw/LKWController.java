@@ -2,6 +2,7 @@ package furnitureshop.lkw;
 
 import furnitureshop.order.ContactInformation;
 import furnitureshop.order.LKWCharter;
+import furnitureshop.order.OrderService;
 import org.salespointframework.time.BusinessTime;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,12 +15,26 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.Optional;
 
+/**
+ * This class manages all HTTP Requests for LKWs
+ */
 @Controller
 public class LKWController {
 
+	// A reference to the LKWService to access system information
 	private final LKWService lkwService;
+
+	// A refernce to the BusinessTime to access the current system time
 	private final BusinessTime businessTime;
 
+	/**
+	 * Creates a new instance of an {@link LKWController}
+	 *
+	 * @param lkwService   The {@link LKWService} to access system information
+	 * @param businessTime The {@link OrderService} to get the current time
+	 *
+	 * @throws IllegalArgumentException If the {@code lkwService} or {@code businessTime} is {@code null}
+	 */
 	LKWController(LKWService lkwService, BusinessTime businessTime) {
 		Assert.notNull(lkwService, "LKWService must not be null!");
 		Assert.notNull(businessTime, "BusinessTime must not be null!");
@@ -28,6 +43,9 @@ public class LKWController {
 		this.businessTime = businessTime;
 	}
 
+	/**
+	 * Handles all GET-Request for '/lkws'. It returns the page with a list of all available {@link LKWType}s
+	 */
 	@GetMapping("/lkws")
 	String getLKWList(Model model) {
 		// Add all types to the model to be displayed
@@ -36,6 +54,11 @@ public class LKWController {
 		return "lkws";
 	}
 
+	/**
+	 * Handles all GET-Request for '/lkw/checkout/{type}'. It returns the checkout page if the type exists or redirects to the overview.
+	 *
+	 * @param typeName The name of the {@link LKWType}
+	 */
 	@GetMapping("/lkw/checkout/{lkwtype}")
 	String getLKWCheckout(@PathVariable("lkwtype") String typeName, Model model) {
 		// Get type by name, used to ensure case insensitivity
@@ -54,6 +77,13 @@ public class LKWController {
 		return "lkwCheckout";
 	}
 
+	/**
+	 * Handles all POST-Request for '/lkw/checkout/{type}'. It manages the check, if an {@link LKW} is on a specific {@link java.time.LocalDate LocalDate} available.
+	 * If an {@link LKW} is available it displays a positive message, or a negative if not.
+	 *
+	 * @param typeName The name of the {@link LKWType}
+	 * @param form     The {@link LKWCharterForm} with the checking {@link java.time.LocalDate LocalDate}
+	 */
 	@PostMapping(value = "/lkw/checkout/{lkwtype}", params = "check")
 	String checkLKWDate(@PathVariable("lkwtype") String typeName, @ModelAttribute("lkwform") LKWCharterForm form, Model model) {
 		// Get type by name, used to ensure case insensitivity
@@ -87,6 +117,14 @@ public class LKWController {
 		return "lkwCheckout";
 	}
 
+	/**
+	 * Handles all POST-Request for '/lkw/checkout/{type}'. It manages the buying, for a specific {@link LKWType}.
+	 * It will be checked if the information from the customer are valid and if a {@link LKW} is available.
+	 * If a {@link LKW} is available, it will be ordered. If not, there will be an error message displayed.
+	 *
+	 * @param typeName The name of the {@link LKWType}
+	 * @param form     The {@link LKWCharterForm} with the information about customer and {@link java.time.LocalDate LocalDate}
+	 */
 	@PostMapping(value = "/lkw/checkout/{lkwtype}", params = "buy")
 	String checkoutLKW(@PathVariable("lkwtype") String typeName, @ModelAttribute("lkwform") LKWCharterForm form, Model model) {
 		// Get type by name, used to ensure case insensitivity

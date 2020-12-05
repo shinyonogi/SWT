@@ -7,6 +7,10 @@ import org.springframework.util.Assert;
 import javax.money.MonetaryAmount;
 import java.util.Optional;
 
+/**
+ * This Enum represents all available types of {@link LKW}s.
+ * It stores information like the name, maximum weight, picture path, and price for charter or delivery.
+ */
 public enum LKWType {
 
 	SMALL(
@@ -37,6 +41,15 @@ public enum LKWType {
 	// Price for an delivery with an LKW of this Type
 	private final MonetaryAmount delieveryPrice;
 
+	/**
+	 * Creates a new instance of an {@link LKWType}
+	 *
+	 * @param name           The displayname of the type
+	 * @param weight         The maximum weight it can store
+	 * @param picture        The relative path to the type picture
+	 * @param charterPrice   The price if a customer wants to rent a {@link LKW} of this type
+	 * @param delieveryPrice The price for a customer for a delivery
+	 */
 	LKWType(String name, int weight, String picture, MonetaryAmount charterPrice, MonetaryAmount delieveryPrice) {
 		this.name = name;
 		this.weight = weight;
@@ -66,16 +79,19 @@ public enum LKWType {
 	}
 
 	/**
-	 * Finds an {@link LKWType} by its case insensitivity Enum-Name or Displayname.
+	 * Finds a {@link LKWType} by its case insensitivity Enum-Name or Displayname.
 	 * Similar to {@link LKWType#valueOf(String)} but with no {@link Exception}.
 	 *
 	 * @param name The name of the type
 	 *
 	 * @return The {@link LKWType} with this name
+	 *
+	 * @throws IllegalArgumentException If the {@code name} is {@code null}
 	 */
 	public static Optional<LKWType> getByName(String name) {
 		Assert.hasText(name, "Name must not be null");
 
+		// Iterate over all Types and compare Enum Name and Displayname
 		for (LKWType type : LKWType.values()) {
 			if (type.name().equalsIgnoreCase(name) || type.getName().equalsIgnoreCase(name)) {
 				return Optional.of(type);
@@ -86,18 +102,21 @@ public enum LKWType {
 	}
 
 	/**
-	 * Finds an {@link LKWType} by its weight. Used to find an {@link LKW} which can transport the weight.
+	 * Finds a {@link LKWType} by its weight. Used to find an {@link LKW} which can transport the weight.
 	 * Returns the next biggest {@link LKWType} to fit the weight.
 	 *
 	 * @param weight The minimum weight of the {@link LKW}
 	 *
 	 * @return The {@link LKWType} with the weight
+	 *
+	 * @throws IllegalArgumentException If the {@code weight} is negative
 	 */
 	public static Optional<LKWType> getByWeight(int weight) {
 		Assert.isTrue(weight >= 0, "Weight must be greater than 0");
 
 		LKWType minType = null;
 
+		// Iterate over all Types and finds the smalles type to fit the weight
 		for (LKWType type : LKWType.values()) {
 			if (type.weight >= weight && (minType == null || type.weight < minType.weight)) {
 				minType = type;
