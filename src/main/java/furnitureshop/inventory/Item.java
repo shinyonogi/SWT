@@ -68,6 +68,8 @@ public abstract class Item extends Product {
 		return super.getPrice();
 	}
 
+	public MonetaryAmount getPieceTotal() { return null; }
+
 	public int getGroupid() {
 		return groupid;
 	}

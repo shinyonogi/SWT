@@ -1,6 +1,7 @@
 package furnitureshop.inventory;
 
 import furnitureshop.supplier.Supplier;
+import org.salespointframework.core.Currencies;
 import org.springframework.util.Assert;
 
 import javax.money.MonetaryAmount;
@@ -30,6 +31,15 @@ public class Set extends Item {
 	@Override
 	public int getWeight() {
 		return items.stream().mapToInt(Item::getWeight).sum();
+	}
+
+	@Override
+	public MonetaryAmount getPieceTotal() {
+		MonetaryAmount singlePrice = Currencies.ZERO_EURO;
+		for (Item item : items) {
+			singlePrice = singlePrice.add(item.getPrice());
+		}
+		return  singlePrice;
 	}
 
 	public List<Item> getItems() {

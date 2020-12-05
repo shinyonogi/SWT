@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  	<title>Katalog</title>
+  	<title th:text="#{item.catalog}"></title>
   	<meta charset="utf-8">
   	<meta name="viewport" content="width=device-width, initial-scale=1">
   	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -15,19 +15,22 @@
 	<nav th:include="navigation :: navigation"></nav>
 
 	<div class="container pt-3">
-
 		<div class="row">
 
             <div th:each="item : ${items}" class="col-lg-4 col-md-6 mb-4">
                 <div class="card h-100">
-                    <img class="card-img-top" th:src="@{${item.getPicture()}}" th:width="300" th:height="300" alt="">
+					<a th:href="@{/catalog/{category}/{id}(id=${item.id}, category=${item.category})}">
+					<img class="card-img-top" th:src="@{${item.getPicture()}}" th:width="300" th:height="300">
+					</a>
                     <div class="card-body">
                         <h4 class="card-title">
-                        <a th:href="@{/catalog/{category}/{id}(id=${item.id}, category=${item.category})}" th:text="${item.getName()}">Sofa</a>
+                        <p th:text="${item.getName()}">Name</p>
                         </h4>
-                        <h5 th:text="${item.getPrice()}">999,99€</h5>
-                        <p class="card-text" th:text="${item.getDescription()}">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam aspernatur!</p>
-                    </div>
+						<del><h5 class="text-danger" th:text="${item.getPieceTotal() ?: ''}"></h5></del>
+                        <h5 class="text-primary" th:text="#{item.price} + ' ' + ${item.getPrice()}">999,99€</h5>
+                        <p class="card-text" th:text="${item.getDescription()}">Lorem ipsum</p>
+						<a class="btn btn-primary" th:href="@{/catalog/{category}/{id}(id=${item.id}, category=${item.category})}" th:text="#{item.detail.btn}">Artikel ansehen</a>
+					</div>
                     <!--
                     <div class="card-footer">
                         <small class="text-muted"></small>
