@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>Kundenbestellungen</title>
+  <title th:text="#{order.overview.title}">Kundenbestellungen</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -33,7 +33,7 @@
 				<td>
 					<form th:action="@{/checkOrder}" th:method="post">
 						<input type="hidden" th:value="${order.getId()}" id="orderId" name="orderId"/>
-						<button type="submit" class="btn btn-secondary" role="button">Bestellung ansehen</button>
+						<button type="submit" class="btn btn-secondary" role="button" th:text="#{order.overview.check}">Bestellung ansehen</button>
 					</form>
 				</td>
 			</tr>

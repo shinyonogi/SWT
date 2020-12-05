@@ -17,7 +17,7 @@
 
 	<header th:if="${cart.empty}" class="cart-header text-center text-black">
 		<h1 th:text="#{cart.empty}">Warenkorb leer</h1>
-		<a th:href="@{/catalog}"  class="btn btn-dark btn-lg rounded-pill mt-3 mr-3" role="button" th:text="#{cart.continue}">Continue Shopping</a>
+		<a th:href="@{/catalog}"  class="btn btn-dark rounded-pill mt-3 mr-3" role="button" th:text="#{cart.continue}">Continue Shopping</a>
 	</header>
 
 	<div class="cart-empty-header text-center mt-6" th:if="${cart.empty}">
@@ -71,8 +71,8 @@
 		<div class="float-right mt-3">
 			<h2 th:text="#{cart.price} + ' ' + ${cart.getPrice()}"></h2>
 			<div>
-				<a th:href="@{/catalog}"  class="btn btn-dark btn-lg rounded-pill mt-3 mr-3" role="button" th:text="#{cart.continue}">Continue Shopping</a>
-				<a th:href="@{/checkout}" class="btn btn-primary btn-lg rounded-pill mt-3" role="button" th:text="#{cart.checkout}">Bestellen</a>
+				<a th:href="@{/catalog}"  class="btn btn-dark rounded-pill mt-3 mr-3" role="button" th:text="#{cart.continue}">Continue Shopping</a>
+				<a th:href="@{/checkout}" class="btn btn-primary rounded-pill mt-3" role="button" th:text="#{cart.checkout}">Bestellen</a>
 			</div>
 		</div>
 
