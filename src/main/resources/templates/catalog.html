@@ -20,17 +20,16 @@
             <div th:each="item : ${items}" class="col-lg-4 col-md-6 mb-4">
                 <div class="card h-100">
                     <a class="card-img-top" th:href="@{/catalog/{category}/{id}(id=${item.getId()}, category=${item.getCategory().name().toLowerCase()})}">
-                        <img class="img-fluid" th:src="@{${item.getPicture()}}" src="../static/resources/img/chair_1.jpg" alt="Artikel"/>
+                        <img class="img-fluid" th:src="@{${item.getPicture()}}"
+                             src="../static/resources/img/chair_1.jpg" alt="Artikel"/>
                     </a>
 
                     <div class="card-body">
-                        <h4 class="card-title">
-                        <p th:text="${item.getName()}">Name</p>
-                        </h4>
+                        <h4 class="card-title" th:text="${item.getName()}">Name</h4>
 						<del><h5 class="text-danger" th:text="${item.getPieceTotal() ?: ''}"></h5></del>
                         <h5 class="text-primary" th:text="#{item.price} + ' ' + ${item.getPrice()}">999,99€</h5>
                         <p class="card-text" th:text="${item.getDescription()}">Lorem ipsum</p>
-						<a class="btn btn-primary" th:href="@{/catalog/{category}/{id}(id=${item.id}, category=${item.category})}" th:text="#{item.detail.btn}">Artikel ansehen</a>
+						<a class="btn btn-primary" th:href="@{/catalog/{category}/{id}(id=${item.getId()}, category=${item.getCategory().name().toLowerCase()})}" th:text="#{item.detail.btn}">Artikel ansehen</a>
 					</div>
                     <!--
                     <div class="card-footer">
