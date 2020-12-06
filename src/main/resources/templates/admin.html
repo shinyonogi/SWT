@@ -12,11 +12,44 @@
 <body>
 
     <nav th:include="navigation :: navigation"></nav>
-
     <div class="container pt-3">
+        <div class="row">
+        <div class="col-lg-4 col-md-6 mb-4 d-flex align-items-stretch">
+            <div class="card">
+                <img class="card-img-top" th:src="@{/resources/img/orders.jpg}">
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title" th:text="#{admin.overview.customerOrders}">Kundenbestellungen</h5>
+                    <p class="card-text" th:text="#{admin.overview.customerOrders.description}">Beschreibung</p>
+                    <a th:href="@{/admin/orders}" class="btn btn-outline-primary mt-auto" th:text="#{admin.overview.customerOrders.btn}">Go somewhere</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6 mb-4 d-flex align-items-stretch">
+            <div class="card">
+                <img class="card-img-top" th:src="@{/resources/img/statistic.jpg}">
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title" th:text="#{admin.overview.statistic}">Monatsstatistik</h5>
+                    <p class="card-text" th:text="#{admin.overview.statistic.description}">Beschreibung</p>
+                    <a th:href="@{/admin/statistic}" class="btn btn-outline-primary mt-auto" th:text="#{admin.overview.statistic.btn}">Go somewhere</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6 mb-4 d-flex align-items-stretch">
+            <div class="card">
+                <img class="card-img-top" th:src="@{/resources/img/supplierwarehouse.jpg}">
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title" th:text="#{admin.overview.suppliers}">Lieferanten</h5>
+                    <p class="card-text" th:text="#{admin.overview.suppliers.description}">Beschreibung</p>
+                    <a th:href="@{/admin/suppliers}" class="btn btn-outline-primary mt-auto" th:text="#{admin.overview.suppliers.btn}">Go somewhere</a>
+                </div>
+            </div>
+        </div>
+        </div>
+        <!--
         <a th:href="@{/admin/orders}" class="btn btn-primary" role="button" th:text="#{admin.overview.customerOrders}">Kundenbestellungen</a>
         <a th:href="@{/admin/statistic}" class="btn btn-primary" role="button" th:text="#{admin.overview.statistic}">Monatsstatistik</a>
         <a th:href="@{/admin/suppliers}" class="btn btn-primary" role="button" th:text="#{admin.overview.suppliers}">Lieferanten</a>
+        -->
     </div>
 
 </body>
