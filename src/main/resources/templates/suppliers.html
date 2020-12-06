@@ -35,7 +35,7 @@
                 </td>
                 <td>
                     <form th:method="post" th:action="@{/admin/supplier/delete/{id}(id=${supplier.getId()})}" th:unless="${supplier.getName().equals('Set Supplier')}">
-                        <button type="submit" class="btn btn-outline-primary" th:text="#{supplier.delete}">Lieferant entfernen</button>
+                        <button type="submit" class="btn btn-outline-danger" th:text="#{supplier.delete}">Lieferant entfernen</button>
                     </form>
                 </td>
             </tr>

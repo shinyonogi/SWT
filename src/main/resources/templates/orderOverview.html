@@ -34,7 +34,7 @@
             <thead class="thead-light">
             <tr class="text-center">
                 <th scope="col"></th>
-                <th scope="col" style="width: 40%" th:text="#{order.overview.item}">Artikel</th>
+                <th scope="col" style="width: 20%" th:text="#{order.overview.item}">Artikel</th>
                 <th scope="col" th:text="#{order.overview.item.price}">Preis</th>
                 <th scope="col" th:text="#{order.overview.item.status}">Status</th>
                 <th scope="col"></th>
@@ -65,7 +65,7 @@
                         </div>
                     </div>
                     <div sec:authorize="!hasRole('EMPLOYEE')" th:unless="${item.getStatus() == T(furnitureshop.order.OrderStatus).COMPLETED || item.getStatus() == T(furnitureshop.order.OrderStatus).COMPLETED}">
-                        <button type="button" class="btn btn-secondary">Artikel stornieren</button>
+                        <button type="button" class="btn btn-outline-danger" th:text="#{order.overview.item.cancel}">Artikel stornieren</button>
                     </div>
                 </td>
             </tr>
@@ -76,9 +76,9 @@
             <thead class="thead-light">
             <tr class="text-center">
                 <th scope="col"></th>
-                <th scope="col" style="width: 30%">LKW</th>
-                <th scope="col">Preis</th>
-                <th scope="col">Status</th>
+                <th scope="col" style="width: 20%" th:text="#{order.overview.lkw}">LKW</th>
+                <th scope="col" th:text="#{order.overview.lkw.price}">Preis</th>
+                <th scope="col" th:text="#{order.overview.lkw.status}">Status</th>
                 <th scope="col"></th>
             </tr>
             </thead>
@@ -99,7 +99,7 @@
                 </td>
                 <td class="align-middle">
                     <div th:if="${cancelable}">
-                        <button type="button" class="btn btn-secondary">LKW stornieren</button>
+                        <button type="button" class="btn btn-outline-danger" th:text="#{order.overview.lkw.cancel}">LKW stornieren</button>
                     </div>
                 </td>
             </tr>
