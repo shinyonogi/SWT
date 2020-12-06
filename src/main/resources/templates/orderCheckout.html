@@ -13,10 +13,11 @@
 
     <nav th:include="navigation :: navigation"></nav>
 
-    <div class="container">
+    <div class="container mt-3 mb-3">
         <div class="row">
+
             <div class="col-2"></div>
-            <div class="col-4 mt-3">
+            <div class="col-4">
                 <div class="border bg-light rounded p-1">
                     <h2 class="pt-2 pl-2" th:text="#{checkout.overview}">Übersicht</h2>
                     <div class="pt-3">
@@ -32,7 +33,7 @@
                 </div>
 
             </div>
-            <div class="col-4 mt-3">
+            <div class="col-4">
                 <form class="form" th:object="${orderform}" th:method="post" th:action="@{/checkout/completeOrder}">
                     <div class="form-group">
                         <label for="name" th:text="#{order.name}">Name:</label>
@@ -64,6 +65,7 @@
                 </form>
             </div>
             <div class="col-2"></div>
+
         </div>
     </div>
 

@@ -13,7 +13,7 @@
 
     <nav th:include="navigation :: navigation"></nav>
 
-    <div class="container pt-3">
+    <div class="container mt-3 mb-3">
 
         <table class="table table-hover" style="table-layout: fixed">
             <thead class="thead-light">
@@ -42,7 +42,7 @@
             </tbody>
         </table>
 
-        <div class="row">
+        <div class="row mb-3">
             <div class="col-4"></div>
             <div class="col-4">
                 <form method="post" th:object="${supplierForm}" class="form pt-3" id="form" th:action="@{/admin/suppliers}">
@@ -59,6 +59,7 @@
             </div>
             <div class="col-4"></div>
         </div>
+
     </div>
 
 </body>

@@ -13,7 +13,7 @@
 
     <nav th:include="navigation :: navigation"></nav>
 
-    <div class="container pt-3">
+    <div class="container mt-3 mb-3">
 
         <p th:text="#{order.name} + ' ' + ${order.getContactInformation().getName()}"></p>
         <p th:text="#{order.address} + ' ' + ${order.getContactInformation().getAddress()}"></p>

@@ -28,7 +28,7 @@
 		</div>
 	</div>
 
-	<div class="container mt-3" th:unless="${cart.empty}">
+	<div class="container mt-3 mb-3" th:unless="${cart.empty}">
 		<table class="table table-hover">
 			<thead class="thead-light">
 				<tr class="text-center">
@@ -68,7 +68,7 @@
 			</tbody>
 		</table>
 
-		<div class="float-right mt-3">
+		<div class="float-right mt-3 mb-3">
 			<h2 th:text="#{cart.price} + ' ' + ${cart.getPrice()}"></h2>
 			<div>
 				<a th:href="@{/catalog}"  class="btn btn-outline-dark rounded-pill mt-3 mr-3" role="button" th:text="#{cart.continue}">Continue Shopping</a>

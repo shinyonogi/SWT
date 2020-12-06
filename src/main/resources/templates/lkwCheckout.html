@@ -13,10 +13,10 @@
 
 <nav th:include="navigation :: navigation"></nav>
 
-<div class="container">
+<div class="container mt-3 mb-3">
 	<div class="row">
 		<div class="col-2"></div>
-		<div class="col-4 mt-3">
+		<div class="col-4">
 			<div class="alert alert-danger" th:if="${result > 0}">
 				<h4 class="alert-heading" th:text="#{lkw.status.error}">Fehler!</h4>
 
@@ -52,7 +52,7 @@
 			</div>
 
 		</div>
-		<div class="col-4 mt-3">
+		<div class="col-4">
 			<form method="post" th:object="${lkwform}" th:action="@{/lkw/checkout/{name}(name=${type.name().toLowerCase()})}" role="form" class="form" id="form">
 				<div class="form-group">
 		    		<label for="name" th:text="#{order.name}">Name:</label>
