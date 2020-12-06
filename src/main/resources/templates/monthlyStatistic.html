@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Monatsstatistik</title>
+    <title th:text="#{statistic.title}">Monatsstatistik</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -19,9 +19,9 @@
         <table class="table table-hover" style="table-layout: fixed">
             <thead class="thead-light">
             <tr>
-                <th scope="col">Lieferant</th>
-                <th scope="col">Einkaufsbetrag</th>
-                <th scope="col">Monatsdifferenz</th>
+                <th scope="col" th:text="#{statistic.supplier}">Lieferant</th>
+                <th scope="col" th:text="#{statistic.total}">Einkaufsbetrag</th>
+                <th scope="col" th:text="#{statistic.difference}">Monatsdifferenz</th>
             </tr>
             </thead>
             <tbody>
@@ -29,16 +29,6 @@
                 <td>Müller Möbel</td>
                 <td>123.456,01€</td>
                 <td>+ 50.012,65€</td>
-            </tr>
-            <tr class="table-light">
-                <td>Möbelmeister</td>
-                <td>103.001,99€</td>
-                <td>- 11.020,55€</td>
-            </tr>
-            <tr class="table-light">
-                <td>Herberts schicke Stühle</td>
-                <td>6,12€</td>
-                <td>- 8.012.887,20€</td>
             </tr>
             </tbody>
         </table>

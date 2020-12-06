@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-    <title>Bestellungen</title>
+    <title th:text="#{order.overview.detail.title}">Bestellungen</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -15,28 +15,28 @@
 
     <div class="container pt-3">
 
-        <p th:text="'Name: ' + ${order.getContactInformation().getName()}"></p>
-        <p th:text="'Adresse: ' + ${order.getContactInformation().getAddress()}"></p>
-        <p th:text="'Email: ' + ${order.getContactInformation().getEmail()}"></p>
-        <p th:text="'Bestellnummer: ' + ${order.getId()}"></p>
-        <p th:text="'Bestelldatum: ' + ${#temporals.format(order.getDateCreated(), 'dd.MM.yyyy HH:mm:ss')}"></p>
+        <p th:text="#{order.name} + ' ' + ${order.getContactInformation().getName()}"></p>
+        <p th:text="#{order.address} + ' ' + ${order.getContactInformation().getAddress()}"></p>
+        <p th:text="#{order.email} + ' ' + ${order.getContactInformation().getEmail()}"></p>
+        <p th:text="#{order.overview.number} + ': ' + ${order.getId()}"></p>
+        <p th:text="#{order.overview.date} + ': ' + ${#temporals.format(order.getDateCreated(), 'dd.MM.yyyy HH:mm:ss')}"></p>
 
-        <p th:if="${charterDate}" th:text="'Mietdatum: ' + ${#temporals.format(charterDate, 'dd.MM.yyyy')}"></p>
-        <p th:if="${charterDate}" th:text="'Mietpreis: ' + ${order.getTotal()}"></p>
+        <p th:if="${charterDate}" th:text="#{order.overview.charter} + ': ' + ${#temporals.format(charterDate, 'dd.MM.yyyy')}"></p>
+        <p th:if="${charterDate}" th:text="#{order.overview.total} + ': ' + ${order.getTotal()}"></p>
 
-        <p th:if="${deliveryDate}" th:text="'Lieferdatum: ' + ${#temporals.format(deliveryDate, 'dd.MM.yyyy')}"></p>
-        <p th:if="${deliveryDate}" th:text="'Itempreis: ' + ${order.getTotal().subtract(lkw.getType().getDelieveryPrice())}"></p>
-        <p th:if="${deliveryDate}" th:text="'Lieferpreis: ' + ${lkw.getType().getDelieveryPrice()}"></p>
+        <p th:if="${deliveryDate}" th:text="#{order.overview.delivery} + ': ' + ${#temporals.format(deliveryDate, 'dd.MM.yyyy')}"></p>
+        <p th:if="${deliveryDate}" th:text="#{order.overview.item.total} + ': ' + ${order.getTotal().subtract(lkw.getType().getDelieveryPrice())}"></p>
+        <p th:if="${deliveryDate}" th:text="#{order.overview.delivery.cost} + ': ' + ${lkw.getType().getDelieveryPrice()}"></p>
 
-        <p th:if="${charterDate == null}" th:text="'Gesamtpreis: ' + ${order.getTotal()}"></p>
+        <p th:if="${charterDate == null}" th:text="#{order.overview.total} + ': ' + ${order.getTotal()}"></p>
 
         <table th:if="${items}" class="table table-hover" style="table-layout: fixed">
             <thead class="thead-light">
             <tr class="text-center">
                 <th scope="col"></th>
-                <th scope="col" style="width: 40%">Artikel</th>
-                <th scope="col">Preis</th>
-                <th scope="col">Status</th>
+                <th scope="col" style="width: 40%" th:text="#{order.overview.item}">Artikel</th>
+                <th scope="col" th:text="#{order.overview.item.price}">Preis</th>
+                <th scope="col" th:text="#{order.overview.item.status}">Status</th>
                 <th scope="col"></th>
             </tr>
             </thead>
@@ -57,7 +57,7 @@
                 </td>
                 <td class="align-middle">
                     <div class="dropdown" sec:authorize="hasRole('EMPLOYEE')">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <button class="btn btn-outline-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Status ändern
                         </button>
                         <div class="dropdown-menu">

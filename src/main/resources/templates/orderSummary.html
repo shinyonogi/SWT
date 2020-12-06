@@ -27,9 +27,9 @@
             <tbody>
             <tr class="mt-3 mb-3 table-light">
                 <td th:text="${order.getId()}">5318008</td>
-                <td th:text="${order.getDateCreated()}">23.03.2021</td>
-                <td th:if="${deliveryDate != null}" th:text="${deliveryDate}">23.03.2021</td>
-                <td th:if="${charterDate != null}" th:text="${charterDate}">23.03.2021</td>
+                <td th:text="${#temporals.format(order.getDateCreated(), 'dd.MM.yyyy')}">23.03.2021</td>
+                <td th:if="${deliveryDate != null}" th:text="${#temporals.format(deliveryDate, 'dd.MM.yyyy')}">23.03.2021</td>
+                <td th:if="${charterDate != null}" th:text="${#temporals.format(charterDate, 'dd.MM.yyyy')}">23.03.2021</td>
                 <td th:text="${order.getTotal()}">999,99€</td>
             </tr>
             </tbody>

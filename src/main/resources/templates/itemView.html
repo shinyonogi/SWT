@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Großansicht</title>
+    <title th:text="#{item.detail.title}">Großansicht</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -17,19 +17,20 @@
             <div class="card-body h-100 d-flex p-0">
                 <div style="flex: 5" class="p-4">
                     <h3 class="card-title" th:text="${item.getName()}">Sofa</h3>
+                    <del><h4 class="text-danger" th:text="${item.getPieceTotal() ?: ''}"></h4></del>
                     <h4 th:text="${item.getPrice()}">999,99€</h4>
                     <p class="card-text" th:text="${item.getDescription()}"></p>
 
                     <div class="mt-4">
-                        <h5>Varianten:</h5>
+                        <h5 th:text="#{item.detail.variant}">Varianten:</h5>
                         <div th:each="item : ${variants}" class="d-inline">
-                            <a class="btn btn-primary" th:text="${item.getVariant()}" th:href="@{/catalog/{category}/{id}(id=${item.getId()}, category=${item.getCategory().name().toLowerCase()})}">blau</a>
+                            <a class="btn btn-outline-primary" th:text="${item.getVariant()}" th:href="@{/catalog/{category}/{id}(id=${item.getId()}, category=${item.getCategory().name().toLowerCase()})}">blau</a>
                         </div>
                     </div>
 
                     <form class="form-inline mt-3" th:action="@{/cart/{id}(id=${item.getId()})}" method="post">
                         <input name="number" type="number" class="form-control mr-2" min="1" max="99" value="1" style="width: 70px">
-                        <button type="submit" class="btn btn-info" role="button">zum Warenkorb hinzufügen</button>
+                        <button type="submit" class="btn btn-primary" role="button" th:text="#{item.detail.cart}">zum Warenkorb hinzufügen</button>
                     </form>
                 </div>
 
