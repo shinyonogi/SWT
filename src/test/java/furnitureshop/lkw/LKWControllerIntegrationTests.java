@@ -25,9 +25,9 @@ class LKWControllerIntegrationTests {
 
 	@BeforeEach
 	void setUp() {
-		oldDate = LocalDate.of(2000, 1, 1);
-		weekendDate = LocalDate.of(2023, 3, 19);
-		validDate = LocalDate.of(2023, 3, 20);
+		this.oldDate = LocalDate.of(2000, 1, 1);
+		this.weekendDate = LocalDate.of(2023, 3, 19);
+		this.validDate = LocalDate.of(2023, 3, 20);
 	}
 
 	@Test
