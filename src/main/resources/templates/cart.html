@@ -11,7 +11,7 @@
 	  <link th:href="@{/resources/css/style.css}" rel="stylesheet"
 		  href="../static/resources/css/style.css" type="text/css"/>
 </head>
-<body>
+<body th:style="${cart.empty ? 'overflow:hidden;height:100%' : ''}">
 
 	<nav th:include="navigation :: navigation"></nav>
 
