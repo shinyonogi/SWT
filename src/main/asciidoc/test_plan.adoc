@@ -104,20 +104,22 @@ Jede testbezogene Aufgabe muss einem Ansprechpartner zugeordnet werden.
 //Inventory
 | I-22 | UC200 | Es existieren mehrere Artikel unterschiedlicher Kategorien im Katalog | Ein Nutzer klickt auf Katalog und wählt eine Kategorie aus | Dem Nutzer werden nur Artikel der Kategorie angezeigt
 | I-23 | UC210 | Der Nutzer befindet sich auf einer der Katalog Seiten | Der Nutzer klickt auf einen Artikel | Der Nutzer ist auf einer Detail Seite des Artikels
-| I-24 | UC220 | Der Nutzer befindet sich auf der Detail Seite eines Artikels | Der Nutzer klickt auf das Dropdown Menü und wählt eine andere Variante aus | Der Nutzer ist auf der Detail Seite des Artikels mit der ausgewählten Variante
-| I-25 | UC430 | Im ItemCatalog existiert ein Item welches Teil eines Sets ist | Ein Mitarbeiter entfernt den Lieferanten des Items | Das Item und alle Sets die das Item beinhalten verschwinden aus dem Katalog
+| I-24 | UC200 | Es existieren mehrere Artikel unterschiedlicher Kategorien im Katalog | Der Nutzer gibt einen Link zu einer nicht existierenden Kategorie ein | Der Nutzer ist auf der Übersichtsseite des Katalogs
+| I-25 | UC210 | Es existieren mehrere Artikel unterschiedlicher Kategorien im Katalog | Der Nutzer gibt einen Link mit einer korrekten Kategorie, aber falscher ItemId ein | Der Nutzer ist auf der Übersichtsseite der Kategorie
+| I-26 | UC210 | Es existieren mehrere Artikel unterschiedlicher Kategorien im Katalog | Der Nutzer gibt einen Link mit einer falschen Kategorie, aber richtiger ItemId ein | Der Nutzer ist auf der Übersichtsseite des Katalogs
+| I-27 | UC430 | Im ItemCatalog existiert ein Item welches Teil eines Sets ist | Ein Mitarbeiter entfernt den Lieferanten des Items | Das Item und alle Sets die das Item beinhalten verschwinden aus dem Katalog
 
 //Order
-| I-26 | UC310 | Der Nutzer hat eine Bestellung getätigt und befindet sich auf der Bestellansichtsseite der entsprechenden Bestellung | Der Nutzer ändert den Bestellstatus der Bestellung zu storniert | Der Status wird entsprechend geändert, der LKW falls nötig auch storniert und dem Nutzer wird die Stornierung bestätigt
-| I-27 | UC300 | Der Nutzer kennt eine valide Bestellnummer und befindet sich auf der checkOrder Seite | Nutzer gibt die valide Bestellnummer ein | Dem Nutzer wird die richtige Bestellung korrekt formatiert angezeigt
-| I-28 | UC120 | Der Nutzer hat einen Artikel im Warenkorb und auf Bestellen geklickt| Der Nutzer trägt alle Kontaktinformationen richtig ein und wählt einen Liefertyp | Dem Nutzer wird eine Bestellübersicht mit der Bestellnummer gegeben
+| I-28 | UC310 | Der Nutzer hat eine Bestellung getätigt und befindet sich auf der Bestellansichtsseite der entsprechenden Bestellung | Der Nutzer ändert den Bestellstatus der Bestellung zu storniert | Der Status wird entsprechend geändert, der LKW falls nötig auch storniert und dem Nutzer wird die Stornierung bestätigt
+| I-29 | UC300 | Der Nutzer kennt eine valide Bestellnummer und befindet sich auf der checkOrder Seite | Nutzer gibt die valide Bestellnummer ein | Dem Nutzer wird die richtige Bestellung korrekt formatiert angezeigt
+| I-30 | UC120 | Der Nutzer hat einen Artikel im Warenkorb und auf Bestellen geklickt| Der Nutzer trägt alle Kontaktinformationen richtig ein und wählt einen Liefertyp | Dem Nutzer wird eine Bestellübersicht mit der Bestellnummer gegeben
 
 //Supplier
-| I-29 | UC420 | Mitarbeiter ist eingeloggt und befindet sich im Admin-Bereich | Mitarbeiter versucht, die Monatsstatistik aufzurufen | Mitarbeiter landet auf der Seite der Monatsstatistik
-| I-30 | UC420 | Mitarbeiter ist eingeloggt und der Einkaufsbetrag eines Lieferanten beträgt 0€ | Ein Möbelstück desselben Lieferanten wird bestellt | In der Monatsstatistik wird der Preis des Möbelstücks als Einkaufsbetrag des Lieferanten angezeigt
-| I-31 | UC430 | Mitarbeiter ist eingeloggt und befindet sich im Admin-Bereich | Mitarbeiter versucht, die Lieferantenseite aufzurufen | Mitarbeiter landet auf der Lieferantenseite
-| I-32 | UC430 | Mitarbeiter ist eingeloggt und auf der Lieferantenseite | Mitarbeiter versucht, einen (nicht bereits vorhandenen) Lieferanten mit gültigen Eingabedaten hinzuzufügen | Der Lieferant wird hinzugefügt
-| I-33 | UC430 | Mitarbeiter ist eingeloggt und auf der Lieferantenseite | Mitarbeiter versucht, einen vorhandenen Lieferanten zu entfernen | Der Lieferant wird entfernt
+| I-31 | UC420 | Mitarbeiter ist eingeloggt und befindet sich im Admin-Bereich | Mitarbeiter versucht, die Monatsstatistik aufzurufen | Mitarbeiter landet auf der Seite der Monatsstatistik
+| I-32 | UC420 | Mitarbeiter ist eingeloggt und der Einkaufsbetrag eines Lieferanten beträgt 0€ | Ein Möbelstück desselben Lieferanten wird bestellt | In der Monatsstatistik wird der Preis des Möbelstücks als Einkaufsbetrag des Lieferanten angezeigt
+| I-33 | UC430 | Mitarbeiter ist eingeloggt und befindet sich im Admin-Bereich | Mitarbeiter versucht, die Lieferantenseite aufzurufen | Mitarbeiter landet auf der Lieferantenseite
+| I-34 | UC430 | Mitarbeiter ist eingeloggt und auf der Lieferantenseite | Mitarbeiter versucht, einen (nicht bereits vorhandenen) Lieferanten mit gültigen Eingabedaten hinzuzufügen | Der Lieferant wird hinzugefügt
+| I-35 | UC430 | Mitarbeiter ist eingeloggt und auf der Lieferantenseite | Mitarbeiter versucht, einen vorhandenen Lieferanten zu entfernen | Der Lieferant wird entfernt
 
 //Unittests (bei Methodenaufrufen Leerzeichen vor dem Punkt für Zeilenumbruch, sonst ist das zu lang ^^)
 

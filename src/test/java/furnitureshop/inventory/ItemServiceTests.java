@@ -35,7 +35,7 @@ public class ItemServiceTests {
 	SupplierRepository supplierRepository;
 
 	@Autowired
-	ItemService itemservice;
+	ItemService itemService;
 
 	@BeforeEach
 	void setUp() {
@@ -74,7 +74,7 @@ public class ItemServiceTests {
 
 	@Test
 	void findAllItemsBySizeTest() {
-		assertEquals(5, itemservice.findAll().stream().count(), "ItemService.findAll() should find all items!/Number of items in catalog is wrong!");
+		assertEquals(5, itemService.findAll().stream().count(), "ItemService.findAll() should find all items!/Number of items in catalog is wrong!");
 	}
 
 	/**
@@ -84,7 +84,7 @@ public class ItemServiceTests {
 	@Test
 	void findAllByIdTest() {
 		ProductIdentifier id = itemCatalog.findAll().stream().findAny().get().getId();
-		assertEquals(itemservice.findById(id).toString(), "Optional[Tisch 1, " + id + ", EUR 89.99, handled in UNIT]");
+		assertEquals(itemService.findById(id).toString(), "Optional[Tisch 1, " + id + ", EUR 89.99, handled in UNIT]");
 	}
 
 	/**
@@ -93,10 +93,10 @@ public class ItemServiceTests {
 
 	@Test
 	void findAllByGroupIdBySizeTest() {
-		assertEquals(1, itemservice.findAllByGroupId(1).stream().count(), "ItemService.findAll() should find all items by groupIDs!/Number of items in catalog is wrong!");
-		assertEquals(2, itemservice.findAllByGroupId(2).stream().count(), "ItemService.findAll() should find all items by groupIDs!/Number of items in catalog is wrong!");
-		assertEquals(1, itemservice.findAllByGroupId(3).stream().count(), "ItemService.findAll() should find all items by groupIDs!/Number of items in catalog is wrong!");
-		assertEquals(1, itemservice.findAllByGroupId(4).stream().count(), "ItemService.findAll() should find all items by groupIDs!/Number of items in catalog is wrong!");
+		assertEquals(1, itemService.findAllByGroupId(1).stream().count(), "ItemService.findAll() should find all items by groupIDs!/Number of items in catalog is wrong!");
+		assertEquals(2, itemService.findAllByGroupId(2).stream().count(), "ItemService.findAll() should find all items by groupIDs!/Number of items in catalog is wrong!");
+		assertEquals(1, itemService.findAllByGroupId(3).stream().count(), "ItemService.findAll() should find all items by groupIDs!/Number of items in catalog is wrong!");
+		assertEquals(1, itemService.findAllByGroupId(4).stream().count(), "ItemService.findAll() should find all items by groupIDs!/Number of items in catalog is wrong!");
 	}
 
 	/**
@@ -105,9 +105,9 @@ public class ItemServiceTests {
 
 	@Test
 	void findAllByCategoryBySizeTest() {
-		assertEquals(2, itemservice.findAllByCategory(Category.COUCH).stream().count(), "ItemService.findAll() should find all items by categories!/Number of items in catalog is wrong!");
-		assertEquals(1, itemservice.findAllByCategory(Category.TABLE).stream().count(), "ItemService.findAll() should find all items by categories!/Number of items in catalog is wrong!");
-		assertEquals(1, itemservice.findAllByCategory(Category.CHAIR).stream().count(), "ItemService.findAll() should find all items by categories!/Number of items in catalog is wrong!");
-		assertEquals(1, itemservice.findAllByCategory(Category.SET).stream().count(), "ItemService.findAll() should find all items by categories!/Number of items in catalog is wrong!");
+		assertEquals(2, itemService.findAllByCategory(Category.COUCH).stream().count(), "ItemService.findAll() should find all items by categories!/Number of items in catalog is wrong!");
+		assertEquals(1, itemService.findAllByCategory(Category.TABLE).stream().count(), "ItemService.findAll() should find all items by categories!/Number of items in catalog is wrong!");
+		assertEquals(1, itemService.findAllByCategory(Category.CHAIR).stream().count(), "ItemService.findAll() should find all items by categories!/Number of items in catalog is wrong!");
+		assertEquals(1, itemService.findAllByCategory(Category.SET).stream().count(), "ItemService.findAll() should find all items by categories!/Number of items in catalog is wrong!");
 	}
 }
