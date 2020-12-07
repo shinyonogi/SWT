@@ -134,7 +134,7 @@
                         <form action="#" th:action="@{/cancelOrder}" method="post">
                             <input type="hidden" name="orderId" th:value="${order.getId().getIdentifier().toString()}"/>
                             <input type="hidden" name="item" th:value="${item.getId().getIdentifier().toString()}"/>
-                            <button type="submit" class="btn btn-secondary">Artikel stornieren</button>
+                            <button type="submit" class="btn btn-outline-danger" th:text="#{order.overview.item.cancel}">Artikel stornieren</button>
                         </form>
                     </div>
                 </td>
