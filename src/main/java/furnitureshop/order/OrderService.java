@@ -5,7 +5,6 @@ import furnitureshop.inventory.ItemService;
 import furnitureshop.lkw.LKW;
 import furnitureshop.lkw.LKWService;
 import furnitureshop.lkw.LKWType;
-
 import org.salespointframework.catalog.ProductIdentifier;
 import org.salespointframework.order.Cart;
 import org.salespointframework.order.CartItem;
@@ -14,7 +13,6 @@ import org.salespointframework.quantity.Quantity;
 import org.salespointframework.time.BusinessTime;
 import org.salespointframework.useraccount.UserAccount;
 import org.salespointframework.useraccount.UserAccountManagement;
-
 import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -100,7 +98,7 @@ public class OrderService {
 
 		final Delivery order = new Delivery(userAccount.get(), contactInformation, lkw.get(), deliveryDate);
 		cart.addItemsTo(order);
-		order.changeAllStatus(OrderStatus.PAID);
+		this.changeAllStatus(order, OrderStatus.PAID);
 		orderManagement.save(order);
 
 		return Optional.of(order);
@@ -162,4 +160,23 @@ public class OrderService {
 		return lkwService.findById(productId);
 	}
 
+	public boolean changeAllStatus(ItemOrder order, OrderStatus status) {
+		for (ItemOrderEntry orderEntry : order.getOrderEntries()) {
+			orderEntry.setStatus(status);
+		}
+
+		return true;
+	}
+
+	public boolean changeStatus(ItemOrder order, String itemId, OrderStatus newStatus) {
+		for (ItemOrderEntry orderEntry : order.getOrderEntries()) {
+			if (orderEntry.getItem().getId().getIdentifier()
+					.equals(itemId)) {
+				orderEntry.setStatus(newStatus);
+				orderManagement.save(order);
+				return true;
+			}
+		}
+		return false;
+	}
 }

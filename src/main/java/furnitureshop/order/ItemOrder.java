@@ -42,24 +42,6 @@ public abstract class ItemOrder extends ShopOrder {
 		return orderLine;
 	}
 
-	public boolean changeAllStatus(OrderStatus status) {
-		for (ItemOrderEntry entry : orderWithStatus) {
-			entry.setStatus(status);
-		}
-
-		return true;
-	}
-
-	public boolean changeStatus(Product product, OrderStatus oldStatus, OrderStatus newStatus) {
-		for (ItemOrderEntry order : orderWithStatus) {
-			if (order.getItem().equals(product) && order.getStatus() == oldStatus) {
-				order.setStatus(newStatus);
-				return true;
-			}
-		}
-
-		return false;
-	}
 
 	public List<ItemOrderEntry> getOrderEntries() {
 		return Collections.unmodifiableList(orderWithStatus);

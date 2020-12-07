@@ -220,6 +220,15 @@ class OrderController {
 		return "orderOverview";
 	}
 
+	@PostMapping("/cancelOrder")
+	String cancelOrder(@RequestParam("orderId") String orderId, @RequestParam("item") String item, Model model) {
+		ItemOrder order = (ItemOrder) orderService.findById(orderId).get();
+		if (orderService.changeStatus(order, item, OrderStatus.CANCELLED))
+			return getOrderOverview(orderId, model);
+		else
+			return "orderSearch";
+	}
+
 	@GetMapping("/admin/orders")
 	String getCustomerOrders(Model model) {
 		model.addAttribute("orders", orderService.findAll());

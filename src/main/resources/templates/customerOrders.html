@@ -32,9 +32,11 @@
 				<td>TBD</td>
 				<td>
 					<form th:action="@{/checkOrder}" th:method="post">
-						<input type="hidden" th:value="${order.getId()}" id="orderId" name="orderId"/>
-						<button type="submit" class="btn btn-secondary" role="button" th:text="#{order.overview.check}">Bestellung ansehen</button>
-					</form>
+                        <input type="hidden" th:value="${order.getId()}" id="orderId" name="orderId"/>
+                        <button type="submit" class="btn btn-secondary" role="button" th:text="#{order.overview.check}">
+                            Bestellung ansehen
+                        </button>
+                    </form>
 				</td>
 			</tr>
 		</tbody>

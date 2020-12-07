@@ -64,8 +64,13 @@
                             <a class="dropdown-item" href="#" th:each="s : ${statuses}" th:text="${s.name().toLowerCase()}">eingegangen</a>
                         </div>
                     </div>
-                    <div sec:authorize="!hasRole('EMPLOYEE')" th:unless="${item.getStatus() == T(furnitureshop.order.OrderStatus).COMPLETED || item.getStatus() == T(furnitureshop.order.OrderStatus).COMPLETED}">
-                        <button type="button" class="btn btn-secondary">Artikel stornieren</button>
+                    <div sec:authorize="!hasRole('EMPLOYEE')"
+                         th:unless="${item.getStatus() == T(furnitureshop.order.OrderStatus).COMPLETED || item.getStatus() == T(furnitureshop.order.OrderStatus).CANCELLED}">
+                        <form action="#" th:action="@{/cancelOrder}" method="post">
+                            <input type="hidden" name="orderId" th:value="${order.getId().getIdentifier().toString()}"/>
+                            <input type="hidden" name="item" th:value="${item.getId().getIdentifier().toString()}"/>
+                            <button type="submit" class="btn btn-secondary">Artikel stornieren</button>
+                        </form>
                     </div>
                 </td>
             </tr>
