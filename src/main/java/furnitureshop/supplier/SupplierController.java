@@ -82,6 +82,7 @@ public class SupplierController {
 
 	@PostMapping("/admin/supplier/items/{suppId}/delete/{itemId}")
 	String deleteItemForSupplier(@PathVariable("suppId") long suppId, @PathVariable("itemId") Item item, Model model){
+		itemService.removeItem(item);
 		return "redirect:/admin/supplier/items/" + String.valueOf(suppId);
 	}
 

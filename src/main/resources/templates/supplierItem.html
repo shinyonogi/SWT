@@ -27,7 +27,7 @@
                         </div>
                         <div class="d-flex flex-row align-items-baseline justify-content-between">
                             <h6 th:text="#{supplier.surcharge}"></h6>
-                            <div th:text="${supplier.getSurcharge()}"></div>
+                            <div th:text="${supplier.getSurchargeInPercent()} + '%'"></div>
                         </div>
                     </div>
                 </div>
