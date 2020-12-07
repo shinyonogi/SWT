@@ -74,8 +74,10 @@ public class OrderService {
 			}
 
 			final Item item = (Item) cartItem.getProduct();
-			weight += item.getWeight();
+			weight += item.getWeight() * cartItem.getQuantity().getAmount().intValue();
 		}
+
+		System.out.println(weight);
 
 		final Optional<LKWType> optional = LKWType.getByWeight(weight);
 		final LKWType type;

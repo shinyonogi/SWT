@@ -34,19 +34,19 @@
 				<div th:if="${result == -1}" th:text="#{lkw.status.available}">LKW verfügbar</div>
 			</div>
 
-			<div class="border bg-light rounded p-1">
-				<div class="align-middle text-center">
+			<div class="card bg-light">
+				<div class="card-img-top">
 					<img class="img-fluid" th:src="@{${type.getPicture()}}"
 						 src="../static/resources/img/smalllkw.jpg" alt="LKW"/>
 				</div>
-				<div class="pt-3">
-					<div class="d-flex justify-content-between align-items-end pl-2 pr-2">
+				<div class="card-body pb-2">
+					<div class="d-flex justify-content-between align-items-baseline">
 						<h4 th:text="#{lkw.size}">Größe:</h4>
-						<h5 th:text="${type.getName()}">5,5t</h5>
+						<h5 class="text-right" th:text="${type.getName()}">5,5t</h5>
 					</div>
-					<div class="d-flex justify-content-between align-items-end pl-2 pr-2">
+					<div class="d-flex justify-content-between align-items-baseline">
 						<h4 th:text="#{lkw.price}">Preis:</h4>
-						<h5 th:text="${type.getCharterPrice()}">10 EUR</h5>
+						<h5 class="text-right" th:text="${type.getCharterPrice()}">10 EUR</h5>
 					</div>
 				</div>
 			</div>

@@ -124,10 +124,8 @@ class OrderController {
 		model.addAttribute("orderform", new OrderForm("", "", "", 0));
 
 		final int weight = cart.get()
-				.map(CartItem::getProduct)
-				.filter(product -> product instanceof Item)
-				.map(product -> ((Item) product))
-				.mapToInt(Item::getWeight)
+				.filter(c -> c.getProduct() instanceof Item)
+				.mapToInt(c -> ((Item) c.getProduct()).getWeight() * c.getQuantity().getAmount().intValue())
 				.sum();
 
 		final Optional<LKWType> type = LKWType.getByWeight(weight);
