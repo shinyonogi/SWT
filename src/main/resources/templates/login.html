@@ -1,39 +1,49 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-    <title>Admin Login</title>
+    <title th:text="#{login.title}">Admin Login</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link th:href="@{/resources/css/style.css}" rel="stylesheet"
+          href="../static/resources/css/style.css" type="text/css"/>
+    <style>
+        body {height: 100%; overflow: hidden}
+    </style>
 </head>
 <body>
 
     <nav th:include="navigation :: navigation"></nav>
 
-    <div class="container">
-        <div class="row">
-            <div class="col-4"></div>
-            <div class="col-4">
-                <br>
-                <div th:if="${param.error}" class="alert alert-danger" th:text="#{login.error}"></div>
-                <br>
-                <div th:if="${param.logout}" class="alert alert-success" th:text="#{logout.success}"></div>
-                <form class="form pt-3" th:method="post" th:action="@{/login}">
-                    <div class="form-group">
-                        <label th:text="#{login.username}" for="username">Name:</label>
-                        <input type="text" class="form-control" id="username" name="username">
+    <div class="container-fluid">
+        <div class="row no-gutter">
+            <div class="col-md-6 d-none d-md-flex bg-image"></div>
+            <div class="col-md-6">
+                <div class="login d-flex align-items-center py-5">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-10 col-xl-7 mx-auto">
+                                <h1 th:text="#{login.login}">Log in.</h1>
+                                <p class="text-muted mb-4" th:text="#{login.welcome}">Welcome back workers!</p>
+                                <div th:if="${param.error}" class="alert alert-danger" th:text="#{login.error}"></div>
+                                <div th:if="${param.logout}" class="alert alert-success" th:text="#{logout.success}"></div>
+                                <form class="form pt-2" th:method="post" th:action="@{/login}">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control rounded-pill border-0 shadow-sm px-4" id="username" name="username" th:placeholder="#{login.username}">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="password" class="form-control rounded-pill border-0 shadow-sm px-4" id="password" name="password" th:placeholder="#{login.password}">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary btn-block text-uppercase rounded-pill" th:text="#{login.button}">Login</button>
+                                </form>
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label th:text="#{login.password}" for="password">Passwort:</label>
-                        <input type="password" class="form-control" id="password" name="password">
-                    </div>
-                    <button type="submit" class="btn btn-secondary" th:text="#{login.button}">Login</button>
-                </form>
+                </div>
             </div>
-            <div class="col-4"></div>
         </div>
     </div>
 

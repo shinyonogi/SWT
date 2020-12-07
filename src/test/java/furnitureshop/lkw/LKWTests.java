@@ -24,24 +24,24 @@ public class LKWTests {
 	@Test
 	void testConstructorWithInvalidType() {
 		assertThrows(NullPointerException.class, () -> new LKW(null),
-				"LKW.LKW() should throw an NullPointerException if the type argument is invalid!"
+				"LKW() should throw an NullPointerException if the type argument is invalid!"
 		);
 	}
 
 	@Test
 	void testCorrectType() {
 		for (int i = 0; i < LKWType.values().length; i++) {
-			assertSame(LKWType.values()[i], lkws[i].getType(), "LKW.getType() should return the correct type!");
+			assertSame(LKWType.values()[i], lkws[i].getType(), "getType() should return the correct type!");
 		}
 	}
 
 	@Test
-	void testLkwIsProduct() {
+	void testLKWIsProduct() {
 		assertTrue(Product.class.isAssignableFrom(LKW.class), "LKW must extends Product!");
 	}
 
 	@Test
-	void testLkwIsEntity() {
+	void testLKWIsEntity() {
 		assertTrue(LKW.class.isAnnotationPresent(Entity.class), "LKW must have @Entity!");
 	}
 

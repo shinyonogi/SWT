@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>LKW</title>
+    <title th:text="#{lkw.title}">LKW</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -13,19 +13,19 @@
 
     <nav th:include="navigation :: navigation"></nav>
 
-    <div class="container pt-3">
+    <div class="container mt-3 mb-3">
         <div class="row">
 
             <div th:each="type : ${types}" class="col-lg-4 col-md-6 mb-4">
-                <div class="card h-100 bg-light">
+                <div class="card bg-light">
                     <a class="card-img-top" th:href="@{/lkw/checkout/{name}(name=${type.name().toLowerCase()})}">
-                        <img class="img-fluid" th:src="@{${type.getPicture()}}"
+                        <img class="img-fluid w-100" th:src="@{${type.getPicture()}}"
                              src="../static/resources/img/smalllkw.jpg" alt="LKW"/>
                     </a>
                     <div class="card-body">
                         <h4 class="card-title" th:text="#{lkw.size} + ' ' + ${type.getName()}">3,5t</h4>
-                        <h5 class="text-primary" th:text="${type.getCharterPrice()} + ' ' + #{lkw.priceinfo}">10 EUR / Tag</h5>
-                        <a class="btn btn-primary" th:href="@{/lkw/checkout/{name}(name=${type.name().toLowerCase()})}">LKW mieten</a>
+                        <h5 class="text-dark" th:text="${type.getCharterPrice()} + ' ' + #{lkw.priceinfo}">10 EUR / Tag</h5>
+                        <a class="btn btn-outline-primary" th:text="#{lkw.checkout}" th:href="@{/lkw/checkout/{name}(name=${type.name().toLowerCase()})}">LKW mieten</a>
                     </div>
                 </div>
             </div>

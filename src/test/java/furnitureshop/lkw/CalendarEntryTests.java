@@ -2,6 +2,7 @@ package furnitureshop.lkw;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.salespointframework.catalog.Product;
 
 import javax.persistence.Entity;
 import java.lang.reflect.Modifier;
@@ -15,49 +16,59 @@ public class CalendarEntryTests {
 
 	@BeforeEach
 	void setUp() {
-		entry = new DeliveryEntry(LocalDate.of(2021, 4, 2));
+		this.entry = new DeliveryEntry(LocalDate.of(2021, 4, 2));
 	}
 
 	@Test
-	void constructorWithInvalidType() {
+	void testConstructorWithInvalidType() {
 		assertThrows(IllegalArgumentException.class, () -> new DeliveryEntry(null),
-				"DeliveryEntry.DeliveryEntry() should throw an IllegalArgumentException if the date argument is invalid!"
+				"DeliveryEntry() should throw an IllegalArgumentException if the date argument is invalid!"
+		);
+		assertThrows(IllegalArgumentException.class, () -> new CharterEntry(null),
+				"CharterEntry() should throw an IllegalArgumentException if the date argument is invalid!"
 		);
 	}
 
 	@Test
-	public void calendarEntryIsAbstract() {
+	void testCalendarEntryIsAbstract() {
 		assertTrue(Modifier.isAbstract(CalendarEntry.class.getModifiers()), "CalendarEntry should be an abstract class!");
 	}
 
 	@Test
-	void calenderEntryIsEntity() {
+	void testCalendarEntryIsChild() {
+		assertTrue(CalendarEntry.class.isAssignableFrom(DeliveryEntry.class), "DeliveryEntry must extends CalendarEntry!");
+		assertTrue(CalendarEntry.class.isAssignableFrom(CharterEntry.class), "CharterEntry must extends CalendarEntry!");
+	}
+
+	@Test
+	void testCalenderEntryIsEntity() {
 		assertTrue(CalendarEntry.class.isAnnotationPresent(Entity.class), "CalenderEntry must have @Entity!");
 		assertTrue(DeliveryEntry.class.isAnnotationPresent(Entity.class), "DeliveryEntry must have @Entity!");
 		assertTrue(CharterEntry.class.isAnnotationPresent(Entity.class), "CharterEntry must have @Entity!");
 	}
 
 	@Test
-	public void deliveryEntrySetValidQuantity() {
+	void testDeliveryEntrySetValidQuantity() {
 		entry.setQuantity(2);
-		assertEquals(2, entry.getQuantity(), "setQuantity should set the correct Quantity!");
+		assertEquals(2, entry.getQuantity(), "setQuantity() should set the correct Quantity!");
 	}
 
 	@Test
-	public void deliveryEntrySetNegativeQuality() {
+	void testDeliveryEntrySetNegativeQuantity() {
 		assertThrows(IllegalArgumentException.class, () -> entry.setQuantity(-1),
-				"DeliveryEntry.setQuantity() should throw an IllegalArgumentException if the quantity argument is invalid!"
+				"setQuantity() should throw an IllegalArgumentException if the quantity argument is negative!"
 		);
 	}
 
 	@Test
-	public void deliveryEntrySetInvalidQuantity() {
+	void testDeliveryEntrySetInvalidQuantity() {
 		assertThrows(IllegalArgumentException.class, () -> entry.setQuantity(5),
-				"DeliveryEntry.setQuantity() should throw an IllegalArgumentException if the quantity argument is invalid!"
+				"setQuantity() should throw an IllegalArgumentException if the quantity argument is invalid!"
 		);
 
 		assertThrows(IllegalArgumentException.class, () -> entry.setQuantity(25),
-				"DeliveryEntry.setQuantity() should throw an IllegalArgumentException if the quantity argument is invalid!"
+				"setQuantity() should throw an IllegalArgumentException if the quantity argument is invalid!"
 		);
 	}
+
 }

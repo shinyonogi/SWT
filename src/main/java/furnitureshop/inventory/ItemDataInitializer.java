@@ -11,6 +11,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.*;
 
+/**
+ * This class initialize {@link Item}s and stores them into the {@link ItemCatalog}
+ */
 @Order(20)
 @Component
 public class ItemDataInitializer implements DataInitializer {
@@ -18,6 +21,14 @@ public class ItemDataInitializer implements DataInitializer {
 	private final ItemCatalog itemCatalog;
 	private final SupplierRepository supplierRepository;
 
+	/**
+	 * Creates a new instance of an {@link ItemDataInitializer}
+	 *
+	 * @param itemCatalog The {@link ItemCatalog} for all {@link Item}s
+	 * @param supplierRepository The Repository of the suppliers
+	 *
+	 * @throws IllegalArgumentException If the {@code itemCatalog} or {@code supplierRepository} is {@code null}
+	 */
 	ItemDataInitializer(ItemCatalog itemCatalog, SupplierRepository supplierRepository) {
 		Assert.notNull(itemCatalog, "ItemCatalog must not be null!");
 		Assert.notNull(supplierRepository, "SupplierRepository must not be null!");
@@ -26,6 +37,9 @@ public class ItemDataInitializer implements DataInitializer {
 		this.supplierRepository = supplierRepository;
 	}
 
+	/**
+	 * This method initializes {@link Item}s and saves them into the {@link ItemCatalog}, if no {@link Item} exists
+	 */
 	@Override
 	public void initialize() {
 		if (itemCatalog.count() > 0) {
@@ -67,6 +81,12 @@ public class ItemDataInitializer implements DataInitializer {
 		itemCatalog.saveAll(items);
 	}
 
+	/**
+	 * Finds a {@link Supplier} by their name.
+	 *
+	 * @param name Name of the supplier
+	 * @return Returns {@link Supplier} or nothing
+	 */
 	private Optional<Supplier> findSupplierByName(String name) {
 		for (Supplier s : supplierRepository.findAll()) {
 			if (s.getName().equalsIgnoreCase(name)) {

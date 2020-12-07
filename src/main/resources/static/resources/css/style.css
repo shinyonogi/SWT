@@ -46,6 +46,17 @@ header.cart-header {
      padding-bottom: 7rem;
 }
 
+.login,
+.image {
+    min-height: 95vh;
+}
+
+.bg-image {
+    background-image: url("../img/worker.jpg");
+    background-size: cover;
+    background-position: center center;
+}
+
 @media (min-width: 992px) {
   header.masthead {
     padding-top: calc(10rem + 55px);

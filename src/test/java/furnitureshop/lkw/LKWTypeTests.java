@@ -9,69 +9,75 @@ import static org.junit.jupiter.api.Assertions.*;
 public class LKWTypeTests {
 
 	@Test
-	void testLKWTypeEnum() {
-		assertTrue(LKWType.class.isEnum(), "LKWType must be an Enum");
+	void testLKWTypeIsEnum() {
+		assertTrue(LKWType.class.isEnum(), "LKWType must be an Enum!");
+	}
+
+	@Test
+	void testGetByWeightWithInvalidType() {
+		assertThrows(IllegalArgumentException.class, () -> LKWType.getByWeight(-1),
+				"getByWeight() should throw an IllegalArgumentException if the weight argument is negative!"
+		);
 	}
 
 	@Test
 	void testGetByWeight() {
-		assertThrows(IllegalArgumentException.class, () -> LKWType.getByWeight(-1),
-				"LKWType.getByWeight() should throw an IllegalArgumentException if the weight argument is negative!"
-		);
-
 		Optional<LKWType> type = LKWType.getByWeight(10);
 
-		assertTrue(type.isPresent(), "LKWType must exists");
-		assertSame(LKWType.SMALL, type.get(), "LKWType must be the same");
+		assertTrue(type.isPresent(), "getByWeight() should find a LKWType!");
+		assertSame(LKWType.SMALL, type.get(), "getByWeight() should return the correct LKWType!");
 
 		type = LKWType.getByWeight(LKWType.SMALL.getWeight());
 
-		assertTrue(type.isPresent(), "LKWType must exists");
-		assertSame(LKWType.SMALL, type.get(), "LKWType must be the same");
+		assertTrue(type.isPresent(), "getByWeight() should find a LKWType!");
+		assertSame(LKWType.SMALL, type.get(), "getByWeight() should return the correct LKWType!");
 
 		type = LKWType.getByWeight(LKWType.SMALL.getWeight() + 5);
 
-		assertTrue(type.isPresent(), "LKWType must exists");
-		assertSame(LKWType.MEDIUM, type.get(), "LKWType must be the same");
+		assertTrue(type.isPresent(), "getByWeight() should find a LKWType!");
+		assertSame(LKWType.MEDIUM, type.get(), "getByWeight() should return the correct LKWType!");
 
 		type = LKWType.getByWeight(LKWType.MEDIUM.getWeight());
 
-		assertTrue(type.isPresent(), "LKWType must exists");
-		assertSame(LKWType.MEDIUM, type.get(), "LKWType must be the same");
+		assertTrue(type.isPresent(), "getByWeight() should find a LKWType!");
+		assertSame(LKWType.MEDIUM, type.get(), "getByWeight() should return the correct LKWType!");
 
 		type = LKWType.getByWeight(LKWType.LARGE.getWeight());
 
-		assertTrue(type.isPresent(), "LKWType must exists");
-		assertSame(LKWType.LARGE, type.get(), "LKWType must be the same");
+		assertTrue(type.isPresent(), "getByWeight() should find a LKWType!");
+		assertSame(LKWType.LARGE, type.get(), "getByWeight() should return the correct LKWType!");
 
 		type = LKWType.getByWeight(LKWType.LARGE.getWeight() + 5);
 
-		assertTrue(type.isEmpty(), "LKWType must not exists");
+		assertTrue(type.isEmpty(), "getByWeight() should not find a LKWType!");
+	}
+
+	@Test
+	void testGetByNameWithInvalidType() {
+		assertThrows(IllegalArgumentException.class, () -> LKWType.getByName(null),
+				"getByName() should throw an IllegalArgumentException if the name argument is null!"
+		);
+
+		assertThrows(IllegalArgumentException.class, () -> LKWType.getByName(""),
+				"getByName() should throw an IllegalArgumentException if the name argument is empty!"
+		);
 	}
 
 	@Test
 	void testGetByName() {
-		assertThrows(IllegalArgumentException.class, () -> LKWType.getByName(null),
-				"LKWType.getByName() should throw an IllegalArgumentException if the name argument is null!"
-		);
-
-		assertThrows(IllegalArgumentException.class, () -> LKWType.getByName(""),
-				"LKWType.getByName() should throw an IllegalArgumentException if the name argument is empty!"
-		);
-
 		for (LKWType type : LKWType.values()) {
 			Optional<LKWType> actual = LKWType.getByName(type.getName());
 
-			assertTrue(actual.isPresent(), "LKWType must exists");
-			assertSame(type, actual.get(), "LKWType must be the same");
+			assertTrue(actual.isPresent(), "getByName() should find a LKWType!");
+			assertSame(type, actual.get(), "getByName() should return the correct LKWType!");
 
 			actual = LKWType.getByName(type.name());
 
-			assertTrue(actual.isPresent(), "LKWType must exists");
-			assertSame(type, actual.get(), "LKWType must be the same");
+			assertTrue(actual.isPresent(), "getByName() should find a LKWType!");
+			assertSame(type, actual.get(), "getByName() should return the correct LKWType!");
 		}
 
-		assertTrue(LKWType.getByName("unknown").isEmpty(), "LKWType should not exists");
+		assertTrue(LKWType.getByName("unknown").isEmpty(), "getByName() should not find a LKWType!");
 	}
 
 }

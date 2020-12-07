@@ -6,6 +6,7 @@ import furnitureshop.supplier.SupplierRepository;
 import org.javamoney.moneta.Money;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.salespointframework.catalog.ProductIdentifier;
 import org.salespointframework.core.Currencies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,6 +17,12 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
+/**
+ * UnitTest for {@link ItemService}
+ *
+ * @author Shintaro Onogi
+ */
 
 @SpringBootTest
 @ContextConfiguration(classes = FurnitureShop.class)
@@ -61,17 +68,28 @@ public class ItemServiceTests {
 		itemCatalog.saveAll(items);
 	}
 
+	/**
+	 * Tests if the findAll() function returns the right amount of products
+	 */
+
 	@Test
 	void findAllItemsBySizeTest() {
 		assertEquals(5, itemservice.findAll().stream().count(), "ItemService.findAll() should find all items!/Number of items in catalog is wrong!");
 	}
 
-	/*
+	/**
+	 * Tests if the findById() function returns the right product (Optional)
+	 */
+
 	@Test
 	void findAllByIdTest() {
-		assertEquals(itemservice.findById(id).toString(), "");
+		ProductIdentifier id = itemCatalog.findAll().stream().findAny().get().getId();
+		assertEquals(itemservice.findById(id).toString(), "Optional[Tisch 1, " + id + ", EUR 89.99, handled in UNIT]");
 	}
-	*/
+
+	/**
+	 * Tests if the findAllByGroupId() function returns the right amount products
+	 */
 
 	@Test
 	void findAllByGroupIdBySizeTest() {
@@ -81,6 +99,10 @@ public class ItemServiceTests {
 		assertEquals(1, itemservice.findAllByGroupId(4).stream().count(), "ItemService.findAll() should find all items by groupIDs!/Number of items in catalog is wrong!");
 	}
 
+	/**
+	 * Tests if the find findAllByCategory() function returns the right amount of products
+	 */
+
 	@Test
 	void findAllByCategoryBySizeTest() {
 		assertEquals(2, itemservice.findAllByCategory(Category.COUCH).stream().count(), "ItemService.findAll() should find all items by categories!/Number of items in catalog is wrong!");
@@ -88,5 +110,4 @@ public class ItemServiceTests {
 		assertEquals(1, itemservice.findAllByCategory(Category.CHAIR).stream().count(), "ItemService.findAll() should find all items by categories!/Number of items in catalog is wrong!");
 		assertEquals(1, itemservice.findAllByCategory(Category.SET).stream().count(), "ItemService.findAll() should find all items by categories!/Number of items in catalog is wrong!");
 	}
-
 }

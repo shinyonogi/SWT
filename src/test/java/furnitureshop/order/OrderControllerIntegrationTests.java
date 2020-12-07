@@ -132,18 +132,4 @@ public class OrderControllerIntegrationTests {
 		mvc.perform(get("/checkout"))
 				.andExpect(view().name("orderCheckout"));
 	}
-
-	/**
-	 * returnsNoneWhenYouTryToCheckoutButTheCartIsEmpty method
-	 * Tests if user will not reach the "/orderCheckout" page if the cart is empty
-	 *
-	 * @throws Exception
-	 */
-
-	@Test
-	void returnsNoneWhenYouTryToCheckoutButTheCartIsEmpty() throws Exception {
-		cart.clear();
-		mvc.perform(get("/checkout"))
-				.andDo(print()); //trying to figure out what to expect
-	}
 }

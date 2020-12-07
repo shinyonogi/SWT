@@ -11,7 +11,7 @@
 	  <link th:href="@{/resources/css/style.css}" rel="stylesheet"
 		  href="../static/resources/css/style.css" type="text/css"/>
 </head>
-<body>
+<body th:style="${cart.empty ? 'overflow:hidden;height:100%' : ''}">
 
 	<nav th:include="navigation :: navigation"></nav>
 
@@ -28,15 +28,15 @@
 		</div>
 	</div>
 
-	<div class="container mt-3" th:unless="${cart.empty}">
+	<div class="container mt-3 mb-3" th:unless="${cart.empty}">
 		<table class="table table-hover">
 			<thead class="thead-light">
 				<tr class="text-center">
 					<th scope="col" class="text-black"></th>
-					<th scope="col" class="text-black">Artikel</th>
-					<th scope="col" class="text-black">Preis</th>
-					<th scope="col" class="text-black">Anzahl</th>
-					<th scope="col" class="text-black">Löschen</th>
+					<th scope="col" class="text-black" th:text="#{cart.entry.name}">Artikel</th>
+					<th scope="col" class="text-black" th:text="#{cart.entry.price}">Preis</th>
+					<th scope="col" class="text-black" th:text="#{cart.entry.quantity}">Anzahl</th>
+					<th scope="col" class="text-black" th:text="#{cart.entry.delete}">Löschen</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -56,22 +56,22 @@
 					<td class="align-middle">
 						<form class="form-inline justify-content-center" th:method="post" th:action="@{/cart/change/{id}(id=${cartItem.getId()})}">
 							<input name="amount" type="number" class="form-control" min="0" max="99" th:value="${cartItem.getQuantity()}" style="width: 70px">
-							<button type="submit" class="btn" title="Anzahl ändern">&#10004;</button>
+							<button type="submit" class="btn" th:title="#{cart.entry.quantity.change}">&#10004;</button>
 						</form>
 					</td>
 					<td class="align-middle">
 						<form class="form-inline justify-content-center" th:method="post" th:action="@{/cart/delete/{id}(id=${cartItem.getId()})}">
-							<button type="submit" class="btn" title="Löschen">&#10060;</button>
+							<button type="submit" class="btn" th:title="#{cart.entry.delete}">&#10060;</button>
 						</form>
 					</td>
 				</tr>
 			</tbody>
 		</table>
 
-		<div class="float-right mt-3">
+		<div class="float-right mt-3 mb-3">
 			<h2 th:text="#{cart.price} + ' ' + ${cart.getPrice()}"></h2>
 			<div>
-				<a th:href="@{/catalog}"  class="btn btn-dark rounded-pill mt-3 mr-3" role="button" th:text="#{cart.continue}">Continue Shopping</a>
+				<a th:href="@{/catalog}"  class="btn btn-outline-dark rounded-pill mt-3 mr-3" role="button" th:text="#{cart.continue}">Continue Shopping</a>
 				<a th:href="@{/checkout}" class="btn btn-primary rounded-pill mt-3" role="button" th:text="#{cart.checkout}">Bestellen</a>
 			</div>
 		</div>

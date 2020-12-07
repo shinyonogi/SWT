@@ -13,26 +13,27 @@
 
     <nav th:include="navigation :: navigation"></nav>
 
-    <div class="container">
+    <div class="container mt-3 mb-3">
         <div class="row">
+
             <div class="col-2"></div>
-            <div class="col-4 mt-3">
+            <div class="col-4">
                 <div class="border bg-light rounded p-1">
-                    <h2 class="pt-2 pl-2">Übersicht</h2>
+                    <h2 class="pt-2 pl-2" th:text="#{checkout.overview}">Übersicht</h2>
                     <div class="pt-3">
                         <div class="d-flex justify-content-between align-items-end pl-2 pr-2">
-                            <h5>Artikelgesamtpreis:</h5>
+                            <h5 th:text="#{checkout.total}">Artikelgesamtpreis:</h5>
                             <h5 th:text="${cart.getPrice()}">10 EUR</h5>
                         </div>
                         <div class="d-flex justify-content-between align-items-end pl-2 pr-2">
-                            <h5>ggf. zzgl. Lieferkosten:</h5>
+                            <h5 th:text="#{checkout.delivery.cost}">ggf. zzgl. Lieferkosten:</h5>
                             <h5 th:text="${lkwtype.getDelieveryPrice()}">10 EUR</h5>
                         </div>
                     </div>
                 </div>
 
             </div>
-            <div class="col-4 mt-3">
+            <div class="col-4">
                 <form class="form" th:object="${orderform}" th:method="post" th:action="@{/checkout/completeOrder}">
                     <div class="form-group">
                         <label for="name" th:text="#{order.name}">Name:</label>
@@ -58,11 +59,13 @@
                             Abholung
                         </label>
                     </div>
-
-                    <button type="submit" class="btn btn-info mt-3" th:text="#{checkout.complete}">Bestellung abschicken</button>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary mt-3" th:text="#{checkout.complete}">Bestellung abschicken</button>
+                    </div>
                 </form>
             </div>
             <div class="col-2"></div>
+
         </div>
     </div>
 

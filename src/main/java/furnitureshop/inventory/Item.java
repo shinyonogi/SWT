@@ -15,6 +15,9 @@ import java.math.RoundingMode;
 
 import static org.salespointframework.core.Currencies.EURO;
 
+/**
+ * This class represents an Item.
+ */
 @Entity
 public abstract class Item extends Product {
 
@@ -30,9 +33,27 @@ public abstract class Item extends Product {
 	@Enumerated(EnumType.ORDINAL)
 	private Category category;
 
-	@SuppressWarnings("deprecation")
+	/**
+	 * Empty constructor for {@code Spring}. Not in use.
+	 *
+	 * @deprecated
+	 */
 	protected Item() {}
 
+	/**
+	 * Creates a new instance of an {@link Item}
+	 *
+	 * @param groupid Group which contains all variants of this particular Item
+	 * @param name Name of the Item
+	 * @param customerPrice Price of the Item
+	 * @param picture A path to the picture of the Item
+	 * @param variant Variant of the Item
+	 * @param description Description of the Item
+	 * @param supplier Supplier of the Item
+	 * @param category {@link Category} of the Item
+	 *
+	 * @throws NullPointerException If any of the arguments is {@code null}
+	 */
 	public Item(int groupid, String name, MonetaryAmount customerPrice, String picture, String variant,
 			String description, Supplier supplier, Category category) {
 		super(name, customerPrice);

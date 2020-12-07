@@ -174,15 +174,20 @@ public class LKWController {
 			return "lkwCheckout";
 		}
 
+		// Create the contact information
 		final ContactInformation contactInformation = new ContactInformation(form.getName(), form.getAddress(), form.getEmail());
+
+		// Create the LKW Order
 		final Optional<LKWCharter> order = lkwService.createLKWOrder(lkw.get(), form.getDate(), contactInformation);
 
+		// Should never be empty
 		if (order.isEmpty()) {
 			// Display error message
 			model.addAttribute("result", 6);
 			return "lkwCheckout";
 		}
 
+		// Construct summary for the order
 		model.addAttribute("order", order.get());
 		model.addAttribute("charterDate", form.getDate());
 		model.addAttribute("deliveryDate", null);
