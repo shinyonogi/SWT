@@ -1,5 +1,7 @@
 package furnitureshop.supplier;
 
+import furnitureshop.inventory.Item;
+import furnitureshop.inventory.ItemService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.Assert;
@@ -14,11 +16,14 @@ import java.util.Optional;
 public class SupplierController {
 
 	private final SupplierService supplierService;
+	private final ItemService itemService;
 
-	SupplierController(SupplierService supplierService) {
+	SupplierController(SupplierService supplierService, ItemService itemService) {
 		Assert.notNull(supplierService, "SupplierService must not be null!");
+		Assert.notNull(itemService, "ItemService must not be null!");
 
 		this.supplierService = supplierService;
+		this.itemService = itemService;
 	}
 
 	@GetMapping("/admin/suppliers")
@@ -60,6 +65,24 @@ public class SupplierController {
 		supplierService.deleteSupplierById(id);
 
 		return "redirect:/admin/suppliers";
+	}
+
+	@GetMapping("/admin/supplier/items/{id}")
+	String getItemPageForSupplier(@PathVariable("id") long id, Model model) {
+		Optional<Supplier> supplier = supplierService.findById(id);
+		supplier.ifPresent(value -> model.addAttribute("items", itemService.findBySupplier(value)));
+		supplier.ifPresent(value -> model.addAttribute("supplier", value));
+		return "supplierItem";
+	}
+
+	@PostMapping("/admin/supplier/items/{suppId}/edit/{itemId}")
+	String editItemForSupplier(@PathVariable("suppId") long suppId, @PathVariable("itemId") Item item, Model model){
+		return "redirect:/admin/supplier/items/" + String.valueOf(suppId);
+	}
+
+	@PostMapping("/admin/supplier/items/{suppId}/delete/{itemId}")
+	String deleteItemForSupplier(@PathVariable("suppId") long suppId, @PathVariable("itemId") Item item, Model model){
+		return "redirect:/admin/supplier/items/" + String.valueOf(suppId);
 	}
 
 	@GetMapping("/admin/statistic")

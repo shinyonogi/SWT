@@ -63,6 +63,10 @@ public class SupplierService {
 		return supplierRepository.findAll();
 	}
 
+	public Optional<Supplier> findById(long id) {
+		return supplierRepository.findById(id);
+	}
+
 	public void deleteAll() {
 		supplierRepository.deleteAll();
 	}

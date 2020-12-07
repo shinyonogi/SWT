@@ -29,7 +29,7 @@
                 <td th:text="${supplier.getName()}"></td>
                 <td th:text="${supplier.getSurchargeInPercent()} + '%'"></td>
                 <td>
-                    <form th:method="post" th:action="'#'">
+                    <form th:method="get" th:action="@{/admin/supplier/items/{id}(id=${supplier.getId()})}">
                         <button type="submit" class="btn btn-outline-primary" th:text="#{supplier.item.edit}">Artikel bearbeiten</button>
                     </form>
                 </td>
