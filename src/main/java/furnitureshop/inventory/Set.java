@@ -12,12 +12,20 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * A set of pieces
+ */
 @Entity
 public class Set extends Item {
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	private List<Item> items;
 
+	/**
+	 * Empty constructor for {@code Spring}. Not in use.
+	 *
+	 * @deprecated
+	 */
 	protected Set() {}
 
 	public Set(int groupid, String name, MonetaryAmount customerPrice, String picture, String variant, String description, Supplier supplier, Category category, List<Item> items) {
