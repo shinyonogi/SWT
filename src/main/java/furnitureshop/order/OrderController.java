@@ -128,10 +128,10 @@ class OrderController {
 				.mapToInt(c -> ((Item) c.getProduct()).getWeight() * c.getQuantity().getAmount().intValue())
 				.sum();
 
-		final Optional<LKWType> type = LKWType.getByWeight(weight);
+		Optional<LKWType> type = LKWType.getByWeight(weight);
 
 		if (type.isEmpty()) {
-			return "redirect:/cart";
+			type = Optional.of(LKWType.LARGE);
 		}
 
 		model.addAttribute("lkwtype", type.get());
