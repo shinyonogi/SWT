@@ -9,6 +9,7 @@ import org.salespointframework.core.Currencies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ import java.util.List;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.Matchers.contains;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
@@ -150,8 +152,17 @@ public class ItemControllerIntegrationTests {
 	}
 
 	@Test
+	@WithMockUser(roles = "EMPLOYEE")
 	void redirectsToCatalogOnItemOverviewAfterPieceDeletion() throws Exception {
-		//need to resolve org.springframework.dao.DataIntegrityViolationException when calling itemCatalog.delete()
+		mvc.perform(post("/admin/supplier/items/{suppId}/delete/{itemId}", sofa_grey.getSupplier().getId(), sofa_grey.getId()))
+				.andExpect(status().is3xxRedirection())
+				.andExpect(redirectedUrl("/admin/supplier/items/" + sofa_grey.getSupplier().getId()))
+				.andExpect(view().name("redirect:/admin/supplier/items/" + sofa_grey.getSupplier().getId()));
+
+		mvc.perform(get("/catalog/{category}/{itemId}",Category.SET, set.getId()))
+				.andExpect(status().is3xxRedirection())
+				.andExpect(redirectedUrl("/catalog/" + Category.SET))
+				.andExpect(view().name("redirect:/catalog/" + Category.SET));
 	}
 
 }
