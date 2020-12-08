@@ -6,7 +6,7 @@ public class ItemForm {
 	private final String name, picture, variant, description;
 	private final double price;
 
-	private Category category;
+	private final Category category;
 
 	public ItemForm(int groupId, int weight, String name, String picture, String variant, String description, double price, Category category) {
 		this.groupId = groupId;
@@ -50,4 +50,5 @@ public class ItemForm {
 	public int getWeight() {
 		return weight;
 	}
+
 }

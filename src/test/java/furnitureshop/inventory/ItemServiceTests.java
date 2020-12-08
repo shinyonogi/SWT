@@ -48,19 +48,19 @@ public class ItemServiceTests {
 		final List<Supplier> suppliers = Arrays.asList(supplier, setSupplier);
 		final List<Item> items = new ArrayList<>();
 
-		items.add(new Piece(1, "Tisch 1", Money.of(89.99, Currencies.EURO), "/resources/img/table_2.jpg", "weiß",
+		items.add(new Piece(1, "Tisch 1", Money.of(89.99, Currencies.EURO), "table_2.jpg", "weiß",
 				"Tisch 1 in weiß.", supplier, 30, Category.TABLE));
-		items.add(new Piece(2, "Sofa 1", Money.of(259.99, Currencies.EURO), "/resources/img/sofa_2_green.jpg", "grün",
+		items.add(new Piece(2, "Sofa 1", Money.of(259.99, Currencies.EURO), "sofa_2_green.jpg", "grün",
 				"Sofa 1 in grün.", supplier, 50, Category.COUCH));
 
-		Piece sofa1_grey = new Piece(2, "Sofa 1", Money.of(259.99, Currencies.EURO), "/resources/img/sofa_2_grey.jpg", "grau",
+		Piece sofa1_grey = new Piece(2, "Sofa 1", Money.of(259.99, Currencies.EURO), "sofa_2_grey.jpg", "grau",
 				"Sofa 1 in grau.", supplier, 80, Category.COUCH);
-		Piece stuhl1 = new Piece(3, "Stuhl 1", Money.of(59.99, Currencies.EURO), "/resources/img/chair_2.jpg", "schwarz",
+		Piece stuhl1 = new Piece(3, "Stuhl 1", Money.of(59.99, Currencies.EURO), "chair_2.jpg", "schwarz",
 				"Stuhl 1 in schwarz.", supplier, 5, Category.CHAIR);
 
 		items.add(stuhl1);
 		items.add(sofa1_grey);
-		items.add(new Set(4, "Set 1", Money.of(299.99, Currencies.EURO), "/resources/img/set_1.jpg", "black",
+		items.add(new Set(4, "Set 1", Money.of(299.99, Currencies.EURO), "set_1.jpg", "black",
 				"Set bestehend aus Sofa 1 und Stuhl 1.", setSupplier, Category.SET, Arrays.asList(stuhl1, sofa1_grey))
 		);
 

@@ -68,7 +68,7 @@ public abstract class Item extends Product {
 		Assert.notNull(category, "Category must not be null");
 
 		this.groupid = groupid;
-		this.picture = picture;
+		this.picture = "/resources/img/" + picture;
 		this.variant = variant;
 		this.description = description;
 		this.supplier = supplier;

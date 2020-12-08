@@ -28,9 +28,9 @@ public class ItemService {
 	/**
 	 * Creates a new instance of an {@link Item}
 	 *
-	 * @param itemCatalog {@link ItemCatalog} which contains all items
+	 * @param itemCatalog     {@link ItemCatalog} which contains all items
+	 * @param supplierService {@link SupplierService} reference to the SupplierService
 	 *
-	 * @param supplierService
 	 * @throws IllegalArgumentException If {@code itemCatalog} is {@code null}
 	 */
 	public ItemService(ItemCatalog itemCatalog, @Lazy SupplierService supplierService) {
@@ -48,9 +48,16 @@ public class ItemService {
 	 *
 	 * @throws IllegalArgumentException If {@code item} is {@code null}
 	 */
-	public void addItem(Item item) {
+	public boolean addItem(Item item) {
 		Assert.notNull(item, "Item must not be null!");
+
+		if (findById(item.getId()).isPresent()) {
+			return false;
+		}
+
 		itemCatalog.save(item);
+
+		return true;
 	}
 
 	/**
@@ -60,12 +67,20 @@ public class ItemService {
 	 *
 	 * @throws IllegalArgumentException If {@code item} is {@code null}
 	 */
-	public void removeItem(Item item) {
+	public boolean removeItem(Item item) {
 		Assert.notNull(item, "Item must not be null!");
-		for (Item it : findAllSetsByItem(item)){
+
+		if (findById(item.getId()).isEmpty()) {
+			return false;
+		}
+
+		for (Item it : findAllSetsByItem(item)) {
 			removeItem(it);
 		}
+
 		itemCatalog.delete(item);
+
+		return true;
 	}
 
 	/**
@@ -129,7 +144,7 @@ public class ItemService {
 	 *
 	 * @return Returns a stream of {@link Item}s all with the same {@code groupId}
 	 */
-	public Streamable<Item> findAllByGroupId(int groupId){
+	public Streamable<Item> findAllByGroupId(int groupId) {
 		return itemCatalog.findAll().filter(it -> it.getGroupid() == groupId);
 	}
 
@@ -137,40 +152,56 @@ public class ItemService {
 	 * Finds all sets of which a given item is a part of
 	 *
 	 * @param item An {@link Item}
+	 *
 	 * @return A list of {@link Set}s
 	 */
 	public List<Set> findAllSetsByItem(Item item) {
-		List<Set> sets = new ArrayList<>();
-		for (Item it : findAll()){
-			if (it instanceof Set){
+		final List<Set> sets = new ArrayList<>();
+
+		for (Item it : findAll()) {
+			if (it instanceof Set) {
 				Set set = (Set) it;
 				if (set.getItems().contains(item)) {
 					sets.add(set);
 				}
 			}
 		}
+
 		return sets;
 	}
 
 	public Optional<Item> createItemFromForm(ItemForm itemForm, long suppId) {
-		Optional<Supplier> supplier = findSupplierById(suppId);
-		if (supplier.isEmpty()){
+		final Optional<Supplier> supplier = findSupplierById(suppId);
+
+		if (supplier.isEmpty()) {
 			return Optional.empty();
 		}
-		return Optional.of(new Piece(itemForm.getGroupId(),itemForm.getName(), Money.of(itemForm.getPrice(), Currencies.EURO), itemForm.getPicture(), itemForm.getVariant(), itemForm.getDescription(), supplier.get(), itemForm.getWeight(), itemForm.getCategory()));
+
+		return Optional.of(new Piece(
+				itemForm.getGroupId(),
+				itemForm.getName(),
+				Money.of(itemForm.getPrice(), Currencies.EURO),
+				itemForm.getPicture(),
+				itemForm.getVariant(),
+				itemForm.getDescription(),
+				supplier.get(),
+				itemForm.getWeight(),
+				itemForm.getCategory()
+		));
 	}
 
 	public void editItemFromForm(Item item, ItemForm itemForm) {
 		Assert.notNull(item, "Item must not be null!");
 
 		item.setName(itemForm.getName());
-		item.setPrice(Money.of(itemForm.getPrice(),Currencies.EURO));
+		item.setPrice(Money.of(itemForm.getPrice(), Currencies.EURO));
 		item.setDescription(itemForm.getDescription());
 		item.setPicture(itemForm.getPicture());
+
 		itemCatalog.save(item);
 	}
 
-	public Optional<Supplier> findSupplierById(long id){
+	public Optional<Supplier> findSupplierById(long id) {
 		return supplierService.findById(id);
 	}
 
