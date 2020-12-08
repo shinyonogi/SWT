@@ -25,14 +25,14 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr class="mt-3 mb-3 table-light" th:each="order : ${orders}">
-				<td th:text="${order.getId()}">5318008</td>
-				<td th:text=" ${#temporals.format(order.getDateCreated(), 'dd.MM.yyyy HH:mm:ss')}">23.03.2021</td>
-				<td th:text="${order.getTotal()}">999,99€</td>
-				<td>TBD</td>
+			<tr class="mt-3 mb-3 table-light align-items-baseline" th:each="order : ${orders}">
+				<td th:text="${order.getFirst().getId()}">5318008</td>
+				<td th:text=" ${#temporals.format(order.getFirst().getDateCreated(), 'dd.MM.yyyy HH:mm:ss')}">23.03.2021</td>
+				<td th:text="${order.getFirst().getTotal()}">999,99€</td>
+				<td th:text="${#messages.msgOrNull('order.overview.status.' + order.getSecond().name().toLowerCase())}"></td>
 				<td>
 					<form th:action="@{/order}" th:method="post">
-						<input type="hidden" th:value="${order.getId()}" id="orderId" name="orderId"/>
+						<input type="hidden" th:value="${order.getFirst().getId()}" id="orderId" name="orderId"/>
 						<button type="submit" class="btn btn-outline-primary" role="button" th:text="#{order.overview.check}">Bestellung ansehen</button>
 					</form>
 				</td>

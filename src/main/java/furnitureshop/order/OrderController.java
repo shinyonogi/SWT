@@ -6,6 +6,7 @@ import org.salespointframework.order.Cart;
 import org.salespointframework.quantity.Quantity;
 import org.salespointframework.time.BusinessTime;
 import org.springframework.data.util.Pair;
+import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.Assert;
@@ -282,7 +283,26 @@ class OrderController {
 
 	@GetMapping("/admin/orders")
 	String getCustomerOrders(Model model) {
-		model.addAttribute("orders", orderService.findAll());
+		final Streamable<Pair<ShopOrder, OrderStatus>> orders = orderService.findAll().map(o -> {
+			if (o instanceof ItemOrder) {
+				OrderStatus min = OrderStatus.CANCELLED;
+				for (ItemOrderEntry entry : ((ItemOrder) o).getOrderEntries()) {
+					if (entry.getStatus().ordinal() < min.ordinal()) {
+						min = entry.getStatus();
+					}
+				}
+				return Pair.of(o, min);
+			} else if (o instanceof LKWCharter) {
+				if (((LKWCharter) o).getRentDate().isAfter(businessTime.getTime().toLocalDate())) {
+					return Pair.of(o, OrderStatus.PAID);
+				} else {
+					return Pair.of(o, OrderStatus.COMPLETED);
+				}
+			}
+			return null;
+		});
+
+		model.addAttribute("orders", orders);
 		return "customerOrders";
 	}
 
