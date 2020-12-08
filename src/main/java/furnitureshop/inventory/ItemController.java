@@ -111,13 +111,14 @@ public class ItemController {
 		}
 		model.addAttribute("itemForm", new ItemForm(item.getGroupid(), item.getWeight(), item.getName(), item.getPicture(), item.getVariant(), item.getDescription(), item.getSupplierPrice().getNumber().doubleValue(), item.getCategory()));
 		model.addAttribute("suppId", suppId);
+		model.addAttribute("itemId", item.getId());
 		model.addAttribute("categories", Category.values());
 		model.addAttribute("edit", true);
 		return "supplierItemform";
 	}
 
 	@PostMapping("/admin/supplier/{suppId}/items/edit/{itemId}")
-	String editItemForSupplier(@PathVariable("id") long suppId, @PathVariable("itemId") Item item, @ModelAttribute("itemForm") ItemForm itemForm) {
+	String editItemForSupplier(@PathVariable("suppId") long suppId, @PathVariable("itemId") Item item, @ModelAttribute("itemForm") ItemForm itemForm) {
 		itemService.editItemFromForm(item, itemForm);
 		return "redirect:/admin/supplier/" + suppId + "/items";
 	}

@@ -117,4 +117,11 @@ public abstract class Item extends Product {
 
 	public abstract int getWeight();
 
+	public void setPicture(String picture) {
+		this.picture = picture;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
 }
