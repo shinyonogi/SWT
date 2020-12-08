@@ -96,6 +96,57 @@
         </div>
 
 
+        <table th:if="${items}" class="table table-hover" style="table-layout: fixed">
+            <thead class="thead-light">
+            <tr class="text-center">
+                <th scope="col"></th>
+                <th scope="col" style="width: 40%" th:text="#{order.overview.item}">Artikel</th>
+                <th scope="col" th:text="#{order.overview.amount}">Anzahl</th>
+                <th scope="col" th:text="#{order.overview.item.price}">Preis</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item : ${items}" class="table-light text-center">
+                <td class="align-middle">
+                    <img th:src="@{${item.getFirst().getPicture()}}" class="img-fluid rounded" style="height: 150px"
+                         src="../static/resources/img/chair_1.jpg" alt="Artikel">
+                </td>
+                <td class="align-middle">
+                    <h5 th:text="${item.getFirst().getName()}">Sofa</h5>
+                </td>
+                <td class="align-middle">
+                    <h5 th:text="${item.getSecond()}">1</h5>
+                </td>
+                <td class="align-middle">
+                    <h5 th:text="${item.getFirst().getPrice().multiply(item.getSecond())}">999,99€</h5>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <table th:unless="${items}" class="table table-hover" style="table-layout: fixed">
+            <thead class="thead-light">
+            <tr class="text-center">
+                <th scope="col"></th>
+                <th scope="col" style="width: 40%" th:text="#{order.overview.lkw}">LKW</th>
+                <th scope="col" th:text="#{order.overview.lkw.price}">Preis</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="mt-3 mb-3 table-light text-center">
+                <td class="align-middle">
+                    <img class="img-fluid rounded" th:src="@{${lkw.getType().getPicture()}}" style="height: 150px"
+                         src="../static/resources/img/smalllkw.jpg" alt="LKW"/>
+                </td>
+                <td class="align-middle">
+                    <h5 th:text="#{lkw.size} + ' ' + ${lkw.getType().getName()}">LKW</h5>
+                </td>
+                <td class="align-middle">
+                    <h5 th:text="${lkw.getType().getCharterPrice()}">999,99€</h5>
+                </td>
+            </tr>
+            </tbody>
+        </table>
 
     </div>
 </body>

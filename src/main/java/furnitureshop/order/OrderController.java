@@ -5,12 +5,15 @@ import furnitureshop.lkw.LKWType;
 import org.salespointframework.order.Cart;
 import org.salespointframework.quantity.Quantity;
 import org.salespointframework.time.BusinessTime;
+import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -174,7 +177,7 @@ class OrderController {
 			return "orderCheckout";
 		}
 
-		final ShopOrder stopOrder;
+		final ItemOrder order;
 
 		if (orderForm.getIndex() == 0) {
 			final Optional<Pickup> pickup = orderService.orderPickupItem(cart, contactInformation);
@@ -184,7 +187,7 @@ class OrderController {
 				return "orderCheckout";
 			}
 
-			stopOrder = pickup.get();
+			order = pickup.get();
 		}
 		// Delivery
 		else if (orderForm.getIndex() == 1) {
@@ -197,7 +200,7 @@ class OrderController {
 
 			model.addAttribute("lkw", delivery.get().getLkw());
 			model.addAttribute("deliveryDate", delivery.get().getDeliveryDate());
-			stopOrder = delivery.get();
+			order = delivery.get();
 		}
 		// Pickup
 		else {
@@ -206,7 +209,22 @@ class OrderController {
 			return "orderCheckout";
 		}
 
-		model.addAttribute("order", stopOrder);
+		final List<Pair<Item, Integer>> items = new ArrayList<>();
+
+		outer:
+		for (ItemOrderEntry entry : order.getOrderEntries()) {
+			for (Pair<Item, Integer> pair : items) {
+				if (entry.getItem().equals(pair.getFirst())) {
+					items.remove(pair);
+					items.add(Pair.of(pair.getFirst(), pair.getSecond() + 1));
+					continue outer;
+				}
+			}
+			items.add(Pair.of(entry.getItem(), 1));
+		}
+
+		model.addAttribute("items", items);
+		model.addAttribute("order", order);
 
 		cart.clear();
 
