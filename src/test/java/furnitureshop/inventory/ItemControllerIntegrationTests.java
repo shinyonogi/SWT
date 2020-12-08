@@ -154,10 +154,10 @@ public class ItemControllerIntegrationTests {
 	@Test
 	@WithMockUser(roles = "EMPLOYEE")
 	void redirectsToCatalogOnItemOverviewAfterPieceDeletion() throws Exception {
-		mvc.perform(post("/admin/supplier/items/{suppId}/delete/{itemId}", sofa_grey.getSupplier().getId(), sofa_grey.getId()))
+		mvc.perform(post("/admin/supplier/{suppId}/items/delete/{itemId}", sofa_grey.getSupplier().getId(), sofa_grey.getId()))
 				.andExpect(status().is3xxRedirection())
-				.andExpect(redirectedUrl("/admin/supplier/items/" + sofa_grey.getSupplier().getId()))
-				.andExpect(view().name("redirect:/admin/supplier/items/" + sofa_grey.getSupplier().getId()));
+				.andExpect(redirectedUrl("/admin/supplier/" + sofa_grey.getSupplier().getId() + "/items"))
+				.andExpect(view().name("redirect:/admin/supplier/" + sofa_grey.getSupplier().getId() + "/items"));
 
 		mvc.perform(get("/catalog/{category}/{itemId}",Category.SET, set.getId()))
 				.andExpect(status().is3xxRedirection())
