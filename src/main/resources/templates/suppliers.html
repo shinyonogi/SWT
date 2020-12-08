@@ -42,18 +42,24 @@
             </tbody>
         </table>
 
-        <div class="row mb-3">
+        <div class="row mb-3 mt-3">
             <div class="col-4"></div>
             <div class="col-4">
-                <form method="post" th:object="${supplierForm}" class="form pt-3" id="form" th:action="@{/admin/suppliers}">
+                <div class="alert alert-danger" th:if="${result > 0}">
+                    <h4 class="alert-heading" th:text="#{supplier.status.error}">Fehler!</h4>
+                    <div th:if="${result == 1}" th:text="#{supplier.status.name}">Ungültiger Name</div>
+                    <div th:if="${result == 2}" th:text="#{supplier.status.surcharge}">Ungültiger Aufschlag</div>
+                    <div th:if="${result == 3}" th:text="#{supplier.status.same}">Gleichnamiger Lieferant bereits vorhanden</div>
+                </div>
+
+                <form method="post" th:object="${supplierForm}" class="form" id="form" th:action="@{/admin/suppliers}">
                     <div class="form-group">
                         <h4 th:text="#{supplier.add.title}">Neuer Lieferant</h4>
                         <label for="name">Name:</label>
-                        <input required type="text" th:field="*{name}" class="form-control mb-2" id="name">
+                        <input required type="text" th:field="*{name}" class="form-control mb-2" id="name" th:placeholder="#{order.name.placeholder}">
                         <label for="surcharge" th:text="#{supplier.add.surcharge}">Aufschlag in %</label>
                         <input required type="number" th:field="*{surcharge}" class="form-control" id="surcharge" min="0" step="0.01" style="width: 100px">
                         <button type="submit" class="btn btn-primary mt-2 mb-3" th:text="#{supplier.add.btn}">Lieferant hinzufügen</button>
-                        <div th:if="${result == 1}" class="alert alert-danger" th:text="#{supplier.add.error}">Gleichnamiger Lieferant bereits vorhanden!</div>
                     </div>
                 </form>
             </div>

@@ -3,12 +3,12 @@ package furnitureshop.order;
 import furnitureshop.inventory.Item;
 import furnitureshop.lkw.LKWType;
 import org.salespointframework.order.Cart;
-import org.salespointframework.order.CartItem;
 import org.salespointframework.quantity.Quantity;
 import org.salespointframework.time.BusinessTime;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -74,7 +74,7 @@ class OrderController {
 	 * @return the view index
 	 */
 
-	@PostMapping("/cart/{id}")
+	@PostMapping("/cart/add/{id}")
 	String addItem(@PathVariable("id") Item item, @RequestParam("number") int number, @ModelAttribute Cart cart) {
 		cart.addOrUpdateItem(item, Quantity.of(number));
 
@@ -123,58 +123,89 @@ class OrderController {
 	String checkout(Model model, @ModelAttribute("cart") Cart cart) {
 		model.addAttribute("orderform", new OrderForm("", "", "", 0));
 
+		if (cart.isEmpty()) {
+			return "redirect:/cart";
+		}
+
 		final int weight = cart.get()
 				.filter(c -> c.getProduct() instanceof Item)
 				.mapToInt(c -> ((Item) c.getProduct()).getWeight() * c.getQuantity().getAmount().intValue())
 				.sum();
 
-		Optional<LKWType> type = LKWType.getByWeight(weight);
+		final LKWType type = LKWType.getByWeight(weight).orElse(LKWType.LARGE);
 
-		if (type.isEmpty()) {
-			type = Optional.of(LKWType.LARGE);
-		}
-
-		model.addAttribute("lkwtype", type.get());
+		model.addAttribute("result", 0);
+		model.addAttribute("lkwtype", type);
 
 		return "orderCheckout";
 	}
 
 	/* Bezahlen-Funktion */
-	@PostMapping("/checkout/completeOrder")
+	@PostMapping("/checkout")
 	String buy(@ModelAttribute("cart") Cart cart, @ModelAttribute("orderform") OrderForm orderForm, Model model) {
 		final ContactInformation contactInformation = new ContactInformation(orderForm.getName(), orderForm.getAddress(), orderForm.getEmail());
 
+		final int weight = cart.get()
+				.filter(c -> c.getProduct() instanceof Item)
+				.mapToInt(c -> ((Item) c.getProduct()).getWeight() * c.getQuantity().getAmount().intValue())
+				.sum();
+
+		final LKWType type = LKWType.getByWeight(weight).orElse(LKWType.LARGE);
+
+		model.addAttribute("orderform", orderForm);
+		model.addAttribute("lkwtype", type);
+
+		// Check if name is invalid
+		if (!StringUtils.hasText(orderForm.getName())) {
+			// Display error message
+			model.addAttribute("result", 1);
+			return "orderCheckout";
+		}
+		// Check if address is invalid
+		if (!StringUtils.hasText(orderForm.getAddress())) {
+			// Display error message
+			model.addAttribute("result", 2);
+			return "orderCheckout";
+		}
+		// Check if email is invalid
+		if (!StringUtils.hasText(orderForm.getEmail()) || !orderForm.getEmail().matches(".+@.+")) {
+			// Display error message
+			model.addAttribute("result", 3);
+			return "orderCheckout";
+		}
+
 		final ShopOrder stopOrder;
 
-		// Delivery
-		if (orderForm.getIndex() == 1) {
-			final Optional<Delivery> delivery = orderService.orderDelieveryItem(cart, contactInformation);
+		if (orderForm.getIndex() == 0) {
+			final Optional<Pickup> pickup = orderService.orderPickupItem(cart, contactInformation);
 
-			if (delivery.isEmpty()) {
-				model.addAttribute("orderform", orderForm);
+			if (pickup.isEmpty()) {
+				model.addAttribute("result", 4);
 				return "orderCheckout";
 			}
 
+			stopOrder = pickup.get();
+		}
+		// Delivery
+		else if (orderForm.getIndex() == 1) {
+			final Optional<Delivery> delivery = orderService.orderDelieveryItem(cart, contactInformation);
+
+			if (delivery.isEmpty()) {
+				model.addAttribute("result", 4);
+				return "orderCheckout";
+			}
+
+			model.addAttribute("lkw", delivery.get().getLkw());
 			model.addAttribute("deliveryDate", delivery.get().getDeliveryDate());
 			stopOrder = delivery.get();
 		}
 		// Pickup
-		else if (orderForm.getIndex() == 0) {
-			final Optional<Pickup> pickup = orderService.orderPickupItem(cart, contactInformation);
-
-			if (pickup.isEmpty()) {
-				model.addAttribute("orderform", orderForm);
-				return "orderCheckout";
-			}
-
-			model.addAttribute("deliveryDate", null);
-			stopOrder = pickup.get();
-		} else {
-			model.addAttribute("orderform", orderForm);
+		else {
+			// Display error message
+			model.addAttribute("result", 4);
 			return "orderCheckout";
 		}
 
-		model.addAttribute("charterDate", null);
 		model.addAttribute("order", stopOrder);
 
 		cart.clear();
@@ -182,17 +213,20 @@ class OrderController {
 		return "orderSummary";
 	}
 
-	@GetMapping("/checkOrder")
-	String getOrderPage() {
+	@GetMapping("/order")
+	String getOrderPage(Model model) {
+		model.addAttribute("result", 0);
+
 		return "orderSearch";
 	}
 
-	@PostMapping("/checkOrder")
+	@PostMapping("/order")
 	String getOrderOverview(@RequestParam("orderId") String orderId, Model model) {
 		final Optional<ShopOrder> shopOrder = orderService.findById(orderId);
 
 		if (shopOrder.isEmpty()) {
-			return "redirect:/checkOrder";
+			model.addAttribute("result", 1);
+			return "orderSearch";
 		}
 
 		final ShopOrder order = shopOrder.get();
@@ -210,7 +244,8 @@ class OrderController {
 			model.addAttribute("cancelable", ((LKWCharter) order).getRentDate().isAfter(businessTime.getTime().toLocalDate()));
 			model.addAttribute("charterDate", ((LKWCharter) order).getRentDate());
 		} else {
-			return "redirect:/checkOrder";
+			model.addAttribute("result", 1);
+			return "orderSearch";
 		}
 
 		model.addAttribute("order", order);

@@ -18,6 +18,15 @@
 
             <div class="col-2"></div>
             <div class="col-4">
+                <div class="alert alert-danger" th:if="${result > 0}">
+                    <h4 class="alert-heading" th:text="#{order.status.error}">Fehler!</h4>
+
+                    <div th:if="${result == 1}" th:text="#{order.status.name}">Ungültiger Name</div>
+                    <div th:if="${result == 2}" th:text="#{order.status.address}">Ungültige Adresse</div>
+                    <div th:if="${result == 3}" th:text="#{order.status.email}">Ungültige E-Mail</div>
+                    <div th:if="${result == 4}" th:text="#{order.status.order}">Fehler bei der Bestellung</div>
+                </div>
+
                 <div class="border bg-light rounded p-1">
                     <h2 class="pt-2 pl-2" th:text="#{checkout.overview}">Übersicht</h2>
                     <div class="pt-3">
@@ -34,7 +43,7 @@
 
             </div>
             <div class="col-4">
-                <form class="form" th:object="${orderform}" th:method="post" th:action="@{/checkout/completeOrder}">
+                <form class="form" th:object="${orderform}" th:method="post" th:action="@{/checkout}">
                     <div class="form-group">
                         <label for="name" th:text="#{order.name}">Name:</label>
                         <input type="text" name="name" th:value="*{name}" class="form-control" id="name" required th:placeholder="#{order.name.placeholder}">

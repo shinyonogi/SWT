@@ -43,7 +43,7 @@
                         </div>
                     </div>
 
-                    <form class="form-inline mt-auto" th:action="@{/cart/{id}(id=${item.getId()})}" method="post">
+                    <form class="form-inline mt-auto" th:action="@{/cart/add/{id}(id=${item.getId()})}" method="post">
                         <input name="number" type="number" class="form-control mr-2" min="1" max="99" value="1" style="width: 70px">
                         <button type="submit" class="btn btn-primary" role="button" th:text="#{item.detail.cart}">zum Warenkorb hinzufügen</button>
                     </form>

@@ -18,20 +18,20 @@
 		<div class="col-2"></div>
 		<div class="col-4">
 			<div class="alert alert-danger" th:if="${result > 0}">
-				<h4 class="alert-heading" th:text="#{lkw.status.error}">Fehler!</h4>
+				<h4 class="alert-heading" th:text="#{order.status.error}">Fehler!</h4>
 
-				<div th:if="${result == 1}" th:text="#{lkw.status.name}">Ungültiger Name</div>
-				<div th:if="${result == 2}" th:text="#{lkw.status.address}">Ungültige Adresse</div>
-				<div th:if="${result == 3}" th:text="#{lkw.status.email}">Ungültige E-Mail</div>
-				<div th:if="${result == 4}" th:text="#{lkw.status.date}">Ungültiges Datum</div>
-				<div th:if="${result == 5}" th:text="#{lkw.status.unavailable}">LKW nicht verfügbar</div>
-				<div th:if="${result == 6}" th:text="#{lkw.status.order}">Fehler bei der Bestellung</div>
+				<div th:if="${result == 1}" th:text="#{order.status.name}">Ungültiger Name</div>
+				<div th:if="${result == 2}" th:text="#{order.status.address}">Ungültige Adresse</div>
+				<div th:if="${result == 3}" th:text="#{order.status.email}">Ungültige E-Mail</div>
+				<div th:if="${result == 4}" th:text="#{order.status.date}">Ungültiges Datum</div>
+				<div th:if="${result == 5}" th:text="#{order.status.unavailable}">LKW nicht verfügbar</div>
+				<div th:if="${result == 6}" th:text="#{order.status.order}">Fehler bei der Bestellung</div>
 			</div>
 
 			<div class="alert alert-success" th:if="${result < 0}">
-				<h4 class="alert-heading" th:text="#{lkw.status.success}">Erfolgreich!</h4>
+				<h4 class="alert-heading" th:text="#{order.status.success}">Erfolgreich!</h4>
 
-				<div th:if="${result == -1}" th:text="#{lkw.status.available}">LKW verfügbar</div>
+				<div th:if="${result == -1}" th:text="#{order.status.available}">LKW verfügbar</div>
 			</div>
 
 			<div class="card bg-light">

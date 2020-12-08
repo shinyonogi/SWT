@@ -5,6 +5,7 @@ import furnitureshop.inventory.ItemService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,13 +40,25 @@ public class SupplierController {
 	String addSupplier(@ModelAttribute("supplierForm") SupplierForm form, Model model) {
 		final Optional<Supplier> suppliers = supplierService.findByName(form.getName());
 
-		// checks if a supplier with the same name is already in the repository
-		if (suppliers.isPresent()) {
-			model.addAttribute("suppliers", supplierService.findAll());
-			model.addAttribute("supplierForm", form);
-			// display error message
-			model.addAttribute("result", 1);
+		model.addAttribute("suppliers", supplierService.findAll());
+		model.addAttribute("supplierForm", form);
 
+		// Check if name is invalid
+		if (!StringUtils.hasText(form.getName())) {
+			// Display error message
+			model.addAttribute("result", 1);
+			return "suppliers";
+		}
+		// Check if address is invalid
+		if (form.getSurcharge() < 0) {
+			// Display error message
+			model.addAttribute("result", 2);
+			return "suppliers";
+		}
+		// Check if a supplier with the same name is already in the repository
+		if (suppliers.isPresent()) {
+			// Display error message
+			model.addAttribute("result", 3);
 			return "suppliers";
 		}
 
@@ -76,12 +89,12 @@ public class SupplierController {
 	}
 
 	@PostMapping("/admin/supplier/items/{suppId}/edit/{itemId}")
-	String editItemForSupplier(@PathVariable("suppId") long suppId, @PathVariable("itemId") Item item, Model model){
+	String editItemForSupplier(@PathVariable("suppId") long suppId, @PathVariable("itemId") Item item, Model model) {
 		return "redirect:/admin/supplier/items/" + String.valueOf(suppId);
 	}
 
 	@PostMapping("/admin/supplier/items/{suppId}/delete/{itemId}")
-	String deleteItemForSupplier(@PathVariable("suppId") long suppId, @PathVariable("itemId") Item item, Model model){
+	String deleteItemForSupplier(@PathVariable("suppId") long suppId, @PathVariable("itemId") Item item, Model model) {
 		itemService.removeItem(item);
 		return "redirect:/admin/supplier/items/" + String.valueOf(suppId);
 	}

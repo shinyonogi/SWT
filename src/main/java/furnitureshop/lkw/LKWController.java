@@ -188,9 +188,9 @@ public class LKWController {
 		}
 
 		// Construct summary for the order
+		model.addAttribute("lkw", lkw.get());
 		model.addAttribute("order", order.get());
 		model.addAttribute("charterDate", form.getDate());
-		model.addAttribute("deliveryDate", null);
 
 		return "orderSummary";
 	}

@@ -18,7 +18,13 @@
 
             <div class="col-4"></div>
             <div class="col-4">
-                <form class="form-group" th:method="post" th:action="@{/checkOrder}">
+                <div class="alert alert-danger" th:if="${result > 0}">
+                    <h4 class="alert-heading" th:text="#{order.status.error}">Fehler!</h4>
+
+                    <div th:if="${result == 1}" th:text="#{order.status.unknown}">Keine Bestellung gefunden</div>
+                </div>
+
+                <form class="form-group" th:method="post" th:action="@{/order}">
                     <label for="orderId" th:text="#{order.check.orderid}">Bitte Bestellnummer angeben:</label>
                     <input type="text" class="form-control mb-2" id="orderId" name="orderId">
                     <button type="submit" class="btn btn-primary" role="button" th:text="#{order.check.view}">Bestellung ansehen</button>

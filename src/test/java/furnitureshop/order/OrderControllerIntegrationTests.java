@@ -83,7 +83,7 @@ public class OrderControllerIntegrationTests {
 	void redirectsToHomeWhenYouAddAnItem() throws Exception { //Trying to figure out why it won't work with local item
 		System.out.println(item.getId());
 		System.out.println(itemCatalog.findAll().stream().findAny().get().getId());
-		mvc.perform(post("/cart/{id}", itemCatalog.findAll().stream().findAny().get().getId() /*item.getId()*/)
+		mvc.perform(post("/cart/add/{id}", itemCatalog.findAll().stream().findAny().get().getId() /*item.getId()*/)
 				.param("number", String.valueOf(5)))
 				.andExpect(status().is3xxRedirection())
 				.andExpect(header().string("Location", endsWith("/")));
@@ -122,14 +122,14 @@ public class OrderControllerIntegrationTests {
 
 	/**
 	 * returnsModelAndViewCheckoutWhenYouTryToReachCheckout() method
-	 * Tests if user can reach the "/orderCheckout" page if there is an item in the cart
+	 * Tests if user can reach the "/orderCheckout" page if there are no item in the cart
 	 *
 	 * @throws Exception
 	 */
 
 	@Test
-	void returnsModelAndViewCheckoutWhenYouTryToCheckout() throws Exception {
+	void returnsModelAndViewCheckoutWhenYouTryToCheckoutWithNoItems() throws Exception {
 		mvc.perform(get("/checkout"))
-				.andExpect(view().name("orderCheckout"));
+				.andExpect(view().name("redirect:/cart"));
 	}
 }

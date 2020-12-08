@@ -19,7 +19,7 @@
             <div class="col-lg-4 col-md-6 mb-4 d-flex align-items-stretch">
                 <div class="card bg-light w-100">
                     <div class="card-header">
-                        <h5>Kontaktinformationen</h5>
+                        <h5 th:text="#{order.overview.infomation.customer}">Kontaktinformationen</h5>
                     </div>
                     <div class="card-body d-flex flex-column">
                         <div class="d-flex flex-row align-items-baseline justify-content-between">
@@ -41,7 +41,7 @@
             <div class="col-lg-4 col-md-6 mb-4 d-flex align-items-stretch">
                 <div class="card bg-light w-100">
                     <div class="card-header">
-                        <h5>Bestellinformationen</h5>
+                        <h5 th:text="#{order.overview.infomation.order}">Bestellinformationen</h5>
                     </div>
                     <div class="card-body d-flex flex-column">
                         <div class="d-flex flex-row align-items-baseline justify-content-between">
@@ -67,7 +67,7 @@
             <div class="col-lg-4 col-md-6 mb-4 d-flex align-items-stretch">
                 <div class="card bg-light w-100">
                     <div class="card-header">
-                        <h5>Preisinformationen</h5>
+                        <h5 th:text="#{order.overview.infomation.price}">Preisinformationen</h5>
                     </div>
                     <div class="card-body d-flex flex-column">
                         <div th:if="${charterDate == null && deliveryDate == null}" class="d-flex flex-row align-items-baseline justify-content-between">
