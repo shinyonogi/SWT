@@ -38,21 +38,22 @@ public abstract class Item extends Product {
 	 *
 	 * @deprecated
 	 */
+	@Deprecated
 	protected Item() {}
 
 	/**
 	 * Creates a new instance of an {@link Item}
 	 *
-	 * @param groupid Group which contains all variants of this particular Item
-	 * @param name Name of the Item
+	 * @param groupid       Group which contains all variants of this particular Item
+	 * @param name          Name of the Item
 	 * @param customerPrice Price of the Item
-	 * @param picture A path to the picture of the Item
-	 * @param variant Variant of the Item
-	 * @param description Description of the Item
-	 * @param supplier Supplier of the Item
-	 * @param category {@link Category} of the Item
+	 * @param picture       A path to the picture of the Item
+	 * @param variant       Variant of the Item
+	 * @param description   Description of the Item
+	 * @param supplier      Supplier of the Item
+	 * @param category      {@link Category} of the Item
 	 *
-	 * @throws NullPointerException If any of the arguments is {@code null}
+	 * @throws IllegalArgumentException If any of the arguments is {@code null}
 	 */
 	public Item(int groupid, String name, MonetaryAmount customerPrice, String picture, String variant,
 			String description, Supplier supplier, Category category) {
@@ -118,10 +119,14 @@ public abstract class Item extends Product {
 	public abstract int getWeight();
 
 	public void setPicture(String picture) {
+		Assert.notNull(picture, "Picture must not be null");
+
 		this.picture = picture;
 	}
 
 	public void setDescription(String description) {
+		Assert.notNull(description, "Description must not be null");
+
 		this.description = description;
 	}
 }

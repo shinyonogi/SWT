@@ -19,6 +19,7 @@ public class Piece extends Item {
 	 *
 	 * @deprecated
 	 */
+	@Deprecated
 	protected Piece() {}
 
 	/**

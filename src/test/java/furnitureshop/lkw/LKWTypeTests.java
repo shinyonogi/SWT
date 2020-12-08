@@ -9,11 +9,6 @@ import static org.junit.jupiter.api.Assertions.*;
 public class LKWTypeTests {
 
 	@Test
-	void testLKWTypeIsEnum() {
-		assertTrue(LKWType.class.isEnum(), "LKWType must be an Enum!");
-	}
-
-	@Test
 	void testGetByWeightWithInvalidType() {
 		assertThrows(IllegalArgumentException.class, () -> LKWType.getByWeight(-1),
 				"getByWeight() should throw an IllegalArgumentException if the weight argument is negative!"
@@ -78,6 +73,11 @@ public class LKWTypeTests {
 		}
 
 		assertTrue(LKWType.getByName("unknown").isEmpty(), "getByName() should not find a LKWType!");
+	}
+
+	@Test
+	void testLKWTypeIsEnum() {
+		assertTrue(LKWType.class.isEnum(), "LKWType must be an Enum!");
 	}
 
 }

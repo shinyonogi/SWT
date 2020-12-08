@@ -30,24 +30,6 @@ public class CalendarEntryTests {
 	}
 
 	@Test
-	void testCalendarEntryIsAbstract() {
-		assertTrue(Modifier.isAbstract(CalendarEntry.class.getModifiers()), "CalendarEntry should be an abstract class!");
-	}
-
-	@Test
-	void testCalendarEntryIsChild() {
-		assertTrue(CalendarEntry.class.isAssignableFrom(DeliveryEntry.class), "DeliveryEntry must extends CalendarEntry!");
-		assertTrue(CalendarEntry.class.isAssignableFrom(CharterEntry.class), "CharterEntry must extends CalendarEntry!");
-	}
-
-	@Test
-	void testCalenderEntryIsEntity() {
-		assertTrue(CalendarEntry.class.isAnnotationPresent(Entity.class), "CalenderEntry must have @Entity!");
-		assertTrue(DeliveryEntry.class.isAnnotationPresent(Entity.class), "DeliveryEntry must have @Entity!");
-		assertTrue(CharterEntry.class.isAnnotationPresent(Entity.class), "CharterEntry must have @Entity!");
-	}
-
-	@Test
 	void testDeliveryEntrySetValidQuantity() {
 		entry.setQuantity(2);
 		assertEquals(2, entry.getQuantity(), "setQuantity() should set the correct Quantity!");
@@ -69,6 +51,24 @@ public class CalendarEntryTests {
 		assertThrows(IllegalArgumentException.class, () -> entry.setQuantity(25),
 				"setQuantity() should throw an IllegalArgumentException if the quantity argument is invalid!"
 		);
+	}
+
+	@Test
+	void testCalendarEntryIsAbstract() {
+		assertTrue(Modifier.isAbstract(CalendarEntry.class.getModifiers()), "CalendarEntry should be an abstract class!");
+	}
+
+	@Test
+	void testCalendarEntryIsChild() {
+		assertTrue(CalendarEntry.class.isAssignableFrom(DeliveryEntry.class), "DeliveryEntry must extends CalendarEntry!");
+		assertTrue(CalendarEntry.class.isAssignableFrom(CharterEntry.class), "CharterEntry must extends CalendarEntry!");
+	}
+
+	@Test
+	void testCalenderEntryIsEntity() {
+		assertTrue(CalendarEntry.class.isAnnotationPresent(Entity.class), "CalenderEntry must have @Entity!");
+		assertTrue(DeliveryEntry.class.isAnnotationPresent(Entity.class), "DeliveryEntry must have @Entity!");
+		assertTrue(CharterEntry.class.isAnnotationPresent(Entity.class), "CharterEntry must have @Entity!");
 	}
 
 }

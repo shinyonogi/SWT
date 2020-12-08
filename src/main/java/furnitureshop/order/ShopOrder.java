@@ -14,6 +14,10 @@ public abstract class ShopOrder extends Order {
 	@OneToOne(cascade = CascadeType.ALL)
 	private ContactInformation contactInformation;
 
+	@Deprecated
+	@SuppressWarnings("DeprecatedIsStillUsed")
+	protected ShopOrder() { }
+
 	ShopOrder(UserAccount userAccount, ContactInformation contactInformation) {
 		super(userAccount);
 
@@ -21,9 +25,6 @@ public abstract class ShopOrder extends Order {
 
 		this.contactInformation = contactInformation;
 	}
-
-	@SuppressWarnings("deprecation")
-	protected ShopOrder() { }
 
 	public ContactInformation getContactInformation() {
 		return contactInformation;

@@ -9,15 +9,18 @@ import javax.persistence.Id;
 @Entity
 public class ContactInformation {
 
-	@Id	@GeneratedValue
+	@Id @GeneratedValue
 	private long id;
 
 	private String name;
 	private String address;
 	private String email;
 
+	@Deprecated
+	protected ContactInformation() {}
+
 	public ContactInformation(String name, String address, String email) {
-		Assert.notNull(name, "Name must not be null!");
+		Assert.hasText(name, "Name must not be null!");
 		Assert.notNull(address, "Address must not be null!");
 		Assert.notNull(email, "Email must not be null!");
 
@@ -25,8 +28,6 @@ public class ContactInformation {
 		this.address = address;
 		this.email = email;
 	}
-
-	protected ContactInformation() {}
 
 	public String getName() {
 		return name;
@@ -39,4 +40,5 @@ public class ContactInformation {
 	public String getEmail() {
 		return email;
 	}
+
 }

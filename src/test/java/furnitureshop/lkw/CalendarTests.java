@@ -25,11 +25,6 @@ public class CalendarTests {
 	}
 
 	@Test
-	void testCalendarIsEntity() {
-		assertTrue(Calendar.class.isAnnotationPresent(Entity.class), "Calendar must have @Entity!");
-	}
-
-	@Test
 	void testAddEntryInvalidWithType() {
 		assertThrows(IllegalArgumentException.class, () -> calendar.addEntry(null),
 				"addEntry() should throw an IllegalArgumentException if the entry argument is null!"
@@ -108,6 +103,11 @@ public class CalendarTests {
 
 		assertTrue(getEntry.isPresent(), "getEntry() should return entry when entry exists in Calendar!");
 		assertEquals(entry, getEntry.get(), "getEntry() should return the correct entry for the given date!");
+	}
+
+	@Test
+	void testCalendarIsEntity() {
+		assertTrue(Calendar.class.isAnnotationPresent(Entity.class), "Calendar must have @Entity!");
 	}
 
 }

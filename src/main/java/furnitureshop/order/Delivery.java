@@ -17,16 +17,18 @@ public class Delivery extends ItemOrder {
 
 	private LocalDate deliveryDate;
 
+	@Deprecated
+	protected Delivery() {}
+
 	public Delivery(UserAccount userAccount, ContactInformation contactInformation, LKW lkw, LocalDate deliveryDate) {
 		super(userAccount, contactInformation);
 
-		Assert.notNull(deliveryDate, "LKW must not be null!");
+		Assert.notNull(lkw, "LKW must not be null!");
 		Assert.notNull(deliveryDate, "DeliveryDate must not be null!");
+
 		this.lkw = lkw;
 		this.deliveryDate = deliveryDate;
 	}
-
-	protected Delivery() {}
 
 	public LKW getLkw() {
 		return lkw;

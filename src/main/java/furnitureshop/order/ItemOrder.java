@@ -20,12 +20,15 @@ public abstract class ItemOrder extends ShopOrder {
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<ItemOrderEntry> orderWithStatus;
 
+	@Deprecated
+	@SuppressWarnings("DeprecatedIsStillUsed")
+	protected ItemOrder() {}
+
 	public ItemOrder(UserAccount userAccount, ContactInformation contactInformation) {
 		super(userAccount, contactInformation);
+
 		this.orderWithStatus = new ArrayList<>();
 	}
-
-	protected ItemOrder() {}
 
 	@Override
 	@SuppressWarnings("NullableProblems")
@@ -41,7 +44,6 @@ public abstract class ItemOrder extends ShopOrder {
 
 		return orderLine;
 	}
-
 
 	public List<ItemOrderEntry> getOrderEntries() {
 		return Collections.unmodifiableList(orderWithStatus);

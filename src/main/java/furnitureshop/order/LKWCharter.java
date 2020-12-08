@@ -16,6 +16,9 @@ public class LKWCharter extends ShopOrder {
 
 	private LocalDate rentDate;
 
+	@Deprecated
+	protected LKWCharter() {}
+
 	LKWCharter(UserAccount userAccount, ContactInformation contactInformation, LKW lkw, LocalDate rentDate) {
 		super(userAccount, contactInformation);
 
@@ -25,8 +28,6 @@ public class LKWCharter extends ShopOrder {
 		this.lkw = lkw;
 		this.rentDate = rentDate;
 	}
-
-	protected LKWCharter() {}
 
 	public LKW getLkw() {
 		return lkw;

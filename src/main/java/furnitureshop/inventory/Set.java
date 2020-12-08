@@ -26,6 +26,7 @@ public class Set extends Item {
 	 *
 	 * @deprecated
 	 */
+	@Deprecated
 	protected Set() {}
 
 	public Set(int groupid, String name, MonetaryAmount customerPrice, String picture, String variant, String description, Supplier supplier, Category category, List<Item> items) {
@@ -47,7 +48,7 @@ public class Set extends Item {
 		for (Item item : items) {
 			singlePrice = singlePrice.add(item.getPrice());
 		}
-		return  singlePrice;
+		return singlePrice;
 	}
 
 	public List<Item> getItems() {

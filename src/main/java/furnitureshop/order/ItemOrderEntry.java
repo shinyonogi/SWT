@@ -18,6 +18,9 @@ public class ItemOrderEntry {
 	@Enumerated(EnumType.ORDINAL)
 	private OrderStatus status;
 
+	@Deprecated
+	protected ItemOrderEntry() {}
+
 	public ItemOrderEntry(Item item, OrderStatus status) {
 		Assert.notNull(item, "Item must not be null!");
 		Assert.notNull(status, "OrderStatus must not be null!");
@@ -25,8 +28,6 @@ public class ItemOrderEntry {
 		this.item = item;
 		this.status = status;
 	}
-
-	protected ItemOrderEntry() { }
 
 	public Item getItem() {
 		return item;
@@ -41,6 +42,8 @@ public class ItemOrderEntry {
 	}
 
 	public void setStatus(OrderStatus status) {
+		Assert.notNull(status, "OrderStatus must not be null!");
+
 		this.status = status;
 	}
 
