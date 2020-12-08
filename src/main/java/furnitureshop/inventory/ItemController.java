@@ -1,5 +1,8 @@
 package furnitureshop.inventory;
 
+import furnitureshop.supplier.Supplier;
+import org.javamoney.moneta.Money;
+import org.salespointframework.core.Currencies;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.Assert;
@@ -90,7 +93,7 @@ public class ItemController {
 
 	@GetMapping("/admin/supplier/{id}/items/add")
 	String getAddItemForSupplier(@PathVariable("id") long suppId, Model model) {
-		model.addAttribute("itemForm", new ItemForm(0, 0, "", "https://via.placeholder.com/900", "", "", 0, null));
+		model.addAttribute("itemForm", new ItemForm(0, 0, "", "placeholder.png", "", "", 0, null));
 		model.addAttribute("suppId", suppId);
 		model.addAttribute("categories", Category.values());
 		model.addAttribute("edit", false);
@@ -100,13 +103,26 @@ public class ItemController {
 
 	@PostMapping("/admin/supplier/{id}/items/add")
 	String addItemForSupplier(@PathVariable("id") long suppId, @ModelAttribute("itemForm") ItemForm itemForm, Model model) {
-		final Optional<Item> newItem = itemService.createItemFromForm(itemForm, suppId);
+		final Optional<Supplier> supplier = itemService.findSupplierById(suppId);
 
-		if (newItem.isEmpty()) {
+		if (supplier.isEmpty()) {
 			model.addAttribute("itemForm", itemForm);
 			return "supplierItemform";
 		}
-		itemService.addItem(newItem.get());
+
+		final Piece piece = new Piece(
+				itemForm.getGroupId(),
+				itemForm.getName(),
+				Money.of(itemForm.getPrice(), Currencies.EURO),
+				itemForm.getPicture(),
+				itemForm.getVariant(),
+				itemForm.getDescription(),
+				supplier.get(),
+				itemForm.getWeight(),
+				itemForm.getCategory()
+		);
+
+		itemService.addOrUpdateItem(piece);
 
 		return "redirect:/admin/supplier/" + suppId + "/items";
 	}
@@ -128,13 +144,26 @@ public class ItemController {
 
 	@PostMapping("/admin/supplier/{suppId}/items/edit/{itemId}")
 	String editItemForSupplier(@PathVariable("suppId") long suppId, @PathVariable("itemId") Item item, @ModelAttribute("itemForm") ItemForm itemForm) {
-		itemService.editItemFromForm(item, itemForm);
+		if (suppId != item.getSupplier().getId()) {
+			return "redirect:/admin/supplier/" + suppId + "/items";
+		}
+
+		item.setName(itemForm.getName());
+		item.setPrice(Money.of(itemForm.getPrice(), Currencies.EURO));
+		item.setDescription(itemForm.getDescription());
+		item.setPicture(itemForm.getPicture());
+
+		itemService.addOrUpdateItem(item);
 
 		return "redirect:/admin/supplier/" + suppId + "/items";
 	}
 
 	@PostMapping("/admin/supplier/{suppId}/items/delete/{itemId}")
 	String deleteItemForSupplier(@PathVariable("suppId") long suppId, @PathVariable("itemId") Item item, Model model) {
+		if (suppId != item.getSupplier().getId()) {
+			return "redirect:/admin/supplier/" + suppId + "/items";
+		}
+
 		itemService.removeItem(item);
 
 		return "redirect:/admin/supplier/" + suppId + "/items";

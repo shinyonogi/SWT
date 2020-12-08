@@ -48,16 +48,10 @@ public class ItemService {
 	 *
 	 * @throws IllegalArgumentException If {@code item} is {@code null}
 	 */
-	public boolean addItem(Item item) {
+	public void addOrUpdateItem(Item item) {
 		Assert.notNull(item, "Item must not be null!");
 
-		if (findById(item.getId()).isPresent()) {
-			return false;
-		}
-
 		itemCatalog.save(item);
-
-		return true;
 	}
 
 	/**
@@ -168,37 +162,6 @@ public class ItemService {
 		}
 
 		return sets;
-	}
-
-	public Optional<Item> createItemFromForm(ItemForm itemForm, long suppId) {
-		final Optional<Supplier> supplier = findSupplierById(suppId);
-
-		if (supplier.isEmpty()) {
-			return Optional.empty();
-		}
-
-		return Optional.of(new Piece(
-				itemForm.getGroupId(),
-				itemForm.getName(),
-				Money.of(itemForm.getPrice(), Currencies.EURO),
-				itemForm.getPicture(),
-				itemForm.getVariant(),
-				itemForm.getDescription(),
-				supplier.get(),
-				itemForm.getWeight(),
-				itemForm.getCategory()
-		));
-	}
-
-	public void editItemFromForm(Item item, ItemForm itemForm) {
-		Assert.notNull(item, "Item must not be null!");
-
-		item.setName(itemForm.getName());
-		item.setPrice(Money.of(itemForm.getPrice(), Currencies.EURO));
-		item.setDescription(itemForm.getDescription());
-		item.setPicture(itemForm.getPicture());
-
-		itemCatalog.save(item);
 	}
 
 	public Optional<Supplier> findSupplierById(long id) {

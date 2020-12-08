@@ -29,7 +29,7 @@
                             <h6 th:text="#{supplier.surcharge}"></h6>
                             <div th:text="${supplier.getSurchargeInPercent()} + '%'"></div>
                         </div>
-                        <a th:href="@{/admin/supplier/{id}/items/add(id=${supplier.getId()})}" class="btn btn-primary mt-auto" th:text="#{supplier.items.add}">Go somewhere</a>
+                        <a th:href="@{/admin/supplier/{id}/items/add(id=${supplier.getId()})}" class="btn btn-primary mt-2" th:text="#{supplier.items.add}">Go somewhere</a>
                     </div>
                 </div>
             </div>
@@ -37,13 +37,12 @@
         </div>
         <table class="table table-hover" style="table-layout: fixed">
             <thead class="thead-light">
-
             <tr>
                 <th scope="col"></th>
                 <th scope="col" th:text="#{supplier.items.item.name}">Artikel</th>
                 <th scope="col" th:text="#{supplier.items.item.price}">Preis</th>
                 <th scope="col" th:text="#{supplier.items.item.variant}">Variante</th>
-                <th scope="col" style="width:20%" th:text="#{supplier.items.item.description}">Beschreibung</th>
+                <th scope="col" style="width: 20%" th:text="#{supplier.items.item.description}">Beschreibung</th>
                 <th scope="col"></th>
                 <th scope="col"></th>
             </tr>
@@ -64,7 +63,7 @@
                     <h5 th:text="${item.getVariant()}">blau</h5>
                 </td>
                 <td class="align-middle">
-                    <h5 th:text="${item.getDescription()}">Sofa in blau</h5>
+                    <h6 th:text="${item.getDescription()}">Sofa in blau</h6>
                 </td>
                 <td class="align-middle">
                     <a th:href="@{/admin/supplier/{suppId}/items/edit/{itemId}(suppId=${supplier.getId()}, itemId=${item.getId()})}" class="btn btn-outline-primary" th:text="#{supplier.items.item.edit}">Artikel ändern</a>
