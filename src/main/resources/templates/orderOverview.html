@@ -118,7 +118,7 @@
                     <h5 th:text="${item.getItem().getPrice()}">999,99€</h5>
                 </td>
                 <td class="align-middle">
-                    <h5 th:text="${item.getStatus().name().toLowerCase()}">paid</h5>
+                    <h5 th:text="${#messages.msgOrNull('order.overview.status.' + item.getStatus().name().toLowerCase())}">paid</h5>
                 </td>
                 <td class="align-middle">
                     <div class="dropdown" sec:authorize="hasRole('EMPLOYEE')">
@@ -126,7 +126,7 @@
                             Status ändern
                         </button>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" href="#" th:each="s : ${statuses}" th:text="${s.name().toLowerCase()}">eingegangen</a>
+                            <a class="dropdown-item" href="#" th:each="s : ${statuses}" th:text="${#messages.msgOrNull('order.overview.status.' + s.name().toLowerCase())}">eingegangen</a>
                         </div>
                     </div>
                     <div sec:authorize="!hasRole('EMPLOYEE')"

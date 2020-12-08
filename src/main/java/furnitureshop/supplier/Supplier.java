@@ -14,6 +14,7 @@ public class Supplier {
 	private String name;
 	private double surcharge;		// factor by which the price of furniture gets multiplied by
 
+	@Deprecated
 	protected Supplier() {}
 
 	public Supplier(String name, double surcharge) {

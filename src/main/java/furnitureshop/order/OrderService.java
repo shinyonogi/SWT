@@ -77,16 +77,7 @@ public class OrderService {
 			weight += item.getWeight() * cartItem.getQuantity().getAmount().intValue();
 		}
 
-		final Optional<LKWType> optional = LKWType.getByWeight(weight);
-		final LKWType type;
-
-		if (optional.isPresent()) {
-			type = optional.get();
-		} else if (weight > 0) {
-			type = LKWType.LARGE;
-		} else {
-			type = null;
-		}
+		final LKWType type = LKWType.getByWeight(weight).orElse(LKWType.LARGE);
 
 		LocalDate deliveryDate = businessTime.getTime().toLocalDate().plusDays(2);
 		deliveryDate = lkwService.findNextAvailableDeliveryDate(deliveryDate, type);
