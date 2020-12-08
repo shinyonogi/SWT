@@ -29,6 +29,7 @@
                             <h6 th:text="#{supplier.surcharge}"></h6>
                             <div th:text="${supplier.getSurchargeInPercent()} + '%'"></div>
                         </div>
+                        <a th:href="@{/admin/supplier/{id}/items/add(id=${supplier.getId()})}" class="btn btn-primary mt-auto" th:text="#{supplier.items.add}">Go somewhere</a>
                     </div>
                 </div>
             </div>
@@ -57,7 +58,7 @@
                     <h5 th:text="${item.getName()}">Sofa</h5>
                 </td>
                 <td class="align-middle">
-                    <h5 th:text="${item.getPrice()}">999,99€</h5>
+                    <h5 th:text="${item.getSupplierPrice()}">999,99€</h5>
                 </td>
                 <td class="align-middle">
                     <h5 th:text="${item.getVariant()}">blau</h5>
@@ -66,12 +67,10 @@
                     <h5 th:text="${item.getDescription()}">Sofa in blau</h5>
                 </td>
                 <td class="align-middle">
-                    <form th:method="post" th:action="@{/admin/supplier/items/{suppId}/edit/{itemId}(suppId=${supplier.getId()}, itemId=${item.getId()})}">
-                        <button type="submit" class="btn btn-outline-primary" th:text="#{supplier.items.item.edit}">Artikel ändern</button>
-                    </form>
+                    <a th:href="@{/admin/supplier/{suppId}/items/edit/{itemId}(suppId=${supplier.getId()}, itemId=${item.getId()})}" class="btn btn-outline-primary" th:text="#{supplier.items.item.edit}">Artikel ändern</a>
                 </td>
                 <td class="align-middle">
-                    <form th:method="post" th:action="@{/admin/supplier/items/{suppId}/delete/{itemId}(suppId=${supplier.getId()}, itemId=${item.getId()})}">
+                    <form th:method="post" th:action="@{/admin/supplier/{suppId}/items/delete/{itemId}(suppId=${supplier.getId()}, itemId=${item.getId()})}">
                         <button type="submit" class="btn btn-outline-danger" th:text="#{supplier.items.item.delete}">Artikel entfernen</button>
                     </form>
                 </td>

@@ -67,6 +67,10 @@ public class SupplierService {
 		return supplierRepository.findById(id);
 	}
 
+	public Streamable<Item> findItemsBySupplier(Supplier supplier) {
+		return itemService.findBySupplier(supplier);
+	}
+
 	public void deleteAll() {
 		supplierRepository.deleteAll();
 	}

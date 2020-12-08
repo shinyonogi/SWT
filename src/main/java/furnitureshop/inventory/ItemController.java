@@ -1,11 +1,13 @@
 package furnitureshop.inventory;
 
+import furnitureshop.supplier.Supplier;
+import org.salespointframework.core.Currencies;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.Assert;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.*;
 
+import javax.swing.text.html.Option;
 import java.util.Optional;
 
 /**
@@ -82,4 +84,47 @@ public class ItemController {
 		return "redirect:/catalog/" + category;
 	}
 
+	@GetMapping("/admin/supplier/{id}/items/add")
+	String getAddItemForSupplier(@PathVariable("id") long suppId, Model model) {
+		model.addAttribute("itemForm", new ItemForm(0, 0, "", "https://via.placeholder.com/900", "", "", 0, null));
+		model.addAttribute("suppId", suppId);
+		model.addAttribute("categories", Category.values());
+		model.addAttribute("edit", false);
+		return "supplierItemform";
+	}
+
+	@PostMapping("/admin/supplier/{id}/items/add")
+	String addItemForSupplier(@PathVariable("id") long suppId, @ModelAttribute("itemForm") ItemForm itemForm, Model model) {
+		Optional<Item> newItem = itemService.createItemFromForm(itemForm, suppId);
+		if (newItem.isEmpty()){
+			model.addAttribute("itemForm", itemForm);
+			return "supplierItemform";
+		}
+		itemService.addItem(newItem.get());
+		return "redirect:/admin/supplier/" + suppId + "/items";
+	}
+
+	@GetMapping("/admin/supplier/{suppId}/items/edit/{itemId}")
+	String getEditItemForSupplier(@PathVariable("suppId") long suppId, @PathVariable("itemId") Item item, Model model){
+		if (suppId != item.getSupplier().getId()){
+			return "redirect:/admin/supplier/" + suppId + "/items";
+		}
+		model.addAttribute("itemForm", new ItemForm(item.getGroupid(), item.getWeight(), item.getName(), item.getPicture(), item.getVariant(), item.getDescription(), item.getSupplierPrice().getNumber().doubleValue(), item.getCategory()));
+		model.addAttribute("suppId", suppId);
+		model.addAttribute("categories", Category.values());
+		model.addAttribute("edit", true);
+		return "supplierItemform";
+	}
+
+	@PostMapping("/admin/supplier/{suppId}/items/edit/{itemId}")
+	String editItemForSupplier(@PathVariable("id") long suppId, @PathVariable("itemId") Item item, @ModelAttribute("itemForm") ItemForm itemForm) {
+		itemService.editItemFromForm(item, itemForm);
+		return "redirect:/admin/supplier/" + suppId + "/items";
+	}
+
+	@PostMapping("/admin/supplier/{suppId}/items/delete/{itemId}")
+	String deleteItemForSupplier(@PathVariable("suppId") long suppId, @PathVariable("itemId") Item item, Model model){
+		itemService.removeItem(item);
+		return "redirect:/admin/supplier/" + suppId + "/items";
+	}
 }

@@ -1,7 +1,11 @@
 package furnitureshop.inventory;
 
 import furnitureshop.supplier.Supplier;
+import furnitureshop.supplier.SupplierService;
+import org.javamoney.moneta.Money;
 import org.salespointframework.catalog.ProductIdentifier;
+import org.salespointframework.core.Currencies;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,18 +23,22 @@ import java.util.Optional;
 public class ItemService {
 
 	private final ItemCatalog itemCatalog;
+	private final SupplierService supplierService;
 
 	/**
 	 * Creates a new instance of an {@link Item}
 	 *
 	 * @param itemCatalog {@link ItemCatalog} which contains all items
 	 *
+	 * @param supplierService
 	 * @throws IllegalArgumentException If {@code itemCatalog} is {@code null}
 	 */
-	public ItemService(ItemCatalog itemCatalog) {
+	public ItemService(ItemCatalog itemCatalog, @Lazy SupplierService supplierService) {
 		Assert.notNull(itemCatalog, "ItemCatalog must not be null!");
+		Assert.notNull(supplierService, "SupplierService must not be null!");
 
 		this.itemCatalog = itemCatalog;
+		this.supplierService = supplierService;
 	}
 
 	/**
@@ -142,6 +150,22 @@ public class ItemService {
 			}
 		}
 		return sets;
+	}
+
+	public Optional<Item> createItemFromForm(ItemForm itemForm, long suppId) {
+		Optional<Supplier> supplier = findSupplierById(suppId);
+		if (supplier.isEmpty()){
+			return Optional.empty();
+		}
+		return Optional.of(new Piece(itemForm.getGroupId(),itemForm.getName(), Money.of(itemForm.getPrice(), Currencies.EURO), itemForm.getPicture(), itemForm.getVariant(), itemForm.getDescription(), supplier.get(), itemForm.getWeight(), itemForm.getCategory()));
+	}
+
+	public Item editItemFromForm(Item item, ItemForm itemForm) {
+		return item;
+	}
+
+	public Optional<Supplier> findSupplierById(long id){
+		return supplierService.findById(id);
 	}
 
 }

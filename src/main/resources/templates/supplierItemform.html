@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="#{supplier.items.title}">Lieferanten</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <nav th:include="navigation :: navigation"></nav>
+
+    <div class="container mt-3 mb-3" th:unless="${edit}">
+        <form  class="form" th:object="${itemForm}" th:method="post" th:action="@{/admin/supplier/{id}/items/add(id=${suppId})}">
+            <div class="form-group">
+                <label for="name" th:text="#{supplier.items.add.name}">Artikelname</label>
+                <input type="text" name="name" th:value="*{name}" class="form-control" id="name" required th:placeholder="#{supplier.items.add.name.placeholder}">
+            </div>
+            <div class="form-group">
+                <label for="groupId" th:text="#{supplier.items.add.groupid}">Gruppennummer</label>
+                <input type="number" min="0" max="100" name="groupId" th:value="*{groupId}" class="form-control" id="groupId" required th:placeholder="#{supplier.items.add.groupid.placeholder}">
+            </div>
+            <div class="form-group">
+                <label for="weight" th:text="#{supplier.items.add.weight}">Gruppennummer</label>
+                <input type="number" min="0" max="100" name="weight" th:value="*{weight}" class="form-control" id="weight" required th:placeholder="#{supplier.items.add.weight.placeholder}">
+            </div>
+            <div class="form-group">
+               <!-- <label for="picture" th:text="#{supplier.items.add.picture}">Bild</label>-->
+                <input type="hidden" name="picture" th:value="*{picture}" class="form-control-file" id="picture" required>
+            </div>
+            <div class="form-group">
+                <label for="variant" th:text="#{supplier.items.add.variant}">Variante</label>
+                <input type="text" name="variant" th:value="*{variant}" class="form-control" id="variant" required th:placeholder="#{supplier.items.add.variant.placeholder}">
+            </div>
+            <div class="form-group">
+                <label for="description" th:text="#{supplier.items.add.description}">Beschreibung</label>
+                <input type="text" name="description" th:value="*{description}" class="form-control" id="description" required th:placeholder="#{supplier.items.add.description.placeholder}">
+            </div>
+            <div class="form-group">
+                <label for="price" th:text="#{supplier.items.add.price}">Preis</label>
+                <input type="number" min="0" step="any" name="price" th:value="*{price}" class="form-control" id="price" required>
+            </div>
+            <div class="form-group">
+                <label for="category" th:text="#{supplier.items.add.category}">Kategorie</label>
+                <select class="form-control" name="category" id="category" th:value="*{category}">
+                    <option th:each="category : ${categories}" th:if="${category != category.SET}" th:text="${category.toString()}"></option>
+                </select>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary mt-3" th:text="#{supplier.items.add.complete}">Artikel hinzufügen</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="container mt-3 mb-3" th:if="${edit}">
+        <form  class="form" th:object="${itemForm}" th:method="post" th:action="@{/admin/supplier/{suppId}/items/edit/{itemId}(suppId=${suppId}, itemId=${itemId})}">
+            <div class="form-group">
+                <label for="name" th:text="#{supplier.items.add.name}">Artikelname</label>
+                <input type="text" name="name" th:value="*{name}" class="form-control" th:id="name" required th:placeholder="#{supplier.items.add.name.placeholder}">
+            </div>
+            <div class="form-group">
+                <label for="groupId" th:text="#{supplier.items.add.groupid}">Gruppennummer</label>
+                <input type="number" min="0" max="100" name="groupId" th:value="*{groupId}" class="form-control" th:id="groupId" required th:placeholder="#{supplier.items.add.groupid.placeholder}">
+            </div>
+            <div class="form-group">
+                <label for="weight" th:text="#{supplier.items.add.weight}">Gruppennummer</label>
+                <input type="number" min="0" max="100" name="weight" th:value="*{weight}" class="form-control" th:id="weight" required th:placeholder="#{supplier.items.add.weight.placeholder}">
+            </div>
+            <div class="form-group">
+                <!-- <label for="picture" th:text="#{supplier.items.add.picture}">Bild</label>-->
+                <input type="hidden" name="picture" th:value="*{picture}" class="form-control-file" id="picture" required>
+            </div>
+            <div class="form-group">
+                <label for="variant" th:text="#{supplier.items.add.variant}">Variante</label>
+                <input type="text" name="variant" th:value="*{variant}" class="form-control" th:id="variant" required th:placeholder="#{supplier.items.add.variant.placeholder}">
+            </div>
+            <div class="form-group">
+                <label for="description" th:text="#{supplier.items.add.description}">Beschreibung</label>
+                <input type="text" name="description" th:value="*{description}" class="form-control" th:id="description" required th:placeholder="#{supplier.items.add.description.placeholder}">
+            </div>
+            <div class="form-group">
+                <label for="price" th:text="#{supplier.items.add.price}">Preis</label>
+                <input type="number" min="0" step="any" name="price" th:value="*{price}" class="form-control" th:id="price" required>
+            </div>
+            <div class="form-group">
+                <label for="category" th:text="#{supplier.items.add.category}">Kategorie</label>
+                <select class="form-control" name="category" th:id="category" th:value="*{category}">
+                    <option th:each="category : ${categories}" th:if="${category != category.SET}" th:text="${category.toString()}"></option>
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="hidden" th:value="${itemId}" name="itemId">
+                <button type="submit" class="btn btn-primary mt-3" th:text="#{supplier.items.edit.complete}">Artikel speichern</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html> 

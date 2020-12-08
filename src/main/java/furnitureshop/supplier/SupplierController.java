@@ -17,14 +17,11 @@ import java.util.Optional;
 public class SupplierController {
 
 	private final SupplierService supplierService;
-	private final ItemService itemService;
 
 	SupplierController(SupplierService supplierService, ItemService itemService) {
 		Assert.notNull(supplierService, "SupplierService must not be null!");
-		Assert.notNull(itemService, "ItemService must not be null!");
 
 		this.supplierService = supplierService;
-		this.itemService = itemService;
 	}
 
 	@GetMapping("/admin/suppliers")
@@ -80,23 +77,14 @@ public class SupplierController {
 		return "redirect:/admin/suppliers";
 	}
 
-	@GetMapping("/admin/supplier/items/{id}")
+	@GetMapping("/admin/supplier/{id}/items")
 	String getItemPageForSupplier(@PathVariable("id") long id, Model model) {
 		Optional<Supplier> supplier = supplierService.findById(id);
-		supplier.ifPresent(value -> model.addAttribute("items", itemService.findBySupplier(value)));
-		supplier.ifPresent(value -> model.addAttribute("supplier", value));
+		supplier.ifPresent(value -> {
+			model.addAttribute("items", supplierService.findItemsBySupplier(value));
+			model.addAttribute("supplier", value);
+		});
 		return "supplierItem";
-	}
-
-	@PostMapping("/admin/supplier/items/{suppId}/edit/{itemId}")
-	String editItemForSupplier(@PathVariable("suppId") long suppId, @PathVariable("itemId") Item item, Model model) {
-		return "redirect:/admin/supplier/items/" + String.valueOf(suppId);
-	}
-
-	@PostMapping("/admin/supplier/items/{suppId}/delete/{itemId}")
-	String deleteItemForSupplier(@PathVariable("suppId") long suppId, @PathVariable("itemId") Item item, Model model) {
-		itemService.removeItem(item);
-		return "redirect:/admin/supplier/items/" + String.valueOf(suppId);
 	}
 
 	@GetMapping("/admin/statistic")
