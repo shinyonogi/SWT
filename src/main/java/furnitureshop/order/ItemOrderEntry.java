@@ -28,7 +28,6 @@ public class ItemOrderEntry {
 		this.status = status;
 	}
 
-
 	public long getId() {
 		return this.id;
 	}

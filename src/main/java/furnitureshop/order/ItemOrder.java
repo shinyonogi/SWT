@@ -5,6 +5,7 @@ import org.salespointframework.catalog.Product;
 import org.salespointframework.order.OrderLine;
 import org.salespointframework.quantity.Quantity;
 import org.salespointframework.useraccount.UserAccount;
+import org.springframework.data.util.Streamable;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -45,8 +46,39 @@ public abstract class ItemOrder extends ShopOrder {
 		return orderLine;
 	}
 
+	public boolean removeEntry(long entryId) {
+		for (ItemOrderEntry entry : orderWithStatus) {
+			if (entry.getId() == entryId) {
+				orderWithStatus.remove(entry);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean changeStatus(long entryId, OrderStatus newStatus) {
+		for (ItemOrderEntry orderEntry : orderWithStatus) {
+			if (orderEntry.getId() == entryId) {
+				orderEntry.setStatus(newStatus);
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	public void changeAllStatus(OrderStatus newStatus) {
+		for (ItemOrderEntry orderEntry : orderWithStatus) {
+			orderEntry.setStatus(newStatus);
+		}
+	}
+
 	public List<ItemOrderEntry> getOrderEntries() {
 		return Collections.unmodifiableList(orderWithStatus);
+	}
+
+	public List<ItemOrderEntry> getOrderEntriesByItem(Item item) {
+		return Streamable.of(orderWithStatus).filter(e -> e.getItem().equals(item)).toList();
 	}
 
 }

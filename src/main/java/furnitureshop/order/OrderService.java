@@ -19,6 +19,7 @@ import org.springframework.util.Assert;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -89,7 +90,7 @@ public class OrderService {
 
 		final Delivery order = new Delivery(userAccount.get(), contactInformation, lkw.get(), deliveryDate);
 		cart.addItemsTo(order);
-		this.changeAllStatus(order, OrderStatus.PAID);
+		order.changeAllStatus(OrderStatus.PAID);
 		orderManagement.save(order);
 
 		return Optional.of(order);
@@ -109,8 +110,49 @@ public class OrderService {
 		return Optional.of(order);
 	}
 
-	public boolean cancel() {
-		return true;
+	public boolean changeItemEntryStatus(ItemOrder order, long itemEntryId, OrderStatus newStatus) {
+		final boolean success = order.changeStatus(itemEntryId, newStatus);
+
+		if (!success) {
+			return false;
+		}
+
+		orderManagement.save(order);
+
+		return false;
+	}
+
+	public boolean cancelLKW(LKWCharter order) {
+		final boolean success = lkwService.cancelOrder(order.getLkw(), order.getRentDate());
+
+		orderManagement.delete(order);
+
+		return success;
+	}
+
+	//Must be tested don't know if it works
+	public void removeItemFromOrders(Item item) {
+		for (ShopOrder order : findAll()) {
+			if (!(order instanceof ItemOrder)) {
+				continue;
+			}
+
+			final ItemOrder itemOrder = (ItemOrder) order;
+			final List<ItemOrderEntry> entries = itemOrder.getOrderEntriesByItem(item);
+
+			for (ItemOrderEntry entry : entries) {
+				itemOrder.removeEntry(entry.getId());
+			}
+
+			if (itemOrder.getOrderEntries().isEmpty()) {
+				orderManagement.delete(order);
+				continue;
+			}
+
+			if (!entries.isEmpty()) {
+				orderManagement.save(order);
+			}
+		}
 	}
 
 	public Optional<ShopOrder> findById(String id) {
@@ -139,41 +181,16 @@ public class OrderService {
 		return orderManagement.findBy(userAccount.get());
 	}
 
-	public Optional<UserAccount> getDummyUser() {
-		return userAccountManagement.findByUsername("Dummy");
-	}
-
 	public Optional<Item> findItemById(ProductIdentifier productId) {
 		return itemService.findById(productId);
+	}
+
+	public Optional<UserAccount> getDummyUser() {
+		return userAccountManagement.findByUsername("Dummy");
 	}
 
 	public Optional<LKW> findLKWById(ProductIdentifier productId) {
 		return lkwService.findById(productId);
 	}
 
-	public boolean changeAllStatus(ItemOrder order, OrderStatus status) {
-		for (ItemOrderEntry orderEntry : order.getOrderEntries()) {
-			orderEntry.setStatus(status);
-		}
-
-		return true;
-	}
-
-	public boolean changeItemEntryStatus(ItemOrder order, long itemEntryId, OrderStatus newStatus) {
-		for (ItemOrderEntry orderEntry : order.getOrderEntries()) {
-			if (orderEntry.getId() == itemEntryId) {
-				orderEntry.setStatus(newStatus);
-				orderManagement.save(order);
-				return true;
-			}
-		}
-		return false;
-	}
-
-	public boolean cancelLkw(LKWCharter order) {
-		Assert.isTrue(lkwService.cancelOrder(order.getLkw(), order.getRentDate()), "Something went wrong with canceling " +
-				"an LKW Order");
-		orderManagement.delete(order);
-		return true;
-	}
 }

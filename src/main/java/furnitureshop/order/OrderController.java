@@ -7,6 +7,8 @@ import org.salespointframework.quantity.Quantity;
 import org.salespointframework.time.BusinessTime;
 import org.springframework.data.util.Pair;
 import org.springframework.data.util.Streamable;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.Assert;
@@ -240,12 +242,23 @@ class OrderController {
 	}
 
 	@PostMapping("/order")
-	String getOrderOverview(@RequestParam("orderId") String orderId, Model model) {
-		final Optional<ShopOrder> shopOrder = orderService.findById(orderId);
+	String getCheckOrder(@RequestParam("orderId") String id, Model model) {
+		final Optional<ShopOrder> shopOrder = orderService.findById(id);
 
 		if (shopOrder.isEmpty()) {
 			model.addAttribute("result", 1);
 			return "orderSearch";
+		}
+
+		return String.format("redirect:/order/%s", id);
+	}
+
+	@GetMapping("/order/{orderId}")
+	String getOrderOverview(@PathVariable("orderId") String id, Model model) {
+		final Optional<ShopOrder> shopOrder = orderService.findById(id);
+
+		if (shopOrder.isEmpty()) {
+			return "redirect:/order";
 		}
 
 		final ShopOrder order = shopOrder.get();
@@ -264,7 +277,7 @@ class OrderController {
 			model.addAttribute("charterDate", ((LKWCharter) order).getRentDate());
 		} else {
 			model.addAttribute("result", 1);
-			return "orderSearch";
+			return "redirect:/order";
 		}
 
 		model.addAttribute("order", order);
@@ -272,34 +285,64 @@ class OrderController {
 		return "orderOverview";
 	}
 
-	@PostMapping("/cancelItemOrder")
-	String cancelItemOrder(@RequestParam("orderId") String orderId, @RequestParam("itemEntryId") long itemEntryId, Model model) {
-		Assert.isTrue(orderService.findById(orderId).isPresent(), String.format("Can´t find Order for orderId {0}", orderId));
-		ItemOrder order = (ItemOrder) orderService.findById(orderId).get();
-		if (orderService.changeItemEntryStatus(order, itemEntryId, OrderStatus.CANCELLED))
-			return getOrderOverview(orderId, model);
-		else
-			return "orderSearch";
+	@PostMapping("/order/{orderId}/cancelItem")
+	String cancelItemOrder(@PathVariable("orderId") String orderId, @RequestParam("itemEntryId") long itemEntryId,
+			Model model, Authentication authentication) {
+		final Optional<ShopOrder> order = orderService.findById(orderId);
+
+		if (order.isEmpty() || !(order.get() instanceof ItemOrder)) {
+			if (authentication != null && authentication.isAuthenticated()) {
+				return "redirect:/admin/orders";
+			}
+			return "redirect:/order";
+		}
+
+		final ItemOrder itemOrder = ((ItemOrder) order.get());
+
+		orderService.changeItemEntryStatus(itemOrder, itemEntryId, OrderStatus.CANCELLED);
+
+		return String.format("redirect:/order/%s", orderId);
 	}
 
-	@PostMapping("/cancelLkwOrder")
-	String cancelLkwOrder(@RequestParam("orderId") String orderId, Model model) {
-		Assert.isTrue(orderService.findById(orderId).isPresent(), String.format("Can´t find Order for orderId {0}", orderId));
-		LKWCharter order = (LKWCharter) orderService.findById(orderId).get();
-		if (orderService.cancelLkw(order))
-			return getOrderOverview(orderId, model);
-		else
-			return "orderSearch";
+	@PreAuthorize("hasRole('EMPLOYEE')")
+	@PostMapping("/order/{orderId}/changeStatus")
+	String changeOrder(@PathVariable("orderId") String orderId, @RequestParam("status") OrderStatus status,
+			@RequestParam("itemEntryId") long itemEntryId, Model model, Authentication authentication) {
+		final Optional<ShopOrder> order = orderService.findById(orderId);
+
+		if (order.isEmpty() || !(order.get() instanceof ItemOrder)) {
+			if (authentication != null && authentication.isAuthenticated()) {
+				return "redirect:/admin/orders";
+			}
+			return "redirect:/order";
+		}
+
+		final ItemOrder itemOrder = ((ItemOrder) order.get());
+
+		orderService.changeItemEntryStatus(itemOrder, itemEntryId, status);
+
+		return String.format("redirect:/order/%s", orderId);
 	}
 
-	@PostMapping("/changeStatus/{status}")
-	String changeOrder(@PathVariable("status") OrderStatus status, @RequestParam("orderId") String orderId, @RequestParam("itemEntryId") long itemEntryId, Model model) {
-		Assert.isTrue(orderService.findById(orderId).isPresent(), String.format("Can´t find Order for orderId {0}", orderId));
-		ItemOrder order = (ItemOrder) orderService.findById(orderId).get();
-		if (orderService.changeItemEntryStatus(order, itemEntryId, status))
-			return getOrderOverview(orderId, model);
-		else
-			return "orderSearch";
+	@PostMapping("/order/{orderId}/cancelLkw")
+	String cancelLkwOrder(@PathVariable("orderId") String orderId, Model model, Authentication authentication) {
+		final Optional<ShopOrder> order = orderService.findById(orderId);
+
+		if (order.isEmpty() || !(order.get() instanceof LKWCharter)) {
+			if (authentication != null && authentication.isAuthenticated()) {
+				return "redirect:/admin/orders";
+			}
+			return "redirect:/order";
+		}
+
+		final LKWCharter charter = (LKWCharter) order.get();
+
+		orderService.cancelLKW(charter);
+
+		if (authentication != null && authentication.isAuthenticated()) {
+			return "redirect:/admin/orders";
+		}
+		return "redirect:/";
 	}
 
 	@GetMapping("/admin/orders")
