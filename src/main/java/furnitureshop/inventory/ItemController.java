@@ -6,10 +6,7 @@ import org.salespointframework.core.Currencies;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.Assert;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
@@ -93,6 +90,15 @@ public class ItemController {
 
 	@GetMapping("/admin/supplier/{id}/items/add")
 	String getAddItemForSupplier(@PathVariable("id") long suppId, Model model) {
+		Optional<Supplier> supplier = itemService.findSupplierById(suppId);
+		if (supplier.isPresent()) {
+			if (supplier.get().getName().equals("Set Supplier")) {
+				model.addAttribute("categories", Category.values());
+				model.addAttribute("suppId", suppId);
+				return "supplierSetform";
+			}
+		}
+
 		model.addAttribute("itemForm", new ItemForm(0, 0, "", "placeholder.png", "", "", 0, null));
 		model.addAttribute("suppId", suppId);
 		model.addAttribute("categories", Category.values());
