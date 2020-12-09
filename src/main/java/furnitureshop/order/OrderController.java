@@ -272,10 +272,31 @@ class OrderController {
 		return "orderOverview";
 	}
 
-	@PostMapping("/cancelOrder")
-	String cancelOrder(@RequestParam("orderId") String orderId, @RequestParam("item") String item, Model model) {
+	@PostMapping("/cancelItemOrder")
+	String cancelItemOrder(@RequestParam("orderId") String orderId, @RequestParam("itemEntryId") long itemEntryId, Model model) {
+		Assert.isTrue(orderService.findById(orderId).isPresent(), String.format("Can´t find Order for orderId {0}", orderId));
 		ItemOrder order = (ItemOrder) orderService.findById(orderId).get();
-		if (orderService.changeStatus(order, item, OrderStatus.CANCELLED))
+		if (orderService.changeItemEntryStatus(order, itemEntryId, OrderStatus.CANCELLED))
+			return getOrderOverview(orderId, model);
+		else
+			return "orderSearch";
+	}
+
+	@PostMapping("/cancelLkwOrder")
+	String cancelLkwOrder(@RequestParam("orderId") String orderId, Model model) {
+		Assert.isTrue(orderService.findById(orderId).isPresent(), String.format("Can´t find Order for orderId {0}", orderId));
+		LKWCharter order = (LKWCharter) orderService.findById(orderId).get();
+		if (orderService.cancelLkw(order))
+			return getOrderOverview(orderId, model);
+		else
+			return "orderSearch";
+	}
+
+	@PostMapping("/changeStatus/{status}")
+	String changeOrder(@PathVariable("status") OrderStatus status, @RequestParam("orderId") String orderId, @RequestParam("itemEntryId") long itemEntryId, Model model) {
+		Assert.isTrue(orderService.findById(orderId).isPresent(), String.format("Can´t find Order for orderId {0}", orderId));
+		ItemOrder order = (ItemOrder) orderService.findById(orderId).get();
+		if (orderService.changeItemEntryStatus(order, itemEntryId, status))
 			return getOrderOverview(orderId, model);
 		else
 			return "orderSearch";

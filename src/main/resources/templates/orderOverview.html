@@ -126,14 +126,22 @@
                             Status ändern
                         </button>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" href="#" th:each="s : ${statuses}" th:text="${#messages.msgOrNull('order.overview.status.' + s.name().toLowerCase())}">eingegangen</a>
+                            <form class="dropdown-entry" th:each="s : ${statuses}" th:method="post"
+                                  th:action="@{/changeStatus/{status} (status=${s.name()})}">
+                                <input type="hidden" name="orderId" th:value="${order.getId().getIdentifier()}"/>
+                                <input type="hidden" name="itemEntryId" th:value="${item.getId()}"/>
+                                <button type="submit" class="dropdown-item"
+                                        th:text="${#messages.msgOrNull('order.overview.status.' + s.name().toLowerCase())}">
+                                    eingegangen
+                                </button>
+                            </form>
                         </div>
                     </div>
                     <div sec:authorize="!hasRole('EMPLOYEE')"
                          th:unless="${item.getStatus() == T(furnitureshop.order.OrderStatus).COMPLETED || item.getStatus() == T(furnitureshop.order.OrderStatus).CANCELLED}">
-                        <form action="#" th:action="@{/cancelOrder}" method="post">
-                            <input type="hidden" name="orderId" th:value="${order.getId().getIdentifier().toString()}"/>
-                            <input type="hidden" name="item" th:value="${item.getId().getIdentifier().toString()}"/>
+                        <form action="#" th:action="@{/cancelItemOrder}" method="post">
+                            <input type="hidden" name="orderId" th:value="${order.getId().getIdentifier()}"/>
+                            <input type="hidden" name="itemEntryId" th:value="${item.getId()}"/>
                             <button type="submit" class="btn btn-outline-danger" th:text="#{order.overview.item.cancel}">Artikel stornieren</button>
                         </form>
                     </div>
@@ -169,7 +177,12 @@
                 </td>
                 <td class="align-middle">
                     <div th:if="${cancelable}">
-                        <button type="button" class="btn btn-outline-danger" th:text="#{order.overview.lkw.cancel}">LKW stornieren</button>
+                        <form action="#" th:action="@{/cancelLkwOrder}" method="post">
+                            <input type="hidden" name="orderId" th:value="${order.getId().getIdentifier()}"/>
+                            <button type="submit" class="btn btn-outline-danger" th:text="#{order.overview.lkw.cancel}">
+                                LKW stornieren
+                            </button>
+                        </form>
                     </div>
                 </td>
             </tr>

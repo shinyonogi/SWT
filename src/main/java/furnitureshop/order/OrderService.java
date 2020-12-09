@@ -159,15 +159,21 @@ public class OrderService {
 		return true;
 	}
 
-	public boolean changeStatus(ItemOrder order, String itemId, OrderStatus newStatus) {
+	public boolean changeItemEntryStatus(ItemOrder order, long itemEntryId, OrderStatus newStatus) {
 		for (ItemOrderEntry orderEntry : order.getOrderEntries()) {
-			if (orderEntry.getItem().getId().getIdentifier()
-					.equals(itemId)) {
+			if (orderEntry.getId() == itemEntryId) {
 				orderEntry.setStatus(newStatus);
 				orderManagement.save(order);
 				return true;
 			}
 		}
 		return false;
+	}
+
+	public boolean cancelLkw(LKWCharter order) {
+		Assert.isTrue(lkwService.cancelOrder(order.getLkw(), order.getRentDate()), "Something went wrong with canceling " +
+				"an LKW Order");
+		orderManagement.delete(order);
+		return true;
 	}
 }

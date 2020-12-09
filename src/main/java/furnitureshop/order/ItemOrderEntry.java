@@ -1,7 +1,6 @@
 package furnitureshop.order;
 
 import furnitureshop.inventory.Item;
-import org.salespointframework.catalog.ProductIdentifier;
 import org.springframework.util.Assert;
 
 import javax.persistence.*;
@@ -29,12 +28,13 @@ public class ItemOrderEntry {
 		this.status = status;
 	}
 
-	public Item getItem() {
-		return item;
+
+	public long getId() {
+		return this.id;
 	}
 
-	public ProductIdentifier getId() {
-		return getItem().getId();
+	public Item getItem() {
+		return item;
 	}
 
 	public OrderStatus getStatus() {
