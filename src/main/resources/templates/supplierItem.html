@@ -37,18 +37,17 @@
         </div>
         <table class="table table-hover" style="table-layout: fixed">
             <thead class="thead-light">
-            <tr>
+            <tr class="text-center">
                 <th scope="col"></th>
-                <th scope="col" th:text="#{supplier.items.item.name}">Artikel</th>
+                <th scope="col" style="width: 20%" th:text="#{supplier.items.item.name}">Artikel</th>
                 <th scope="col" th:text="#{supplier.items.item.price}">Preis</th>
-                <th scope="col" th:text="#{supplier.items.item.variant}">Variante</th>
-                <th scope="col" style="width: 20%" th:text="#{supplier.items.item.description}">Beschreibung</th>
+                <th scope="col"></th>
                 <th scope="col"></th>
                 <th scope="col"></th>
             </tr>
             </thead>
             <tbody>
-            <tr class="mt-3 mb-3 table-light" th:each="item : ${items}">
+            <tr class="mt-3 mb-3 table-light text-center" th:each="item : ${items}">
                 <td class="align-middle">
                     <img th:src="@{${item.getPicture()}}" class="img-fluid rounded" style="height: 150px"
                          src="../static/resources/img/chair_1.jpg" alt="Artikel">
@@ -60,13 +59,13 @@
                     <h5 th:text="${item.getSupplierPrice()}">999,99€</h5>
                 </td>
                 <td class="align-middle">
-                    <h5 th:text="${item.getVariant()}">blau</h5>
-                </td>
-                <td class="align-middle">
-                    <h6 th:text="${item.getDescription()}">Sofa in blau</h6>
-                </td>
-                <td class="align-middle">
                     <a th:href="@{/admin/supplier/{suppId}/items/edit/{itemId}(suppId=${supplier.getId()}, itemId=${item.getId()})}" class="btn btn-outline-primary" th:text="#{supplier.items.item.edit}">Artikel ändern</a>
+                </td>
+                <td class="align-middle">
+                    <form th:method="post" th:action="@{/admin/supplier/{suppId}/items/toggle/{itemId}(suppId=${supplier.getId()}, itemId=${item.getId()})}">
+                        <button th:unless="${item.isVisible()}" type="submit" class="btn btn-outline-success" th:text="#{supplier.items.item.show}">Artikel anzeigen</button>
+                        <button th:if="${item.isVisible()}" type="submit" class="btn btn-outline-danger" th:text="#{supplier.items.item.hide}">Artikel verstecken</button>
+                    </form>
                 </td>
                 <td class="align-middle">
                     <form th:method="post" th:action="@{/admin/supplier/{suppId}/items/delete/{itemId}(suppId=${supplier.getId()}, itemId=${item.getId()})}">

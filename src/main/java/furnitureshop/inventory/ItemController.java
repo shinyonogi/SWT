@@ -39,7 +39,7 @@ public class ItemController {
 	 */
 	@GetMapping("/catalog")
 	String getCatalog(Model model) {
-		model.addAttribute("items", itemService.findAll());
+		model.addAttribute("items", itemService.findAllVisible());
 
 		return "catalog";
 	}
@@ -57,7 +57,7 @@ public class ItemController {
 		final Optional<Category> cat = Category.getByName(category);
 
 		if (cat.isPresent()) {
-			model.addAttribute("items", itemService.findAllByCategory(cat.get()));
+			model.addAttribute("items", itemService.findAllVisibleByCategory(cat.get()));
 			return "catalog";
 		}
 
@@ -86,7 +86,7 @@ public class ItemController {
 		}
 
 		model.addAttribute("item", item.get());
-		model.addAttribute("variants", itemService.findAllByGroupId(item.get().getGroupid()));
+		model.addAttribute("variants", itemService.findAllVisibleByGroupId(item.get().getGroupid()));
 
 		return "itemView";
 	}
@@ -124,13 +124,13 @@ public class ItemController {
 
 		itemService.addOrUpdateItem(piece);
 
-		return "redirect:/admin/supplier/" + suppId + "/items";
+		return String.format("redirect:/admin/supplier/%d/items", suppId);
 	}
 
 	@GetMapping("/admin/supplier/{suppId}/items/edit/{itemId}")
 	String getEditItemForSupplier(@PathVariable("suppId") long suppId, @PathVariable("itemId") Item item, Model model) {
 		if (suppId != item.getSupplier().getId()) {
-			return "redirect:/admin/supplier/" + suppId + "/items";
+			return String.format("redirect:/admin/supplier/%d/items", suppId);
 		}
 
 		model.addAttribute("itemForm", new ItemForm(item.getGroupid(), item.getWeight(), item.getName(), item.getPicture(), item.getVariant(), item.getDescription(), item.getSupplierPrice().getNumber().doubleValue(), item.getCategory()));
@@ -145,7 +145,7 @@ public class ItemController {
 	@PostMapping("/admin/supplier/{suppId}/items/edit/{itemId}")
 	String editItemForSupplier(@PathVariable("suppId") long suppId, @PathVariable("itemId") Item item, @ModelAttribute("itemForm") ItemForm itemForm) {
 		if (suppId != item.getSupplier().getId()) {
-			return "redirect:/admin/supplier/" + suppId + "/items";
+			return String.format("redirect:/admin/supplier/%d/items", suppId);
 		}
 
 		item.setName(itemForm.getName());
@@ -155,18 +155,31 @@ public class ItemController {
 
 		itemService.addOrUpdateItem(item);
 
-		return "redirect:/admin/supplier/" + suppId + "/items";
+		return String.format("redirect:/admin/supplier/%d/items", suppId);
 	}
 
 	@PostMapping("/admin/supplier/{suppId}/items/delete/{itemId}")
 	String deleteItemForSupplier(@PathVariable("suppId") long suppId, @PathVariable("itemId") Item item, Model model) {
 		if (suppId != item.getSupplier().getId()) {
-			return "redirect:/admin/supplier/" + suppId + "/items";
+			return String.format("redirect:/admin/supplier/%d/items", suppId);
 		}
 
 		itemService.removeItem(item);
 
-		return "redirect:/admin/supplier/" + suppId + "/items";
+		return String.format("redirect:/admin/supplier/%d/items", suppId);
+	}
+
+	@PostMapping("/admin/supplier/{suppId}/items/toggle/{itemId}")
+	String toggleItemForSupplier(@PathVariable("suppId") long suppId, @PathVariable("itemId") Item item, Model model) {
+		if (suppId != item.getSupplier().getId()) {
+			return String.format("redirect:/admin/supplier/%d/items", suppId);
+		}
+
+		item.setVisible(!item.isVisible());
+
+		itemService.addOrUpdateItem(item);
+
+		return String.format("redirect:/admin/supplier/%d/items", suppId);
 	}
 
 }

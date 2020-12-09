@@ -33,6 +33,8 @@ public abstract class Item extends Product {
 	@Enumerated(EnumType.ORDINAL)
 	private Category category;
 
+	private boolean visible;
+
 	/**
 	 * Empty constructor for {@code Spring}. Not in use.
 	 *
@@ -73,6 +75,8 @@ public abstract class Item extends Product {
 		this.description = description;
 		this.supplier = supplier;
 		this.category = category;
+
+		this.visible = true;
 	}
 
 	@Override
@@ -129,4 +133,13 @@ public abstract class Item extends Product {
 
 		this.description = description;
 	}
+
+	public boolean isVisible() {
+		return visible;
+	}
+
+	public void setVisible(boolean visible) {
+		this.visible = visible;
+	}
+
 }

@@ -1,6 +1,5 @@
 package furnitureshop.supplier;
 
-import furnitureshop.inventory.Item;
 import furnitureshop.inventory.ItemService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -68,6 +67,7 @@ public class SupplierController {
 	@PostMapping("/admin/supplier/delete/{id}")
 	String deleteSupplier(@PathVariable("id") long id) {
 		final Optional<Supplier> setSupplier = supplierService.findByName("Set Supplier");
+
 		if (setSupplier.isPresent() && setSupplier.get().getId() == id) {
 			return "redirect:/admin/suppliers";
 		}
@@ -79,11 +79,13 @@ public class SupplierController {
 
 	@GetMapping("/admin/supplier/{id}/items")
 	String getItemPageForSupplier(@PathVariable("id") long id, Model model) {
-		Optional<Supplier> supplier = supplierService.findById(id);
+		final Optional<Supplier> supplier = supplierService.findById(id);
+
 		supplier.ifPresent(value -> {
 			model.addAttribute("items", supplierService.findItemsBySupplier(value));
 			model.addAttribute("supplier", value);
 		});
+
 		return "supplierItem";
 	}
 

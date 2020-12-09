@@ -2,9 +2,7 @@ package furnitureshop.inventory;
 
 import furnitureshop.supplier.Supplier;
 import furnitureshop.supplier.SupplierService;
-import org.javamoney.moneta.Money;
 import org.salespointframework.catalog.ProductIdentifier;
-import org.salespointframework.core.Currencies;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
@@ -42,7 +40,7 @@ public class ItemService {
 	}
 
 	/**
-	 * Adds an {@link Item} to the catalog
+	 * Adds or updates an {@link Item} in the catalog
 	 *
 	 * @param item A {@link Item} to add to the {@code ItemCatalog}
 	 *
@@ -58,6 +56,8 @@ public class ItemService {
 	 * Removes an {@link Item} from the catalog
 	 *
 	 * @param item A {@link Item} to remove from the {@code itemCatalog}
+	 *
+	 * @return {@code true} if the {@link Item} was removed
 	 *
 	 * @throws IllegalArgumentException If {@code item} is {@code null}
 	 */
@@ -84,6 +84,15 @@ public class ItemService {
 	 */
 	public Streamable<Item> findAll() {
 		return itemCatalog.findAll();
+	}
+
+	/**
+	 * Finds all visibble items in the catalog
+	 *
+	 * @return Returns all visible items in the {@code itemCatalog}
+	 */
+	public Streamable<Item> findAllVisible() {
+		return itemCatalog.findAll().filter(Item::isVisible);
 	}
 
 	/**
@@ -128,7 +137,22 @@ public class ItemService {
 	public Streamable<Item> findAllByCategory(Category category) {
 		Assert.notNull(category, "Category must not be null!");
 
-		return itemCatalog.findAll().filter(it -> it.getCategory() == category);
+		return findAll().filter(it -> it.getCategory() == category);
+	}
+
+	/**
+	 * Finds all visible items of a specific category
+	 *
+	 * @param category A {@link Category}
+	 *
+	 * @return Returns a stream of visible {@link Item}s all with the same category
+	 *
+	 * @throws IllegalArgumentException If {@code category} is {@code null}
+	 */
+	public Streamable<Item> findAllVisibleByCategory(Category category) {
+		Assert.notNull(category, "Category must not be null!");
+
+		return findAllVisible().filter(it -> it.getCategory() == category);
 	}
 
 	/**
@@ -139,7 +163,18 @@ public class ItemService {
 	 * @return Returns a stream of {@link Item}s all with the same {@code groupId}
 	 */
 	public Streamable<Item> findAllByGroupId(int groupId) {
-		return itemCatalog.findAll().filter(it -> it.getGroupid() == groupId);
+		return findAll().filter(it -> it.getGroupid() == groupId);
+	}
+
+	/**
+	 * Finds all visible items of a specific category
+	 *
+	 * @param groupId GroupId
+	 *
+	 * @return Returns a stream of visible {@link Item}s all with the same {@code groupId}
+	 */
+	public Streamable<Item> findAllVisibleByGroupId(int groupId) {
+		return findAllVisible().filter(it -> it.getGroupid() == groupId);
 	}
 
 	/**
