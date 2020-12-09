@@ -3,11 +3,15 @@ package furnitureshop.inventory;
 import furnitureshop.supplier.Supplier;
 import org.javamoney.moneta.Money;
 import org.salespointframework.core.Currencies;
+import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -93,9 +97,7 @@ public class ItemController {
 		Optional<Supplier> supplier = itemService.findSupplierById(suppId);
 		if (supplier.isPresent()) {
 			if (supplier.get().getName().equals("Set Supplier")) {
-				model.addAttribute("categories", Category.values());
-				model.addAttribute("suppId", suppId);
-				return "supplierSetform";
+				return String.format("redirect:/admin/supplier/%s/sets/add", suppId);
 			}
 		}
 
@@ -129,6 +131,59 @@ public class ItemController {
 		);
 
 		itemService.addOrUpdateItem(piece);
+
+		return String.format("redirect:/admin/supplier/%d/items", suppId);
+	}
+
+	@GetMapping("/admin/supplier/{id}/sets/add")
+	String getAddSetsForSupplier(@PathVariable("id") long id, Model model) {
+		model.addAttribute("categories", Category.values());
+		model.addAttribute("suppId", id);
+		model.addAttribute("showCats", true);
+		return "supplierSetform";
+	}
+
+	@PostMapping("/admin/supplier/{suppId}/sets/add")
+	String getDetailSetAddPage(@PathVariable("suppId") long suppId, @RequestParam("categories") List<Category> categories, Model model) {
+		EnumMap<Category, Streamable<Item>> itemMap = new EnumMap<>(Category.class);
+		for (Category category : categories) {
+			itemMap.put(category, itemService.findAllByCategory(category));
+		}
+		model.addAttribute("itemMap", itemMap);
+		model.addAttribute("showCats", false);
+		model.addAttribute("setForm", new ItemForm(0, 0, "", "placeholder.png", "", "", 0, Category.SET));
+		return "supplierSetform";
+	}
+
+	@PostMapping("/admin/supplier/{suppId}/sets/add/set")
+	String addSetForSupplier(@PathVariable("suppId") long suppId, @ModelAttribute("setForm") ItemForm setForm, @RequestParam("itemList") List<Item> itemList, Model model) {
+		final Optional<Supplier> supplier = itemService.findSupplierById(suppId);
+
+		if (supplier.isEmpty()) {
+			return "redirect:/admin/suppliers";
+		}
+
+		if (!supplier.get().getName().equals("Set Supplier")) {
+			return String.format("redirect:/admin/supplier/%d/items", suppId);
+		}
+
+		if (itemList.size() == 0) {
+			return String.format("redirect:/admin/supplier/%d/sets/add", suppId);
+		}
+
+		final Set set = new Set(
+				setForm.getGroupId(),
+				setForm.getName(),
+				Money.of(setForm.getPrice(), Currencies.EURO),
+				setForm.getPicture(),
+				setForm.getVariant(),
+				setForm.getDescription(),
+				supplier.get(),
+				Category.SET,
+				itemList
+		);
+
+		itemService.addOrUpdateItem(set);
 
 		return String.format("redirect:/admin/supplier/%d/items", suppId);
 	}
