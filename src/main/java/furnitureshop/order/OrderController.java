@@ -265,7 +265,6 @@ class OrderController {
 
 		if (order instanceof ItemOrder) {
 			model.addAttribute("items", ((ItemOrder) order).getOrderEntries());
-			model.addAttribute("statuses", OrderStatus.values());
 
 			if (order instanceof Delivery) {
 				model.addAttribute("lkw", ((Delivery) order).getLkw());

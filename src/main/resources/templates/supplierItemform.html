@@ -13,7 +13,7 @@
     <nav th:include="navigation :: navigation"></nav>
 
     <div class="container mt-3 mb-3" th:unless="${edit}">
-        <form  class="form" th:object="${itemForm}" th:method="post" th:action="@{/admin/supplier/{id}/items/add(id=${suppId})}">
+        <form  class="form" th:object="${itemForm}" method="post" th:action="@{/admin/supplier/{id}/items/add(id=${suppId})}">
             <div class="form-group">
                 <label for="name" th:text="#{supplier.items.add.name}">Artikelname</label>
                 <input type="text" name="name" th:value="*{name}" class="form-control" id="name" required th:placeholder="#{supplier.items.add.name.placeholder}">

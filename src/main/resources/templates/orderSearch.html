@@ -24,7 +24,7 @@
                     <div th:if="${result == 1}" th:text="#{order.status.unknown}">Keine Bestellung gefunden</div>
                 </div>
 
-                <form class="form-group" th:method="post" th:action="@{/order}">
+                <form class="form-group" method="post" th:action="@{/order}">
                     <label for="orderId" th:text="#{order.check.orderid}">Bitte Bestellnummer angeben:</label>
                     <input type="text" class="form-control mb-2" id="orderId" name="orderId">
                     <button type="submit" class="btn btn-primary" role="button" th:text="#{order.check.view}">Bestellung ansehen</button>

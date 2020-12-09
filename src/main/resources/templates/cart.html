@@ -54,13 +54,13 @@
 						<h5 th:text="${cartItem.getPrice()}">999,99€</h5>
 					</td>
 					<td class="align-middle">
-						<form class="form-inline justify-content-center" th:method="post" th:action="@{/cart/change/{id}(id=${cartItem.getId()})}">
+						<form class="form-inline justify-content-center" method="post" th:action="@{/cart/change/{id}(id=${cartItem.getId()})}">
 							<input name="amount" type="number" class="form-control" min="0" max="99" th:value="${cartItem.getQuantity()}" style="width: 70px">
 							<button type="submit" class="btn" th:title="#{cart.entry.quantity.change}">&#10004;</button>
 						</form>
 					</td>
 					<td class="align-middle">
-						<form class="form-inline justify-content-center" th:method="post" th:action="@{/cart/delete/{id}(id=${cartItem.getId()})}">
+						<form class="form-inline justify-content-center" method="post" th:action="@{/cart/delete/{id}(id=${cartItem.getId()})}">
 							<button type="submit" class="btn" th:title="#{cart.entry.delete}">&#10060;</button>
 						</form>
 					</td>

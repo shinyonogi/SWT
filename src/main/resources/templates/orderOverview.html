@@ -95,7 +95,7 @@
             </div>
         </div>
 
-        <table th:if="${items}" class="table table-hover" style="table-layout: fixed">
+        <table th:if="${items}" class="table table-hover">
             <thead class="thead-light">
             <tr class="text-center">
                 <th scope="col"></th>
@@ -126,10 +126,10 @@
                             Status ändern
                         </button>
                         <div class="dropdown-menu">
-                            <form class="dropdown-entry" th:each="s : ${statuses}" th:method="post" th:action="@{/order/{orderId}/changeStatus (orderId=${order.getId().getIdentifier()})}">
+                            <form class="dropdown-entry" th:each="status : ${T(furnitureshop.order.OrderStatus).values()}" method="post" th:action="@{/order/{orderId}/changeStatus (orderId=${order.getId().getIdentifier()})}">
                                 <input type="hidden" name="itemEntryId" th:value="${item.getId()}"/>
-                                <input type="hidden" name="status" th:value="${s}"/>
-                                <button type="submit" class="dropdown-item" th:text="${#messages.msgOrNull('order.overview.status.' + s.name().toLowerCase())}">eingegangen</button>
+                                <input type="hidden" name="status" th:value="${status}"/>
+                                <button type="submit" class="dropdown-item" th:text="${#messages.msgOrNull('order.overview.status.' + status.name().toLowerCase())}">eingegangen</button>
                             </form>
                         </div>
                     </div>
@@ -144,7 +144,7 @@
             </tbody>
         </table>
 
-        <table th:unless="${items}" class="table table-hover" style="table-layout: fixed">
+        <table th:unless="${items}" class="table table-hover">
             <thead class="thead-light">
             <tr class="text-center">
                 <th scope="col"></th>

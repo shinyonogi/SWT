@@ -31,11 +31,6 @@
                         <p class="card-text text-secondary" th:text="${item.getDescription()}">Lorem ipsum</p>
                         <a class="btn btn-outline-primary" th:href="@{/catalog/{category}/{id}(id=${item.getId()}, category=${item.getCategory().name().toLowerCase()})}" th:text="#{item.detail.btn}">Artikel ansehen</a>
                     </div>
-                    <!--
-                    <div class="card-footer">
-                        <small class="text-muted" th:text="${item.getDescription()}"></small>
-				    </div>
-				    -->
                 </div>
             </div>
 

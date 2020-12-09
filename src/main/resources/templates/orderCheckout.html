@@ -43,7 +43,7 @@
 
             </div>
             <div class="col-4">
-                <form class="form" th:object="${orderform}" th:method="post" th:action="@{/checkout}">
+                <form class="form" th:object="${orderform}" method="post" th:action="@{/checkout}">
                     <div class="form-group">
                         <label for="name" th:text="#{order.name}">Name:</label>
                         <input type="text" name="name" th:value="*{name}" class="form-control" id="name" required th:placeholder="#{order.name.placeholder}">
