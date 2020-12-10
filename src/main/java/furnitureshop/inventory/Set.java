@@ -6,10 +6,10 @@ import org.springframework.data.util.Pair;
 import org.springframework.util.Assert;
 
 import javax.money.MonetaryAmount;
-import javax.money.NumberValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -42,12 +42,11 @@ public class Set extends Item {
 	 * @param description   Description of the Item
 	 * @param supplier      Supplier of the Item
 	 * @param items         A List of all {@link Item}s in this Set
-	 * @param category      {@link Category} of the Item
 	 *
 	 * @throws IllegalArgumentException If any of the arguments is {@code null}
 	 */
-	public Set(int groupId, String name, MonetaryAmount customerPrice, String picture, String variant, String description, Supplier supplier, Category category, List<Item> items) {
-		super(groupId, name, customerPrice, picture, variant, description, supplier, category);
+	public Set(int groupId, String name, MonetaryAmount customerPrice, String picture, String variant, String description, Supplier supplier, List<Item> items) {
+		super(groupId, name, customerPrice, picture, variant, description, supplier, Category.SET);
 
 		Assert.notNull(items, "Items must not be null!");
 
@@ -72,25 +71,42 @@ public class Set extends Item {
 		return Collections.unmodifiableList(items);
 	}
 
-	public List<Pair<Item, MonetaryAmount>> getItemPartPrices() {
+	public List<Pair<Item, MonetaryAmount>> getItemPrices() {
 		final List<Pair<Item, MonetaryAmount>> pieces = new ArrayList<>();
 
-		final MonetaryAmount total = getPieceTotal();
 		final MonetaryAmount price = getPrice();
 
-		for (Item item : items) {
-			final NumberValue part = item.getPrice().divide(total.getNumber()).getNumber();
-
-			if (item instanceof Set) {
-				for (Pair<Item, MonetaryAmount> pair : ((Set) item).getItemPartPrices()) {
-					pieces.add(Pair.of(pair.getFirst(), pair.getSecond().multiply(part)));
-				}
-			} else {
-				pieces.add(Pair.of(item, price.multiply(part)));
-			}
+		for (Pair<Item, BigDecimal> part : getItemPriceParts()) {
+			pieces.add(Pair.of(part.getFirst(), price.multiply(part.getSecond())));
 		}
 
 		return pieces;
+	}
+
+	private List<Pair<Item, BigDecimal>> getItemPriceParts() {
+		final List<Pair<Item, BigDecimal>> parts = new ArrayList<>();
+
+		//final MonetaryAmount total = getPieceTotal();
+		MonetaryAmount total = Currencies.ZERO_EURO;
+		for (Item item : items) {
+			total = total.add(item.getPrice());
+		}
+
+		final MonetaryAmount price = getPrice();
+
+		for (Item item : items) {
+			final BigDecimal part = item.getPrice().divide(total.getNumber()).getNumber().numberValue(BigDecimal.class);
+
+			if (item instanceof Set) {
+				for (Pair<Item, BigDecimal> pair : ((Set) item).getItemPriceParts()) {
+					parts.add(Pair.of(pair.getFirst(), pair.getSecond().multiply(part)));
+				}
+			} else {
+				parts.add(Pair.of(item, part));
+			}
+		}
+
+		return parts;
 	}
 
 }

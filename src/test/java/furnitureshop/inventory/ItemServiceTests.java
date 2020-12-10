@@ -61,7 +61,7 @@ public class ItemServiceTests {
 		items.add(stuhl1);
 		items.add(sofa1_grey);
 		items.add(new Set(4, "Set 1", Money.of(299.99, Currencies.EURO), "set_1.jpg", "black",
-				"Set bestehend aus Sofa 1 und Stuhl 1.", setSupplier, Category.SET, Arrays.asList(stuhl1, sofa1_grey))
+				"Set bestehend aus Sofa 1 und Stuhl 1.", setSupplier, Arrays.asList(stuhl1, sofa1_grey))
 		);
 
 		supplierRepository.saveAll(suppliers);

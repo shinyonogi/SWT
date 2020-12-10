@@ -1,5 +1,6 @@
 package furnitureshop.inventory;
 
+import furnitureshop.FurnitureShop;
 import furnitureshop.supplier.Supplier;
 import furnitureshop.supplier.SupplierRepository;
 import org.javamoney.moneta.Money;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
@@ -24,6 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@ContextConfiguration(classes = FurnitureShop.class)
 public class ItemControllerIntegrationTests {
 
 	@Autowired
@@ -52,7 +55,7 @@ public class ItemControllerIntegrationTests {
 			"Stuhl 1 in schwarz.", supplier, 5, Category.CHAIR);
 
 	Set set = new Set(4, "Set 1", Money.of(299.99, Currencies.EURO), "set_1.jpg", "black",
-			"Set bestehend aus Sofa 1 und Stuhl 1.", setSupplier, Category.SET, Arrays.asList(stuhl, sofa_grey));
+			"Set bestehend aus Sofa 1 und Stuhl 1.", setSupplier, Arrays.asList(stuhl, sofa_grey));
 
 	@BeforeEach
 	void setUp() {

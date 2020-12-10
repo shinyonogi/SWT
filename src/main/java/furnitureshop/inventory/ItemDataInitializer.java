@@ -77,7 +77,7 @@ public class ItemDataInitializer implements DataInitializer {
 		final Supplier setSupplier = findSupplierByName("Set Supplier").orElse(null);
 
 		items.add(new Set(4, "Set 1", Money.of(299.99, Currencies.EURO), "set_1.jpg", "black",
-				"Set bestehend aus Sofa 1 und Stuhl 1.", setSupplier, Category.SET, Arrays.asList(stuhl1, sofa1_grey)));
+				"Set bestehend aus Sofa 1 und Stuhl 1.", setSupplier, Arrays.asList(stuhl1, sofa1_grey)));
 
 		itemCatalog.saveAll(items);
 	}

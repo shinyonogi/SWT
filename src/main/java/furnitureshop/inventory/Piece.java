@@ -40,6 +40,7 @@ public class Piece extends Item {
 		super(groupId, name, customerPrice, picture, variant,
 				description, supplier, category);
 
+		Assert.isTrue(category != Category.SET, "Category must not be Set");
 		Assert.isTrue(weight > 0, "Weight muss be greater than 0");
 
 		this.weight = weight;

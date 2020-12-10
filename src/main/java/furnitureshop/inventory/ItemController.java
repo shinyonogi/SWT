@@ -237,7 +237,6 @@ public class ItemController {
 				setForm.getVariant(),
 				setForm.getDescription(),
 				supplier.get(),
-				Category.SET,
 				itemList
 		);
 
