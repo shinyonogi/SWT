@@ -187,7 +187,7 @@ public class ItemController {
 	 * @return Returns the view for set addition with the proper selection of {@link Item} instances.
 	 */
 	@PostMapping("/admin/supplier/{suppId}/sets/add")
-	String getDetailSetAddPage(@PathVariable("suppId") long suppId, @RequestParam("categories") List<Category> categories, Model model) {
+	String getDetailSetAddPage(@PathVariable("suppId") long suppId, @RequestParam("checkedCategories") List<Category> categories, Model model) {
 		EnumMap<Category, Streamable<Item>> itemMap = new EnumMap<>(Category.class);
 		for (Category category : categories) {
 			itemMap.put(category, itemService.findAllByCategory(category));

@@ -61,7 +61,7 @@ public class Set extends Item {
 	public MonetaryAmount getPieceTotal() {
 		MonetaryAmount singlePrice = Currencies.ZERO_EURO;
 		for (Item item : items) {
-			singlePrice = singlePrice.add(item.getPrice());
+			singlePrice = singlePrice.add(item.getPieceTotal());
 		}
 		return singlePrice;
 	}

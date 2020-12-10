@@ -46,6 +46,11 @@ public class Piece extends Item {
 	}
 
 	@Override
+	public MonetaryAmount getPieceTotal() {
+		return getPrice();
+	}
+
+	@Override
 	public int getWeight() {
 		return this.weight;
 	}

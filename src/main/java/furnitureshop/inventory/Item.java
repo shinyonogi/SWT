@@ -94,8 +94,6 @@ public abstract class Item extends Product {
 		return super.getPrice();
 	}
 
-	public MonetaryAmount getPieceTotal() { return null; }
-
 	public int getGroupId() {
 		return groupId;
 	}
@@ -119,6 +117,8 @@ public abstract class Item extends Product {
 	public Category getCategory() {
 		return category;
 	}
+
+	public abstract MonetaryAmount getPieceTotal();
 
 	public abstract int getWeight();
 

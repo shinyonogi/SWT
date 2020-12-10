@@ -26,7 +26,7 @@
 
                     <div class="card-body">
                         <h4 class="card-title" th:text="${item.getName()}">Name</h4>
-                        <del><h5 class="text-danger" th:text="${item.getPieceTotal() ?: ''}"></h5></del>
+                        <del><h5 class="text-danger" th:text="${!item.getPieceTotal().isEqualTo(item.getPrice()) ? item.getPieceTotal() : ''}"></h5></del>
                         <h5 class="text-dark" th:text="#{item.price} + ' ' + ${item.getPrice()}">999,99€</h5>
                         <p class="card-text text-secondary" th:text="${item.getDescription()}">Lorem ipsum</p>
                         <a class="btn btn-outline-primary" th:href="@{/catalog/{category}/{id}(id=${item.getId()}, category=${item.getCategory().name().toLowerCase()})}" th:text="#{item.detail.btn}">Artikel ansehen</a>

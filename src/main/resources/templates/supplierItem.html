@@ -49,8 +49,10 @@
             <tbody>
             <tr class="mt-3 mb-3 table-light text-center" th:each="item : ${items}">
                 <td class="align-middle">
-                    <img th:src="@{${item.getPicture()}}" class="img-fluid rounded" style="height: 150px"
-                         src="../static/resources/img/chair_1.jpg" alt="Artikel">
+                    <a class="card-img-top" th:href="@{/catalog/{category}/{id}(id=${item.getId()}, category=${item.getCategory().name().toLowerCase()})}">
+                        <img class="img-fluid rounded" th:src="@{${item.getPicture()}}" style="height: 150px"
+                             src="../static/resources/img/chair_1.jpg" alt="Artikel"/>
+                    </a>
                 </td>
                 <td class="align-middle">
                     <h5 th:text="${item.getName()}">Sofa</h5>
