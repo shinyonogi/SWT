@@ -1,0 +1,79 @@
+= Protokoll Gruppe 17
+
+Treffen am 10.12.2020
+
+Ort:      BigBlueButton +
+Beginn:   13:00 Uhr +
+Ende:     14:00 Uhr
+
+__Schriftführer:__ Sebastian Jaster
+
+*Nächstes Treffen:* +
+14.12.2020, 14:50 Uhr, Discord
+
+__Teilnehmer:__
+//Tabellarisch oder Aufzählung, Kennzeichnung von Teilnehmern mit besonderer Rolle (z.B. Kunde)
+
+- Markus Richter
+- David Schroth
+- Marc Albrecht
+- Sebastian Jaster
+- Edgar Wolfert
+- Johannes Kaufmann
+- Shintaro Onogi
+
+== Bemerkungen
+- Es wäre vorteilhaft einen develop branch für kommende Features zu benutzen und nur eine fertige Version auf dem main branch liegen zu lassen
+- Sonarqube läuft nur auf dem main branch
+
+- Zwischenpräsentation am Donnerstag 17.10. 13.00Uhr
+* Vorstellen der Design-Entscheidungen und Komponenten (10min)
+** Probleme die wir hatten während des Praktikums (Codeprobleme, oder Gruppenprobleme)
+** Lessons Learned 
+** Grob das Pflichtenheft vorstellen 
+** Möglichst wenig UML (eher Top Level Architektur)
+* Demonstration (10min) der bisherigen Software also als Art Rollenspiel damit es etwas lebhafter wird
+** Es sollte mindestens von 2 Personen durchgeführt werden
+* Anschließend Diskussion (10min)
+
+== Retrospektive des letzten Sprints
+*Issue referenziert die Issue ID von GitHub*
+
+// See http://asciidoctor.org/docs/user-manual/=tables
+[option="headers"]
+|===
+|Issue |Titel | Aufgabe |Verantwortlicher | Status
+|#46|Javadoc for inventory package|Javadoc für Inventar schreiben| Edgar | fertig
+|#48|Integration and JUnit tests order package|Unit-/Integrationtest für order package implementieren | Shintaro, Marc| in Arbeit
+|#49|Integration and JUnit tests supplier package| Unit-/Integrationtest für supplier package implementieren | David | in Arbeit
+|#51|Integration and JUnit tests inventory package| Unit-/Integrationtest für inventory package implementieren | Edgar | in Arbeit
+|#52|Frontend design| Frontend design bei manchen Seiten noch verbessern | Shintaro | in Arbeit
+|#54|Features inventory package | Artikel Katalog bearbeiten und Artikel bearbeiten| Sebastian | fertig
+|#55|Features order package|Stornierung von LKWs und Items| Johannes, Marc | fertig
+|#57|Message properties |Message properties für deutsch und englisch hinzufügen| Sebastian | fertig
+|#58|Supplier Set handling| Umgang von Sets in Bezug auf Hinzufügen/Editieren | Sebastian | fertig
+|#61|Hide items from the catalog| Funktion zum Verstecken von Artikeln implementieren | Marc | fertig
+|===
+
+== Planung des nächsten Sprints
+Deadline Sonntag 13.12. 23.59Uhr
+
+// See http://asciidoctor.org/docs/user-manual/=tables
+[option="headers"]
+|===
+|Issue |Titel |Beschreibung |Verantwortlicher |Status
+|#45|Javadoc for order package | Javadoc für Order schreiben | Shintaro, Marc, Johannes | in Arbeit
+|#46|Javadoc for supplier package | Javadoc für Supplier schreiben | David | in Arbeit
+|#48|Integration and JUnit tests order package|Unit-/Integrationtest für order package implementieren | Shintaro, Johannes, Marc| in Arbeit
+|#49|Integration and JUnit tests supplier package| Unit-/Integrationtest für supplier package implementieren | David | in Arbeit
+|#51|Integration and JUnit tests inventory package| Unit-/Integrationtest für inventory package implementieren | Edgar | in Arbeit
+|#52|Frontend design| Frontend design bei manchen Seiten noch verbessern | Shintaro | in Arbeit
+|#60 |Supplier Deletion of Items | ItemOrderEntries müssen noch entfernt werden, wenn man einen Lieferanten löscht | Marc | offen
+|#63 |Creation of items for presentation |Neue Items sollen angelegt werden. | Edgar | offen
+|#64 |Creation order dummy data |OrderDataInitializer erweitern | Johannes | offen
+|#65 |Slides for presentation |Slides anlegen | Sebastian, David, Marc | offen
+|#66 |Demonstration of preparation |Software-Demonstration | Sebastian, David, Marc | offen
+|#67 |Simplify eUML for presentation |eUML vereinfachen | Sebastian | offen
+|===
+
+
