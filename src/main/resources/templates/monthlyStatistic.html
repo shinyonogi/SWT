@@ -14,21 +14,23 @@
     <nav th:include="navigation :: navigation"></nav>
 
     <div class="container mt-3 mb-3">
-        <h4 class="mt-2">Statistik für April 2021</h4>
+        <h4 class="mt-2" th:text="'Zeitraum vom ' + ${#temporals.format(timeFrom, 'dd.MM.yyyy')} + ' bis zum ' + ${#temporals.format(timeTo, 'dd.MM.yyyy')}">Statistik für April 2021</h4>
 
         <table class="table table-hover">
             <thead class="thead-light">
             <tr>
                 <th scope="col" th:text="#{statistic.supplier}">Lieferant</th>
                 <th scope="col" th:text="#{statistic.total}">Einkaufsbetrag</th>
-                <th scope="col" th:text="#{statistic.difference}">Monatsdifferenz</th>
+                <th scope="col" th:text="#{statistic.difference}">Differenz Vormonat</th>
             </tr>
             </thead>
             <tbody>
-            <tr class="table-light">
-                <td>Müller Möbel</td>
-                <td>123.456,01€</td>
-                <td>+ 50.012,65€</td>
+            <tr class="table-light" th:each="supplier : ${statistic.keySet()}">
+                <td th:text="${supplier.getName()}">Müller Möbel</td>
+                <td th:text="${statistic.get(supplier)[0].query(T(furnitureshop.FurnitureShop).MONETARY_QUERY)}">123.456,01€</td>
+                <td th:if="${statistic.get(supplier)[1].isNegative()}" class="text-danger" th:text="${statistic.get(supplier)[1].query(T(furnitureshop.FurnitureShop).MONETARY_QUERY)}">+5.034,01€</td>
+                <td th:if="${statistic.get(supplier)[1].isPositive()}" class="text-success" th:text="'+' + ${statistic.get(supplier)[1].query(T(furnitureshop.FurnitureShop).MONETARY_QUERY)}">+5.034,01€</td>
+                <td th:if="${statistic.get(supplier)[1].isZero()}" class="text-dark" th:text="${statistic.get(supplier)[1].query(T(furnitureshop.FurnitureShop).MONETARY_QUERY)}">+5.034,01€</td>
             </tr>
             </tbody>
         </table>

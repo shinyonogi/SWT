@@ -58,7 +58,7 @@
                     <h5 th:text="${item.getName()}">Sofa</h5>
                 </td>
                 <td class="align-middle">
-                    <h5 th:text="${item.getSupplierPrice()}">999,99€</h5>
+                    <h5 th:text="${item.getSupplierPrice().query(T(furnitureshop.FurnitureShop).MONETARY_QUERY)}">999,99€</h5>
                 </td>
                 <td class="align-middle">
                     <a th:href="@{/admin/supplier/{suppId}/items/edit/{itemId}(suppId=${supplier.getId()}, itemId=${item.getId()})}" class="btn btn-outline-primary" th:text="#{supplier.items.item.edit}">Artikel ändern</a>

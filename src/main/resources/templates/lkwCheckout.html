@@ -46,7 +46,7 @@
 					</div>
 					<div class="d-flex justify-content-between align-items-baseline">
 						<h4 th:text="#{lkw.price}">Preis:</h4>
-						<h5 class="text-right" th:text="${type.getCharterPrice()}">10 EUR</h5>
+						<h5 class="text-right" th:text="${type.getCharterPrice().query(T(furnitureshop.FurnitureShop).MONETARY_QUERY)}">10 EUR</h5>
 					</div>
 				</div>
 			</div>

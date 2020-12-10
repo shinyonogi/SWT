@@ -25,8 +25,14 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import javax.money.MonetaryQuery;
+
 @EnableSalespoint
 public class FurnitureShop {
+
+	public static final MonetaryQuery<String> MONETARY_QUERY = monetaryAmount -> {
+		return String.format("%.2f€", monetaryAmount.getNumber().doubleValue());
+	};
 
 	public static void main(String[] args) { SpringApplication.run(FurnitureShop.class, args); }
 

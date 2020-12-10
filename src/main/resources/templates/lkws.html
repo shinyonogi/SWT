@@ -24,7 +24,7 @@
                     </a>
                     <div class="card-body">
                         <h4 class="card-title" th:text="#{lkw.size} + ' ' + ${type.getName()}">3,5t</h4>
-                        <h5 class="text-dark" th:text="${type.getCharterPrice()} + ' ' + #{lkw.priceinfo}">10 EUR / Tag</h5>
+                        <h5 class="text-dark" th:text="${type.getCharterPrice().query(T(furnitureshop.FurnitureShop).MONETARY_QUERY)} + ' ' + #{lkw.priceinfo}">10 EUR / Tag</h5>
                         <a class="btn btn-outline-primary mt-2" th:text="#{lkw.checkout}" th:href="@{/lkw/checkout/{name}(name=${type.name().toLowerCase()})}">LKW mieten</a>
                     </div>
                 </div>

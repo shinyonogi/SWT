@@ -51,7 +51,7 @@
 						<h5 th:text="${cartItem.getProductName()}">Sofa</h5>
 					</td>
 					<td class="align-middle">
-						<h5 th:text="${cartItem.getPrice()}">999,99€</h5>
+						<h5 th:text="${cartItem.getPrice().query(T(furnitureshop.FurnitureShop).MONETARY_QUERY)}">999,99€</h5>
 					</td>
 					<td class="align-middle">
 						<form class="form-inline justify-content-center" method="post" th:action="@{/cart/change/{id}(id=${cartItem.getId()})}">
@@ -69,7 +69,7 @@
 		</table>
 
 		<div class="float-right mt-3 mb-3">
-			<h2 th:text="#{cart.price} + ' ' + ${cart.getPrice()}"></h2>
+			<h2 th:text="#{cart.price} + ' ' + ${cart.getPrice().query(T(furnitureshop.FurnitureShop).MONETARY_QUERY)}"></h2>
 			<div>
 				<a th:href="@{/catalog}"  class="btn btn-outline-dark rounded-pill mt-3 mr-3" role="button" th:text="#{cart.continue}">Continue Shopping</a>
 				<a th:href="@{/checkout}" class="btn btn-primary rounded-pill mt-3" role="button" th:text="#{cart.checkout}">Bestellen</a>

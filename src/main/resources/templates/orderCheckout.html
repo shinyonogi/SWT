@@ -32,11 +32,11 @@
                     <div class="pt-3">
                         <div class="d-flex justify-content-between align-items-end pl-2 pr-2">
                             <h5 th:text="#{checkout.total}">Artikelgesamtpreis:</h5>
-                            <h5 th:text="${cart.getPrice()}">10 EUR</h5>
+                            <h5 th:text="${cart.getPrice().query(T(furnitureshop.FurnitureShop).MONETARY_QUERY)}">10 EUR</h5>
                         </div>
                         <div class="d-flex justify-content-between align-items-end pl-2 pr-2">
                             <h5 th:text="#{checkout.delivery.cost}">ggf. zzgl. Lieferkosten:</h5>
-                            <h5 th:text="${lkwtype.getDelieveryPrice()}">10 EUR</h5>
+                            <h5 th:text="${lkwtype.getDelieveryPrice().query(T(furnitureshop.FurnitureShop).MONETARY_QUERY)}">10 EUR</h5>
                         </div>
                     </div>
                 </div>
