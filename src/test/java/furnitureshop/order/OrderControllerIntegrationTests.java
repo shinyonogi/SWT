@@ -132,4 +132,18 @@ public class OrderControllerIntegrationTests {
 		mvc.perform(get("/checkout"))
 				.andExpect(view().name("redirect:/cart"));
 	}
+
+	/**
+	 * returnsModelAndViewOrderSearchWhenYouTryToReachIt() method
+	 * Tests if user can reach the orderSearch page
+	 *
+	 * @throws Exception
+	 */
+
+	@Test
+	void returnsModelAndViewOrderSearchWhenYouTryToReachIt() throws Exception {
+		mvc.perform(get("/order"))
+				.andExpect(status().isOk())
+				.andExpect(view().name("orderSearch"));
+	}
 }

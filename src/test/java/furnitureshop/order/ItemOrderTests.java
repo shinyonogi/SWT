@@ -108,4 +108,26 @@ public class ItemOrderTests {
 		assertTrue(Delivery.class.isAnnotationPresent(Entity.class), "Delivery must have @Entity!");
 	}
 
+	@Test
+	void testRemoveEntry() {
+		order.addOrderLine(item1, Quantity.of(1));
+		assertTrue(order.removeEntry(0), "removeEntry should have a valid EntryID");
+
+		order.addOrderLine(item1, Quantity.of(1));
+		assertFalse(order.removeEntry(1), "removeEntry should not have a valid EntryID");
+	}
+
+	@Test
+	void testChangeStatus() {
+		order.addOrderLine(item1, Quantity.of(1));
+		assertTrue(order.changeStatus(0, OrderStatus.CANCELLED), "changeStatus should have a valid EntryID");
+		assertFalse(order.changeStatus(1, OrderStatus.CANCELLED), "changeStatus should not have a valid EntryID");
+	}
+
+	@Test
+	void testGetOrderEntriesByItem() {
+		order.addOrderLine(item1, Quantity.of(1));
+		assertEquals(order.getOrderEntriesByItem(item1), order.getOrderEntries(), "getOrderEntriesByItem should return the right orderentry");
+	}
+
 }
