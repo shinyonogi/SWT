@@ -33,9 +33,9 @@ public class ItemService {
 	/**
 	 * Creates a new instance of an {@link ItemService}
 	 *
-	 * @param itemCatalog     	{@link ItemCatalog} which contains all items
-	 * @param supplierService 	{@link SupplierService} reference to the SupplierService
-	 * @param orderService		{@link OrderService} reference to the OrderService
+	 * @param itemCatalog     {@link ItemCatalog} which contains all items
+	 * @param supplierService {@link SupplierService} reference to the SupplierService
+	 * @param orderService    {@link OrderService} reference to the OrderService
 	 *
 	 * @throws IllegalArgumentException If {@code itemCatalog} is {@code null}
 	 */
@@ -221,12 +221,12 @@ public class ItemService {
 	}
 
 	public Map<Supplier, MonetaryAmount[]> analyse(LocalDateTime today) {
-
-		HashMap<Supplier, MonetaryAmount[]> supplierAmountMap = new HashMap<>();
-		int index;
+		final HashMap<Supplier, MonetaryAmount[]> supplierAmountMap = new HashMap<>();
 
 		for (ItemOrder itemOrder : orderService.findAllItemOrders()) {
-			LocalDateTime orderDate = itemOrder.getDateCreated();
+			final LocalDateTime orderDate = itemOrder.getDateCreated();
+
+			final int index;
 			if (orderDate.isBefore(today) && orderDate.isAfter(today.minusDays(30))) {
 				index = 0;
 			} else if (orderDate.isBefore(today.minusDays(30)) && orderDate.isAfter(today.minusDays(60))) {
@@ -234,22 +234,45 @@ public class ItemService {
 			} else {
 				continue;
 			}
+
 			for (ItemOrderEntry entry : itemOrder.getOrderEntries()) {
 				if (entry.getStatus().equals(OrderStatus.COMPLETED)) {
-					Supplier supplier = entry.getItem().getSupplier();
-					if (!supplierAmountMap.containsKey(supplier)) {
-						supplierAmountMap.put(supplier, new MonetaryAmount[]{Currencies.ZERO_EURO, Currencies.ZERO_EURO});
+					if (entry.getItem() instanceof Set) {
+						final Set set = (Set) entry.getItem();
+
+						for (Pair<Item, MonetaryAmount> pair : set.getItemPartPrices()) {
+							final Supplier supplier = pair.getFirst().getSupplier();
+
+							if (!supplierAmountMap.containsKey(supplier)) {
+								supplierAmountMap.put(supplier, new MonetaryAmount[]{Currencies.ZERO_EURO, Currencies.ZERO_EURO});
+							}
+
+							supplierAmountMap.get(supplier)[index] = supplierAmountMap.get(supplier)[index].add(pair.getSecond());
+						}
+					} else {
+						final Supplier supplier = entry.getItem().getSupplier();
+
+						if (!supplierAmountMap.containsKey(supplier)) {
+							supplierAmountMap.put(supplier, new MonetaryAmount[]{Currencies.ZERO_EURO, Currencies.ZERO_EURO});
+						}
+
+						supplierAmountMap.get(supplier)[index] = supplierAmountMap.get(supplier)[index].add(entry.getItem().getPrice());
 					}
-					supplierAmountMap.get(supplier)[index] = supplierAmountMap.get(supplier)[index].add(entry.getItem().getPrice());
 				}
 			}
 		}
 
 		for (Supplier supplier : supplierService.findAll()) {
-			// TODO proper handling of sets
-			if (!supplierAmountMap.containsKey(supplier) && !supplier.getName().equals("Set Supplier")) {
-				supplierAmountMap.put(supplier, new MonetaryAmount[]{Currencies.ZERO_EURO, Currencies.ZERO_EURO});
+			if (supplier.getName().equals("Set Supplier")) {
+				continue;
 			}
+
+			if (!supplierAmountMap.containsKey(supplier)) {
+				supplierAmountMap.put(supplier, new MonetaryAmount[]{Currencies.ZERO_EURO, Currencies.ZERO_EURO});
+				continue;
+			}
+
+			supplierAmountMap.get(supplier)[1] = supplierAmountMap.get(supplier)[0].subtract(supplierAmountMap.get(supplier)[1]);
 		}
 		return supplierAmountMap;
 	}

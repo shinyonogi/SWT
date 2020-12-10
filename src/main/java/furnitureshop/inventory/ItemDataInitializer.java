@@ -50,9 +50,10 @@ public class ItemDataInitializer implements DataInitializer {
 
 		final Supplier muellerSupplier = findSupplierByName("Müller Möbel").orElse(null);
 		final Supplier moebelSupplier = findSupplierByName("Möbelmeister").orElse(null);
+		final Supplier stuehleSupplier = findSupplierByName("Herberts schicke Stühle").orElse(null);
 
 		Piece stuhl1 = new Piece(1, "Stuhl 1", Money.of(59.99, Currencies.EURO), "chair_2.jpg", "schwarz",
-				"Stuhl 1 in schwarz.", muellerSupplier, 5, Category.CHAIR);
+				"Stuhl 1 in schwarz.", stuehleSupplier, 5, Category.CHAIR);
 
 		items.add(stuhl1);
 

@@ -2,9 +2,11 @@ package furnitureshop.inventory;
 
 import furnitureshop.supplier.Supplier;
 import org.salespointframework.core.Currencies;
+import org.springframework.data.util.Pair;
 import org.springframework.util.Assert;
 
 import javax.money.MonetaryAmount;
+import javax.money.NumberValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
@@ -68,6 +70,27 @@ public class Set extends Item {
 
 	public List<Item> getItems() {
 		return Collections.unmodifiableList(items);
+	}
+
+	public List<Pair<Item, MonetaryAmount>> getItemPartPrices() {
+		final List<Pair<Item, MonetaryAmount>> pieces = new ArrayList<>();
+
+		final MonetaryAmount total = getPieceTotal();
+		final MonetaryAmount price = getPrice();
+
+		for (Item item : items) {
+			final NumberValue part = item.getPrice().divide(total.getNumber()).getNumber();
+
+			if (item instanceof Set) {
+				for (Pair<Item, MonetaryAmount> pair : ((Set) item).getItemPartPrices()) {
+					pieces.add(Pair.of(pair.getFirst(), pair.getSecond().multiply(part)));
+				}
+			} else {
+				pieces.add(Pair.of(item, price.multiply(part)));
+			}
+		}
+
+		return pieces;
 	}
 
 }
