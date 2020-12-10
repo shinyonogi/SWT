@@ -8,6 +8,10 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 
+/**
+ *
+ */
+
 @Entity
 public abstract class ShopOrder extends Order {
 
@@ -17,6 +21,13 @@ public abstract class ShopOrder extends Order {
 	@Deprecated
 	@SuppressWarnings("DeprecatedIsStillUsed")
 	protected ShopOrder() { }
+
+	/**
+	 * Creates new instance of {@link ShopOrder}
+	 *
+	 * @param userAccount
+	 * @param contactInformation {@link ContactInformation} of the user
+	 */
 
 	ShopOrder(UserAccount userAccount, ContactInformation contactInformation) {
 		super(userAccount);

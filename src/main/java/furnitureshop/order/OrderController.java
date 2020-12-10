@@ -125,6 +125,16 @@ class OrderController {
 		return "redirect:/cart";
 	}
 
+	/**
+	 * Calculates the weight of all {@link Item} in the {@link Cart} and determines the right {@link LKWType} for the order.
+	 *
+	 * @param model
+	 * @param cart
+	 *
+	 * @return the view orderCheckout if the cart is not empty
+	 * @return redirects to cart if the cart is empty
+	 */
+
 	@GetMapping("/checkout")
 	String checkout(Model model, @ModelAttribute("cart") Cart cart) {
 		model.addAttribute("orderform", new OrderForm("", "", "", 0));
@@ -145,6 +155,14 @@ class OrderController {
 
 		return "orderCheckout";
 	}
+
+	/**
+	 *
+	 * @param cart
+	 * @param orderForm
+	 * @param model
+	 * @return
+	 */
 
 	/* Bezahlen-Funktion */
 	@PostMapping("/checkout")
@@ -234,12 +252,27 @@ class OrderController {
 		return "orderSummary";
 	}
 
+	/**
+	 * User will be directed to orderSearch page
+	 *
+	 * @param model
+	 * @return the view OrderSearch
+	 */
+
 	@GetMapping("/order")
 	String getOrderPage(Model model) {
 		model.addAttribute("result", 0);
 
 		return "orderSearch";
 	}
+
+	/**
+	 * User gets either directed to OrderSearch page or to specific Order Page
+	 *
+	 * @param id Identifier of the order / should not be null
+	 * @param model
+	 * @return the view orderSearch if there aren't any order, redirects to order/%s page if there is an order
+	 */
 
 	@PostMapping("/order")
 	String getCheckOrder(@RequestParam("orderId") String id, Model model) {
@@ -252,6 +285,8 @@ class OrderController {
 
 		return String.format("redirect:/order/%s", id);
 	}
+
+
 
 	@GetMapping("/order/{orderId}")
 	String getOrderOverview(@PathVariable("orderId") String id, Model model) {

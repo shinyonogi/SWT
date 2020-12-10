@@ -22,6 +22,10 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * This class manages all methods of order
+ */
+
 @Service
 @Transactional
 public class OrderService {
@@ -31,6 +35,16 @@ public class OrderService {
 	private final OrderManagement<ShopOrder> orderManagement;
 	private final ItemService itemService;
 	private final LKWService lkwService;
+
+	/**
+	 * Creates a new instanfe of {@link OrderService}
+	 *
+	 * @param userAccountManagement
+	 * @param businessTime
+	 * @param orderManagement
+	 * @param itemService
+	 * @param lkwService
+	 */
 
 	OrderService(UserAccountManagement userAccountManagement, BusinessTime businessTime, OrderManagement<ShopOrder> orderManagement,
 			ItemService itemService, LKWService lkwService) {

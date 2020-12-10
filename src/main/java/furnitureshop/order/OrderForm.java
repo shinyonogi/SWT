@@ -7,6 +7,15 @@ public class OrderForm {
 	private final String email;
 	private final int index;
 
+	/**
+	 * Creates a new instance of {@link OrderForm}
+	 *
+	 * @param name name of the customer
+	 * @param address address of the customer
+	 * @param email email-address of the customer
+	 * @param index
+	 */
+
 	public OrderForm(String name, String address, String email, int index) {
 		this.name = name;
 		this.address = address;

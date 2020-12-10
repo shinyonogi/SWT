@@ -25,6 +25,13 @@ public abstract class ItemOrder extends ShopOrder {
 	@SuppressWarnings("DeprecatedIsStillUsed")
 	protected ItemOrder() {}
 
+	/**
+	 * Creates a new instance of {@link ItemOrder}
+	 *
+	 * @param userAccount
+	 * @param contactInformation {@link ContactInformation} of the user
+	 */
+
 	public ItemOrder(UserAccount userAccount, ContactInformation contactInformation) {
 		super(userAccount, contactInformation);
 

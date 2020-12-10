@@ -5,6 +5,11 @@ import org.springframework.util.Assert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.time.LocalDate;
+
+/**
+ * This class represents the {@link ContactInformation} of the customer which is needed for an order
+ */
 
 @Entity
 public class ContactInformation {
@@ -18,6 +23,14 @@ public class ContactInformation {
 
 	@Deprecated
 	protected ContactInformation() {}
+
+	/**
+	 * Creates a new instance of {@link ContactInformation}
+	 *
+	 * @param name name of the customer
+	 * @param address address of the customer
+	 * @param email email-address of the customer
+	 */
 
 	public ContactInformation(String name, String address, String email) {
 		Assert.hasText(name, "Name must not be null!");

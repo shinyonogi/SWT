@@ -5,6 +5,10 @@ import org.springframework.util.Assert;
 
 import javax.persistence.*;
 
+/**
+ * This class is used to mark an order as Open, Stored, Paid, Completed or Canceled.
+ */
+
 @Entity
 public class ItemOrderEntry {
 
@@ -19,6 +23,13 @@ public class ItemOrderEntry {
 
 	@Deprecated
 	protected ItemOrderEntry() {}
+
+	/**
+	 * Creates a new instance of {@link ItemOrderEntry}
+	 *
+	 * @param item a specific {@link Item} that is ordered
+	 * @param status {@link OrderStatus} is Open, Stored, Paid, Completed or Canceled
+	 */
 
 	public ItemOrderEntry(Item item, OrderStatus status) {
 		Assert.notNull(item, "Item must not be null!");

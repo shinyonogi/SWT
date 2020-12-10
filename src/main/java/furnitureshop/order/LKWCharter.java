@@ -19,6 +19,15 @@ public class LKWCharter extends ShopOrder {
 	@Deprecated
 	protected LKWCharter() {}
 
+	/**
+	 * Creates a new instance of {@link LKWCharter}
+	 *
+	 * @param userAccount
+	 * @param contactInformation {@link ContactInformation} of the user
+	 * @param lkw {@link LKW}
+	 * @param rentDate the date the specific LKW is going to be rented
+	 */
+
 	LKWCharter(UserAccount userAccount, ContactInformation contactInformation, LKW lkw, LocalDate rentDate) {
 		super(userAccount, contactInformation);
 
