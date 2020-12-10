@@ -143,31 +143,27 @@ public class OrderService {
 
 	//Must be tested don't know if it works
 	public void removeItemFromOrders(Item item) {
-		for (ShopOrder order : findAll()) {
-			if (!(order instanceof ItemOrder)) {
-				continue;
-			}
+		for (ItemOrder itemOrder : findAllItemOrders()) {
 
-			final ItemOrder itemOrder = (ItemOrder) order;
 			final List<ItemOrderEntry> entries = itemOrder.getOrderEntriesByItem(item);
 
 			for (ItemOrderEntry entry : entries) {
 				itemOrder.removeEntry(entry.getId());
 			}
 
-			final Totalable<OrderLine> lines = order.getOrderLines(item);
+			final Totalable<OrderLine> lines = itemOrder.getOrderLines(item);
 
 			for (OrderLine line : lines) {
 				itemOrder.remove(line);
 			}
 
 			if (itemOrder.getOrderEntries().isEmpty()) {
-				orderManagement.delete(order);
+				orderManagement.delete(itemOrder);
 				continue;
 			}
 
 			if (!entries.isEmpty()) {
-				orderManagement.save(order);
+				orderManagement.save(itemOrder);
 			}
 		}
 	}
@@ -196,6 +192,18 @@ public class OrderService {
 		}
 
 		return orderManagement.findBy(userAccount.get());
+	}
+
+	public Streamable<ItemOrder> findAllItemOrders() {
+		final Optional<UserAccount> userAccount = getDummyUser();
+
+		if (userAccount.isEmpty()) {
+			return Streamable.empty();
+		}
+
+		return orderManagement.findBy(userAccount.get())
+				.filter(order -> order instanceof ItemOrder)
+				.map(order -> (ItemOrder) order);
 	}
 
 	public Optional<Item> findItemById(ProductIdentifier productId) {

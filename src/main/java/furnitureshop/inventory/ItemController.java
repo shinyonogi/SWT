@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Optional;
@@ -339,6 +340,15 @@ public class ItemController {
 		itemService.addOrUpdateItem(item);
 
 		return String.format("redirect:/admin/supplier/%d/items", suppId);
+	}
+
+	@GetMapping("/admin/statistic")
+	String getMonthlyStatistic(Model model) {
+		LocalDateTime time = LocalDateTime.now();
+		model.addAttribute("statistic", itemService.analyse(time));
+		model.addAttribute("timeFrom", time.minusDays(30));
+		model.addAttribute("timeTo", time);
+		return "monthlyStatistic";
 	}
 
 }

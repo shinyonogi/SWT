@@ -1,17 +1,23 @@
 package furnitureshop.inventory;
 
+import furnitureshop.order.ItemOrder;
+import furnitureshop.order.ItemOrderEntry;
+import furnitureshop.order.OrderService;
+import furnitureshop.order.OrderStatus;
 import furnitureshop.supplier.Supplier;
 import furnitureshop.supplier.SupplierService;
 import org.salespointframework.catalog.ProductIdentifier;
+import org.salespointframework.core.Currencies;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.data.util.Pair;
 import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import javax.money.MonetaryAmount;
+import java.time.LocalDateTime;
+import java.util.*;
 
 /**
  * This class manages all methods to add, remove or find an {@link Item} by its attributes.
@@ -22,21 +28,25 @@ public class ItemService {
 
 	private final ItemCatalog itemCatalog;
 	private final SupplierService supplierService;
+	private final OrderService orderService;
 
 	/**
 	 * Creates a new instance of an {@link ItemService}
 	 *
-	 * @param itemCatalog     {@link ItemCatalog} which contains all items
-	 * @param supplierService {@link SupplierService} reference to the SupplierService
+	 * @param itemCatalog     	{@link ItemCatalog} which contains all items
+	 * @param supplierService 	{@link SupplierService} reference to the SupplierService
+	 * @param orderService		{@link OrderService} reference to the OrderService
 	 *
 	 * @throws IllegalArgumentException If {@code itemCatalog} is {@code null}
 	 */
-	public ItemService(ItemCatalog itemCatalog, @Lazy SupplierService supplierService) {
+	public ItemService(ItemCatalog itemCatalog, @Lazy SupplierService supplierService, @Lazy OrderService orderService) {
 		Assert.notNull(itemCatalog, "ItemCatalog must not be null!");
 		Assert.notNull(supplierService, "SupplierService must not be null!");
+		Assert.notNull(orderService, "OrderService must not be null!");
 
 		this.itemCatalog = itemCatalog;
 		this.supplierService = supplierService;
+		this.orderService = orderService;
 	}
 
 	/**
@@ -210,4 +220,37 @@ public class ItemService {
 		return supplierService.findById(id);
 	}
 
+	public Map<Supplier, MonetaryAmount[]> analyse(LocalDateTime today) {
+
+		HashMap<Supplier, MonetaryAmount[]> supplierAmountMap = new HashMap<>();
+		int index;
+
+		for (ItemOrder itemOrder : orderService.findAllItemOrders()) {
+			LocalDateTime orderDate = itemOrder.getDateCreated();
+			if (orderDate.isBefore(today) && orderDate.isAfter(today.minusDays(30))) {
+				index = 0;
+			} else if (orderDate.isBefore(today.minusDays(30)) && orderDate.isAfter(today.minusDays(60))) {
+				index = 1;
+			} else {
+				continue;
+			}
+			for (ItemOrderEntry entry : itemOrder.getOrderEntries()) {
+				if (entry.getStatus().equals(OrderStatus.COMPLETED)) {
+					Supplier supplier = entry.getItem().getSupplier();
+					if (!supplierAmountMap.containsKey(supplier)) {
+						supplierAmountMap.put(supplier, new MonetaryAmount[]{Currencies.ZERO_EURO, Currencies.ZERO_EURO});
+					}
+					supplierAmountMap.get(supplier)[index] = supplierAmountMap.get(supplier)[index].add(entry.getItem().getPrice());
+				}
+			}
+		}
+
+		for (Supplier supplier : supplierService.findAll()) {
+			// TODO proper handling of sets
+			if (!supplierAmountMap.containsKey(supplier) && !supplier.getName().equals("Set Supplier")) {
+				supplierAmountMap.put(supplier, new MonetaryAmount[]{Currencies.ZERO_EURO, Currencies.ZERO_EURO});
+			}
+		}
+		return supplierAmountMap;
+	}
 }

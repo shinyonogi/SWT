@@ -124,8 +124,4 @@ public class SupplierService {
 		return itemService.findBySupplier(supplier);
 	}
 
-	public void analyse() {
-		return;
-	}
-
 }

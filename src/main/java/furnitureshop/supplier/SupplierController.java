@@ -120,9 +120,4 @@ public class SupplierController {
 		return "supplierItem";
 	}
 
-	@GetMapping("/admin/statistic")
-	String getMonthlyStatistic() {
-		return "monthlyStatistic";
-	}
-
 }
