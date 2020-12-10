@@ -1,9 +1,6 @@
 package furnitureshop.supplier;
 
-import furnitureshop.inventory.ItemController;
 import furnitureshop.inventory.ItemService;
-import furnitureshop.lkw.LKWService;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.Assert;
@@ -107,7 +104,7 @@ public class SupplierController {
 
 	/**
 	 * Handles all GET-requests for '/admin/supplier/{id}/items'
-	 * Displays a page with all {@link Item}s associated with the {@link Supplier}
+	 * Displays a page with all {@link furnitureshop.inventory.Item Item}s associated with the {@link Supplier}
 	 * 
 	 * @param id id of the {@link Supplier}
 	 */

@@ -163,7 +163,7 @@ public class ItemService {
 	 * @return Returns a stream of {@link Item}s all with the same {@code groupId}
 	 */
 	public Streamable<Item> findAllByGroupId(int groupId) {
-		return findAll().filter(it -> it.getGroupid() == groupId);
+		return findAll().filter(it -> it.getGroupId() == groupId);
 	}
 
 	/**
@@ -174,7 +174,7 @@ public class ItemService {
 	 * @return Returns a stream of visible {@link Item}s all with the same {@code groupId}
 	 */
 	public Streamable<Item> findAllVisibleByGroupId(int groupId) {
-		return findAllVisible().filter(it -> it.getGroupid() == groupId);
+		return findAllVisible().filter(it -> it.getGroupId() == groupId);
 	}
 
 	/**

@@ -10,22 +10,22 @@ import java.util.Objects;
  */
 @Entity
 public class Supplier {
-	
+
 	@Id @GeneratedValue
 	private long id;
-	
+
 	private String name;
-	private double surcharge;		// factor by which the price of furniture gets multiplied by
+	private double surcharge;        // factor by which the price of furniture gets multiplied by
 
 	@Deprecated
 	protected Supplier() {}
 
 	/**
 	 * Creates a new instance of a {@link Supplier}
-	 * 
-	 * @param name Name of the Supplier
-	 * @param surcharge Factor by which the price of all {@link Item}s associated with this supplier is multiplied by
-	 * 
+	 *
+	 * @param name      Name of the Supplier
+	 * @param surcharge Factor by which the price of all {@link furnitureshop.inventory.Item Item}s associated with this supplier is multiplied by
+	 *
 	 * @throws IllegalArgumentException if the {@code name} is {@code null} or {@code surcharge} is negative
 	 */
 	public Supplier(String name, double surcharge) {
@@ -39,15 +39,15 @@ public class Supplier {
 	public long getId() {
 		return id;
 	}
-	
+
 	public String getName() {
 		return name;
 	}
-	
+
 	public double getSurcharge() {
 		return surcharge;
 	}
-	
+
 	// for website display
 	public double getSurchargeInPercent() {
 		return surcharge * 100;

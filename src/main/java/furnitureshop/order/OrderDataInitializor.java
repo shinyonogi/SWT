@@ -17,9 +17,10 @@ public class OrderDataInitializor implements DataInitializer {
 	/**
 	 * Creates a new instance of {@link OrderDataInitializor}
 	 *
-	 * @param userAccountManagement
+	 * @param userAccountManagement The {@link UserAccountManagement} to access the dummy user
+	 *
+	 * @throws IllegalArgumentException if {@code userAccountManagement} argument is {@code null}
 	 */
-
 	OrderDataInitializor(UserAccountManagement userAccountManagement) {
 		this.userAccountManagement = userAccountManagement;
 	}
@@ -28,7 +29,6 @@ public class OrderDataInitializor implements DataInitializer {
 	 * This method initializes an (dummy-)user.
 	 * It returns if a dummy user already exists, creates a new dummy user if it doesn't exist
 	 */
-
 	@Override
 	public void initialize() {
 		if (userAccountManagement.findByUsername("Dummy").isPresent()) {

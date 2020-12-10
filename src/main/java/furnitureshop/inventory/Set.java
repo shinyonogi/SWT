@@ -29,8 +29,23 @@ public class Set extends Item {
 	@Deprecated
 	protected Set() {}
 
-	public Set(int groupid, String name, MonetaryAmount customerPrice, String picture, String variant, String description, Supplier supplier, Category category, List<Item> items) {
-		super(groupid, name, customerPrice, picture, variant, description, supplier, category);
+	/**
+	 * Creates a new instance of an {@link Item}
+	 *
+	 * @param groupId       Group which contains all variants of this particular Item
+	 * @param name          Name of the Item
+	 * @param customerPrice Price of the Item
+	 * @param picture       A path to the picture of the Item
+	 * @param variant       Variant of the Item
+	 * @param description   Description of the Item
+	 * @param supplier      Supplier of the Item
+	 * @param items         A List of all {@link Item}s in this Set
+	 * @param category      {@link Category} of the Item
+	 *
+	 * @throws IllegalArgumentException If any of the arguments is {@code null}
+	 */
+	public Set(int groupId, String name, MonetaryAmount customerPrice, String picture, String variant, String description, Supplier supplier, Category category, List<Item> items) {
+		super(groupId, name, customerPrice, picture, variant, description, supplier, category);
 
 		Assert.notNull(items, "Items must not be null!");
 

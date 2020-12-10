@@ -21,7 +21,7 @@ import static org.salespointframework.core.Currencies.EURO;
 @Entity
 public abstract class Item extends Product {
 
-	private int groupid;
+	private int groupId;
 
 	private String picture;
 	private String variant;
@@ -46,7 +46,7 @@ public abstract class Item extends Product {
 	/**
 	 * Creates a new instance of an {@link Item}
 	 *
-	 * @param groupid       Group which contains all variants of this particular Item
+	 * @param groupId       Group which contains all variants of this particular Item
 	 * @param name          Name of the Item
 	 * @param customerPrice Price of the Item
 	 * @param picture       A path to the picture of the Item
@@ -57,7 +57,7 @@ public abstract class Item extends Product {
 	 *
 	 * @throws IllegalArgumentException If any of the arguments is {@code null}
 	 */
-	public Item(int groupid, String name, MonetaryAmount customerPrice, String picture, String variant,
+	public Item(int groupId, String name, MonetaryAmount customerPrice, String picture, String variant,
 			String description, Supplier supplier, Category category) {
 		super(name, customerPrice);
 
@@ -69,7 +69,7 @@ public abstract class Item extends Product {
 		Assert.notNull(supplier, "Supplier must not be null");
 		Assert.notNull(category, "Category must not be null");
 
-		this.groupid = groupid;
+		this.groupId = groupId;
 		this.picture = "/resources/img/" + picture;
 		this.variant = variant;
 		this.description = description;
@@ -96,8 +96,8 @@ public abstract class Item extends Product {
 
 	public MonetaryAmount getPieceTotal() { return null; }
 
-	public int getGroupid() {
-		return groupid;
+	public int getGroupId() {
+		return groupId;
 	}
 
 	public String getPicture() {

@@ -22,12 +22,13 @@ public class LKWCharter extends ShopOrder {
 	/**
 	 * Creates a new instance of {@link LKWCharter}
 	 *
-	 * @param userAccount
+	 * @param userAccount        The dummy {@link UserAccount}
 	 * @param contactInformation {@link ContactInformation} of the user
-	 * @param lkw {@link LKW}
-	 * @param rentDate the date the specific LKW is going to be rented
+	 * @param lkw                The charted {@link LKW}
+	 * @param rentDate           The date the specific LKW is going to be rented
+	 *
+	 * @throws IllegalArgumentException if any argument is {@code null}
 	 */
-
 	LKWCharter(UserAccount userAccount, ContactInformation contactInformation, LKW lkw, LocalDate rentDate) {
 		super(userAccount, contactInformation);
 

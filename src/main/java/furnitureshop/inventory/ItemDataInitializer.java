@@ -24,7 +24,7 @@ public class ItemDataInitializer implements DataInitializer {
 	/**
 	 * Creates a new instance of an {@link ItemDataInitializer}
 	 *
-	 * @param itemCatalog The {@link ItemCatalog} for all {@link Item}s
+	 * @param itemCatalog        The {@link ItemCatalog} for all {@link Item}s
 	 * @param supplierRepository The Repository of the suppliers
 	 *
 	 * @throws IllegalArgumentException If the {@code itemCatalog} or {@code supplierRepository} is {@code null}
@@ -85,6 +85,7 @@ public class ItemDataInitializer implements DataInitializer {
 	 * Finds a {@link Supplier} by their name.
 	 *
 	 * @param name Name of the supplier
+	 *
 	 * @return Returns {@link Supplier} or nothing
 	 */
 	private Optional<Supplier> findSupplierByName(String name) {

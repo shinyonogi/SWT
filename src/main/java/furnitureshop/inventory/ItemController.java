@@ -9,7 +9,6 @@ import org.springframework.ui.Model;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Optional;
@@ -87,7 +86,7 @@ public class ItemController {
 		}
 
 		model.addAttribute("item", item.get());
-		model.addAttribute("variants", itemService.findAllVisibleByGroupId(item.get().getGroupid()));
+		model.addAttribute("variants", itemService.findAllVisibleByGroupId(item.get().getGroupId()));
 
 		return "itemView";
 	}
@@ -194,7 +193,7 @@ public class ItemController {
 			return String.format("redirect:/admin/supplier/%d/items", suppId);
 		}
 
-		model.addAttribute("itemForm", new ItemForm(item.getGroupid(), item.getWeight(), item.getName(), item.getPicture(), item.getVariant(), item.getDescription(), item.getSupplierPrice().getNumber().doubleValue(), item.getCategory()));
+		model.addAttribute("itemForm", new ItemForm(item.getGroupId(), item.getWeight(), item.getName(), item.getPicture(), item.getVariant(), item.getDescription(), item.getSupplierPrice().getNumber().doubleValue(), item.getCategory()));
 		model.addAttribute("suppId", suppId);
 		model.addAttribute("itemId", item.getId());
 		model.addAttribute("categories", Category.values());

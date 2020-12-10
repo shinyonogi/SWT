@@ -28,10 +28,11 @@ public abstract class ItemOrder extends ShopOrder {
 	/**
 	 * Creates a new instance of {@link ItemOrder}
 	 *
-	 * @param userAccount
+	 * @param userAccount        The dummy {@link UserAccount}
 	 * @param contactInformation {@link ContactInformation} of the user
+	 *
+	 * @throws IllegalArgumentException if any argument is {@code null}
 	 */
-
 	public ItemOrder(UserAccount userAccount, ContactInformation contactInformation) {
 		super(userAccount, contactInformation);
 

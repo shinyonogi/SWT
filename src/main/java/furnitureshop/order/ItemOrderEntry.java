@@ -27,10 +27,11 @@ public class ItemOrderEntry {
 	/**
 	 * Creates a new instance of {@link ItemOrderEntry}
 	 *
-	 * @param item a specific {@link Item} that is ordered
-	 * @param status {@link OrderStatus} is Open, Stored, Paid, Completed or Canceled
+	 * @param item   A specific {@link Item} that is ordered
+	 * @param status {@link OrderStatus} is Open, Stored, Paid, Completed or Cancelled
+	 *
+	 * @throws IllegalArgumentException if any argument is {@code null}
 	 */
-
 	public ItemOrderEntry(Item item, OrderStatus status) {
 		Assert.notNull(item, "Item must not be null!");
 		Assert.notNull(status, "OrderStatus must not be null!");

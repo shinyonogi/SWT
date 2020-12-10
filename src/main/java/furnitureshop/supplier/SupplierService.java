@@ -19,12 +19,12 @@ public class SupplierService {
 
 	private final SupplierRepository supplierRepository;
 	private final ItemService itemService;
-	
+
 	/**
 	 * Creates a new instance of a {@link SupplierService}
 	 *
 	 * @param supplierRepository {@link SupplierRepository} contains all {@link Supplier}s
-	 * @param itemService {@link ItemService} reference to the itemService
+	 * @param itemService        {@link ItemService} reference to the itemService
 	 *
 	 * @throws IllegalArgumentException if {@code supplierRepository} or {@code itemService} is {@code null}
 	 */
@@ -38,11 +38,11 @@ public class SupplierService {
 
 	/**
 	 * Adds a {@link Supplier} to the {@link SupplierRepository} if no {@link Supplier} with the same name already exists
-	 * 
+	 *
 	 * @param supplier The {@link Supplier} to be added
-	 * 
+	 *
 	 * @return {@code true} if the {@link Supplier} was added
-	 * 
+	 *
 	 * @throws IllegalArgumentException if the {@link Supplier} is null
 	 */
 	public boolean addSupplier(Supplier supplier) {
@@ -58,11 +58,11 @@ public class SupplierService {
 	}
 
 	/**
-	 * Deletes a {@link Supplier} from the {@link SupplierRepository} and all {@link Item}s assigned to the {@link Supplier} from the {@link ItemService} 
-	 * 
+	 * Deletes a {@link Supplier} from the {@link SupplierRepository} and all {@link Item}s assigned to the {@link Supplier} from the {@link ItemService}
+	 *
 	 * @param supplierId The id of the {@link Supplier} that is to be deleted
-	 * 
-	 * @return {@code true} if the {@link Supplier} was found in the {@link SupplierRepository} 
+	 *
+	 * @return {@code true} if the {@link Supplier} was found in the {@link SupplierRepository}
 	 */
 	public boolean deleteSupplierById(long supplierId) {
 		Optional<Supplier> supplier = supplierRepository.findById(supplierId);
@@ -78,9 +78,9 @@ public class SupplierService {
 
 	/**
 	 * Searches for a {@link Supplier} by its name in the {@link SupplierRepository}
-	 * 
+	 *
 	 * @param name The name of the {@link Supplier} to be searched for
-	 * 
+	 *
 	 * @return {@link Optional} that may include found {@link Supplier}
 	 */
 	public Optional<Supplier> findByName(String name) {
@@ -95,7 +95,7 @@ public class SupplierService {
 
 	/**
 	 * Finds all {@link Supplier}s in the {@link SupplierRepository}
-	 * 
+	 *
 	 * @return all {@link Supplier}s in the {@link SupplierRepository}
 	 */
 	public Streamable<Supplier> findAll() {
@@ -104,9 +104,9 @@ public class SupplierService {
 
 	/**
 	 * Finds a {@link Supplier} by its id
-	 * 
+	 *
 	 * @param id The id of the {@link Supplier} to be searched for
-	 * 
+	 *
 	 * @return {@link Optional} that may include found {@link Supplier}
 	 */
 	public Optional<Supplier> findById(long id) {
@@ -115,20 +115,13 @@ public class SupplierService {
 
 	/**
 	 * Finds all {@link Item}s of a {@link Supplier}
-	 * 
+	 *
 	 * @param supplier The {@link Supplier} the {@link Item}s belong to
-	 * 
+	 *
 	 * @return all {@link Item}s of the {@link Supplier}
 	 */
 	public Streamable<Item> findItemsBySupplier(Supplier supplier) {
 		return itemService.findBySupplier(supplier);
-	}
-
-	/**
-	 * Deletes all {@link Supplier}s from the {@link SupplierRepository}
-	 */
-	public void deleteAll() {
-		supplierRepository.deleteAll();
 	}
 
 	public void analyse() {

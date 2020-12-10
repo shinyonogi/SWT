@@ -12,7 +12,6 @@ import java.time.LocalDate;
 /**
  * This class represents the delivery type {@link Delivery} by {@link LKW}
  */
-
 @Entity
 public class Delivery extends ItemOrder {
 
@@ -27,12 +26,13 @@ public class Delivery extends ItemOrder {
 	/**
 	 * Creates a new instance of {@link Delivery}
 	 *
-	 * @param userAccount account of the user
+	 * @param userAccount        The dummy {@link UserAccount}
 	 * @param contactInformation {@link ContactInformation} of the user
-	 * @param lkw {@link LKW}
-	 * @param deliveryDate delivery date of the order
+	 * @param lkw                The {@link LKW} which will be used
+	 * @param deliveryDate       The delivery date of the order
+	 *
+	 * @throws IllegalArgumentException if any argument is {@code null}
 	 */
-
 	public Delivery(UserAccount userAccount, ContactInformation contactInformation, LKW lkw, LocalDate deliveryDate) {
 		super(userAccount, contactInformation);
 

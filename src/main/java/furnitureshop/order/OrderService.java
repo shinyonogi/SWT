@@ -6,9 +6,7 @@ import furnitureshop.lkw.LKW;
 import furnitureshop.lkw.LKWService;
 import furnitureshop.lkw.LKWType;
 import org.salespointframework.catalog.ProductIdentifier;
-import org.salespointframework.order.Cart;
-import org.salespointframework.order.CartItem;
-import org.salespointframework.order.OrderManagement;
+import org.salespointframework.order.*;
 import org.salespointframework.quantity.Quantity;
 import org.salespointframework.time.BusinessTime;
 import org.salespointframework.useraccount.UserAccount;
@@ -45,7 +43,6 @@ public class OrderService {
 	 * @param itemService
 	 * @param lkwService
 	 */
-
 	OrderService(UserAccountManagement userAccountManagement, BusinessTime businessTime, OrderManagement<ShopOrder> orderManagement,
 			ItemService itemService, LKWService lkwService) {
 		Assert.notNull(userAccountManagement, "UserAccountManagement must not be null");
@@ -156,6 +153,12 @@ public class OrderService {
 
 			for (ItemOrderEntry entry : entries) {
 				itemOrder.removeEntry(entry.getId());
+			}
+
+			final Totalable<OrderLine> lines = order.getOrderLines(item);
+
+			for (OrderLine line : lines) {
+				itemOrder.remove(line);
 			}
 
 			if (itemOrder.getOrderEntries().isEmpty()) {

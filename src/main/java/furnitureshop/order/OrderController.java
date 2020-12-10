@@ -25,7 +25,6 @@ import java.util.Optional;
  * @author Shintaro Onogi
  * @version 1.0
  */
-
 @Controller
 @SessionAttributes("cart")
 class OrderController {
@@ -38,7 +37,6 @@ class OrderController {
 	 *
 	 * @param orderService must not be {@literal null}.
 	 */
-
 	OrderController(OrderService orderService, BusinessTime businessTime) {
 		Assert.notNull(orderService, "OrderService must not be null");
 		Assert.notNull(businessTime, "OrderService must not be null");
@@ -53,7 +51,6 @@ class OrderController {
 	 *
 	 * @return a new {@link Cart} instance.
 	 */
-
 	@ModelAttribute("cart")
 	Cart initializeCart() {
 		return new Cart();
@@ -64,7 +61,6 @@ class OrderController {
 	 *
 	 * @return the view cart
 	 */
-
 	@GetMapping("/cart")
 	String basket() {
 		return "cart";
@@ -79,7 +75,6 @@ class OrderController {
 	 *
 	 * @return the view index
 	 */
-
 	@PostMapping("/cart/add/{id}")
 	String addItem(@PathVariable("id") Item item, @RequestParam("number") int number, @ModelAttribute Cart cart) {
 		cart.addOrUpdateItem(item, Quantity.of(number));
@@ -96,7 +91,6 @@ class OrderController {
 	 *
 	 * @return the view cart
 	 */
-
 	@PostMapping("/cart/change/{id}")
 	String editItem(@PathVariable("id") String cartItemId, @RequestParam("amount") int amount, @ModelAttribute Cart cart) {
 		return cart.getItem(cartItemId).map(it -> {
@@ -109,7 +103,6 @@ class OrderController {
 			return "redirect:/cart";
 		}).orElse("redirect:/cart");
 	}
-
 	/**
 	 * Deletes a certain {@link Item} in the {@link Cart}
 	 *
@@ -131,10 +124,8 @@ class OrderController {
 	 * @param model
 	 * @param cart
 	 *
-	 * @return the view orderCheckout if the cart is not empty
 	 * @return redirects to cart if the cart is empty
 	 */
-
 	@GetMapping("/checkout")
 	String checkout(Model model, @ModelAttribute("cart") Cart cart) {
 		model.addAttribute("orderform", new OrderForm("", "", "", 0));
@@ -157,13 +148,12 @@ class OrderController {
 	}
 
 	/**
-	 *
 	 * @param cart
 	 * @param orderForm
 	 * @param model
+	 *
 	 * @return
 	 */
-
 	/* Bezahlen-Funktion */
 	@PostMapping("/checkout")
 	String buy(@ModelAttribute("cart") Cart cart, @ModelAttribute("orderform") OrderForm orderForm, Model model) {
@@ -256,9 +246,9 @@ class OrderController {
 	 * User will be directed to orderSearch page
 	 *
 	 * @param model
+	 *
 	 * @return the view OrderSearch
 	 */
-
 	@GetMapping("/order")
 	String getOrderPage(Model model) {
 		model.addAttribute("result", 0);
@@ -269,11 +259,11 @@ class OrderController {
 	/**
 	 * User gets either directed to OrderSearch page or to specific Order Page
 	 *
-	 * @param id Identifier of the order / should not be null
+	 * @param id    Identifier of the order / should not be null
 	 * @param model
+	 *
 	 * @return the view orderSearch if there aren't any order, redirects to order/%s page if there is an order
 	 */
-
 	@PostMapping("/order")
 	String getCheckOrder(@RequestParam("orderId") String id, Model model) {
 		final Optional<ShopOrder> shopOrder = orderService.findById(id);
@@ -285,8 +275,6 @@ class OrderController {
 
 		return String.format("redirect:/order/%s", id);
 	}
-
-
 
 	@GetMapping("/order/{orderId}")
 	String getOrderOverview(@PathVariable("orderId") String id, Model model) {
