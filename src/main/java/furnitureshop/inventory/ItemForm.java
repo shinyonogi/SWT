@@ -1,5 +1,8 @@
 package furnitureshop.inventory;
 
+/**
+ * This data class is used to parse the input of the user when adding and editing an {@link Item}
+ */
 public class ItemForm {
 
 	private final int groupId, weight;
@@ -8,6 +11,18 @@ public class ItemForm {
 
 	private final Category category;
 
+	/**
+	 * Creates a new instance of an {@link ItemForm}
+	 *
+	 * @param groupId   	The groupId of the item
+	 * @param weight 		The weight of the item
+	 * @param name   		The name of the item
+	 * @param picture   	The picture path of the item
+	 * @param variant		The variant of the item
+	 * @param description	The description of the item
+	 * @param price			The price of the item
+	 * @param category		The {@link Category} of the item
+	 */
 	public ItemForm(int groupId, int weight, String name, String picture, String variant, String description, double price, Category category) {
 		this.groupId = groupId;
 		this.weight = weight;

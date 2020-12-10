@@ -199,6 +199,13 @@ public class ItemService {
 		return sets;
 	}
 
+	/**
+	 * Find a specific supplier with the given id
+	 *
+	 * @param id A {@link Supplier} id
+	 *
+	 * @return Returns a {@link Supplier}
+	 */
 	public Optional<Supplier> findSupplierById(long id) {
 		return supplierService.findById(id);
 	}
