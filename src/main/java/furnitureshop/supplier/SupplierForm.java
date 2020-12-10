@@ -3,9 +3,9 @@ package furnitureshop.supplier;
 public class SupplierForm {
 
 	private final String name;
-	private final double surcharge;        // this value is stored in % and converted in the Controller
+	private final Double surcharge;        // this value is stored in % and converted in the Controller
 
-	public SupplierForm(String name, double surcharge) {
+	public SupplierForm(String name, Double surcharge) {
 		this.name = name;
 		this.surcharge = surcharge;
 	}

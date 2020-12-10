@@ -1,6 +1,7 @@
 package furnitureshop.supplier;
 
 import furnitureshop.FurnitureShop;
+import furnitureshop.inventory.Item;
 import furnitureshop.inventory.ItemCatalog;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -41,45 +42,52 @@ public class SupplierServiceTests {
 	}
 
 	@Test
+	void testAddSupplierWithInvalidType() {
+		assertThrows(IllegalArgumentException.class, () -> supplierService.addSupplier(null),
+				"addSupplier() should throw an IllegalArgumentException if the supplier argument is invalid!"
+		);
+	}
+	
+	@Test
 	void testAddSupplier() {
-		assertTrue(supplierService.addSupplier(testSupplier));
-
+		
+		assertTrue(supplierService.addSupplier(testSupplier), "addSupplier() should not find a duplicate supplier!");
+		
 		final Optional<Supplier> optional = supplierRepository.findById(testSupplier.getId());
-		assertTrue(optional.isPresent());
-
-		Supplier storedSupplier = optional.get();
-		assertEquals(testSupplier.getId(), storedSupplier.getId(), "supplier id mismatch");
-
+		assertTrue(optional.isPresent(), "addSupplier() should store the supplier in the supplierRepository!");
+		
 		// duplicate test
 		supplierService.addSupplier(testSupplier);
-		boolean supplierFound = false;
+		boolean testSupplierFound = false;
 		for (Supplier supplier : supplierRepository.findAll()) {
-			if (supplier.getId() == testSupplier.getId()) {
-				assertFalse(supplierFound, "testSupplier was found twice");
-				supplierFound = true;
+			if (supplier.getName().contentEquals(testSupplier.getName())) {
+				assertFalse(testSupplierFound, "addSupplier() should not store the same supplier twice!");
+				testSupplierFound = true;
 			}
 		}
 	}
 
 	@Test
 	void testDeleteSupplierById() {
-		assertTrue(supplierService.deleteSupplierById(defaultSupplier.getId()));
-
-		assertTrue(supplierRepository.findById(defaultSupplier.getId()).isEmpty(), "supplier was not deleted correctly");
-
-		assertFalse(supplierService.deleteSupplierById(defaultSupplier.getId()));
+		
+		assertFalse(supplierService.deleteSupplierById(0), "deleteSupplier() should return false if the id argument is invalid!");
+		
+		assertTrue(supplierService.deleteSupplierById(defaultSupplier.getId()), "deleteSupplier() should find the supplier in the supplierRepository!");
+		assertTrue(supplierRepository.findById(defaultSupplier.getId()).isEmpty(), "deleteSupplier() should remove the supplier from the supplierRepository!");
+		assertFalse(supplierService.deleteSupplierById(defaultSupplier.getId()), "deleteSupplier() should not find the supplier in the supplierRepository anymore!");
+		
+		supplierService.deleteSupplierById(defaultSupplier.getId());
+		for(Item item : itemCatalog.findAll()) {
+			assertFalse(item.getSupplier().getId() == defaultSupplier.getId(), "deleteSupplier() should delete all items associated with the deleted supplier!");
+		}
 	}
-	/*
+	
 	@Test
 	void testFindByName() {
-		supplierRepository.save(testSupplier);
-		Supplier foundSupplier = supplierService.findByName(testSupplier.getName()).get();
-		assertEquals(foundSupplier.getId(), testSupplier.getId(), "supplier id mismatch");
-	}*/
-
-	@Test
-	void testFindAll() {
-		assertEquals(2, supplierRepository.count());
+		
+		assertTrue(supplierService.findByName(null).isEmpty(), "findByName() should return an empty Optional if the name argument is null!");
+		
+		Supplier foundSupplier = supplierService.findByName(defaultSupplier.getName()).get();
+		assertEquals(foundSupplier.getId(), defaultSupplier.getId(), "findByName() should return the correct supplier!");
 	}
-
 }

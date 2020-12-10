@@ -1,6 +1,9 @@
 package furnitureshop.supplier;
 
+import furnitureshop.inventory.ItemController;
 import furnitureshop.inventory.ItemService;
+import furnitureshop.lkw.LKWService;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.Assert;
@@ -12,26 +15,45 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.Optional;
 
+/**
+ * This class manages all HTTP requests for suppliers
+ */
 @Controller
 public class SupplierController {
 
 	private final SupplierService supplierService;
 
+	/**
+	 * Creates a new instance of {@link SupplierController}
+	 * 
+	 * @param supplierService The {@link SupplierService} to access system information
+	 * 
+	 * @param itemService The {@link ItemService} to access system information
+	 */
 	SupplierController(SupplierService supplierService, ItemService itemService) {
 		Assert.notNull(supplierService, "SupplierService must not be null!");
 
 		this.supplierService = supplierService;
 	}
 
+	/**
+	 * Handles all GET-requests for '/admin/suppliers'
+	 * Displays a page with all suppliers
+	 */
 	@GetMapping("/admin/suppliers")
 	String getSupplierList(Model model) {
 		model.addAttribute("suppliers", supplierService.findAll());
-		model.addAttribute("supplierForm", new SupplierForm("", 5));
+		model.addAttribute("supplierForm", new SupplierForm("", 5.0));
 		model.addAttribute("result", 0);
 
 		return "suppliers";
 	}
 
+	/**
+	 * Handles all POST-requests for '/admin/suppliers'
+	 * 
+	 * @param form The {@link SupplierForm} to check user input when adding a {@link Supplier}
+	 */
 	@PostMapping("/admin/suppliers")
 	String addSupplier(@ModelAttribute("supplierForm") SupplierForm form, Model model) {
 		final Optional<Supplier> suppliers = supplierService.findByName(form.getName());
@@ -64,6 +86,12 @@ public class SupplierController {
 		return "redirect:/admin/suppliers";
 	}
 
+	/**
+	 * Handles all POST-requests for '/admin/supplier/delete/{id}'
+	 * Temporary page to delete a {@link Supplier}
+	 * 
+	 * @param id id of the {@link Supplier} to be deleted
+	 */
 	@PostMapping("/admin/supplier/delete/{id}")
 	String deleteSupplier(@PathVariable("id") long id) {
 		final Optional<Supplier> setSupplier = supplierService.findByName("Set Supplier");
@@ -77,6 +105,12 @@ public class SupplierController {
 		return "redirect:/admin/suppliers";
 	}
 
+	/**
+	 * Handles all GET-requests for '/admin/supplier/{id}/items'
+	 * Displays a page with all {@link Item}s associated with the {@link Supplier}
+	 * 
+	 * @param id id of the {@link Supplier}
+	 */
 	@GetMapping("/admin/supplier/{id}/items")
 	String getItemPageForSupplier(@PathVariable("id") long id, Model model) {
 		final Optional<Supplier> supplier = supplierService.findById(id);

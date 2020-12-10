@@ -24,7 +24,7 @@ public class ItemService {
 	private final SupplierService supplierService;
 
 	/**
-	 * Creates a new instance of an {@link Item}
+	 * Creates a new instance of an {@link ItemService}
 	 *
 	 * @param itemCatalog     {@link ItemCatalog} which contains all items
 	 * @param supplierService {@link SupplierService} reference to the SupplierService
