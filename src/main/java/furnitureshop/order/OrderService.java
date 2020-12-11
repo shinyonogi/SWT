@@ -6,7 +6,10 @@ import furnitureshop.lkw.LKW;
 import furnitureshop.lkw.LKWService;
 import furnitureshop.lkw.LKWType;
 import org.salespointframework.catalog.ProductIdentifier;
-import org.salespointframework.order.*;
+import org.salespointframework.order.Cart;
+import org.salespointframework.order.CartItem;
+import org.salespointframework.order.OrderLine;
+import org.salespointframework.order.OrderManagement;
 import org.salespointframework.quantity.Quantity;
 import org.salespointframework.time.BusinessTime;
 import org.salespointframework.useraccount.UserAccount;
@@ -141,29 +144,25 @@ public class OrderService {
 		return success;
 	}
 
-	//Must be tested don't know if it works
 	public void removeItemFromOrders(Item item) {
-		for (ItemOrder itemOrder : findAllItemOrders()) {
-
-			final List<ItemOrderEntry> entries = itemOrder.getOrderEntriesByItem(item);
-
-			for (ItemOrderEntry entry : entries) {
-				itemOrder.removeEntry(entry.getId());
-			}
-
-			final Totalable<OrderLine> lines = itemOrder.getOrderLines(item);
-
-			for (OrderLine line : lines) {
-				itemOrder.remove(line);
-			}
-
-			if (itemOrder.getOrderEntries().isEmpty()) {
-				orderManagement.delete(itemOrder);
+		for (ItemOrder order : findAllItemOrders()) {
+			final List<ItemOrderEntry> entries = order.getOrderEntriesByItem(item);
+			if (entries.isEmpty()) {
 				continue;
 			}
 
-			if (!entries.isEmpty()) {
-				orderManagement.save(itemOrder);
+			for (ItemOrderEntry entry : entries) {
+				order.removeEntry(entry.getId());
+			}
+
+			for (OrderLine line : order.getOrderLines(item).toList()) {
+				order.remove(line);
+			}
+
+			if (order.getOrderEntries().isEmpty()) {
+				orderManagement.delete(order);
+			} else {
+				orderManagement.save(order);
 			}
 		}
 	}

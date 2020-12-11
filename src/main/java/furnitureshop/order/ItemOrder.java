@@ -18,7 +18,7 @@ import java.util.List;
 @Entity
 public abstract class ItemOrder extends ShopOrder {
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
 	private List<ItemOrderEntry> orderWithStatus;
 
 	@Deprecated

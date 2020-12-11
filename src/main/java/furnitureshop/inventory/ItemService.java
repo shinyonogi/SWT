@@ -78,6 +78,8 @@ public class ItemService {
 			return false;
 		}
 
+		orderService.removeItemFromOrders(item);
+
 		for (Item it : findAllSetsByItem(item)) {
 			removeItem(it);
 		}
