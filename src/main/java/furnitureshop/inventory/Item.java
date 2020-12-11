@@ -79,6 +79,12 @@ public abstract class Item extends Product {
 		this.visible = true;
 	}
 
+	/**
+	 * Calculates the Customerprice of this {@link Item}.
+	 * It contains the {@link Supplier} Price and the surcharge of it.
+	 *
+	 * @return The Price of this {@link Item}
+	 */
 	@Override
 	@SuppressWarnings("NullableProblems")
 	public MonetaryAmount getPrice() {
@@ -90,6 +96,12 @@ public abstract class Item extends Product {
 		return Money.of(price, EURO);
 	}
 
+	/**
+	 * Calculates the Supplierprice of this {@link Item}.
+	 * It contains the {@link Supplier} Price with no surcharge.
+	 *
+	 * @return The Price of this {@link Item}
+	 */
 	public MonetaryAmount getSupplierPrice() {
 		return super.getPrice();
 	}
@@ -102,12 +114,24 @@ public abstract class Item extends Product {
 		return picture;
 	}
 
+	public void setPicture(String picture) {
+		Assert.notNull(picture, "Picture must not be null");
+
+		this.picture = picture;
+	}
+
 	public String getVariant() {
 		return variant;
 	}
 
 	public String getDescription() {
 		return description;
+	}
+
+	public void setDescription(String description) {
+		Assert.notNull(description, "Description must not be null");
+
+		this.description = description;
 	}
 
 	public Supplier getSupplier() {
@@ -118,22 +142,6 @@ public abstract class Item extends Product {
 		return category;
 	}
 
-	public abstract MonetaryAmount getPieceTotal();
-
-	public abstract int getWeight();
-
-	public void setPicture(String picture) {
-		Assert.notNull(picture, "Picture must not be null");
-
-		this.picture = picture;
-	}
-
-	public void setDescription(String description) {
-		Assert.notNull(description, "Description must not be null");
-
-		this.description = description;
-	}
-
 	public boolean isVisible() {
 		return visible;
 	}
@@ -141,5 +149,9 @@ public abstract class Item extends Product {
 	public void setVisible(boolean visible) {
 		this.visible = visible;
 	}
+
+	public abstract MonetaryAmount getPartTotal();
+
+	public abstract int getWeight();
 
 }

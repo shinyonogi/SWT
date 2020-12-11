@@ -240,7 +240,7 @@ public class ItemService {
 					if (entry.getItem() instanceof Set) {
 						final Set set = (Set) entry.getItem();
 
-						for (Pair<Item, MonetaryAmount> pair : set.getItemPrices()) {
+						for (Pair<Piece, MonetaryAmount> pair : set.getPiecePrices()) {
 							final Supplier supplier = pair.getFirst().getSupplier();
 
 							if (!supplierAmountMap.containsKey(supplier)) {

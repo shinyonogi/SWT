@@ -75,75 +75,79 @@ public class ItemTests {
 	}
 
 	@Test
-	void testGetTotalPrice() {
-		assertEquals(Money.of(10, Currencies.EURO), piece1.getPieceTotal(), "getPieceTotal() should return the correct value!");
-		assertEquals(Money.of(60, Currencies.EURO), set1.getPieceTotal(), "getPieceTotal() should return the correct value!");
-		assertEquals(Money.of(100, Currencies.EURO), set2.getPieceTotal(), "getPieceTotal() should return the correct value!");
+	void testgetPartTotal() {
+		assertEquals(Money.of(10, Currencies.EURO), piece1.getPartTotal(), "getPartTotal() should return the correct value!");
+		assertEquals(Money.of(60, Currencies.EURO), set1.getPartTotal(), "getPartTotal() should return the correct value!");
+		assertEquals(Money.of(90, Currencies.EURO), set2.getPartTotal(), "getPartTotal() should return the correct value!");
 
-		assertEquals(Money.of(75, Currencies.EURO), surchargePiece.getPieceTotal(), "getPieceTotal() should return the correct value!");
+		assertEquals(Money.of(75, Currencies.EURO), surchargePiece.getPartTotal(), "getPartTotal() should return the correct value!");
 	}
 
 	@Test
-	void testGetItemPartPrices() {
-		final List<Pair<Item, MonetaryAmount>> prices1 = set1.getItemPrices();
-		assertEquals(3, prices1.size(), "getItemPrices() should return the correct amount of prices!");
+	void getPieceTotal() {
+		assertEquals(Money.of(60, Currencies.EURO), set1.getPieceTotal(), "getPieceTotal() should return the correct value!");
+		assertEquals(Money.of(100, Currencies.EURO), set2.getPieceTotal(), "getPieceTotal() should return the correct value!");
+	}
 
-		for (Pair<Item, MonetaryAmount> pair : prices1) {	//60 -> 50
+	@Test
+	void testGetPiecePrices() {
+		final List<Pair<Piece, MonetaryAmount>> prices1 = set1.getPiecePrices();
+		assertEquals(3, prices1.size(), "getPiecePrices() should return the correct amount of prices!");
+
+		for (Pair<Piece, MonetaryAmount> pair : prices1) {    //60 -> 50
 			if (pair.getFirst().equals(piece1)) {           //10 -> 1/6 -> 50 / 6 -> 8.333
 				assertEquals(
-						Money.of(50, Currencies.EURO).divide(6).getNumber().doubleValue(),
+						50 / 6.0,
 						pair.getSecond().getNumber().doubleValue(),
-						1e-12, "getItemPrices() should return the correct prices!"
+						1e-12, "getPiecePrices() should return the correct prices!"
 				);
 			} else if (pair.getFirst().equals(piece2)) {    //20 -> 2/6 -> 50 / 3 -> 16.667
 				assertEquals(
-						Money.of(50, Currencies.EURO).divide(3).getNumber().doubleValue(),
+						50 / 3.0,
 						pair.getSecond().getNumber().doubleValue(),
-						1e-12, "getItemPrices() should return the correct prices!"
+						1e-12, "getPiecePrices() should return the correct prices!"
 				);
 			} else if (pair.getFirst().equals(piece3)) {    //30 -> 3/6 -> 50 / 2 -> 25.000
 				assertEquals(
-						Money.of(25, Currencies.EURO).getNumber().doubleValue(),
+						25.0,
 						pair.getSecond().getNumber().doubleValue(),
-						1e-12, "getItemPrices() should return the correct prices!"
+						1e-12, "getPiecePrices() should return the correct prices!"
 				);
 			} else {
-				fail("getItemPrices() should return the corret Items!");
+				fail("getPiecePrices() should return the corret Items!");
 			}
 		}
 
-		final List<Pair<Item, MonetaryAmount>> prices2 = set2.getItemPrices();
-		System.out.println(prices2);
+		final List<Pair<Piece, MonetaryAmount>> prices2 = set2.getPiecePrices();
+		assertEquals(4, prices2.size(), "getPiecePrices() should return the correct amount of prices!");
 
-		assertEquals(4, prices2.size(), "getItemPrices() should return the correct amount of prices!");
-
-		for (Pair<Item, MonetaryAmount> pair : prices2) {	//90 -> 80
-			if (pair.getFirst().equals(piece1)) {    		//30 -> 5/54 -> 200 / 27 -> 7.407
+		for (Pair<Piece, MonetaryAmount> pair : prices2) {    //90 -> 80
+			if (pair.getFirst().equals(piece1)) {            //30 -> 5/54 -> 200 / 27 -> 7.407
 				assertEquals(
-						Money.of(200, Currencies.EURO).divide(27).getNumber().doubleValue(),
+						200 / 27.0,
 						pair.getSecond().getNumber().doubleValue(),
-						1e-12, "getItemPrices() should return the correct prices!"
+						1e-12, "getPiecePrices() should return the correct prices!"
 				);
 			} else if (pair.getFirst().equals(piece3)) {    //10 -> 5/18 -> 200 / 9 -> 22.222
 				assertEquals(
-						Money.of(200, Currencies.EURO).divide(9).getNumber().doubleValue(),
+						200 / 9.0,
 						pair.getSecond().getNumber().doubleValue(),
-						1e-12, "getItemPrices() should return the correct prices!"
+						1e-12, "getPiecePrices() should return the correct prices!"
 				);
 			} else if (pair.getFirst().equals(piece2)) {    //20 -> 5/27 -> 400 / 27 -> 14.815
 				assertEquals(
-						Money.of(400, Currencies.EURO).divide(27).getNumber().doubleValue(),
+						400 / 27.0,
 						pair.getSecond().getNumber().doubleValue(),
-						1e-12, "getItemPrices() should return the correct prices!"
+						1e-12, "getPiecePrices() should return the correct prices!"
 				);
 			} else if (pair.getFirst().equals(piece4)) {    //40 -> 4/9 -> 320 / 9 -> 35.556
 				assertEquals(
-						Money.of(320, Currencies.EURO).divide(9).getNumber().doubleValue(),
+						320 / 9.0,
 						pair.getSecond().getNumber().doubleValue(),
-						1e-12, "getItemPrices() should return the correct prices!"
+						1e-12, "getPiecePrices() should return the correct prices!"
 				);
 			} else {
-				fail("getItemPrices() should return the corret Items!");
+				fail("getPiecePrices() should return the corret Items!");
 			}
 		}
 	}

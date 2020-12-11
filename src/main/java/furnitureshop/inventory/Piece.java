@@ -47,7 +47,7 @@ public class Piece extends Item {
 	}
 
 	@Override
-	public MonetaryAmount getPieceTotal() {
+	public MonetaryAmount getPartTotal() {
 		return getPrice();
 	}
 
