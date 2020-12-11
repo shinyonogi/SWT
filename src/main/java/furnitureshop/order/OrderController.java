@@ -20,22 +20,23 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * A Spring MVC controller to manage the {@link Cart}
- *
- * @author Shintaro Onogi
- * @version 1.0
+ * This class manages all HTTP Requests for Order and Cart
  */
 @Controller
 @SessionAttributes("cart")
 class OrderController {
 
 	private final OrderService orderService;
+
 	private final BusinessTime businessTime;
 
 	/**
-	 * Creates a new {@link OrderController} with the given {@link OrderService}.
+	 * Creates a new {@link OrderController}.
 	 *
-	 * @param orderService must not be {@literal null}.
+	 * @param orderService The {@link OrderService} to access system information
+	 * @param businessTime The {@link BusinessTime} to get the current time
+	 *
+	 * @throws IllegalArgumentException If any argument is {@code null}
 	 */
 	OrderController(OrderService orderService, BusinessTime businessTime) {
 		Assert.notNull(orderService, "OrderService must not be null");
@@ -46,8 +47,7 @@ class OrderController {
 	}
 
 	/**
-	 * Creates a new {@link Cart} instance to be stored in the session
-	 * annotation).
+	 * Creates a new {@link Cart} instance to be stored in the session.
 	 *
 	 * @return a new {@link Cart} instance.
 	 */
@@ -57,6 +57,7 @@ class OrderController {
 	}
 
 	/**
+	 * Handles all GET-Request for '/cart'.
 	 * User can be directed to the view cart
 	 *
 	 * @return the view cart
@@ -67,27 +68,29 @@ class OrderController {
 	}
 
 	/**
+	 * Handles all POST-Request for '/cart/add/{id}'.
 	 * Adds a {@link Item} to the {@link Cart}.
 	 *
-	 * @param item   the disc that should be added to the cart (may be {@literal null}).
-	 * @param number number of items that should be added to the cart.
-	 * @param cart   must not be {@literal null}.
+	 * @param item     The {@link Item} that should be added to the cart.
+	 * @param quantity The amount of {@link Item}s that should be added to the cart.
+	 * @param cart     The {@link Cart} of the customer.
 	 *
 	 * @return the view index
 	 */
 	@PostMapping("/cart/add/{id}")
-	String addItem(@PathVariable("id") Item item, @RequestParam("number") int number, @ModelAttribute Cart cart) {
-		cart.addOrUpdateItem(item, Quantity.of(number));
+	String addItem(@PathVariable("id") Item item, @RequestParam("number") int quantity, @ModelAttribute Cart cart) {
+		cart.addOrUpdateItem(item, Quantity.of(quantity));
 
 		return "redirect:/";
 	}
 
 	/**
+	 * Handles all POST-Request for '/cart/change/{id}'.
 	 * Changes the quantity of {@link Item} in the {@link Cart}
 	 *
-	 * @param cartItemId the product identifier of the item in the cart
-	 * @param amount     the new quantity of the item in the cart
-	 * @param cart       can be null/empty if every product is going to be removed, cannot be null if a product is going to be added
+	 * @param cartItemId The product identifier of the item in the cart
+	 * @param amount     The new quantity of the item in the cart
+	 * @param cart       The {@link Cart} of the customer
 	 *
 	 * @return the view cart
 	 */
@@ -103,11 +106,13 @@ class OrderController {
 			return "redirect:/cart";
 		}).orElse("redirect:/cart");
 	}
+
 	/**
+	 * Handles all POST-Request for '/cart/delete/{id}'.
 	 * Deletes a certain {@link Item} in the {@link Cart}
 	 *
-	 * @param cartItemId the product identifier of the item in the cart
-	 * @param cart       can be null/empty if every product is going to be removed
+	 * @param cartItemId The product identifier of the item in the cart
+	 * @param cart       The {@link Cart} of the customer.
 	 *
 	 * @return the view cart
 	 */
@@ -119,15 +124,17 @@ class OrderController {
 	}
 
 	/**
+	 * Handles all GET-Request for '/checkout'.
+	 * Displays the checkout page for an Itemorder.
 	 * Calculates the weight of all {@link Item} in the {@link Cart} and determines the right {@link LKWType} for the order.
 	 *
-	 * @param model
-	 * @param cart
+	 * @param cart  The {@link Cart} of the customer.
+	 * @param model The {@code Spring} Page {@link Model}
 	 *
 	 * @return redirects to cart if the cart is empty
 	 */
 	@GetMapping("/checkout")
-	String checkout(Model model, @ModelAttribute("cart") Cart cart) {
+	String checkout(@ModelAttribute("cart") Cart cart, Model model) {
 		model.addAttribute("orderform", new OrderForm("", "", "", 0));
 
 		if (cart.isEmpty()) {
@@ -148,16 +155,18 @@ class OrderController {
 	}
 
 	/**
-	 * @param cart
-	 * @param orderForm
-	 * @param model
+	 * Handles all POST-Request for '/checkout'.
+	 * Processes the Itemorder checkout
 	 *
-	 * @return
+	 * @param cart  The {@link Cart} of the customer
+	 * @param form  The {@link OrderForm} with the information about customer
+	 * @param model The {@code Spring} Page {@link Model}
+	 *
+	 * @return The checkout Page for an ItemOrder
 	 */
-	/* Bezahlen-Funktion */
 	@PostMapping("/checkout")
-	String buy(@ModelAttribute("cart") Cart cart, @ModelAttribute("orderform") OrderForm orderForm, Model model) {
-		final ContactInformation contactInformation = new ContactInformation(orderForm.getName(), orderForm.getAddress(), orderForm.getEmail());
+	String buy(@ModelAttribute("cart") Cart cart, @ModelAttribute("orderform") OrderForm form, Model model) {
+		final ContactInformation contactInformation = new ContactInformation(form.getName(), form.getAddress(), form.getEmail());
 
 		final int weight = cart.get()
 				.filter(c -> c.getProduct() instanceof Item)
@@ -166,23 +175,23 @@ class OrderController {
 
 		final LKWType type = LKWType.getByWeight(weight).orElse(LKWType.LARGE);
 
-		model.addAttribute("orderform", orderForm);
+		model.addAttribute("orderform", form);
 		model.addAttribute("lkwtype", type);
 
 		// Check if name is invalid
-		if (!StringUtils.hasText(orderForm.getName())) {
+		if (!StringUtils.hasText(form.getName())) {
 			// Display error message
 			model.addAttribute("result", 1);
 			return "orderCheckout";
 		}
 		// Check if address is invalid
-		if (!StringUtils.hasText(orderForm.getAddress())) {
+		if (!StringUtils.hasText(form.getAddress())) {
 			// Display error message
 			model.addAttribute("result", 2);
 			return "orderCheckout";
 		}
 		// Check if email is invalid
-		if (!StringUtils.hasText(orderForm.getEmail()) || !orderForm.getEmail().matches(".+@.+")) {
+		if (!StringUtils.hasText(form.getEmail()) || !form.getEmail().matches(".+@.+")) {
 			// Display error message
 			model.addAttribute("result", 3);
 			return "orderCheckout";
@@ -190,7 +199,7 @@ class OrderController {
 
 		final ItemOrder order;
 
-		if (orderForm.getIndex() == 0) {
+		if (form.getIndex() == 0) {
 			final Optional<Pickup> pickup = orderService.orderPickupItem(cart, contactInformation);
 
 			if (pickup.isEmpty()) {
@@ -201,7 +210,7 @@ class OrderController {
 			order = pickup.get();
 		}
 		// Delivery
-		else if (orderForm.getIndex() == 1) {
+		else if (form.getIndex() == 1) {
 			final Optional<Delivery> delivery = orderService.orderDelieveryItem(cart, contactInformation);
 
 			if (delivery.isEmpty()) {
@@ -243,9 +252,10 @@ class OrderController {
 	}
 
 	/**
+	 * Handles all GET-Request for '/order'.
 	 * User will be directed to orderSearch page
 	 *
-	 * @param model
+	 * @param model The {@code Spring} Page {@link Model}
 	 *
 	 * @return the view OrderSearch
 	 */
@@ -257,12 +267,13 @@ class OrderController {
 	}
 
 	/**
-	 * User gets either directed to OrderSearch page or to specific Order Page
+	 * Handles all POST-Request for '/order'.
+	 * User gets either directed to Orderoverview page
 	 *
-	 * @param id    Identifier of the order / should not be null
-	 * @param model
+	 * @param id    The Identifier of the order
+	 * @param model The {@code Spring} Page {@link Model}
 	 *
-	 * @return the view orderSearch if there aren't any order, redirects to order/%s page if there is an order
+	 * @return The view orderSearch if there aren't any order, redirects to order/%s page if there is an order
 	 */
 	@PostMapping("/order")
 	String getCheckOrder(@RequestParam("orderId") String id, Model model) {
@@ -276,6 +287,15 @@ class OrderController {
 		return String.format("redirect:/order/%s", id);
 	}
 
+	/**
+	 * Handles all GET-Request for '/order/{orderId}'.
+	 * Displays the Overoverview of an existing Order
+	 *
+	 * @param id    The Identifier of the order
+	 * @param model The {@code Spring} Page {@link Model}
+	 *
+	 * @return The Orderoverview Page
+	 */
 	@GetMapping("/order/{orderId}")
 	String getOrderOverview(@PathVariable("orderId") String id, Model model) {
 		final Optional<ShopOrder> shopOrder = orderService.findById(id);
@@ -307,6 +327,17 @@ class OrderController {
 		return "orderOverview";
 	}
 
+	/**
+	 * Handles all POST-Request for '/order/{orderId}/cancelItem'.
+	 * Cancel an {@link ItemOrderEntry} from an {@link ItemOrder}.
+	 *
+	 * @param orderId        The Identifier of the {@link ItemOrder}
+	 * @param itemEntryId    The Identifier of the {@link ItemOrderEntry}
+	 * @param model          The {@code Spring} Page {@link Model}
+	 * @param authentication The {@code Spring} {@link Authentication}
+	 *
+	 * @return The updates Orderoverview Page
+	 */
 	@PostMapping("/order/{orderId}/cancelItem")
 	String cancelItemOrder(@PathVariable("orderId") String orderId, @RequestParam("itemEntryId") long itemEntryId,
 			Model model, Authentication authentication) {
@@ -326,6 +357,18 @@ class OrderController {
 		return String.format("redirect:/order/%s", orderId);
 	}
 
+	/**
+	 * Handles all POST-Request for '/order/{orderId}/changeStatus'.
+	 * Changes the {@link OrderStatus} of an {@link ItemOrderEntry}
+	 *
+	 * @param orderId        The Identifier of the order
+	 * @param status         The new {@link OrderStatus} of the order
+	 * @param itemEntryId    The Identifier of the {@link ItemOrderEntry}
+	 * @param model          The {@code Spring} Page {@link Model}
+	 * @param authentication The {@code Spring} {@link Authentication}
+	 *
+	 * @return The updates Orderoverview Page
+	 */
 	@PreAuthorize("hasRole('EMPLOYEE')")
 	@PostMapping("/order/{orderId}/changeStatus")
 	String changeOrder(@PathVariable("orderId") String orderId, @RequestParam("status") OrderStatus status,
@@ -346,6 +389,16 @@ class OrderController {
 		return String.format("redirect:/order/%s", orderId);
 	}
 
+	/**
+	 * Handles all POST-Request for '/order/{orderId}/cancelLkw'.
+	 * Cancel a LKWCharter and deletes the Order.
+	 *
+	 * @param orderId        The Identifier of the order
+	 * @param model          The {@code Spring} Page {@link Model}
+	 * @param authentication The {@code Spring} {@link Authentication}
+	 *
+	 * @return Redirects to Orderlist (Employee) or Index
+	 */
 	@PostMapping("/order/{orderId}/cancelLkw")
 	String cancelLkwOrder(@PathVariable("orderId") String orderId, Model model, Authentication authentication) {
 		final Optional<ShopOrder> order = orderService.findById(orderId);
@@ -367,6 +420,14 @@ class OrderController {
 		return "redirect:/";
 	}
 
+	/**
+	 * Handles all GET-Request for '/admin/orders'.
+	 * Displays all availble Orders in a {@link List} with Price and {@link OrderStatus}
+	 *
+	 * @param model The {@code Spring} Page {@link Model}
+	 *
+	 * @return The Orderslist page
+	 */
 	@GetMapping("/admin/orders")
 	String getCustomerOrders(Model model) {
 		final Streamable<Pair<ShopOrder, OrderStatus>> orders = orderService.findAll().map(o -> {

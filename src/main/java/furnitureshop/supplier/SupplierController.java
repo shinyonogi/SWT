@@ -1,6 +1,5 @@
 package furnitureshop.supplier;
 
-import furnitureshop.inventory.ItemService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.Assert;
@@ -22,20 +21,24 @@ public class SupplierController {
 
 	/**
 	 * Creates a new instance of {@link SupplierController}
-	 * 
+	 *
 	 * @param supplierService The {@link SupplierService} to access system information
-	 * 
-	 * @param itemService The {@link ItemService} to access system information
+	 *
+	 * @throws IllegalArgumentException If any argument is {@code null}
 	 */
-	SupplierController(SupplierService supplierService, ItemService itemService) {
+	SupplierController(SupplierService supplierService) {
 		Assert.notNull(supplierService, "SupplierService must not be null!");
 
 		this.supplierService = supplierService;
 	}
 
 	/**
-	 * Handles all GET-requests for '/admin/suppliers'
+	 * Handles all GET-requests for '/admin/suppliers'.
 	 * Displays a page with all suppliers
+	 *
+	 * @param model The {@code Spring} Page {@link Model}
+	 *
+	 * @return Opens the supplier page
 	 */
 	@GetMapping("/admin/suppliers")
 	String getSupplierList(Model model) {
@@ -47,9 +50,13 @@ public class SupplierController {
 	}
 
 	/**
-	 * Handles all POST-requests for '/admin/suppliers'
-	 * 
-	 * @param form The {@link SupplierForm} to check user input when adding a {@link Supplier}
+	 * Handles all POST-requests for '/admin/suppliers'.
+	 * Adds a new {@link Supplier} to the System
+	 *
+	 * @param form  The {@link SupplierForm} to check user input when adding a {@link Supplier}
+	 * @param model The {@code Spring} Page {@link Model}
+	 *
+	 * @return Updates the supplier page
 	 */
 	@PostMapping("/admin/suppliers")
 	String addSupplier(@ModelAttribute("supplierForm") SupplierForm form, Model model) {
@@ -84,10 +91,12 @@ public class SupplierController {
 	}
 
 	/**
-	 * Handles all POST-requests for '/admin/supplier/delete/{id}'
+	 * Handles all POST-requests for '/admin/supplier/delete/{id}'.
 	 * Temporary page to delete a {@link Supplier}
-	 * 
+	 *
 	 * @param id id of the {@link Supplier} to be deleted
+	 *
+	 * @return Redirect to the supplier page
 	 */
 	@PostMapping("/admin/supplier/delete/{id}")
 	String deleteSupplier(@PathVariable("id") long id) {
@@ -103,10 +112,13 @@ public class SupplierController {
 	}
 
 	/**
-	 * Handles all GET-requests for '/admin/supplier/{id}/items'
+	 * Handles all GET-requests for '/admin/supplier/{id}/items'.
 	 * Displays a page with all {@link furnitureshop.inventory.Item Item}s associated with the {@link Supplier}
-	 * 
-	 * @param id id of the {@link Supplier}
+	 *
+	 * @param id    id of the {@link Supplier}
+	 * @param model The {@code Spring} Page {@link Model}
+	 *
+	 * @return A the supplier item list page
 	 */
 	@GetMapping("/admin/supplier/{id}/items")
 	String getItemPageForSupplier(@PathVariable("id") long id, Model model) {

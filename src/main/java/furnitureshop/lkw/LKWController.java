@@ -2,7 +2,6 @@ package furnitureshop.lkw;
 
 import furnitureshop.order.ContactInformation;
 import furnitureshop.order.LKWCharter;
-import furnitureshop.order.OrderService;
 import org.salespointframework.time.BusinessTime;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,9 +30,9 @@ public class LKWController {
 	 * Creates a new instance of an {@link LKWController}
 	 *
 	 * @param lkwService   The {@link LKWService} to access system information
-	 * @param businessTime The {@link OrderService} to get the current time
+	 * @param businessTime The {@link BusinessTime} to get the current time
 	 *
-	 * @throws IllegalArgumentException If the {@code lkwService} or {@code businessTime} is {@code null}
+	 * @throws IllegalArgumentException If any argument is {@code null}
 	 */
 	LKWController(LKWService lkwService, BusinessTime businessTime) {
 		Assert.notNull(lkwService, "LKWService must not be null!");
@@ -44,7 +43,12 @@ public class LKWController {
 	}
 
 	/**
-	 * Handles all GET-Request for '/lkws'. It returns the page with a list of all available {@link LKWType}s
+	 * Handles all GET-Request for '/lkws'.
+	 * It returns the page with a list of all available {@link LKWType}s
+	 *
+	 * @param model The {@code Spring} Page {@link Model}
+	 *
+	 * @return The overview page of all {@link LKWType}s
 	 */
 	@GetMapping("/lkws")
 	String getLKWList(Model model) {
@@ -55,9 +59,14 @@ public class LKWController {
 	}
 
 	/**
-	 * Handles all GET-Request for '/lkw/checkout/{type}'. It returns the checkout page if the type exists or redirects to the overview.
+	 * Handles all GET-Request for '/lkw/checkout/{type}'.
+	 * It returns the checkout page if the type exists or redirects to the overview.
 	 *
 	 * @param typeName The name of the {@link LKWType}
+	 * @param model    The {@code Spring} Page {@link Model}
+	 *
+	 * @return The checkout page for a {@link LKWType} or redirects to the overview page
+	 * of the {@link LKWType} don't exist
 	 */
 	@GetMapping("/lkw/checkout/{lkwtype}")
 	String getLKWCheckout(@PathVariable("lkwtype") String typeName, Model model) {
@@ -78,11 +87,15 @@ public class LKWController {
 	}
 
 	/**
-	 * Handles all POST-Request for '/lkw/checkout/{type}'. It manages the check, if an {@link LKW} is on a specific {@link java.time.LocalDate LocalDate} available.
+	 * Handles all POST-Request for '/lkw/checkout/{type}'.
+	 * It manages the check, if an {@link LKW} is on a specific {@link java.time.LocalDate LocalDate} available.
 	 * If an {@link LKW} is available it displays a positive message, or a negative if not.
 	 *
 	 * @param typeName The name of the {@link LKWType}
 	 * @param form     The {@link LKWCharterForm} with the checking {@link java.time.LocalDate LocalDate}
+	 * @param model    The {@code Spring} Page {@link Model}
+	 *
+	 * @return The checkout page with information about the availability of {@link LKW}s
 	 */
 	@PostMapping(value = "/lkw/checkout/{lkwtype}", params = "check")
 	String checkLKWDate(@PathVariable("lkwtype") String typeName, @ModelAttribute("lkwform") LKWCharterForm form, Model model) {
@@ -118,12 +131,16 @@ public class LKWController {
 	}
 
 	/**
-	 * Handles all POST-Request for '/lkw/checkout/{type}'. It manages the buying, for a specific {@link LKWType}.
+	 * Handles all POST-Request for '/lkw/checkout/{type}'.
+	 * It manages the buying, for a specific {@link LKWType}.
 	 * It will be checked if the information from the customer are valid and if a {@link LKW} is available.
 	 * If a {@link LKW} is available, it will be ordered. If not, there will be an error message displayed.
 	 *
 	 * @param typeName The name of the {@link LKWType}
 	 * @param form     The {@link LKWCharterForm} with the information about customer and {@link java.time.LocalDate LocalDate}
+	 * @param model    The {@code Spring} Page {@link Model}
+	 *
+	 * @return Redirect to the Order Summary if information are correct or displays Error message
 	 */
 	@PostMapping(value = "/lkw/checkout/{lkwtype}", params = "buy")
 	String checkoutLKW(@PathVariable("lkwtype") String typeName, @ModelAttribute("lkwform") LKWCharterForm form, Model model) {

@@ -3,6 +3,7 @@ package furnitureshop.inventory;
 import furnitureshop.supplier.Supplier;
 import org.javamoney.moneta.Money;
 import org.salespointframework.core.Currencies;
+import org.salespointframework.time.BusinessTime;
 import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.EnumMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -22,19 +24,29 @@ public class ItemController {
 
 	private final ItemService itemService;
 
+	// A refernce to the BusinessTime to access the current system time
+	private final BusinessTime businessTime;
+
 	/**
 	 * Creates a new instance of {@link ItemController}
 	 *
-	 * @param itemService The {@link ItemService} to access system information
+	 * @param itemService  The {@link ItemService} to access system information
+	 * @param businessTime The {@link BusinessTime} to get the current time
+	 *
+	 * @throws IllegalArgumentException If any argument is {@code null}
 	 */
-	public ItemController(ItemService itemService) {
+	public ItemController(ItemService itemService, BusinessTime businessTime) {
 		Assert.notNull(itemService, "ItemService must not be null");
+		Assert.notNull(businessTime, "BusinessTime must not be null!");
 
 		this.itemService = itemService;
+		this.businessTime = businessTime;
 	}
 
 	/**
 	 * Handles all GET-Requests for '/catalog'
+	 *
+	 * @param model The {@code Spring} Page {@link Model}
 	 *
 	 * @return Returns the page with a list of all available {@link Item}s
 	 */
@@ -46,9 +58,10 @@ public class ItemController {
 	}
 
 	/**
-	 * Handles all GET-Requests for '/catalog/{type}'
+	 * Handles all GET-Requests for '/catalog/{type}'.
 	 *
 	 * @param category The Category of the Item
+	 * @param model    The {@code Spring} Page {@link Model}
 	 *
 	 * @return Returns the page with a list of all available {@link Item}s of
 	 * the given {@link Category} if the {@code category} is present. Otherwise it redirects to '/catalog'
@@ -66,16 +79,17 @@ public class ItemController {
 	}
 
 	/**
-	 * Handles all GET-Requests for '/catalog/{category}/{itemId}'
+	 * Handles all GET-Requests for '/catalog/{category}/{itemId}'.
 	 *
 	 * @param category The Category of the {@link Item}
-	 * @param item     {@link Item}
+	 * @param item     The requested {@link Item}
+	 * @param model    The {@code Spring} Page {@link Model}
 	 *
 	 * @return Returns a page with details of the {@link Item} if all arguments are given. Otherwise it redirects either
 	 * to '/catalog' if no {@code category} is given or to '/catalog/ + category' if the Item is missing.
 	 */
 	@GetMapping("/catalog/{category}/{itemId}")
-	String getItemDetails(Model model, @PathVariable("category") String category, @PathVariable("itemId") Optional<Item> item) {
+	String getItemDetails(@PathVariable("category") String category, @PathVariable("itemId") Optional<Item> item, Model model) {
 		if (item.isEmpty()) {
 			return "redirect:/catalog/" + category;
 		}
@@ -93,10 +107,10 @@ public class ItemController {
 	}
 
 	/**
-	 * Handles all GET-Requests for '/admin/supplier/{id}/items/add'
+	 * Handles all GET-Requests for '/admin/supplier/{id}/items/add'.
 	 *
 	 * @param suppId The id of a {@link Supplier}
-	 * @param model  {@link Model}
+	 * @param model  The {@code Spring} Page {@link Model}
 	 *
 	 * @return Returns a redirect to '/admin/supplier/{id}/sets/add' if the given supplier is the Set supplier.
 	 * Otherwise it populates the model with an instance of itemForm {@link ItemForm} for the addition of new items
@@ -120,38 +134,37 @@ public class ItemController {
 	}
 
 	/**
-	 * Handles all POST-Requests for '/admin/supplier/{id}/items/add'
-	 *
-	 * @param suppId 	The id of a {@link Supplier}
-	 * @param itemForm  {@link ItemForm}
-	 * @param model 	{@link Model}
-	 *
+	 * Handles all POST-Requests for '/admin/supplier/{id}/items/add'.
 	 * If the given {@link Supplier} is not present then the page will return the form page again.
 	 * Otherwise a new piece will be constructed from the {@link ItemForm} and saved into the {@link ItemCatalog}
 	 * via the {@link ItemService}.
+	 *
+	 * @param suppId The id of a {@link Supplier}
+	 * @param form   The {@link ItemForm} with the information about new {@link Item}
+	 * @param model  The {@code Spring} Page {@link Model}
 	 *
 	 * @return Returns a redirect to '/admin/supplier/{id}/items' when everything was successfully created. Otherwise
 	 * returns the user created {@link ItemForm} and the corresponding view.
 	 */
 	@PostMapping("/admin/supplier/{id}/items/add")
-	String addItemForSupplier(@PathVariable("id") long suppId, @ModelAttribute("itemForm") ItemForm itemForm, Model model) {
+	String addItemForSupplier(@PathVariable("id") long suppId, @ModelAttribute("itemForm") ItemForm form, Model model) {
 		final Optional<Supplier> supplier = itemService.findSupplierById(suppId);
 
 		if (supplier.isEmpty()) {
-			model.addAttribute("itemForm", itemForm);
+			model.addAttribute("itemForm", form);
 			return "supplierItemform";
 		}
 
 		final Piece piece = new Piece(
-				itemForm.getGroupId(),
-				itemForm.getName(),
-				Money.of(itemForm.getPrice(), Currencies.EURO),
-				itemForm.getPicture(),
-				itemForm.getVariant(),
-				itemForm.getDescription(),
+				form.getGroupId(),
+				form.getName(),
+				Money.of(form.getPrice(), Currencies.EURO),
+				form.getPicture(),
+				form.getVariant(),
+				form.getDescription(),
 				supplier.get(),
-				itemForm.getWeight(),
-				itemForm.getCategory()
+				form.getWeight(),
+				form.getCategory()
 		);
 
 		itemService.addOrUpdateItem(piece);
@@ -160,10 +173,10 @@ public class ItemController {
 	}
 
 	/**
-	 * Handles all GET-Requests for '/admin/supplier/{id}/sets/add'
+	 * Handles all GET-Requests for '/admin/supplier/{id}/sets/add'.
 	 *
-	 * @param id 	The id of a {@link Supplier}
-	 * @param model {@link Model}
+	 * @param id    The id of a {@link Supplier}
+	 * @param model The {@code Spring} Page {@link Model}
 	 *
 	 * @return Returns a page with all possible values of {@link Category} to choose from.
 	 */
@@ -176,44 +189,45 @@ public class ItemController {
 	}
 
 	/**
-	 * Handles all POST-Requests for '/admin/supplier/{id}/sets/add'
-	 *
-	 * @param suppId 		The id of a {@link Supplier}
-	 * @param categories  	{@link List}
-	 * @param model 		{@link Model}
-	 *
+	 * Handles all POST-Requests for '/admin/supplier/{id}/sets/add'.
 	 * Creates a {@link EnumMap} mapping a {@link Category} to a {@link Streamable} of {@link Item} and binds that to
 	 * the model.
+	 *
+	 * @param suppId     The id of a {@link Supplier}
+	 * @param categories The {@link List} of selected {@link Category}s
+	 * @param model      The {@code Spring} Page {@link Model}
 	 *
 	 * @return Returns the view for set addition with the proper selection of {@link Item} instances.
 	 */
 	@PostMapping("/admin/supplier/{suppId}/sets/add")
 	String getDetailSetAddPage(@PathVariable("suppId") long suppId, @RequestParam("checkedCategories") List<Category> categories, Model model) {
-		EnumMap<Category, Streamable<Item>> itemMap = new EnumMap<>(Category.class);
+		final Map<Category, Streamable<Item>> itemMap = new EnumMap<>(Category.class);
+
 		for (Category category : categories) {
 			itemMap.put(category, itemService.findAllByCategory(category));
 		}
+
 		model.addAttribute("itemMap", itemMap);
 		model.addAttribute("showCats", false);
 		model.addAttribute("suppId", suppId);
 		model.addAttribute("setForm", new ItemForm(0, 0, "", "placeholder.png", "", "", 0, Category.SET));
+
 		return "supplierSetform";
 	}
 
 	/**
-	 * Handles all POST-Requests for '/admin/supplier/{id}/sets/add/set'
+	 * Handles all POST-Requests for '/admin/supplier/{id}/sets/add/set'.
+	 * Creates a new {@link Set} and saves it to {@link ItemCatalog} if the given {@link Supplier} is the SetSupplier.
 	 *
-	 * @param suppId 	The id of a {@link Supplier}
-	 * @param setForm  	{@link ItemForm}
-	 * @param itemList	{@link List}
-	 *
-	 * Creates a new {@link Set} and saves it to {@link ItemCatalog} if the given {@link Supplier} is valid and the SetSupplier.
+	 * @param suppId   The id of a {@link Supplier}
+	 * @param form     The {@link ItemForm} with the information about new {@link Item}
+	 * @param itemList A {@link List} of selected {@link Item}s to be added to the {@link Set}
 	 *
 	 * @return Either redirects to the supplier overview when {@link Supplier} is not found or to the item overview of
 	 * the SetSupplier when everything was correctly created.
 	 */
 	@PostMapping("/admin/supplier/{suppId}/sets/add/set")
-	String addSetForSupplier(@PathVariable("suppId") long suppId, @ModelAttribute("setForm") ItemForm setForm, @RequestParam("itemList") List<Item> itemList) {
+	String addSetForSupplier(@PathVariable("suppId") long suppId, @ModelAttribute("setForm") ItemForm form, @RequestParam("itemList") List<Item> itemList) {
 		final Optional<Supplier> supplier = itemService.findSupplierById(suppId);
 
 		if (supplier.isEmpty()) {
@@ -230,12 +244,12 @@ public class ItemController {
 		}*/
 
 		final Set set = new Set(
-				setForm.getGroupId(),
-				setForm.getName(),
-				Money.of(setForm.getPrice(), Currencies.EURO),
-				setForm.getPicture(),
-				setForm.getVariant(),
-				setForm.getDescription(),
+				form.getGroupId(),
+				form.getName(),
+				Money.of(form.getPrice(), Currencies.EURO),
+				form.getPicture(),
+				form.getVariant(),
+				form.getDescription(),
 				supplier.get(),
 				itemList
 		);
@@ -246,11 +260,11 @@ public class ItemController {
 	}
 
 	/**
-	 * Handles all GET-Requests for '/admin/supplier/{suppId}/items/edit/{itemId}'
+	 * Handles all GET-Requests for '/admin/supplier/{suppId}/items/edit/{itemId}'.
 	 *
-	 * @param suppId 	The id of a {@link Supplier}
-	 * @param item		{@link Item}
-	 * @param model 	{@link Model}
+	 * @param suppId The id of a {@link Supplier}
+	 * @param item   The {@link Item} to be edited
+	 * @param model  The {@code Spring} Page {@link Model}
 	 *
 	 * @return Returns the edit page for a item with all attributes from the given item prefilled.
 	 */
@@ -270,27 +284,26 @@ public class ItemController {
 	}
 
 	/**
-	 * Handles all POST-Requests for '/admin/supplier/{suppId}/items/edit/{itemId}'
-	 *
-	 * @param suppId 	The id of a {@link Supplier}
-	 * @param item  	{@link Item}
-	 * @param itemForm	{@link ItemForm}
-	 *
+	 * Handles all POST-Requests for '/admin/supplier/{suppId}/items/edit/{itemId}'.
 	 * Sets the new information's of an {@link Item} from the {@link ItemForm} and updates the {@link ItemCatalog} via
 	 * the {@link ItemService}, but only if the given {@link Supplier} is valid.
+	 *
+	 * @param suppId The id of a {@link Supplier}
+	 * @param item   The {@link Item} to be edited
+	 * @param form   The {@link ItemForm} with the information about new {@link Item}
 	 *
 	 * @return Redirects to the item overview of the given supplier.
 	 */
 	@PostMapping("/admin/supplier/{suppId}/items/edit/{itemId}")
-	String editItemForSupplier(@PathVariable("suppId") long suppId, @PathVariable("itemId") Item item, @ModelAttribute("itemForm") ItemForm itemForm) {
+	String editItemForSupplier(@PathVariable("suppId") long suppId, @PathVariable("itemId") Item item, @ModelAttribute("itemForm") ItemForm form) {
 		if (suppId != item.getSupplier().getId()) {
 			return String.format("redirect:/admin/supplier/%d/items", suppId);
 		}
 
-		item.setName(itemForm.getName());
-		item.setPrice(Money.of(itemForm.getPrice(), Currencies.EURO));
-		item.setDescription(itemForm.getDescription());
-		item.setPicture(itemForm.getPicture());
+		item.setName(form.getName());
+		item.setPrice(Money.of(form.getPrice(), Currencies.EURO));
+		item.setDescription(form.getDescription());
+		item.setPicture(form.getPicture());
 
 		itemService.addOrUpdateItem(item);
 
@@ -298,12 +311,11 @@ public class ItemController {
 	}
 
 	/**
-	 * Handles all POST-Requests for '/admin/supplier/{suppId}/items/delete/{itemId}'
-	 *
-	 * @param suppId 	The id of a {@link Supplier}
-	 * @param item  	{@link Item}
-	 *
+	 * Handles all POST-Requests for '/admin/supplier/{suppId}/items/delete/{itemId}'.
 	 * Deletes the given {@link Item} if the supplier is valid.
+	 *
+	 * @param suppId The id of a {@link Supplier}
+	 * @param item   The {@link Item} to delete
 	 *
 	 * @return Redirects to the item overview of the given supplier.
 	 */
@@ -319,12 +331,11 @@ public class ItemController {
 	}
 
 	/**
-	 * Handles all POST-Requests for '/admin/supplier/{suppId}/items/toggle/{itemId}'
-	 *
-	 * @param suppId 	The id of a {@link Supplier}
-	 * @param item  	{@link Item}
-	 *
+	 * Handles all POST-Requests for '/admin/supplier/{suppId}/items/toggle/{itemId}'.
 	 * Changes the visibility status of the given {@link Item} if the supplier is valid.
+	 *
+	 * @param suppId The id of a {@link Supplier}
+	 * @param item   The {@link Item} to be toggle visibility
 	 *
 	 * @return Redirects to the item overview of the given supplier.
 	 */
@@ -341,12 +352,21 @@ public class ItemController {
 		return String.format("redirect:/admin/supplier/%d/items", suppId);
 	}
 
+	/**
+	 * Handles all GET-Requests for '/admin/statistic'
+	 *
+	 * @param model The {@code Spring} Page {@link Model}
+	 *
+	 * @return Returns the montly statistic page.
+	 */
 	@GetMapping("/admin/statistic")
 	String getMonthlyStatistic(Model model) {
-		LocalDateTime time = LocalDateTime.now();
+		final LocalDateTime time = businessTime.getTime();
+
 		model.addAttribute("statistic", itemService.analyse(time));
 		model.addAttribute("timeFrom", time.minusDays(30));
 		model.addAttribute("timeTo", time);
+
 		return "monthlyStatistic";
 	}
 
