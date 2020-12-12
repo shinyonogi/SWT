@@ -3,8 +3,11 @@ package furnitureshop.supplier;
 import furnitureshop.FurnitureShop;
 import furnitureshop.inventory.Item;
 import furnitureshop.inventory.ItemCatalog;
+import furnitureshop.order.ShopOrder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.salespointframework.order.OrderManagement;
+import org.salespointframework.useraccount.UserAccountManagement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
@@ -26,10 +29,19 @@ public class SupplierServiceTests {
 	@Autowired
 	ItemCatalog itemCatalog;
 
+	@Autowired
+	OrderManagement<ShopOrder> orderManagement;
+
+	@Autowired
+	UserAccountManagement userAccountManagement;
+
 	Supplier testSupplier, defaultSupplier, defaultSupplier2;
 
 	@BeforeEach
 	void setUp() {
+		for (ShopOrder order : orderManagement.findBy(userAccountManagement.findByUsername("Dummy").get())) {
+			orderManagement.delete(order);
+		}
 		itemCatalog.deleteAll();
 		supplierRepository.deleteAll();
 
@@ -89,5 +101,11 @@ public class SupplierServiceTests {
 		
 		Supplier foundSupplier = supplierService.findByName(defaultSupplier.getName()).get();
 		assertEquals(foundSupplier.getId(), defaultSupplier.getId(), "findByName() should return the correct supplier!");
+	}
+
+	@Test
+	void testEquals() {
+		assertEquals(defaultSupplier, defaultSupplier);
+		assertNotEquals(defaultSupplier, defaultSupplier2);
 	}
 }

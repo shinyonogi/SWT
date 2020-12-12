@@ -1,6 +1,7 @@
 package furnitureshop.inventory;
 
 import furnitureshop.FurnitureShop;
+import furnitureshop.order.ShopOrder;
 import furnitureshop.supplier.Supplier;
 import furnitureshop.supplier.SupplierRepository;
 import org.javamoney.moneta.Money;
@@ -8,6 +9,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.salespointframework.catalog.ProductIdentifier;
 import org.salespointframework.core.Currencies;
+import org.salespointframework.order.OrderManagement;
+import org.salespointframework.useraccount.UserAccountManagement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
@@ -37,8 +40,17 @@ public class ItemServiceTests {
 	@Autowired
 	ItemService itemService;
 
+	@Autowired
+	OrderManagement<ShopOrder> orderManagement;
+
+	@Autowired
+	UserAccountManagement userAccountManagement;
+
 	@BeforeEach
 	void setUp() {
+		for (ShopOrder order : orderManagement.findBy(userAccountManagement.findByUsername("Dummy").get())) {
+			orderManagement.delete(order);
+		}
 		itemCatalog.deleteAll();
 		supplierRepository.deleteAll();
 
