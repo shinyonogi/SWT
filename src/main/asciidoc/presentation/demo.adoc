@@ -1,0 +1,68 @@
+= Softwarevorstellung
+
+== Präsentatoren
+
+Präsentator: Marc Albrecht +
+Kundensicht: David Schroth +
+Adminsicht: Sebastian Jaster +
+
+== Kundensicht
+
+- Startseite
+  * Ersteindruck gewinnen
+- Katalog durchstöbern
+  * Schauen was verfügbar
+- Artikel auswählen -> In den Warenkorb
+  * Sofa 1 (grün)
+- Weiteren Artikel hinzufügen über Kategorien
+  * Stuhl 1 (schwarz) (3x)
+- Anzahl reduzieren
+  * Stuhl 1: 3x -> 2x
+- Bestellen mit Lieferung
+  * Hans Müller
+  * Teststraße 1
+  * hans@mueller.de
+- Bestellzusammenfassung ansehen
+  * Lieferdatum ansehen
+  * Bestellnummer kopieren
+- Bestellung suchen und Bestellungsstatus ansehen
+  * Bestellnummer eingeben
+- Artikel stornieren
+  * Stuhl 1 -> 1x stornieren
+- LKW prüfen und mieten
+  * 3,5t LKW mieten
+  ** Hans Müller
+  ** Teststraße 1
+  ** hans@mueller.de
+  * An einem Samstag prüfen (19.12.20) -> Fehler
+  * An einem Montag prüfen (21.12.20) -> Verfügbar
+  * LKW mieten
+
+== Adminsicht
+
+- Als Admin anmelden
+  * Name/Passwort: admin
+- Bestellungen Übersicht
+  * Liste aller Bestellungen durchscrollen
+- Bestellstatus ändern
+  * Bestellung anhand des Preises identifizieren
+  * Bestellstatus von einem Artikel ändern
+- Monatsstatistiken beurteilen
+  * Übersicht öffnen
+  * Gewinne/Verluste beurteilen
+- Lieferanten anzeigen
+  * Übersicht öffnen
+  * Schlechten Lieferanten
+  ** Artikel anzeigen
+  ** Lieferant entfernen
+- Lieferant hinzufügen
+  * Name: MultiStühle
+  * Aufschlag: 10%
+- Artikel hinzufügen zu neuen Lieferant
+  * Stuhl 2
+  * Preis: 43.99€
+  * Variante: weiß
+  * Gruppennummer: 1
+  * Beschreibung: Ein einfacher weißer Stuhl
+  * Kategorie: Chair
+- Änderungen im Katalog ansehen
