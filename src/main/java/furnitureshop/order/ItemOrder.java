@@ -39,6 +39,14 @@ public abstract class ItemOrder extends ShopOrder {
 		this.orderWithStatus = new ArrayList<>();
 	}
 
+	/**
+	 * This function is used to create an order line with order entries
+	 *
+	 * @param product {@link Item} that is going to be added to order line
+	 * @param quantity of the product
+	 * @return the created order line
+	 */
+
 	@Override
 	@SuppressWarnings("NullableProblems")
 	public OrderLine addOrderLine(Product product, Quantity quantity) {
@@ -54,6 +62,13 @@ public abstract class ItemOrder extends ShopOrder {
 		return orderLine;
 	}
 
+	/**
+	 * This function is used to remove a certain order entry with status
+	 *
+	 * @param entryId Identifier of the entry that needs to be removed
+	 * @return boolean true if the removal is successful, boolean false if unsuccessful
+	 */
+
 	public boolean removeEntry(long entryId) {
 		for (ItemOrderEntry entry : orderWithStatus) {
 			if (entry.getId() == entryId) {
@@ -63,6 +78,14 @@ public abstract class ItemOrder extends ShopOrder {
 		}
 		return false;
 	}
+
+	/**
+	 * This function is used to change the order status of certain order entry
+	 *
+	 * @param entryId Identifier of the entry that needs to be changed
+	 * @param newStatus new {@link OrderStatus} of the order entry
+	 * @return boolean true if the change of status is successful, boolean false if unsuccessful
+	 */
 
 	public boolean changeStatus(long entryId, OrderStatus newStatus) {
 		for (ItemOrderEntry orderEntry : orderWithStatus) {
@@ -74,6 +97,12 @@ public abstract class ItemOrder extends ShopOrder {
 
 		return false;
 	}
+
+	/**
+	 * This function is used to change the order status of all order entries
+	 *
+	 * @param newStatus new {@link OrderStatus}
+	 */
 
 	public void changeAllStatus(OrderStatus newStatus) {
 		for (ItemOrderEntry orderEntry : orderWithStatus) {
