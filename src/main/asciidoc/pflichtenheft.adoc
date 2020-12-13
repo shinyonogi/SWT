@@ -112,7 +112,7 @@ image::./models/analysis/context_diagram_2.png[Kontextdiagramm,100%,100%,pdfwidt
 
 === Top-Level-Architektur
 
-image::./models/analysis/top_level_architecture_2.png[Top-Level-Architektur,100%,100%,pdfwidth=100%,title= "Top-Level-Architektur des Projektes {project_name}",align=center]
+image::./models/analysis/updated_top_level_architecture.png[Top-Level-Architektur,100%,100%,pdfwidth=100%,title= "Top-Level-Architektur des Projektes {project_name}",align=center]
 
 == Anwendungsfälle
 
