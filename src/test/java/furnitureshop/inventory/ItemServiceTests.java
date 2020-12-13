@@ -1,6 +1,8 @@
 package furnitureshop.inventory;
 
 import furnitureshop.FurnitureShop;
+import furnitureshop.order.ItemOrder;
+import furnitureshop.order.OrderService;
 import furnitureshop.order.ShopOrder;
 import furnitureshop.supplier.Supplier;
 import furnitureshop.supplier.SupplierRepository;
