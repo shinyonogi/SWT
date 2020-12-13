@@ -56,20 +56,20 @@
 			<form method="post" th:object="${lkwform}" th:action="@{/lkw/checkout/{name}(name=${type.name().toLowerCase()})}" role="form" class="form" id="form">
 				<div class="form-group">
 		    		<label for="name" th:text="#{order.name}">Name:</label>
-		    		<input type="text" name="name" th:value="*{name}" class="form-control" id="name" required th:placeholder="#{order.name.placeholder}">
+		    		<input type="text" name="name" th:value="*{name}" class="form-control rounded-pill border-0 shadow-sm px-4" id="name" required th:placeholder="#{order.name.placeholder}">
 		  		</div>
 				<div class="form-group">
 					<label for="address" th:text="#{order.address}">Adresse:</label>
-					<input type="text" name="address" th:value="*{address}" class="form-control" id="address" required th:placeholder="#{order.address.placeholder}">
+					<input type="text" name="address" th:value="*{address}" class="form-control rounded-pill border-0 shadow-sm px-4" id="address" required th:placeholder="#{order.address.placeholder}">
 				</div>
 		  		<div class="form-group">
 		    		<label for="email" th:text="#{order.email}">E-Mail:</label>
-		    		<input type="email" name="email" th:value="*{email}" class="form-control" id="email" required th:placeholder="#{order.email.placeholder}">
+		    		<input type="email" name="email" th:value="*{email}" class="form-control rounded-pill border-0 shadow-sm px-4" id="email" required th:placeholder="#{order.email.placeholder}">
 		  		</div>
 		  		<div class="form-group">
 					<label for="date" th:text="#{order.date}">Datum:</label>
 					<div class="d-flex">
-						<input type="date" name="date" th:value="*{date}" class="form-control mr-md-2" id="date" required>
+						<input type="date" name="date" th:value="*{date}" class="form-control rounded-pill border-0 shadow-sm px-4 mr-md-2" id="date" required>
 						<button type="submit" th:text="#{lkw.check}" formnovalidate name="check" class="btn btn-outline-primary">Prüfen</button>
 					</div>
 				</div>

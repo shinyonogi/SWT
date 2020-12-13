@@ -57,6 +57,13 @@ header.cart-header {
     background-position: center center;
 }
 
+.bg-image-order {
+    background-image: url("../img/order.jpg");
+    background-size: cover;
+    background-position: center center;
+}
+
+
 @media (min-width: 992px) {
   header.masthead {
     padding-top: calc(10rem + 55px);
