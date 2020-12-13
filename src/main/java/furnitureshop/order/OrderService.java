@@ -40,11 +40,11 @@ public class OrderService {
 	/**
 	 * Creates a new instanfe of {@link OrderService}
 	 *
-	 * @param userAccountManagement
-	 * @param businessTime
-	 * @param orderManagement
-	 * @param itemService
-	 * @param lkwService
+	 * @param userAccountManagement The {@link UserAccountManagement} to access the dummy user
+	 * @param businessTime The {@link BusinessTime} to get the current time
+	 * @param orderManagement The {@link UserAccountManagement} to manage user accounts
+	 * @param itemService The {@link ItemService} to access all functions regarding {@link Item}
+	 * @param lkwService The {@link LKWService} to access all functions regarding {@link LKW}
 	 */
 	OrderService(UserAccountManagement userAccountManagement, BusinessTime businessTime, OrderManagement<ShopOrder> orderManagement,
 			ItemService itemService, LKWService lkwService) {
@@ -61,6 +61,14 @@ public class OrderService {
 		this.lkwService = lkwService;
 	}
 
+	/**
+	 * This function is used to save orders with pick up service
+	 *
+	 * @param cart with {@link Item} that user want to order
+	 * @param contactInformation of the user
+	 * @return The order with its information ( {@link Item} and {@link ContactInformation} )
+	 */
+
 	public Optional<Pickup> orderPickupItem(Cart cart, ContactInformation contactInformation) {
 		final Optional<UserAccount> useraccount = getDummyUser();
 
@@ -74,6 +82,17 @@ public class OrderService {
 
 		return Optional.of(order);
 	}
+
+	/**
+	 * This function is used to save orders with delivery service
+	 *
+	 * It also calculates the sum of the weight of {@link Item} in the {@link Cart}
+	 * and suggests the right {@link LKWType} which has a limited availability and affects the delivery date
+	 *
+	 * @param cart with {@link Item} that user want to order
+	 * @param contactInformation of the user
+	 * @return The Order with its information ( {@link Item}, {@link ContactInformation}, {@link LKWType}, {@link LocalDate} )
+	 */
 
 	public Optional<Delivery> orderDelieveryItem(Cart cart, ContactInformation contactInformation) {
 		final Optional<UserAccount> userAccount = getDummyUser();
@@ -110,6 +129,15 @@ public class OrderService {
 		return Optional.of(order);
 	}
 
+	/**
+	 * This function is used to save LKW orders
+	 *
+	 * @param lkw The {@link LKW} that is going to be rated
+	 * @param rentDate The {@link LocalDate} the LKW is going tobe rented
+	 * @param contactInformation of the user
+	 * @return {@link LKWCharter} with its information
+	 */
+
 	public Optional<LKWCharter> orderLKW(LKW lkw, LocalDate rentDate, ContactInformation contactInformation) {
 		final Optional<UserAccount> userAccount = getDummyUser();
 
@@ -124,6 +152,15 @@ public class OrderService {
 		return Optional.of(order);
 	}
 
+	/**
+	 * This function is used to change the {@link OrderStatus}
+	 *
+	 * @param order which its status needs to be changed
+	 * @param itemEntryId
+	 * @param newStatus new {@link OrderStatus}
+	 * @return the boolean false
+	 */
+
 	public boolean changeItemEntryStatus(ItemOrder order, long itemEntryId, OrderStatus newStatus) {
 		final boolean success = order.changeStatus(itemEntryId, newStatus);
 
@@ -136,6 +173,13 @@ public class OrderService {
 		return false;
 	}
 
+	/**
+	 * This function is used to cancel a LKW order
+	 *
+	 * @param order which needs to be cancelled
+	 * @return boolean whether the order cancellation is successful or not
+	 */
+
 	public boolean cancelLKW(LKWCharter order) {
 		final boolean success = lkwService.cancelOrder(order.getLkw(), order.getRentDate());
 
@@ -143,6 +187,12 @@ public class OrderService {
 
 		return success;
 	}
+
+	/**
+	 * This function is used to remove certain items from orders
+	 *
+	 * @param item The {@link Item} which needs to be removed from order
+	 */
 
 	public void removeItemFromOrders(Item item) {
 		for (ItemOrder order : findAllItemOrders()) {
@@ -167,6 +217,13 @@ public class OrderService {
 		}
 	}
 
+	/**
+	 * This function is used to find order and its information by its identifier
+	 *
+	 * @param id Identifier of the order
+	 * @return Order with its information
+	 */
+
 	public Optional<ShopOrder> findById(String id) {
 		final Optional<UserAccount> userAccount = getDummyUser();
 
@@ -183,6 +240,12 @@ public class OrderService {
 		return Optional.empty();
 	}
 
+	/**
+	 * This function is used to find every possible orders
+	 *
+	 * @return every Order
+	 */
+
 	public Streamable<ShopOrder> findAll() {
 		final Optional<UserAccount> userAccount = getDummyUser();
 
@@ -192,6 +255,12 @@ public class OrderService {
 
 		return orderManagement.findBy(userAccount.get());
 	}
+
+	/**
+	 * This function is used to find every possible {@link Item} order
+	 *
+	 * @return every item order
+	 */
 
 	public Streamable<ItemOrder> findAllItemOrders() {
 		final Optional<UserAccount> userAccount = getDummyUser();
@@ -205,13 +274,33 @@ public class OrderService {
 				.map(order -> (ItemOrder) order);
 	}
 
+	/**
+	 * This function is used to find a certain item by its identifier
+	 *
+	 * @param productId of the {@link Item}
+	 * @return item
+	 */
+
 	public Optional<Item> findItemById(ProductIdentifier productId) {
 		return itemService.findById(productId);
 	}
 
+	/**
+	 * This function is used to get the dummy {@link UserAccount}
+	 *
+	 * @return dummy user
+	 */
+
 	public Optional<UserAccount> getDummyUser() {
 		return userAccountManagement.findByUsername("Dummy");
 	}
+
+	/**
+	 * This function is used to find a certain {@link LKW} by its identifier
+	 *
+	 * @param productId of the {@link LKW}
+	 * @return lkw
+	 */
 
 	public Optional<LKW> findLKWById(ProductIdentifier productId) {
 		return lkwService.findById(productId);
