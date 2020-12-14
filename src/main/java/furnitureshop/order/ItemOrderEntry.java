@@ -21,6 +21,11 @@ public class ItemOrderEntry {
 	@Enumerated(EnumType.ORDINAL)
 	private OrderStatus status;
 
+	/**
+	 * Empty constructor for {@code Spring}. Not in use.
+	 *
+	 * @deprecated
+	 */
 	@Deprecated
 	protected ItemOrderEntry() {}
 

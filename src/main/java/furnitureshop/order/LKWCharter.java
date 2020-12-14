@@ -16,6 +16,11 @@ public class LKWCharter extends ShopOrder {
 
 	private LocalDate rentDate;
 
+	/**
+	 * Empty constructor for {@code Spring}. Not in use.
+	 *
+	 * @deprecated
+	 */
 	@Deprecated
 	protected LKWCharter() {}
 

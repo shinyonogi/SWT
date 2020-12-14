@@ -21,6 +21,11 @@ public abstract class ItemOrder extends ShopOrder {
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
 	private List<ItemOrderEntry> orderWithStatus;
 
+	/**
+	 * Empty constructor for {@code Spring}. Not in use.
+	 *
+	 * @deprecated
+	 */
 	@Deprecated
 	@SuppressWarnings("DeprecatedIsStillUsed")
 	protected ItemOrder() {}
@@ -29,7 +34,7 @@ public abstract class ItemOrder extends ShopOrder {
 	 * Creates a new instance of {@link ItemOrder}
 	 *
 	 * @param userAccount        The dummy {@link UserAccount}
-	 * @param contactInformation {@link ContactInformation} of the user
+	 * @param contactInformation The {@link ContactInformation} of the customer
 	 *
 	 * @throws IllegalArgumentException if any argument is {@code null}
 	 */
@@ -40,13 +45,13 @@ public abstract class ItemOrder extends ShopOrder {
 	}
 
 	/**
-	 * This function is used to create an order line with order entries
+	 * This function is used to create an order line with order entries.
 	 *
-	 * @param product {@link Item} that is going to be added to order line
-	 * @param quantity of the product
+	 * @param product  {@link Item} that is going to be added to order line
+	 * @param quantity The quantity of the product
+	 *
 	 * @return the created order line
 	 */
-
 	@Override
 	@SuppressWarnings("NullableProblems")
 	public OrderLine addOrderLine(Product product, Quantity quantity) {
@@ -65,10 +70,10 @@ public abstract class ItemOrder extends ShopOrder {
 	/**
 	 * This function is used to remove a certain order entry with status
 	 *
-	 * @param entryId Identifier of the entry that needs to be removed
+	 * @param entryId The Identifier of the entry that needs to be removed
+	 *
 	 * @return boolean true if the removal is successful, boolean false if unsuccessful
 	 */
-
 	public boolean removeEntry(long entryId) {
 		for (ItemOrderEntry entry : orderWithStatus) {
 			if (entry.getId() == entryId) {
@@ -80,13 +85,13 @@ public abstract class ItemOrder extends ShopOrder {
 	}
 
 	/**
-	 * This function is used to change the order status of certain order entry
+	 * This function is used to change the order status of certain order entry.
 	 *
-	 * @param entryId Identifier of the entry that needs to be changed
-	 * @param newStatus new {@link OrderStatus} of the order entry
+	 * @param entryId   The Identifier of the entry that needs to be changed
+	 * @param newStatus The new {@link OrderStatus} of the {@link ItemOrderEntry}
+	 *
 	 * @return boolean true if the change of status is successful, boolean false if unsuccessful
 	 */
-
 	public boolean changeStatus(long entryId, OrderStatus newStatus) {
 		for (ItemOrderEntry orderEntry : orderWithStatus) {
 			if (orderEntry.getId() == entryId) {
@@ -99,11 +104,10 @@ public abstract class ItemOrder extends ShopOrder {
 	}
 
 	/**
-	 * This function is used to change the order status of all order entries
+	 * This function is used to change the order status of all order entries.
 	 *
-	 * @param newStatus new {@link OrderStatus}
+	 * @param newStatus The new {@link OrderStatus}
 	 */
-
 	public void changeAllStatus(OrderStatus newStatus) {
 		for (ItemOrderEntry orderEntry : orderWithStatus) {
 			orderEntry.setStatus(newStatus);

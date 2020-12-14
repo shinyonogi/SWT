@@ -26,10 +26,11 @@ public class OrderDataInitializer implements DataInitializer {
 	 * Creates a new instance of {@link OrderDataInitializer}
 	 *
 	 * @param userAccountManagement The {@link UserAccountManagement} to access the dummy user
-	 * @throws IllegalArgumentException if {@code userAccountManagement} argument is {@code null}
+	 *
+	 * @throws IllegalArgumentException if any argument is {@code null}
 	 */
 	OrderDataInitializer(UserAccountManagement userAccountManagement, ItemService itemService,
-						 OrderService orderService) {
+			OrderService orderService) {
 		Assert.notNull(userAccountManagement, "UserAccountManagement must not be null!");
 		Assert.notNull(itemService, "ItemService must not be null!");
 		Assert.notNull(orderService, "OrderService must not be null!");
@@ -64,7 +65,7 @@ public class OrderDataInitializer implements DataInitializer {
 
 		List<Item> items = itemService.findAll().toList();
 
-		for (Cart cart: carts) {
+		for (Cart cart : carts) {
 			for (int i = 0; i < 5; i++) {
 				cart.addOrUpdateItem(items.get(random.nextInt(items.size())), random.nextInt(2) + 1);
 			}
