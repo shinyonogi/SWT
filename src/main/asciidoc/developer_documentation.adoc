@@ -74,7 +74,7 @@ Die Hauptnutzer des Webshops sind Kunden, die bereits mit der üblichen Webseite
 
 == Kontextabgrenzung
 
-image::./models/analysis/context_diagram_2.png[Kontextdiagramm,100%,100%,pdfwidth=100%,title= "Kontextdiagramm des Projektes {project_name}",align=center]
+image::./models/analysis/context_diagram_eng.png[Kontextdiagramm,100%,100%,pdfwidth=100%,title= "Kontextdiagramm des Projektes {project_name}",align=center]
 
 == Lösungsstrategie
 === Erfüllung der Qualitätsziele
