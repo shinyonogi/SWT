@@ -32,5 +32,5 @@ jobs:
       run: ./mvnw verify -Pci -B
 
     - name: Run and publish SonarQube analysis
-      if: github.ref == 'refs/heads/main'
+      if: github.ref == 'refs/heads/develop'
       run: ./mvnw sonar:sonar -B
