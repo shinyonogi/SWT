@@ -42,6 +42,7 @@ public class SupplierServiceTests {
 		for (ShopOrder order : orderManagement.findBy(userAccountManagement.findByUsername("Dummy").get())) {
 			orderManagement.delete(order);
 		}
+
 		itemCatalog.deleteAll();
 		supplierRepository.deleteAll();
 
@@ -59,15 +60,14 @@ public class SupplierServiceTests {
 				"addSupplier() should throw an IllegalArgumentException if the supplier argument is invalid!"
 		);
 	}
-	
+
 	@Test
 	void testAddSupplier() {
-		
 		assertTrue(supplierService.addSupplier(testSupplier), "addSupplier() should not find a duplicate supplier!");
-		
+
 		final Optional<Supplier> optional = supplierRepository.findById(testSupplier.getId());
 		assertTrue(optional.isPresent(), "addSupplier() should store the supplier in the supplierRepository!");
-		
+
 		// duplicate test
 		supplierService.addSupplier(testSupplier);
 		boolean testSupplierFound = false;
@@ -81,26 +81,26 @@ public class SupplierServiceTests {
 
 	@Test
 	void testDeleteSupplierById() {
-		
 		assertFalse(supplierService.deleteSupplierById(0), "deleteSupplier() should return false if the id argument is invalid!");
-		
+
 		assertTrue(supplierService.deleteSupplierById(defaultSupplier.getId()), "deleteSupplier() should find the supplier in the supplierRepository!");
 		assertTrue(supplierRepository.findById(defaultSupplier.getId()).isEmpty(), "deleteSupplier() should remove the supplier from the supplierRepository!");
 		assertFalse(supplierService.deleteSupplierById(defaultSupplier.getId()), "deleteSupplier() should not find the supplier in the supplierRepository anymore!");
-		
+
 		supplierService.deleteSupplierById(defaultSupplier.getId());
-		for(Item item : itemCatalog.findAll()) {
-			assertFalse(item.getSupplier().getId() == defaultSupplier.getId(), "deleteSupplier() should delete all items associated with the deleted supplier!");
+		for (Item item : itemCatalog.findAll()) {
+			assertNotEquals(defaultSupplier.getId(), item.getSupplier().getId(), "deleteSupplier() should delete all items associated with the deleted supplier!");
 		}
 	}
-	
+
 	@Test
 	void testFindByName() {
-		
-		assertTrue(supplierService.findByName(null).isEmpty(), "findByName() should return an empty Optional if the name argument is null!");
-		
+		assertThrows(IllegalArgumentException.class, () -> supplierService.findByName(null),
+				"findByName() should throw an IllegalArgumentException if the name argument is invalid!"
+		);
+
 		Supplier foundSupplier = supplierService.findByName(defaultSupplier.getName()).get();
-		assertEquals(foundSupplier.getId(), defaultSupplier.getId(), "findByName() should return the correct supplier!");
+		assertEquals(defaultSupplier.getId(), foundSupplier.getId(), "findByName() should return the correct supplier!");
 	}
 
 	@Test
@@ -108,4 +108,5 @@ public class SupplierServiceTests {
 		assertEquals(defaultSupplier, defaultSupplier);
 		assertNotEquals(defaultSupplier, defaultSupplier2);
 	}
+
 }
