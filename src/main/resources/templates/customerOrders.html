@@ -28,7 +28,7 @@
 			<tr class="mt-3 mb-3 table-light align-items-baseline" th:each="order : ${orders}">
 				<td th:text="${order.getFirst().getId()}">5318008</td>
 				<td th:text=" ${#temporals.format(order.getFirst().getDateCreated(), 'dd.MM.yyyy HH:mm:ss')}">23.03.2021</td>
-				<td th:text="${order.getFirst().getTotal().query(T(furnitureshop.FurnitureShop).MONETARY_QUERY)}">999,99€</td>
+				<td th:text="${order.getFirst().getTotal().add(order.getFirst().getCancelPrice()).subtract(order.getFirst().getRefund()).query(T(furnitureshop.FurnitureShop).MONETARY_QUERY)}">999,99€</td>
 				<td th:text="${#messages.msgOrNull('order.overview.status.' + order.getSecond().name().toLowerCase())}"></td>
 				<td>
 					<form th:action="@{/order}" method="post">

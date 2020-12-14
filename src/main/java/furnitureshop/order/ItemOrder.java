@@ -2,11 +2,13 @@ package furnitureshop.order;
 
 import furnitureshop.inventory.Item;
 import org.salespointframework.catalog.Product;
+import org.salespointframework.core.Currencies;
 import org.salespointframework.order.OrderLine;
 import org.salespointframework.quantity.Quantity;
 import org.salespointframework.useraccount.UserAccount;
 import org.springframework.data.util.Streamable;
 
+import javax.money.MonetaryAmount;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -112,6 +114,32 @@ public abstract class ItemOrder extends ShopOrder {
 		for (ItemOrderEntry orderEntry : orderWithStatus) {
 			orderEntry.setStatus(newStatus);
 		}
+	}
+
+	@Override
+	public MonetaryAmount getRefund() {
+		MonetaryAmount amount = Currencies.ZERO_EURO;
+
+		for (ItemOrderEntry entry : orderWithStatus) {
+			if (entry.getStatus() == OrderStatus.CANCELLED) {
+				amount = amount.add(entry.getItem().getPrice());
+			}
+		}
+
+		return amount;
+	}
+
+	@Override
+	public MonetaryAmount getCancelPrice() {
+		MonetaryAmount price = Currencies.ZERO_EURO;
+
+		for (ItemOrderEntry entry : orderWithStatus) {
+			if (entry.getStatus() == OrderStatus.CANCELLED) {
+				price = price.add(entry.getItem().getPrice()).multiply(0.2);
+			}
+		}
+
+		return price;
 	}
 
 	public List<ItemOrderEntry> getOrderEntries() {

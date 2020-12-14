@@ -4,6 +4,7 @@ import org.salespointframework.order.Order;
 import org.salespointframework.useraccount.UserAccount;
 import org.springframework.util.Assert;
 
+import javax.money.MonetaryAmount;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
@@ -42,5 +43,9 @@ public abstract class ShopOrder extends Order {
 	public ContactInformation getContactInformation() {
 		return contactInformation;
 	}
+
+	public abstract MonetaryAmount getRefund();
+
+	public abstract MonetaryAmount getCancelPrice();
 
 }

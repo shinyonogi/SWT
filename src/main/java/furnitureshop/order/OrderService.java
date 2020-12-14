@@ -86,6 +86,8 @@ public class OrderService {
 		cart.addItemsTo(order);
 		orderManagement.save(order);
 
+		findById(order.getId().getIdentifier()).ifPresent(orderManagement::save);
+
 		return Optional.of(order);
 	}
 
@@ -136,6 +138,8 @@ public class OrderService {
 		order.changeAllStatus(OrderStatus.PAID);
 		orderManagement.save(order);
 
+		findById(order.getId().getIdentifier()).ifPresent(orderManagement::save);
+
 		return Optional.of(order);
 	}
 
@@ -164,6 +168,8 @@ public class OrderService {
 		final LKWCharter order = new LKWCharter(userAccount.get(), contactInformation, lkw, rentDate);
 		order.addOrderLine(lkw, Quantity.of(1));
 		orderManagement.save(order);
+
+		findById(order.getId().getIdentifier()).ifPresent(orderManagement::save);
 
 		return Optional.of(order);
 	}

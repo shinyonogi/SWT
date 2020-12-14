@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.money.MonetaryAmount;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -317,7 +318,6 @@ class OrderController {
 					cancel = cancel.subtract(entry.getItem().getPrice());
 				}
 			}
-			model.addAttribute("cancel", cancel);
 
 			if (order instanceof Delivery) {
 				model.addAttribute("lkw", ((Delivery) order).getLkw());
@@ -460,7 +460,10 @@ class OrderController {
 			return null;
 		});
 
-		model.addAttribute("orders", orders);
+		model.addAttribute("orders", orders.stream()
+				.sorted((p1, p2) -> p2.getFirst().getDateCreated().compareTo(p1.getFirst().getDateCreated()))
+				.toArray()
+		);
 		return "customerOrders";
 	}
 

@@ -82,9 +82,13 @@
                             <h6 th:text="#{order.overview.information.item.total}"></h6>
                             <div class="text-right" th:text="${order.getTotal().subtract(lkw.getType().getDelieveryPrice()).query(T(furnitureshop.FurnitureShop).MONETARY_QUERY)}"></div>
                         </div>
-                        <div th:unless="${cancel.isZero()}" class="d-flex flex-row align-items-baseline justify-content-between">
+                        <div th:unless="${order.getRefund().isZero()}" class="d-flex flex-row align-items-baseline justify-content-between">
+                            <h6 th:text="#{order.overview.information.item.refund}"></h6>
+                            <div class="text-right text-success" th:text="${'-' + order.getRefund().query(T(furnitureshop.FurnitureShop).MONETARY_QUERY)}"></div>
+                        </div>
+                        <div th:unless="${order.getCancelPrice().isZero()}" class="d-flex flex-row align-items-baseline justify-content-between">
                             <h6 th:text="#{order.overview.information.item.cancel}"></h6>
-                            <div class="text-right text-danger" th:text="${cancel.query(T(furnitureshop.FurnitureShop).MONETARY_QUERY)}"></div>
+                            <div class="text-right text-danger" th:text="${order.getCancelPrice().query(T(furnitureshop.FurnitureShop).MONETARY_QUERY)}"></div>
                         </div>
                         <div th:if="${deliveryDate}" class="d-flex flex-row align-items-baseline justify-content-between">
                             <h6 th:text="#{order.overview.information.delivery.cost}"></h6>
@@ -92,7 +96,7 @@
                         </div>
                         <div class="d-flex flex-row align-items-baseline justify-content-between">
                             <h6 th:text="#{order.overview.information.total}"></h6>
-                            <div class="text-right" th:text="${order.getTotal().add(cancel).query(T(furnitureshop.FurnitureShop).MONETARY_QUERY)}"></div>
+                            <div class="text-right" th:text="${order.getTotal().add(order.getCancelPrice()).subtract(order.getRefund()).query(T(furnitureshop.FurnitureShop).MONETARY_QUERY)}"></div>
                         </div>
                     </div>
                 </div>

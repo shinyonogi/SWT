@@ -1,9 +1,11 @@
 package furnitureshop.order;
 
 import furnitureshop.lkw.LKW;
+import org.salespointframework.core.Currencies;
 import org.salespointframework.useraccount.UserAccount;
 import org.springframework.util.Assert;
 
+import javax.money.MonetaryAmount;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import java.time.LocalDate;
@@ -50,6 +52,16 @@ public class LKWCharter extends ShopOrder {
 
 	public LocalDate getRentDate() {
 		return rentDate;
+	}
+
+	@Override
+	public MonetaryAmount getRefund() {
+		return Currencies.ZERO_EURO;
+	}
+
+	@Override
+	public MonetaryAmount getCancelPrice() {
+		return Currencies.ZERO_EURO;
 	}
 
 }
