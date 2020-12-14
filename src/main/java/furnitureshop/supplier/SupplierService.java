@@ -26,7 +26,7 @@ public class SupplierService {
 	 * @param supplierRepository {@link SupplierRepository} contains all {@link Supplier}s
 	 * @param itemService        {@link ItemService} reference to the itemService
 	 *
-	 * @throws IllegalArgumentException if {@code supplierRepository} or {@code itemService} is {@code null}
+	 * @throws IllegalArgumentException if any argument is {@code null}
 	 */
 	SupplierService(SupplierRepository supplierRepository, ItemService itemService) {
 		Assert.notNull(supplierRepository, "SupplierRepository must not be null!");
@@ -58,14 +58,16 @@ public class SupplierService {
 	}
 
 	/**
-	 * Deletes a {@link Supplier} from the {@link SupplierRepository} and all {@link Item}s assigned to the {@link Supplier} from the {@link ItemService}
+	 * Deletes a {@link Supplier} from the {@link SupplierRepository} and
+	 * all {@link Item}s assigned to the {@link Supplier} from the {@link ItemService}
 	 *
 	 * @param supplierId The id of the {@link Supplier} that is to be deleted
 	 *
 	 * @return {@code true} if the {@link Supplier} was found in the {@link SupplierRepository}
 	 */
 	public boolean deleteSupplierById(long supplierId) {
-		Optional<Supplier> supplier = supplierRepository.findById(supplierId);
+		final Optional<Supplier> supplier = supplierRepository.findById(supplierId);
+
 		return supplier.map(supp -> {
 			Streamable<Item> items = itemService.findBySupplier(supp);
 			for (Item it : items) {
@@ -81,9 +83,13 @@ public class SupplierService {
 	 *
 	 * @param name The name of the {@link Supplier} to be searched for
 	 *
-	 * @return {@link Optional} that may include found {@link Supplier}
+	 * @return The found {@link Supplier} with the name
+	 *
+	 * @throws IllegalArgumentException if the {@code name} is null
 	 */
 	public Optional<Supplier> findByName(String name) {
+		Assert.hasText(name, "Name must not be null!");
+
 		for (Supplier s : findAll()) {
 			if (s.getName().equalsIgnoreCase(name)) {
 				return Optional.of(s);
@@ -96,7 +102,7 @@ public class SupplierService {
 	/**
 	 * Finds all {@link Supplier}s in the {@link SupplierRepository}
 	 *
-	 * @return all {@link Supplier}s in the {@link SupplierRepository}
+	 * @return All {@link Supplier}s in the {@link SupplierRepository}
 	 */
 	public Streamable<Supplier> findAll() {
 		return supplierRepository.findAll();
@@ -107,7 +113,7 @@ public class SupplierService {
 	 *
 	 * @param id The id of the {@link Supplier} to be searched for
 	 *
-	 * @return {@link Optional} that may include found {@link Supplier}
+	 * @return The found {@link Supplier} with the id
 	 */
 	public Optional<Supplier> findById(long id) {
 		return supplierRepository.findById(id);
@@ -118,7 +124,7 @@ public class SupplierService {
 	 *
 	 * @param supplier The {@link Supplier} the {@link Item}s belong to
 	 *
-	 * @return all {@link Item}s of the {@link Supplier}
+	 * @return All {@link Item}s of the {@link Supplier}
 	 */
 	public Streamable<Item> findItemsBySupplier(Supplier supplier) {
 		return itemService.findBySupplier(supplier);
