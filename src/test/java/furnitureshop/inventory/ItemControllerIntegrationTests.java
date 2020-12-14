@@ -54,17 +54,17 @@ public class ItemControllerIntegrationTests {
 
 	final Supplier setSupplier = new Supplier("Set Supplier", 0.05);
 
-	Piece sofa_grey = new Piece(2, "Sofa 1", Money.of(259.99, Currencies.EURO), "sofa_2_grey.jpg", "grau",
-			"Sofa 1 in grau.", supplier, 80, Category.COUCH);
+	Piece sofa_black = new Piece(2, "Sofa 1", Money.of(259.99, Currencies.EURO), "sofa_2_black.jpg", "black",
+			"Sofa 1 in schwarz.", supplier, 80, Category.COUCH);
 
-	Piece sofa1_grey = new Piece(3, "Sofa 1", Money.of(259.99, Currencies.EURO), "sofa_2_grey.jpg", "grau",
-			"Sofa 1 in grau.", supplier, 80, Category.COUCH);
+	Piece sofa1_black = new Piece(3, "Sofa 1", Money.of(259.99, Currencies.EURO), "sofa_2_black.jpg", "black",
+			"Sofa 1 in schwarz.", supplier, 80, Category.COUCH);
 
 	Piece stuhl = new Piece(1, "Stuhl 1", Money.of(59.99, Currencies.EURO), "chair_2.jpg", "schwarz",
 			"Stuhl 1 in schwarz.", supplier, 5, Category.CHAIR);
 
 	Set set = new Set(4, "Set 1", Money.of(299.99, Currencies.EURO), "set_1.jpg", "black",
-			"Set bestehend aus Sofa 1 und Stuhl 1.", setSupplier, Arrays.asList(stuhl, sofa_grey));
+			"Set bestehend aus Sofa 1 und Stuhl 1.", setSupplier, Arrays.asList(stuhl, sofa_black));
 
 	@BeforeEach
 	void setUp() {
@@ -83,7 +83,7 @@ public class ItemControllerIntegrationTests {
 		items.add(set);
 		items.add(tisch);
 		items.add(stuhl);
-		items.add(sofa_grey);
+		items.add(sofa_black);
 
 		supplierRepository.saveAll(suppliers);
 		itemCatalog.saveAll(items);
@@ -139,18 +139,18 @@ public class ItemControllerIntegrationTests {
 
 	@Test
 	void returnsModelAndViewOnItemOverview() throws Exception {
-		itemCatalog.save(sofa_grey);
+		itemCatalog.save(sofa_black);
 
-		mvc.perform(get("/catalog/{category}/{itemId}", Category.COUCH, sofa_grey.getId()))
+		mvc.perform(get("/catalog/{category}/{itemId}", Category.COUCH, sofa_black.getId()))
 				.andExpect(status().isOk())
-				.andExpect(model().attribute("item", is(sofa_grey)))
-				.andExpect(model().attribute("variants", hasItem(sofa_grey)))
+				.andExpect(model().attribute("item", is(sofa_black)))
+				.andExpect(model().attribute("variants", hasItem(sofa_black)))
 				.andExpect(view().name("itemView"));
 	}
 
 	@Test
 	void redirectsToCatalogCategoryWithValidCategoryAndInvalidItem() throws Exception {
-		mvc.perform(get("/catalog/{category}/{itemId}", Category.COUCH, sofa1_grey.getId()))
+		mvc.perform(get("/catalog/{category}/{itemId}", Category.COUCH, sofa1_black.getId()))
 				.andExpect(status().is3xxRedirection())
 				.andExpect(redirectedUrl("/catalog/" + Category.COUCH))
 				.andExpect(view().name("redirect:/catalog/" + Category.COUCH));
@@ -158,9 +158,9 @@ public class ItemControllerIntegrationTests {
 
 	@Test
 	void redirectsToCatalogWithInvalidCategoryAndValidItem() throws Exception {
-		itemCatalog.save(sofa1_grey);
+		itemCatalog.save(sofa1_black);
 
-		mvc.perform(get("/catalog/{category}/{itemId}","bett", sofa1_grey.getId()))
+		mvc.perform(get("/catalog/{category}/{itemId}","bett", sofa1_black.getId()))
 				.andExpect(status().is3xxRedirection())
 				.andExpect(redirectedUrl("/catalog"))
 				.andExpect(view().name("redirect:/catalog"));
@@ -169,10 +169,10 @@ public class ItemControllerIntegrationTests {
 	@Test
 	@WithMockUser(roles = "EMPLOYEE")
 	void redirectsToCatalogOnItemOverviewAfterPieceDeletion() throws Exception {
-		mvc.perform(post("/admin/supplier/{suppId}/items/delete/{itemId}", sofa_grey.getSupplier().getId(), sofa_grey.getId()))
+		mvc.perform(post("/admin/supplier/{suppId}/items/delete/{itemId}", sofa_black.getSupplier().getId(), sofa_black.getId()))
 				.andExpect(status().is3xxRedirection())
-				.andExpect(redirectedUrl("/admin/supplier/" + sofa_grey.getSupplier().getId() + "/items"))
-				.andExpect(view().name("redirect:/admin/supplier/" + sofa_grey.getSupplier().getId() + "/items"));
+				.andExpect(redirectedUrl("/admin/supplier/" + sofa_black.getSupplier().getId() + "/items"))
+				.andExpect(view().name("redirect:/admin/supplier/" + sofa_black.getSupplier().getId() + "/items"));
 
 		mvc.perform(get("/catalog/{category}/{itemId}",Category.SET, set.getId()))
 				.andExpect(status().is3xxRedirection())
@@ -181,4 +181,3 @@ public class ItemControllerIntegrationTests {
 	}
 
 }
-

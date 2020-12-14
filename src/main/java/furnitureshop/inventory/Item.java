@@ -58,7 +58,7 @@ public abstract class Item extends Product {
 	 * @throws IllegalArgumentException If any of the arguments is {@code null}
 	 */
 	public Item(int groupId, String name, MonetaryAmount customerPrice, String picture, String variant,
-			String description, Supplier supplier, Category category) {
+				String description, Supplier supplier, Category category) {
 		super(name, customerPrice);
 
 		Assert.notNull(name, "Name must not be null");
@@ -70,7 +70,7 @@ public abstract class Item extends Product {
 		Assert.notNull(category, "Category must not be null");
 
 		this.groupId = groupId;
-		this.picture = "/resources/img/" + picture;
+		this.picture = "/resources/img/Inventory/" + picture;
 		this.variant = variant;
 		this.description = description;
 		this.supplier = supplier;
