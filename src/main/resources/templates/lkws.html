@@ -20,7 +20,7 @@
                 <div class="card bg-light">
                     <a class="card-img-top" th:href="@{/lkw/checkout/{name}(name=${type.name().toLowerCase()})}">
                         <img class="img-fluid w-100" th:src="@{${type.getPicture()}}"
-                             src="../static/resources/img/smalllkw.jpg" alt="LKW"/>
+                             src="../static/resources/img/lkw/smalllkw.jpg" alt="LKW"/>
                     </a>
                     <div class="card-body">
                         <h4 class="card-title" th:text="#{lkw.size} + ' ' + ${type.getName()}">3,5t</h4>

@@ -163,7 +163,7 @@ public class ItemDataInitializer implements DataInitializer {
 		items.add(new Set(41, "Küchen-Set-1", Money.of(93.99, Currencies.EURO), "set_2.jpg", "schwarz",
 				"Set bestehend aus 1xBasic-Stuhl(weiß) und 1xBasicPlus-Tisch.", setSupplier, Arrays.asList(chair_10_black, table_9)));
 
-		items.add(new Set(42, "Küchen-Set-2", Money.of(99.99, Currencies.EURO), "set_3.jpg", "weiß",
+		items.add(new Set(41, "Küchen-Set-2", Money.of(99.99, Currencies.EURO), "set_3.jpg", "weiß",
 				"Set bestehend aus 1xBasic-Stuhl(schwarz) und 1xBasic-Tisch.", setSupplier, Arrays.asList(chair_10_white, table_7)));
 
 		itemCatalog.saveAll(items);
