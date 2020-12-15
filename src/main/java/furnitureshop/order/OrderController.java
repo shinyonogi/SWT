@@ -451,7 +451,7 @@ class OrderController {
 
 		model.addAttribute("orders", orders.stream()
 				.sorted((p1, p2) -> p2.getFirst().getCreated().compareTo(p1.getFirst().getCreated()))
-				.toArray()
+				.toArray(Pair[]::new)
 		);
 		return "customerOrders";
 	}

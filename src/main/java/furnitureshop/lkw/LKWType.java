@@ -15,15 +15,18 @@ public enum LKWType {
 
 	SMALL(
 			"3,5t", 2000, "smalllkw.jpg",
-			Money.of(19.99, Currencies.EURO), Money.of(4.99, Currencies.EURO)
+			Money.of(19.99, Currencies.EURO), Money.of(4.99, Currencies.EURO),
+			"Ein kleiner LKW für alle die mal schnell was umräumen wollen."
 	),
 	MEDIUM(
 			"5,5t", 4000, "mediumlkw.jpg",
-			Money.of(49.99, Currencies.EURO), Money.of(9.99, Currencies.EURO)
+			Money.of(49.99, Currencies.EURO), Money.of(9.99, Currencies.EURO),
+			"Ein mittelgroßer LKW für alle ihr Büro umverlegen wollen."
 	),
 	LARGE(
 			"7,5t", 6000, "largelkw.jpg",
-			Money.of(79.99, Currencies.EURO), Money.of(19.99, Currencies.EURO)
+			Money.of(79.99, Currencies.EURO), Money.of(19.99, Currencies.EURO),
+			"Ein großer LKW für alle, die eine große Lagerhalle leer räumen wollen."
 	);
 
 	// Displayname of the LKWType
@@ -41,6 +44,9 @@ public enum LKWType {
 	// Price for an delivery with an LKW of this Type
 	private final MonetaryAmount delieveryPrice;
 
+	//Short description of the type
+	private final String description;
+
 	/**
 	 * Creates a new instance of an {@link LKWType}
 	 *
@@ -49,13 +55,15 @@ public enum LKWType {
 	 * @param picture        The relative path to the type picture
 	 * @param charterPrice   The price if a customer wants to rent a {@link LKW} of this type
 	 * @param delieveryPrice The price for a customer for a delivery
+	 * @param description    The short description of the type
 	 */
-	LKWType(String name, int weight, String picture, MonetaryAmount charterPrice, MonetaryAmount delieveryPrice) {
+	LKWType(String name, int weight, String picture, MonetaryAmount charterPrice, MonetaryAmount delieveryPrice, String description) {
 		this.name = name;
 		this.weight = weight;
 		this.picture = "/resources/img/lkw/" + picture;
 		this.charterPrice = charterPrice;
 		this.delieveryPrice = delieveryPrice;
+		this.description = description;
 	}
 
 	public String getName() {
@@ -76,6 +84,10 @@ public enum LKWType {
 
 	public MonetaryAmount getDelieveryPrice() {
 		return delieveryPrice;
+	}
+
+	public String getDescription() {
+		return description;
 	}
 
 	/**
