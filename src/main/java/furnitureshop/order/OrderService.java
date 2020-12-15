@@ -83,9 +83,12 @@ public class OrderService {
 		}
 
 		final Pickup order = new Pickup(useraccount.get(), contactInformation);
+		order.setCreated(businessTime.getTime());
+
 		cart.addItemsTo(order);
 		orderManagement.save(order);
 
+		//For Salespoint dateCreated -> updated
 		findById(order.getId().getIdentifier()).ifPresent(orderManagement::save);
 
 		return Optional.of(order);
@@ -134,10 +137,13 @@ public class OrderService {
 		}
 
 		final Delivery order = new Delivery(userAccount.get(), contactInformation, lkw.get(), deliveryDate);
+		order.setCreated(businessTime.getTime());
+
 		cart.addItemsTo(order);
 		order.changeAllStatus(OrderStatus.PAID);
 		orderManagement.save(order);
 
+		//For Salespoint dateCreated -> updated
 		findById(order.getId().getIdentifier()).ifPresent(orderManagement::save);
 
 		return Optional.of(order);
@@ -166,9 +172,12 @@ public class OrderService {
 		}
 
 		final LKWCharter order = new LKWCharter(userAccount.get(), contactInformation, lkw, rentDate);
+		order.setCreated(businessTime.getTime());
+
 		order.addOrderLine(lkw, Quantity.of(1));
 		orderManagement.save(order);
 
+		//For Salespoint dateCreated -> updated
 		findById(order.getId().getIdentifier()).ifPresent(orderManagement::save);
 
 		return Optional.of(order);

@@ -1,7 +1,6 @@
 package furnitureshop.inventory;
 
 import furnitureshop.supplier.Supplier;
-import org.javamoney.moneta.Money;
 import org.salespointframework.catalog.Product;
 import org.springframework.util.Assert;
 
@@ -10,10 +9,6 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-
-import static org.salespointframework.core.Currencies.EURO;
 
 /**
  * This class represents an Item.
@@ -58,7 +53,7 @@ public abstract class Item extends Product {
 	 * @throws IllegalArgumentException If any of the arguments is {@code null}
 	 */
 	public Item(int groupId, String name, MonetaryAmount customerPrice, String picture, String variant,
-				String description, Supplier supplier, Category category) {
+			String description, Supplier supplier, Category category) {
 		super(name, customerPrice);
 
 		Assert.notNull(name, "Name must not be null");
@@ -88,12 +83,7 @@ public abstract class Item extends Product {
 	@Override
 	@SuppressWarnings("NullableProblems")
 	public MonetaryAmount getPrice() {
-		final MonetaryAmount temp = getSupplierPrice().multiply(1.0 + supplier.getSurcharge());
-
-		final BigDecimal price = temp.getNumber().numberValue(BigDecimal.class)
-				.setScale(2, RoundingMode.HALF_EVEN);
-
-		return Money.of(price, EURO);
+		return getSupplierPrice().multiply(1.0 + supplier.getSurcharge());
 	}
 
 	/**

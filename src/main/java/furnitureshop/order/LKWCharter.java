@@ -60,7 +60,12 @@ public class LKWCharter extends ShopOrder {
 	}
 
 	@Override
-	public MonetaryAmount getCancelPrice() {
+	public MonetaryAmount getCancelFee() {
+		return Currencies.ZERO_EURO;
+	}
+
+	@Override
+	public MonetaryAmount getMissingPayment() {
 		return Currencies.ZERO_EURO;
 	}
 
