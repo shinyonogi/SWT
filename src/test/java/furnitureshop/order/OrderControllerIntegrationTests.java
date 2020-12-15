@@ -21,6 +21,7 @@ import org.salespointframework.order.CartItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -47,6 +48,9 @@ public class OrderControllerIntegrationTests {
 	OrderForm orderForm;
 	ContactInformation contactInformation;
 
+	@Autowired
+	OrderService orderService;
+
 	@BeforeEach
 	void setUp() {
 		supplier = new Supplier("supplier", 0.05);
@@ -56,8 +60,10 @@ public class OrderControllerIntegrationTests {
 		cart.addOrUpdateItem(item, 5);
 		cartItem = cart.get().findAny().get();
 
-		orderForm = new OrderForm("Max Mustermann", "Musterstr. 1", "muster@muster.de", 0);
+		orderForm = new OrderForm("Max Mustermann", "Musterstr. 1", "muster@muster.de", 1);
 		contactInformation = new ContactInformation("Max Mustermann", "Musterstr. 1", "muster@muster.de");
+
+		//orderService.orderDelieveryItem(cart, contactInformation);
 	}
 
 	/**
@@ -148,14 +154,13 @@ public class OrderControllerIntegrationTests {
 
 	/*
 	@Test
-	void returnsModelAndViewCheckoutIfValuesAreValid() throws Exception {
+	void returnsModelAndViewOrderSummaryIfValuesAreValid() throws Exception {
 		mvc.perform(post("/checkout")
 				.flashAttr("cart", cart)
 				.flashAttr("orderform", orderForm))
-				.andExpect(status().isOk())
-				.andExpect(view().name("orderSummary"));
+				.andDo(print());
 	}
-	 */
+	*/
 
 	/**
 	 * returnsModelAndViewOrderSearchWhenYouTryToReachIt() method
@@ -179,5 +184,19 @@ public class OrderControllerIntegrationTests {
 				.param("orderId", "test"))
 				.andExpect(status().isOk())
 				.andExpect(view().name("orderSearch"));
+	}
+
+	@Test
+	void returnsNullWhenYouTryToReachItNotAsAdmin() throws Exception {
+		mvc.perform(get("/admin/orders"))
+				.andExpect(status().is(302));
+	}
+
+	@Test
+	@WithMockUser(roles = "EMPLOYEE")
+	void returnsCustomerOrdersWhenYouTryToReachItAsAdmin() throws Exception {
+		mvc.perform(get("/admin/orders"))
+				.andExpect(status().isOk())
+				.andExpect(view().name("customerOrders"));
 	}
 }
