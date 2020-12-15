@@ -1,6 +1,7 @@
 package furnitureshop.order;
 
 import static org.hamcrest.CoreMatchers.endsWith;
+import static org.hamcrest.CoreMatchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -26,8 +27,6 @@ import org.springframework.test.web.servlet.MockMvc;
 
 /**
  * IntegrationTest for {@link OrderController}
- *
- * @author Shintaro Onogi
  */
 
 @SpringBootTest
@@ -45,6 +44,8 @@ public class OrderControllerIntegrationTests {
 	Item item;
 	CartItem cartItem;
 	Cart cart;
+	OrderForm orderForm;
+	ContactInformation contactInformation;
 
 	@BeforeEach
 	void setUp() {
@@ -54,6 +55,9 @@ public class OrderControllerIntegrationTests {
 		cart = new Cart();
 		cart.addOrUpdateItem(item, 5);
 		cartItem = cart.get().findAny().get();
+
+		orderForm = new OrderForm("Max Mustermann", "Musterstr. 1", "muster@muster.de", 0);
+		contactInformation = new ContactInformation("Max Mustermann", "Musterstr. 1", "muster@muster.de");
 	}
 
 	/**
@@ -68,8 +72,8 @@ public class OrderControllerIntegrationTests {
 	void returnsModelAndViewCartWhenYouTryToReachCart() throws Exception {
 
 		mvc.perform(get("/cart"))
-			.andExpect(status().isOk())
-			.andExpect(view().name("cart"));
+				.andExpect(status().isOk())
+				.andExpect(view().name("cart"));
 	}
 
 	/**
@@ -80,11 +84,10 @@ public class OrderControllerIntegrationTests {
 	 */
 
 	@Test
-	void redirectsToHomeWhenYouAddAnItem() throws Exception { //Trying to figure out why it won't work with local item
-		System.out.println(item.getId());
-		System.out.println(itemCatalog.findAll().stream().findAny().get().getId());
-		mvc.perform(post("/cart/add/{id}", itemCatalog.findAll().stream().findAny().get().getId() /*item.getId()*/)
-				.param("number", String.valueOf(5)))
+	void redirectsToHomeWhenYouAddAnItem() throws Exception {
+		mvc.perform(post("/cart/add/{id}", itemCatalog.findAll().stream().findAny().get().getId())
+				.param("number", String.valueOf(5))
+				.flashAttr("cart", cart))
 				.andExpect(status().is3xxRedirection())
 				.andExpect(header().string("Location", endsWith("/")));
 	}
@@ -99,7 +102,8 @@ public class OrderControllerIntegrationTests {
 	@Test
 	void redirectsToCartWhenYouEditAnItem() throws Exception {
 		mvc.perform(post("/cart/change/{id}", cartItem.getId())
-				.param("amount", String.valueOf(3)))
+				.param("amount", String.valueOf(3))
+				.flashAttr("cart", cart))
 				.andExpect(status().is3xxRedirection())
 				.andExpect(redirectedUrl("/cart"))
 				.andExpect(view().name("redirect:/cart"));
@@ -114,7 +118,8 @@ public class OrderControllerIntegrationTests {
 
 	@Test
 	void redirectsToCartWhenYouDeleteAnItem() throws Exception {
-		mvc.perform(post("/cart/delete/{id}", cartItem.getId()))
+		mvc.perform(post("/cart/delete/{id}", cartItem.getId())
+				.flashAttr("cart", cart))
 				.andExpect(status().is3xxRedirection())
 				.andExpect(redirectedUrl("/cart"))
 				.andExpect(view().name("redirect:/cart"));
@@ -133,6 +138,25 @@ public class OrderControllerIntegrationTests {
 				.andExpect(view().name("redirect:/cart"));
 	}
 
+	@Test
+	void returnsModelAndViewCheckoutWhenYouTryToCheckoutWithItems() throws Exception{
+		mvc.perform(get("/checkout")
+				.flashAttr("cart", cart))
+				.andExpect(status().isOk())
+				.andExpect(view().name("orderCheckout"));
+	}
+
+	/*
+	@Test
+	void returnsModelAndViewCheckoutIfValuesAreValid() throws Exception {
+		mvc.perform(post("/checkout")
+				.flashAttr("cart", cart)
+				.flashAttr("orderform", orderForm))
+				.andExpect(status().isOk())
+				.andExpect(view().name("orderSummary"));
+	}
+	 */
+
 	/**
 	 * returnsModelAndViewOrderSearchWhenYouTryToReachIt() method
 	 * Tests if user can reach the orderSearch page
@@ -143,6 +167,16 @@ public class OrderControllerIntegrationTests {
 	@Test
 	void returnsModelAndViewOrderSearchWhenYouTryToReachIt() throws Exception {
 		mvc.perform(get("/order"))
+				.andExpect(status().isOk())
+				.andExpect(model().attribute("result", is(0)))
+				.andExpect(status().isOk())
+				.andExpect(view().name("orderSearch"));
+	}
+
+	@Test
+	void returnsModelAndViewOrderSearchWhenYouTryToReachItWithInvalidID() throws Exception {
+		mvc.perform(post("/order")
+				.param("orderId", "test"))
 				.andExpect(status().isOk())
 				.andExpect(view().name("orderSearch"));
 	}
