@@ -274,6 +274,10 @@ public class ItemController {
 			return String.format("redirect:/admin/supplier/%d/items", suppId);
 		}
 
+		if (item instanceof Set) {
+			model.addAttribute("items", ((Set) item).getItems());
+		}
+		
 		model.addAttribute("itemForm", new ItemForm(item.getGroupId(), item.getWeight(), item.getName(), item.getPicture(), item.getVariant(), item.getDescription(), item.getSupplierPrice().getNumber().doubleValue(), item.getCategory(), new ArrayList<>()));
 		model.addAttribute("suppId", suppId);
 		model.addAttribute("itemId", item.getId());
