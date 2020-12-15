@@ -2,6 +2,7 @@ package furnitureshop.order;
 
 import furnitureshop.inventory.Item;
 import furnitureshop.lkw.LKWType;
+import org.salespointframework.core.Currencies;
 import org.salespointframework.order.Cart;
 import org.salespointframework.quantity.Quantity;
 import org.salespointframework.time.BusinessTime;
@@ -15,7 +16,9 @@ import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.money.MonetaryAmount;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -309,6 +312,13 @@ class OrderController {
 		if (order instanceof ItemOrder) {
 			model.addAttribute("items", ((ItemOrder) order).getOrderEntries());
 
+			MonetaryAmount cancel = Currencies.ZERO_EURO;
+			for (ItemOrderEntry entry : ((ItemOrder) order).getOrderEntries()) {
+				if (entry.getStatus() == OrderStatus.CANCELLED) {
+					cancel = cancel.subtract(entry.getItem().getPrice());
+				}
+			}
+
 			if (order instanceof Delivery) {
 				model.addAttribute("lkw", ((Delivery) order).getLkw());
 				model.addAttribute("deliveryDate", ((Delivery) order).getDeliveryDate());
@@ -317,6 +327,7 @@ class OrderController {
 			model.addAttribute("lkw", ((LKWCharter) order).getLkw());
 			model.addAttribute("cancelable", ((LKWCharter) order).getRentDate().isAfter(businessTime.getTime().toLocalDate()));
 			model.addAttribute("charterDate", ((LKWCharter) order).getRentDate());
+			model.addAttribute("cancel", Currencies.ZERO_EURO);
 		} else {
 			model.addAttribute("result", 1);
 			return "redirect:/order";
@@ -449,7 +460,10 @@ class OrderController {
 			return null;
 		});
 
-		model.addAttribute("orders", orders);
+		model.addAttribute("orders", orders.stream()
+				.sorted((p1, p2) -> p2.getFirst().getDateCreated().compareTo(p1.getFirst().getDateCreated()))
+				.toArray()
+		);
 		return "customerOrders";
 	}
 
