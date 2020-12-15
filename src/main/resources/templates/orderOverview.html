@@ -50,7 +50,11 @@
                         </div>
                         <div class="d-flex flex-row align-items-baseline justify-content-between">
                             <h6 th:text="#{order.overview.information.date}"></h6>
-                            <div class="text-right" th:text="${#temporals.format(order.getDateCreated(), 'dd.MM.yyyy HH:mm:ss')}"></div>
+                            <div class="text-right" th:text="${#temporals.format(order.getCreated(), 'dd.MM.yyyy HH:mm:ss')}"></div>
+                        </div>
+                        <div class="d-flex flex-row align-items-baseline justify-content-between">
+                            <h6 th:text="#{order.overview.information.update}"></h6>
+                            <div class="text-right" th:text="${#temporals.format(order.getUpdated(), 'dd.MM.yyyy HH:mm:ss')}"></div>
                         </div>
                         <div th:if="${charterDate}" class="d-flex flex-row align-items-baseline justify-content-between">
                             <h6 th:text="#{order.overview.information.charter}"></h6>
@@ -59,6 +63,10 @@
                         <div th:if="${deliveryDate}" class="d-flex flex-row align-items-baseline justify-content-between">
                             <h6 th:text="#{order.overview.information.delivery}"></h6>
                             <div class="text-right" th:text="${#temporals.format(deliveryDate, 'dd.MM.yyyy')}"></div>
+                        </div>
+                        <div th:unless="${order.getMissingPayment().isZero()}" class="d-flex flex-row align-items-baseline justify-content-between">
+                            <h6 th:text="#{order.overview.information.item.remaining}"></h6>
+                            <div class="text-right" th:text="${order.getMissingPayment().query(T(furnitureshop.FurnitureShop).MONETARY_QUERY)}"></div>
                         </div>
                     </div>
                 </div>
@@ -86,9 +94,9 @@
                             <h6 th:text="#{order.overview.information.item.refund}"></h6>
                             <div class="text-right text-success" th:text="${'-' + order.getRefund().query(T(furnitureshop.FurnitureShop).MONETARY_QUERY)}"></div>
                         </div>
-                        <div th:unless="${order.getCancelPrice().isZero()}" class="d-flex flex-row align-items-baseline justify-content-between">
+                        <div th:unless="${order.getCancelFee().isZero()}" class="d-flex flex-row align-items-baseline justify-content-between">
                             <h6 th:text="#{order.overview.information.item.cancel}"></h6>
-                            <div class="text-right text-danger" th:text="${order.getCancelPrice().query(T(furnitureshop.FurnitureShop).MONETARY_QUERY)}"></div>
+                            <div class="text-right text-danger" th:text="${order.getCancelFee().query(T(furnitureshop.FurnitureShop).MONETARY_QUERY)}"></div>
                         </div>
                         <div th:if="${deliveryDate}" class="d-flex flex-row align-items-baseline justify-content-between">
                             <h6 th:text="#{order.overview.information.delivery.cost}"></h6>
@@ -96,7 +104,7 @@
                         </div>
                         <div class="d-flex flex-row align-items-baseline justify-content-between">
                             <h6 th:text="#{order.overview.information.total}"></h6>
-                            <div class="text-right" th:text="${order.getTotal().add(order.getCancelPrice()).subtract(order.getRefund()).query(T(furnitureshop.FurnitureShop).MONETARY_QUERY)}"></div>
+                            <div class="text-right" th:text="${order.getTotal().add(order.getCancelFee()).subtract(order.getRefund()).query(T(furnitureshop.FurnitureShop).MONETARY_QUERY)}"></div>
                         </div>
                     </div>
                 </div>

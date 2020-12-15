@@ -8,12 +8,15 @@ import javax.money.MonetaryAmount;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
+import java.time.LocalDateTime;
 
 @Entity
 public abstract class ShopOrder extends Order {
 
 	@OneToOne(cascade = CascadeType.ALL)
 	private ContactInformation contactInformation;
+
+	private LocalDateTime created;
 
 	/**
 	 * Empty constructor for {@code Spring}. Not in use.
@@ -44,8 +47,22 @@ public abstract class ShopOrder extends Order {
 		return contactInformation;
 	}
 
+	public abstract MonetaryAmount getMissingPayment();
+
 	public abstract MonetaryAmount getRefund();
 
-	public abstract MonetaryAmount getCancelPrice();
+	public abstract MonetaryAmount getCancelFee();
+
+	public LocalDateTime getCreated() {
+		return created;
+	}
+
+	public LocalDateTime getUpdated() {
+		return getDateCreated();
+	}
+
+	public void setCreated(LocalDateTime created) {
+		this.created = created;
+	}
 
 }

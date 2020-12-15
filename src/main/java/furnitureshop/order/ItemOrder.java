@@ -130,7 +130,19 @@ public abstract class ItemOrder extends ShopOrder {
 	}
 
 	@Override
-	public MonetaryAmount getCancelPrice() {
+	public MonetaryAmount getMissingPayment() {
+		MonetaryAmount amount = Currencies.ZERO_EURO;
+
+		for (ItemOrderEntry entry : orderWithStatus) {
+			if (entry.getStatus() == OrderStatus.OPEN || entry.getStatus() == OrderStatus.STORED) {
+				amount = amount.add(entry.getItem().getPrice());
+			}
+		}
+
+		return amount;	}
+
+	@Override
+	public MonetaryAmount getCancelFee() {
 		MonetaryAmount price = Currencies.ZERO_EURO;
 
 		for (ItemOrderEntry entry : orderWithStatus) {
