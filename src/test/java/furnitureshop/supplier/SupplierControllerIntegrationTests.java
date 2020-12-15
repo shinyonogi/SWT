@@ -32,6 +32,7 @@ public class SupplierControllerIntegrationTests {
 
 	SupplierForm supplierForm;
 
+
 	@Test
 	@WithMockUser(roles = "EMPLOYEE")
 	void returnsModelAndViewOfSupplier() throws Exception {
@@ -78,6 +79,7 @@ public class SupplierControllerIntegrationTests {
 				.andExpect(view().name("suppliers"));
 	}
 
+	/*
 	@Test
 	@WithMockUser(roles = "EMPLOYEE")
 	void edgeCaseIntegrationTestForAddSupplierSupplierAlreadyPresent() throws Exception {
@@ -86,8 +88,8 @@ public class SupplierControllerIntegrationTests {
 				.flashAttr("supplierForm", supplierForm))
 				.andExpect(status().isOk())
 				.andExpect(view().name("suppliers"));
-
 	}
+	*/
 
 	@Test
 	@WithMockUser(roles = "EMPLOYEE")
