@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
+import javax.money.MonetaryAmount;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -216,7 +217,14 @@ public class ItemController {
 			return String.format("redirect:/admin/supplier/%d/items", suppId);
 		}
 
+		MonetaryAmount maxPrice = Currencies.ZERO_EURO;
+		for (Item item : itemList) {
+			maxPrice = maxPrice.add(item.getPrice());
+		}
+
+
 		model.addAttribute("setForm", new ItemForm(0, 0, "", "placeholder.png", "", "", 0, Category.SET, itemList));
+		model.addAttribute("maxPrice", maxPrice.getNumber());
 		model.addAttribute("suppId", suppId);
 		return "supplierSetform";
 	}
@@ -275,9 +283,11 @@ public class ItemController {
 		}
 
 		if (item instanceof Set) {
-			model.addAttribute("items", ((Set) item).getItems());
+			Set set = (Set) item;
+			model.addAttribute("items", set.getItems());
+			model.addAttribute("maxPrice", set.getPieceTotal().getNumber());
 		}
-		
+
 		model.addAttribute("itemForm", new ItemForm(item.getGroupId(), item.getWeight(), item.getName(), item.getPicture(), item.getVariant(), item.getDescription(), item.getSupplierPrice().getNumber().doubleValue(), item.getCategory(), new ArrayList<>()));
 		model.addAttribute("suppId", suppId);
 		model.addAttribute("itemId", item.getId());

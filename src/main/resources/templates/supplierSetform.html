@@ -59,11 +59,11 @@
                     </div>
                     <div class="form-group">
                         <label for="description" th:text="#{supplier.items.add.description}">Beschreibung</label>
-                        <input type="text" name="description" th:value="*{description}" class="form-control" id="description" required th:placeholder="#{supplier.sets.add.description.placeholder}">
+                        <textarea name="description" th:text="*{description}" class="form-control" id="description" required th:placeholder="#{supplier.sets.add.description.placeholder}"></textarea>
                     </div>
                     <div class="form-group">
                         <label for="price" th:text="#{supplier.sets.add.price}">Preis</label>
-                        <input type="number" min="0" step="any" name="price" th:value="*{price}" class="form-control" id="price" required>
+                        <input type="number" min="0" th:max="${maxPrice}" step="0.1" name="price" th:value="*{price}" class="form-control" id="price" required>
                     </div>
                     <div class="form-group">
                         <input type="hidden" name="category" th:value="*{category}" id="category" required/>
