@@ -11,10 +11,7 @@ import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * This class manages all HTTP Requests for Items
@@ -125,7 +122,7 @@ public class ItemController {
 			}
 		}
 
-		model.addAttribute("itemForm", new ItemForm(0, 0, "", "placeholder.png", "", "", 0, null));
+		model.addAttribute("itemForm", new ItemForm(0, 0, "", "placeholder.png", "", "", 0, null, new ArrayList<>()));
 		model.addAttribute("suppId", suppId);
 		model.addAttribute("categories", Category.values());
 		model.addAttribute("edit", false);
@@ -174,60 +171,41 @@ public class ItemController {
 
 	/**
 	 * Handles all GET-Requests for '/admin/supplier/{id}/sets/add'.
-	 *
-	 * @param id    The id of a {@link Supplier}
-	 * @param model The {@code Spring} Page {@link Model}
-	 *
-	 * @return Returns a page with all possible values of {@link Category} to choose from.
-	 */
-	@GetMapping("/admin/supplier/{id}/sets/add")
-	String getAddSetsForSupplier(@PathVariable("id") long id, Model model) {
-		model.addAttribute("categories", Category.values());
-		model.addAttribute("suppId", id);
-		model.addAttribute("showCats", true);
-		return "supplierSetform";
-	}
-
-	/**
-	 * Handles all POST-Requests for '/admin/supplier/{id}/sets/add'.
 	 * Creates a {@link EnumMap} mapping a {@link Category} to a {@link Streamable} of {@link Item} and binds that to
 	 * the model.
 	 *
 	 * @param suppId     The id of a {@link Supplier}
-	 * @param categories The {@link List} of selected {@link Category}s
 	 * @param model      The {@code Spring} Page {@link Model}
 	 *
 	 * @return Returns the view for set addition with the proper selection of {@link Item} instances.
 	 */
-	@PostMapping("/admin/supplier/{suppId}/sets/add")
-	String getDetailSetAddPage(@PathVariable("suppId") long suppId, @RequestParam("checkedCategories") List<Category> categories, Model model) {
+	@GetMapping("/admin/supplier/{suppId}/sets/add")
+	String getDetailSetAddPage(@PathVariable("suppId") long suppId, Model model) {
 		final Map<Category, Streamable<Item>> itemMap = new EnumMap<>(Category.class);
 
-		for (Category category : categories) {
-			itemMap.put(category, itemService.findAllByCategory(category));
+		for (Category category : Category.values()) {
+			itemMap.put(category, Streamable.of(itemService.findAllByCategory(category).stream().sorted().toArray(Item[]::new)));
 		}
 
 		model.addAttribute("itemMap", itemMap);
-		model.addAttribute("showCats", false);
 		model.addAttribute("suppId", suppId);
-		model.addAttribute("setForm", new ItemForm(0, 0, "", "placeholder.png", "", "", 0, Category.SET));
 
-		return "supplierSetform";
+		return "supplierSetitems";
 	}
 
 	/**
-	 * Handles all POST-Requests for '/admin/supplier/{id}/sets/add/set'.
-	 * Creates a new {@link Set} and saves it to {@link ItemCatalog} if the given {@link Supplier} is the SetSupplier.
+	 * Handles all POST-Requests for '/admin/supplier/{id}/sets/add'.
+	 * Creates a new {@link ItemForm} with the given list of items and binds it to the {@link Model}.
 	 *
 	 * @param suppId   The id of a {@link Supplier}
-	 * @param form     The {@link ItemForm} with the information about new {@link Item}
 	 * @param itemList A {@link List} of selected {@link Item}s to be added to the {@link Set}
+	 * @param model    The {@code Spring} Page {@link Model}
 	 *
-	 * @return Either redirects to the supplier overview when {@link Supplier} is not found or to the item overview of
-	 * the SetSupplier when everything was correctly created.
+	 * @return Either redirects to the supplier overview when {@link Supplier} is not found or the template for
+	 * inserting the set information
 	 */
-	@PostMapping("/admin/supplier/{suppId}/sets/add/set")
-	String addSetForSupplier(@PathVariable("suppId") long suppId, @ModelAttribute("setForm") ItemForm form, @RequestParam("itemList") List<Item> itemList) {
+	@PostMapping("/admin/supplier/{suppId}/sets/add")
+	String getSetForm(@PathVariable("suppId") long suppId, @RequestParam("itemList") List<Item> itemList, Model model) {
 		final Optional<Supplier> supplier = itemService.findSupplierById(suppId);
 
 		if (supplier.isEmpty()) {
@@ -238,10 +216,32 @@ public class ItemController {
 			return String.format("redirect:/admin/supplier/%d/items", suppId);
 		}
 
-		/*
-		if (itemList.size() == 0) {
-			return String.format("redirect:/admin/supplier/%d/sets/add", suppId);
-		}*/
+		model.addAttribute("setForm", new ItemForm(0, 0, "", "placeholder.png", "", "", 0, Category.SET, itemList));
+		model.addAttribute("suppId", suppId);
+		return "supplierSetform";
+	}
+
+	/**
+	 * Handles all POST-Requests for '/admin/supplier/{id}/sets/add/set'.
+	 * Creates a new {@link Set} and saves it to {@link ItemCatalog} if the given {@link Supplier} is the SetSupplier.
+	 *
+	 * @param suppId   	The id of a {@link Supplier}
+	 * @param form 		A {@link ItemForm} with the information about a new {@link Set}
+	 *
+	 * @return Either redirects to the supplier overview when {@link Supplier} is not found or to the item overview of
+	 * the SetSupplier when everything was correctly created.
+	 */
+	@PostMapping("/admin/supplier/{suppId}/sets/add/set")
+	String addSetForSupplier(@PathVariable("suppId") long suppId, @ModelAttribute("setForm") ItemForm form) {
+		final Optional<Supplier> supplier = itemService.findSupplierById(suppId);
+
+		if (supplier.isEmpty()) {
+			return "redirect:/admin/suppliers";
+		}
+
+		if (!supplier.get().getName().equals("Set Supplier")) {
+			return String.format("redirect:/admin/supplier/%d/items", suppId);
+		}
 
 		final Set set = new Set(
 				form.getGroupId(),
@@ -251,7 +251,7 @@ public class ItemController {
 				form.getVariant(),
 				form.getDescription(),
 				supplier.get(),
-				itemList
+				form.getItems()
 		);
 
 		itemService.addOrUpdateItem(set);
@@ -274,7 +274,7 @@ public class ItemController {
 			return String.format("redirect:/admin/supplier/%d/items", suppId);
 		}
 
-		model.addAttribute("itemForm", new ItemForm(item.getGroupId(), item.getWeight(), item.getName(), item.getPicture(), item.getVariant(), item.getDescription(), item.getSupplierPrice().getNumber().doubleValue(), item.getCategory()));
+		model.addAttribute("itemForm", new ItemForm(item.getGroupId(), item.getWeight(), item.getName(), item.getPicture(), item.getVariant(), item.getDescription(), item.getSupplierPrice().getNumber().doubleValue(), item.getCategory(), new ArrayList<>()));
 		model.addAttribute("suppId", suppId);
 		model.addAttribute("itemId", item.getId());
 		model.addAttribute("categories", Category.values());
