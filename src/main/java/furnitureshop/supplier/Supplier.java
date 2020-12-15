@@ -76,4 +76,7 @@ public class Supplier {
 		return Objects.hash(id);
 	}
 
+	public void setSurcharge(double surcharge) {
+		this.surcharge = surcharge;
+	}
 }

@@ -79,6 +79,30 @@ public class SupplierService {
 	}
 
 	/**
+	 * Changes the surcharge for the given {@link Supplier} and saves the new version to {@link SupplierRepository}
+	 *
+	 * @param supplierId The id of the {@link Supplier} that is to be deleted
+	 * @param surcharge value of new surcharge
+	 *
+	 * @return {@code true} if the surcharge was changed and false if the
+	 * supplier was not found in {@link SupplierRepository}
+	 *
+	 * @throws IllegalArgumentException if the surcharge is lower than 0
+	 */
+	public boolean changeSupplierSurcharge(long supplierId, double surcharge) {
+		Assert.isTrue(surcharge >= 0, "Surcharge must be greater equal to 0!");
+
+		final Optional<Supplier> supplier = supplierRepository.findById(supplierId);
+
+		if (supplier.isPresent()) {
+			supplier.get().setSurcharge(surcharge / 100);
+			supplierRepository.save(supplier.get());
+			return true;
+		}
+		return false;
+	}
+
+	/**
 	 * Searches for a {@link Supplier} by its name in the {@link SupplierRepository}
 	 *
 	 * @param name The name of the {@link Supplier} to be searched for
