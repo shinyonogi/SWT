@@ -115,6 +115,16 @@ public class OrderControllerIntegrationTests {
 				.andExpect(view().name("redirect:/cart"));
 	}
 
+	@Test
+	void redirectsToCartWhenYouDeleteAnItemByEditing() throws Exception {
+		mvc.perform(post("/cart/change/{id}", cartItem.getId())
+				.param("amount", String.valueOf(-3))
+				.flashAttr("cart", cart))
+				.andExpect(status().is3xxRedirection())
+				.andExpect(redirectedUrl("/cart"))
+				.andExpect(view().name("redirect:/cart"));
+	}
+
 	/**
 	 * redirectsToCartWhenYouDeleteAnItem method
 	 * Tests if you get redirected to "/cart" if you delete an item in the cart

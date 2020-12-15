@@ -109,4 +109,10 @@ public class SupplierServiceTests {
 		assertNotEquals(defaultSupplier, defaultSupplier2);
 	}
 
+	@Test
+	void testChangeSupplierSurcharge() {
+		Long id = supplierRepository.findAll().stream().findAny().get().getId();
+		assertTrue(supplierService.changeSupplierSurcharge(id, 0.3));
+		assertFalse(supplierService.changeSupplierSurcharge(999999999, 0.1));
+	}
 }
