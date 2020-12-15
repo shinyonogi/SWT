@@ -13,12 +13,12 @@ Adminsicht: Sebastian Jaster +
 - Katalog durchstöbern
   * Schauen was verfügbar
 - Artikel auswählen -> In den Warenkorb
-  * Sofa 1 (grün)
+  * Sofa (Classic): 1x
 - Weiteren Artikel hinzufügen über Kategorien
-  * Stuhl 1 (schwarz) (3x)
-- Anzahl reduzieren
-  * Stuhl 1: 3x -> 2x
-- Bestellen mit Lieferung
+  * Stuhl (Basic+): 3x
+- Anzahlanzahl im Warenkorb reduzieren
+  * Stuhl (Basic+): 3x -> 2x
+- Bestellen mit _Lieferung_
   * Hans Müller
   * Teststraße 1
   * hans@mueller.de
@@ -28,12 +28,12 @@ Adminsicht: Sebastian Jaster +
 - Bestellung suchen und Bestellungsstatus ansehen
   * Bestellnummer eingeben
 - Artikel stornieren
-  * Stuhl 1 -> 1x stornieren
+  * Stuhl (Basic+): 1x stornieren
 - LKW prüfen und mieten
   * 3,5t LKW mieten
-  ** Hans Müller
-  ** Teststraße 1
-  ** hans@mueller.de
+    ** Hans Müller
+    ** Teststraße 1
+    ** hans@mueller.de
   * An einem Samstag prüfen (19.12.20) -> Fehler
   * An einem Montag prüfen (21.12.20) -> Verfügbar
   * LKW mieten
@@ -52,17 +52,18 @@ Adminsicht: Sebastian Jaster +
   * Gewinne/Verluste beurteilen
 - Lieferanten anzeigen
   * Übersicht öffnen
-  * Schlechten Lieferanten
-  ** Artikel anzeigen
-  ** Lieferant entfernen
+  * Auswahl schlechter Lieferant
+    ** Artikel anzeigen
+    ** Lieferant entfernen
 - Lieferant hinzufügen
-  * Name: MultiStühle
-  * Aufschlag: 10%
+  * Name: MultiSofa
+  * Aufschlag: 15%
 - Artikel hinzufügen zu neuen Lieferant
-  * Stuhl 2
-  * Preis: 43.99€
+  * Name: Big Classic
+  * Preis: 715.99€
   * Variante: weiß
-  * Gruppennummer: 1
-  * Beschreibung: Ein einfacher weißer Stuhl
-  * Kategorie: Chair
+  * Gewicht: 70kg
+  * Gruppennummer: 20
+  * Beschreibung: Ein großes aber einfaches weißes Sofa
+  * Kategorie: COUCH
 - Änderungen im Katalog ansehen
