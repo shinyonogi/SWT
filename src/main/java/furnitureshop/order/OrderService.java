@@ -84,12 +84,10 @@ public class OrderService {
 
 		final Pickup order = new Pickup(useraccount.get(), contactInformation);
 		order.setCreated(businessTime.getTime());
+		order.setUpdated(businessTime.getTime());
 
 		cart.addItemsTo(order);
 		orderManagement.save(order);
-
-		//For Salespoint dateCreated -> updated
-		findById(order.getId().getIdentifier()).ifPresent(orderManagement::save);
 
 		return Optional.of(order);
 	}
@@ -138,13 +136,11 @@ public class OrderService {
 
 		final Delivery order = new Delivery(userAccount.get(), contactInformation, lkw.get(), deliveryDate);
 		order.setCreated(businessTime.getTime());
+		order.setUpdated(businessTime.getTime());
 
 		cart.addItemsTo(order);
 		order.changeAllStatus(OrderStatus.PAID);
 		orderManagement.save(order);
-
-		//For Salespoint dateCreated -> updated
-		findById(order.getId().getIdentifier()).ifPresent(orderManagement::save);
 
 		return Optional.of(order);
 	}
@@ -173,12 +169,10 @@ public class OrderService {
 
 		final LKWCharter order = new LKWCharter(userAccount.get(), contactInformation, lkw, rentDate);
 		order.setCreated(businessTime.getTime());
+		order.setUpdated(businessTime.getTime());
 
 		order.addOrderLine(lkw, Quantity.of(1));
 		orderManagement.save(order);
-
-		//For Salespoint dateCreated -> updated
-		findById(order.getId().getIdentifier()).ifPresent(orderManagement::save);
 
 		return Optional.of(order);
 	}
@@ -204,6 +198,7 @@ public class OrderService {
 			return false;
 		}
 
+		order.setUpdated(businessTime.getTime());
 		orderManagement.save(order);
 
 		return true;
@@ -255,9 +250,53 @@ public class OrderService {
 			if (order.getOrderEntries().isEmpty()) {
 				orderManagement.delete(order);
 			} else {
+				order.setUpdated(businessTime.getTime());
 				orderManagement.save(order);
 			}
 		}
+	}
+
+	public OrderStatus getStatus(ShopOrder order) {
+		Assert.notNull(order, "Order must not be null");
+
+		OrderStatus status = OrderStatus.OPEN;
+
+		if (order instanceof LKWCharter) {
+			if (((LKWCharter) order).getRentDate().isAfter(businessTime.getTime().toLocalDate())) {
+				status = OrderStatus.PAID;
+			} else {
+				status = OrderStatus.COMPLETED;
+			}
+		} else if (order instanceof ItemOrder) {
+			final List<ItemOrderEntry> entries = ((ItemOrder) order).getOrderEntries();
+
+			if (entries.isEmpty()) {
+				return status;
+			}
+
+			status = OrderStatus.CANCELLED;
+
+			if (order instanceof Pickup) {
+				for (ItemOrderEntry entry : entries) {
+					// Normal Status order
+					if (entry.getStatus().ordinal() < status.ordinal()) {
+						status = entry.getStatus();
+					}
+				}
+			} else if (order instanceof Delivery) {
+				for (ItemOrderEntry entry : entries) {
+					// Paid and Stored are switched in Delivery
+					if (entry.getStatus() == OrderStatus.PAID && status == OrderStatus.STORED) {
+						status = entry.getStatus();
+					} else if (entry.getStatus().ordinal() < status.ordinal()
+							&& (entry.getStatus() != OrderStatus.STORED || status != OrderStatus.PAID)) {
+						status = entry.getStatus();
+					}
+				}
+			}
+		}
+
+		return status;
 	}
 
 	/**

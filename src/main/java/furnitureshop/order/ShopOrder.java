@@ -17,6 +17,7 @@ public abstract class ShopOrder extends Order {
 	private ContactInformation contactInformation;
 
 	private LocalDateTime created;
+	private LocalDateTime updated;
 
 	/**
 	 * Empty constructor for {@code Spring}. Not in use.
@@ -25,7 +26,7 @@ public abstract class ShopOrder extends Order {
 	 */
 	@Deprecated
 	@SuppressWarnings("DeprecatedIsStillUsed")
-	protected ShopOrder() { }
+	protected ShopOrder() {}
 
 	/**
 	 * Creates new instance of {@link ShopOrder}
@@ -57,12 +58,20 @@ public abstract class ShopOrder extends Order {
 		return created;
 	}
 
-	public LocalDateTime getUpdated() {
-		return getDateCreated();
+	public void setCreated(LocalDateTime created) {
+		Assert.notNull(created, "Date must not be null!");
+
+		this.created = created;
 	}
 
-	public void setCreated(LocalDateTime created) {
-		this.created = created;
+	public LocalDateTime getUpdated() {
+		return updated;
+	}
+
+	public void setUpdated(LocalDateTime updated) {
+		Assert.notNull(updated, "Date must not be null!");
+
+		this.updated = updated;
 	}
 
 }

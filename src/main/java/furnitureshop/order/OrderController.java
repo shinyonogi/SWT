@@ -430,24 +430,8 @@ class OrderController {
 	 */
 	@GetMapping("/admin/orders")
 	String getCustomerOrders(Model model) {
-		final Streamable<Pair<ShopOrder, OrderStatus>> orders = orderService.findAll().map(o -> {
-			if (o instanceof ItemOrder) {
-				OrderStatus min = OrderStatus.CANCELLED;
-				for (ItemOrderEntry entry : ((ItemOrder) o).getOrderEntries()) {
-					if (entry.getStatus().ordinal() < min.ordinal()) {
-						min = entry.getStatus();
-					}
-				}
-				return Pair.of(o, min);
-			} else if (o instanceof LKWCharter) {
-				if (((LKWCharter) o).getRentDate().isAfter(businessTime.getTime().toLocalDate())) {
-					return Pair.of(o, OrderStatus.PAID);
-				} else {
-					return Pair.of(o, OrderStatus.COMPLETED);
-				}
-			}
-			return null;
-		});
+		final Streamable<Pair<ShopOrder, OrderStatus>> orders = orderService.findAll()
+				.map(o -> Pair.of(o, orderService.getStatus(o)));
 
 		model.addAttribute("orders", orders.stream()
 				.sorted((p1, p2) -> p2.getFirst().getCreated().compareTo(p1.getFirst().getCreated()))
