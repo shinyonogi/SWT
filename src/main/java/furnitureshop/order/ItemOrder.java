@@ -141,7 +141,9 @@ public abstract class ItemOrder extends ShopOrder {
 		MonetaryAmount amount = Currencies.ZERO_EURO;
 
 		for (ItemOrderEntry entry : orderWithStatus) {
-			if (entry.getStatus() == OrderStatus.OPEN || entry.getStatus() == OrderStatus.STORED) {
+			if (entry.getStatus() == OrderStatus.OPEN) {
+				amount = amount.add(entry.getItem().getPrice());
+			} else if (this instanceof Pickup && entry.getStatus() == OrderStatus.STORED) {
 				amount = amount.add(entry.getItem().getPrice());
 			}
 		}

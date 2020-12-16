@@ -3,7 +3,7 @@ package furnitureshop.supplier;
 public class SupplierForm {
 
 	private final String name;
-	private final Double surcharge;
+	private final double surcharge;
 
 	/**
 	 * Creates a new instance of a {@link SupplierForm}
@@ -11,7 +11,7 @@ public class SupplierForm {
 	 * @param name      Name of the Supplier
 	 * @param surcharge Addional part of the price of the {@link furnitureshop.inventory.Item Item}s
 	 */
-	public SupplierForm(String name, Double surcharge) {
+	public SupplierForm(String name, double surcharge) {
 		this.name = name;
 		this.surcharge = surcharge;
 	}

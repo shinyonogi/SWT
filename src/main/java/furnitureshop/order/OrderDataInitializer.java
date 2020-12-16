@@ -92,7 +92,7 @@ public class OrderDataInitializer implements DataInitializer {
 
 			order.ifPresent(o -> {
 				for (ItemOrderEntry entry : new ArrayList<>(o.getOrderEntries())) {
-					final OrderStatus status = OrderStatus.values()[random.nextInt(OrderStatus.values().length - 2) + 2];
+					final OrderStatus status = OrderStatus.values()[random.nextInt(OrderStatus.values().length - 1) + 1];
 					orderService.changeItemEntryStatus(o, entry.getId(), status);
 				}
 			});
