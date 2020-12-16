@@ -77,7 +77,7 @@ public class OrderDataInitializer implements DataInitializer {
 			final int max = random.nextInt(5) + 2;
 
 			for (int j = 0; j < max; j++) {
-				cart.addOrUpdateItem(items.get(random.nextInt(items.size())), random.nextInt(2) + 1);
+				cart.addOrUpdateItem(items.get(random.nextInt(items.size())), random.nextInt(2) + 1L);
 			}
 
 			final ContactInformation temp = infos[random.nextInt(infos.length)];

@@ -139,7 +139,8 @@ public abstract class ItemOrder extends ShopOrder {
 			}
 		}
 
-		return amount;	}
+		return amount;
+	}
 
 	@Override
 	public MonetaryAmount getCancelFee() {

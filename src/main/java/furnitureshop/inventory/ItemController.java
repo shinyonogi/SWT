@@ -117,10 +117,8 @@ public class ItemController {
 	@GetMapping("/admin/supplier/{id}/items/add")
 	String getAddItemForSupplier(@PathVariable("id") long suppId, Model model) {
 		Optional<Supplier> supplier = itemService.findSupplierById(suppId);
-		if (supplier.isPresent()) {
-			if (supplier.get().getName().equals("Set Supplier")) {
-				return String.format("redirect:/admin/supplier/%s/sets/add", suppId);
-			}
+		if (supplier.isPresent() && supplier.get().getName().equals("Set Supplier")) {
+			return String.format("redirect:/admin/supplier/%s/sets/add", suppId);
 		}
 
 		model.addAttribute("itemForm", new ItemForm(0, 0, "", "placeholder.png", "", "", 0, null, new ArrayList<>()));

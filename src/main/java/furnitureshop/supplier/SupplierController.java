@@ -6,7 +6,6 @@ import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.PreUpdate;
 import java.util.Optional;
 
 /**

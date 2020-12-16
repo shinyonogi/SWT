@@ -290,12 +290,10 @@ public class LKWService {
 			if (quantity <= 1) {
 				// Remove entry from calender
 				calendar.removeEntry(date);
-				lkwCatalog.save(lkw);
-				return true;
+			} else {
+				// Decrease delivery count
+				delivery.setQuantity(quantity - 1);
 			}
-
-			// Decrease delivery count
-			delivery.setQuantity(quantity - 1);
 			lkwCatalog.save(lkw);
 
 			return true;
