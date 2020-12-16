@@ -21,15 +21,15 @@
                 <div class="card h-100 bg-light">
                     <a class="card-img-top" th:href="@{/catalog/{category}/{id}(id=${item.getId()}, category=${item.getCategory().name().toLowerCase()})}">
                         <img class="img-fluid" th:src="@{${item.getPicture()}}"
-                             src="../static/resources/img/chair_1.jpg" alt="Artikel"/>
+                             src="../static/resources/img/inventory/chair_1.jpg" alt="Artikel"/>
                     </a>
 
-                    <div class="card-body">
+                    <div class="card-body align-items-stretch d-flex flex-column">
                         <h4 class="card-title" th:text="${item.getName()}">Name</h4>
                         <del><h5 class="text-danger" th:text="${!item.getPartTotal().isEqualTo(item.getPrice()) ? item.getPartTotal().query(T(furnitureshop.FurnitureShop).MONETARY_QUERY) : ''}"></h5></del>
                         <h5 class="text-dark" th:text="#{item.price} + ' ' + ${item.getPrice().query(T(furnitureshop.FurnitureShop).MONETARY_QUERY)}">999,99€</h5>
                         <p class="card-text text-secondary" th:text="${item.getDescription()}">Lorem ipsum</p>
-                        <a class="btn btn-outline-primary" th:href="@{/catalog/{category}/{id}(id=${item.getId()}, category=${item.getCategory().name().toLowerCase()})}" th:text="#{item.detail.btn}">Artikel ansehen</a>
+                        <a class="btn btn-outline-primary mt-auto" th:href="@{/catalog/{category}/{id}(id=${item.getId()}, category=${item.getCategory().name().toLowerCase()})}" th:text="#{item.detail.btn}">Artikel ansehen</a>
                     </div>
                 </div>
             </div>

@@ -15,8 +15,13 @@ public class Supplier {
 	private long id;
 
 	private String name;
-	private double surcharge;        // factor by which the price of furniture gets multiplied by
+	private double surcharge;
 
+	/**
+	 * Empty constructor for {@code Spring}. Not in use.
+	 *
+	 * @deprecated
+	 */
 	@Deprecated
 	protected Supplier() {}
 
@@ -24,7 +29,7 @@ public class Supplier {
 	 * Creates a new instance of a {@link Supplier}
 	 *
 	 * @param name      Name of the Supplier
-	 * @param surcharge Factor by which the price of all {@link furnitureshop.inventory.Item Item}s associated with this supplier is multiplied by
+	 * @param surcharge Addional part of the price of the {@link furnitureshop.inventory.Item Item}s
 	 *
 	 * @throws IllegalArgumentException if the {@code name} is {@code null} or {@code surcharge} is negative
 	 */
@@ -71,4 +76,7 @@ public class Supplier {
 		return Objects.hash(id);
 	}
 
+	public void setSurcharge(double surcharge) {
+		this.surcharge = surcharge;
+	}
 }

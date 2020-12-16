@@ -4,11 +4,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.PreUpdate;
 import java.util.Optional;
 
 /**
@@ -130,6 +128,22 @@ public class SupplierController {
 		});
 
 		return "supplierItem";
+	}
+
+	/**
+	 * Handles all POST-requests for '/admin/supplier/{id}/surcharge/edit'.
+	 * Changes the supplier surcharge for the given {@link Supplier}
+	 *
+	 * @param id    id of the {@link Supplier}
+	 * @param surcharge value of new surcharge
+	 *
+	 * @return redirects to supplier overview
+	 */
+	@PostMapping("/admin/supplier/{id}/surcharge/edit")
+	String editSurchargeForSupplier(@PathVariable("id") long id, @RequestParam("surcharge") double surcharge) {
+		supplierService.changeSupplierSurcharge(id, surcharge);
+
+		return "redirect:/admin/suppliers";
 	}
 
 }

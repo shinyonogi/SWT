@@ -20,12 +20,13 @@
                 <div class="card bg-light">
                     <a class="card-img-top" th:href="@{/lkw/checkout/{name}(name=${type.name().toLowerCase()})}">
                         <img class="img-fluid w-100" th:src="@{${type.getPicture()}}"
-                             src="../static/resources/img/smalllkw.jpg" alt="LKW"/>
+                             src="../static/resources/img/lkw/smalllkw.jpg" alt="LKW"/>
                     </a>
-                    <div class="card-body">
+                    <div class="card-body align-items-stretch d-flex flex-column">
                         <h4 class="card-title" th:text="#{lkw.size} + ' ' + ${type.getName()}">3,5t</h4>
                         <h5 class="text-dark" th:text="${type.getCharterPrice().query(T(furnitureshop.FurnitureShop).MONETARY_QUERY)} + ' ' + #{lkw.priceinfo}">10 EUR / Tag</h5>
-                        <a class="btn btn-outline-primary mt-2" th:text="#{lkw.checkout}" th:href="@{/lkw/checkout/{name}(name=${type.name().toLowerCase()})}">LKW mieten</a>
+                        <p class="card-text text-secondary" th:text="${type.getDescription()}">Lorem ipsum</p>
+                        <a class="btn btn-outline-primary mt-auto" th:text="#{lkw.checkout}" th:href="@{/lkw/checkout/{name}(name=${type.name().toLowerCase()})}">LKW mieten</a>
                     </div>
                 </div>
             </div>

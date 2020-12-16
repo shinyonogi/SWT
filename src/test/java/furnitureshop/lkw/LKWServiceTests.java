@@ -1,8 +1,11 @@
 package furnitureshop.lkw;
 
 import furnitureshop.FurnitureShop;
+import furnitureshop.order.OrderService;
+import furnitureshop.order.ShopOrder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.salespointframework.order.OrderManagement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
@@ -22,11 +25,20 @@ public class LKWServiceTests {
 	@Autowired
 	LKWService lkwService;
 
+	@Autowired
+	OrderManagement<ShopOrder> orderManagement;
+
+	@Autowired
+	OrderService orderService;
+
 	LocalDate weekendDate, validDate;
 	LKWType type;
 
 	@BeforeEach
 	void setUp() {
+		for (ShopOrder order : orderManagement.findBy(orderService.getDummyUser().get())) {
+			orderManagement.delete(order);
+		}
 		this.weekendDate = LocalDate.of(2023, 3, 19);
 		this.validDate = LocalDate.of(2023, 3, 20);
 		this.type = LKWType.SMALL;

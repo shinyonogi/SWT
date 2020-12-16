@@ -78,7 +78,7 @@ class OrderController {
 	 * @return the view index
 	 */
 	@PostMapping("/cart/add/{id}")
-	String addItem(@PathVariable("id") Item item, @RequestParam("number") int quantity, @ModelAttribute Cart cart) {
+	String addItem(@PathVariable("id") Item item, @RequestParam("number") int quantity, @ModelAttribute("cart") Cart cart) {
 		cart.addOrUpdateItem(item, Quantity.of(quantity));
 
 		return "redirect:/";
@@ -95,7 +95,7 @@ class OrderController {
 	 * @return the view cart
 	 */
 	@PostMapping("/cart/change/{id}")
-	String editItem(@PathVariable("id") String cartItemId, @RequestParam("amount") int amount, @ModelAttribute Cart cart) {
+	String editItem(@PathVariable("id") String cartItemId, @RequestParam("amount") int amount, @ModelAttribute("cart") Cart cart) {
 		return cart.getItem(cartItemId).map(it -> {
 			if (amount <= 0) {
 				cart.removeItem(cartItemId);
@@ -117,7 +117,7 @@ class OrderController {
 	 * @return the view cart
 	 */
 	@PostMapping("/cart/delete/{id}")
-	String deleteItem(@PathVariable("id") String cartItemId, @ModelAttribute Cart cart) {
+	String deleteItem(@PathVariable("id") String cartItemId, @ModelAttribute("cart") Cart cart) {
 		cart.removeItem(cartItemId);
 
 		return "redirect:/cart";
@@ -449,7 +449,10 @@ class OrderController {
 			return null;
 		});
 
-		model.addAttribute("orders", orders);
+		model.addAttribute("orders", orders.stream()
+				.sorted((p1, p2) -> p2.getFirst().getCreated().compareTo(p1.getFirst().getCreated()))
+				.toArray(Pair[]::new)
+		);
 		return "customerOrders";
 	}
 

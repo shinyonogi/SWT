@@ -44,7 +44,7 @@
 					<td class="align-middle">
 						<a class="card-img-top" th:href="@{/catalog/{category}/{id}(id=${cartItem.getProduct().getId()}, category=${cartItem.getProduct().getCategory().name().toLowerCase()})}">
 							<img class="img-fluid rounded" th:src="@{${cartItem.getProduct().getPicture()}}" style="height: 150px"
-								 src="../static/resources/img/chair_1.jpg" alt="Artikel"/>
+								 src="../static/resources/img/inventory/chair_1.jpg" alt="Artikel"/>
 						</a>
 					</td>
 					<td class="align-middle" style="width: 30%">
@@ -71,7 +71,7 @@
 		<div class="float-right mt-3 mb-3">
 			<h2 th:text="#{cart.price} + ' ' + ${cart.getPrice().query(T(furnitureshop.FurnitureShop).MONETARY_QUERY)}"></h2>
 			<div>
-				<a th:href="@{/catalog}"  class="btn btn-outline-dark rounded-pill mt-3 mr-3" role="button" th:text="#{cart.continue}">Continue Shopping</a>
+				<a th:href="@{/catalog}" class="btn btn-outline-dark rounded-pill mt-3 mr-3" role="button" th:text="#{cart.continue}">Continue Shopping</a>
 				<a th:href="@{/checkout}" class="btn btn-primary rounded-pill mt-3" role="button" th:text="#{cart.checkout}">Bestellen</a>
 			</div>
 		</div>

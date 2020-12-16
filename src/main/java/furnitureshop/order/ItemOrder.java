@@ -2,11 +2,13 @@ package furnitureshop.order;
 
 import furnitureshop.inventory.Item;
 import org.salespointframework.catalog.Product;
+import org.salespointframework.core.Currencies;
 import org.salespointframework.order.OrderLine;
 import org.salespointframework.quantity.Quantity;
 import org.salespointframework.useraccount.UserAccount;
 import org.springframework.data.util.Streamable;
 
+import javax.money.MonetaryAmount;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -21,6 +23,11 @@ public abstract class ItemOrder extends ShopOrder {
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
 	private List<ItemOrderEntry> orderWithStatus;
 
+	/**
+	 * Empty constructor for {@code Spring}. Not in use.
+	 *
+	 * @deprecated
+	 */
 	@Deprecated
 	@SuppressWarnings("DeprecatedIsStillUsed")
 	protected ItemOrder() {}
@@ -29,7 +36,7 @@ public abstract class ItemOrder extends ShopOrder {
 	 * Creates a new instance of {@link ItemOrder}
 	 *
 	 * @param userAccount        The dummy {@link UserAccount}
-	 * @param contactInformation {@link ContactInformation} of the user
+	 * @param contactInformation The {@link ContactInformation} of the customer
 	 *
 	 * @throws IllegalArgumentException if any argument is {@code null}
 	 */
@@ -39,6 +46,14 @@ public abstract class ItemOrder extends ShopOrder {
 		this.orderWithStatus = new ArrayList<>();
 	}
 
+	/**
+	 * This function is used to create an order line with order entries.
+	 *
+	 * @param product  {@link Item} that is going to be added to order line
+	 * @param quantity The quantity of the product
+	 *
+	 * @return the created order line
+	 */
 	@Override
 	@SuppressWarnings("NullableProblems")
 	public OrderLine addOrderLine(Product product, Quantity quantity) {
@@ -54,6 +69,13 @@ public abstract class ItemOrder extends ShopOrder {
 		return orderLine;
 	}
 
+	/**
+	 * This function is used to remove a certain order entry with status
+	 *
+	 * @param entryId The Identifier of the entry that needs to be removed
+	 *
+	 * @return boolean true if the removal is successful, boolean false if unsuccessful
+	 */
 	public boolean removeEntry(long entryId) {
 		for (ItemOrderEntry entry : orderWithStatus) {
 			if (entry.getId() == entryId) {
@@ -64,6 +86,14 @@ public abstract class ItemOrder extends ShopOrder {
 		return false;
 	}
 
+	/**
+	 * This function is used to change the order status of certain order entry.
+	 *
+	 * @param entryId   The Identifier of the entry that needs to be changed
+	 * @param newStatus The new {@link OrderStatus} of the {@link ItemOrderEntry}
+	 *
+	 * @return boolean true if the change of status is successful, boolean false if unsuccessful
+	 */
 	public boolean changeStatus(long entryId, OrderStatus newStatus) {
 		for (ItemOrderEntry orderEntry : orderWithStatus) {
 			if (orderEntry.getId() == entryId) {
@@ -75,10 +105,53 @@ public abstract class ItemOrder extends ShopOrder {
 		return false;
 	}
 
+	/**
+	 * This function is used to change the order status of all order entries.
+	 *
+	 * @param newStatus The new {@link OrderStatus}
+	 */
 	public void changeAllStatus(OrderStatus newStatus) {
 		for (ItemOrderEntry orderEntry : orderWithStatus) {
 			orderEntry.setStatus(newStatus);
 		}
+	}
+
+	@Override
+	public MonetaryAmount getRefund() {
+		MonetaryAmount amount = Currencies.ZERO_EURO;
+
+		for (ItemOrderEntry entry : orderWithStatus) {
+			if (entry.getStatus() == OrderStatus.CANCELLED) {
+				amount = amount.add(entry.getItem().getPrice());
+			}
+		}
+
+		return amount;
+	}
+
+	@Override
+	public MonetaryAmount getMissingPayment() {
+		MonetaryAmount amount = Currencies.ZERO_EURO;
+
+		for (ItemOrderEntry entry : orderWithStatus) {
+			if (entry.getStatus() == OrderStatus.OPEN || entry.getStatus() == OrderStatus.STORED) {
+				amount = amount.add(entry.getItem().getPrice());
+			}
+		}
+
+		return amount;	}
+
+	@Override
+	public MonetaryAmount getCancelFee() {
+		MonetaryAmount price = Currencies.ZERO_EURO;
+
+		for (ItemOrderEntry entry : orderWithStatus) {
+			if (entry.getStatus() == OrderStatus.CANCELLED) {
+				price = price.add(entry.getItem().getPrice()).multiply(0.2);
+			}
+		}
+
+		return price;
 	}
 
 	public List<ItemOrderEntry> getOrderEntries() {

@@ -6,7 +6,7 @@ header.masthead {
   padding-top: calc(7rem + 72px);
   padding-bottom: 7rem;
   /*background: linear-gradient(0deg, #ff6a00 0%, #ee0979 100%);*/
-  background-image: url("../img/background.png");
+  background-image: url("../img/gui/background.png");
   background-repeat: no-repeat;
   background-position: center center;
   background-attachment: scroll;
@@ -34,7 +34,7 @@ header.cart-header {
 }
 
 .cart-empty-header {
-     background-image: url("../img/shopping-cart.png");
+     background-image: url("../img/gui/shopping-cart.png");
      background-repeat: no-repeat;
      background-position: center center;
      background-attachment: scroll;
@@ -52,10 +52,17 @@ header.cart-header {
 }
 
 .bg-image {
-    background-image: url("../img/worker.jpg");
+    background-image: url("../img/gui/worker.jpg");
     background-size: cover;
     background-position: center center;
 }
+
+.bg-image-order {
+    background-image: url("../img/gui/order.jpg");
+    background-size: cover;
+    background-position: center center;
+}
+
 
 @media (min-width: 992px) {
   header.masthead {

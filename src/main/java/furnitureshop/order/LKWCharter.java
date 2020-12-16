@@ -1,9 +1,11 @@
 package furnitureshop.order;
 
 import furnitureshop.lkw.LKW;
+import org.salespointframework.core.Currencies;
 import org.salespointframework.useraccount.UserAccount;
 import org.springframework.util.Assert;
 
+import javax.money.MonetaryAmount;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import java.time.LocalDate;
@@ -16,6 +18,11 @@ public class LKWCharter extends ShopOrder {
 
 	private LocalDate rentDate;
 
+	/**
+	 * Empty constructor for {@code Spring}. Not in use.
+	 *
+	 * @deprecated
+	 */
 	@Deprecated
 	protected LKWCharter() {}
 
@@ -45,6 +52,21 @@ public class LKWCharter extends ShopOrder {
 
 	public LocalDate getRentDate() {
 		return rentDate;
+	}
+
+	@Override
+	public MonetaryAmount getRefund() {
+		return Currencies.ZERO_EURO;
+	}
+
+	@Override
+	public MonetaryAmount getCancelFee() {
+		return Currencies.ZERO_EURO;
+	}
+
+	@Override
+	public MonetaryAmount getMissingPayment() {
+		return Currencies.ZERO_EURO;
 	}
 
 }

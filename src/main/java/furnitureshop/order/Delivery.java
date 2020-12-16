@@ -20,6 +20,11 @@ public class Delivery extends ItemOrder {
 
 	private LocalDate deliveryDate;
 
+	/**
+	 * Empty constructor for {@code Spring}. Not in use.
+	 *
+	 * @deprecated
+	 */
 	@Deprecated
 	protected Delivery() {}
 
@@ -27,7 +32,7 @@ public class Delivery extends ItemOrder {
 	 * Creates a new instance of {@link Delivery}
 	 *
 	 * @param userAccount        The dummy {@link UserAccount}
-	 * @param contactInformation {@link ContactInformation} of the user
+	 * @param contactInformation The {@link ContactInformation} of the customer
 	 * @param lkw                The {@link LKW} which will be used
 	 * @param deliveryDate       The delivery date of the order
 	 *

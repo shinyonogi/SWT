@@ -10,6 +10,11 @@ import javax.persistence.Entity;
 @Entity
 public class Pickup extends ItemOrder {
 
+	/**
+	 * Empty constructor for {@code Spring}. Not in use.
+	 *
+	 * @deprecated
+	 */
 	@Deprecated
 	protected Pickup() {}
 
@@ -17,7 +22,7 @@ public class Pickup extends ItemOrder {
 	 * Creates a new instance of {@link Pickup}
 	 *
 	 * @param userAccount        The dummy {@link UserAccount}
-	 * @param contactInformation {@link ContactInformation} of the user
+	 * @param contactInformation The {@link ContactInformation} of the customer
 	 *
 	 * @throws IllegalArgumentException if any argument is {@code null}
 	 */

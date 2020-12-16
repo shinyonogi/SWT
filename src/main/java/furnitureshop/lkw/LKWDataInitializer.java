@@ -1,12 +1,14 @@
 package furnitureshop.lkw;
 
 import org.salespointframework.core.DataInitializer;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 /**
  * This class initialize {@link LKW}s and stores them into the {@link LKWCatalog}
  */
+@Order(10)
 @Component
 public class LKWDataInitializer implements DataInitializer {
 

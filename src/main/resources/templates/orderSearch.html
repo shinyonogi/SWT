@@ -8,30 +8,40 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link th:href="@{/resources/css/style.css}" rel="stylesheet"
+          href="../static/resources/css/style.css" type="text/css"/>
+    <style>
+        body {height: 100%; overflow: hidden}
+    </style>
 </head>
 <body>
 
     <nav th:include="navigation :: navigation"></nav>
 
-    <div class="container mt-3 mb-3">
-        <div class="row">
-
-            <div class="col-4"></div>
-            <div class="col-4">
-                <div class="alert alert-danger" th:if="${result > 0}">
-                    <h4 class="alert-heading" th:text="#{order.status.error}">Fehler!</h4>
-
-                    <div th:if="${result == 1}" th:text="#{order.status.unknown}">Keine Bestellung gefunden</div>
+    <div class="container-fluid">
+        <div class="row no-gutter">
+            <div class="col-md-6">
+                <div class="login d-flex align-items-center py-5">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-10 col-xl-7 mx-auto">
+                                <h1 th:text="#{order.check.view}">Search for your order.</h1>
+                                <div class="alert alert-danger" th:if="${result > 0}">
+                                    <h4 class="alert-heading" th:text="#{order.status.error}">Fehler!</h4>
+                                    <div th:if="${result == 1}" th:text="#{order.status.unknown}">Keine Bestellung gefunden</div>
+                                </div>
+                                <form class="form pt-4" method="post" th:action="@{/order}">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control rounded-pill border-0 shadow-sm px-4" id="orderId" name="orderId" th:placeholder="#{order.check.orderid}">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary btn-block text-uppercase rounded-pill" th:text="#{order.check.search}">Bestellung ansehen</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-
-                <form class="form-group" method="post" th:action="@{/order}">
-                    <label for="orderId" th:text="#{order.check.orderid}">Bitte Bestellnummer angeben:</label>
-                    <input type="text" class="form-control mb-2" id="orderId" name="orderId">
-                    <button type="submit" class="btn btn-primary" role="button" th:text="#{order.check.view}">Bestellung ansehen</button>
-                </form>
             </div>
-            <div class="col-4"></div>
-
+            <div class="col-md-6 d-none d-md-flex bg-image-order"></div>
         </div>
     </div>
 </body>

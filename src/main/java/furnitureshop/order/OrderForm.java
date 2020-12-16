@@ -10,9 +10,9 @@ public class OrderForm {
 	/**
 	 * Creates a new instance of {@link OrderForm}
 	 *
-	 * @param name    name of the customer
-	 * @param address address of the customer
-	 * @param email   email-address of the customer
+	 * @param name    The name of the customer
+	 * @param address The address of the customer
+	 * @param email   The Email-address of the customer
 	 * @param index   The selected index of the ordertype
 	 */
 	public OrderForm(String name, String address, String email, int index) {

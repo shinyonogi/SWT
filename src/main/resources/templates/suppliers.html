@@ -27,7 +27,12 @@
             <tbody>
             <tr class="mt-3 mb-3 table-light" th:each="supplier : ${suppliers}">
                 <td th:text="${supplier.getName()}"></td>
-                <td th:text="${supplier.getSurchargeInPercent()} + '%'"></td>
+                <td>
+                    <form class="form-inline justify-content-center" method="post" th:action="@{/admin/supplier/{id}/surcharge/edit(id=${supplier.getId()})}">
+                        <input name="surcharge" type="number" class="form-control" min="0" max="999" th:value="${supplier.getSurchargeInPercent()}" style="width: 90px">
+                        <button type="submit" class="btn" th:title="#{cart.entry.quantity.change}">&#10004;</button>
+                    </form>
+                </td>
                 <td>
                     <a class="btn btn-outline-primary" th:text="#{supplier.item.edit}" th:href="@{/admin/supplier/{id}/items(id=${supplier.getId()})}">Artikel bearbeiten</a>
                 </td>

@@ -36,11 +36,11 @@
             </div>
             <div class="form-group">
                 <label for="description" th:text="#{supplier.items.add.description}">Beschreibung</label>
-                <input type="text" name="description" th:value="*{description}" class="form-control" id="description" required th:placeholder="#{supplier.items.add.description.placeholder}">
+                <textarea name="description" th:text="*{description}" class="form-control" id="description" required th:placeholder="#{supplier.items.add.description.placeholder}"></textarea>
             </div>
             <div class="form-group">
                 <label for="price" th:text="#{supplier.items.add.price}">Preis</label>
-                <input type="number" min="0" step="any" name="price" th:value="*{price}" class="form-control" id="price" required>
+                <input type="number" min="0" step=".01" name="price" th:value="*{price}" class="form-control" id="price" required>
             </div>
             <div class="form-group">
                 <label for="category" th:text="#{supplier.items.add.category}">Kategorie</label>
@@ -55,6 +55,24 @@
     </div>
 
     <div class="container mt-3 mb-3" th:if="${edit}">
+        <div class="row">
+            <div class="col-lg-2 col-md-6 mb-4" th:each="item : ${items}">
+                <div class="card bg-light">
+                    <a class="card-img-top">
+                        <img class="img-fluid" th:src="@{${item.getPicture()}}"
+                             src="../static/resources/img/inventory/chair_1.jpg" alt="Artikel"/>
+                    </a>
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${item.getName()}">Name</h5>
+                        <h5 class="text-dark" th:text="${item.getPrice().query(T(furnitureshop.FurnitureShop).MONETARY_QUERY)}">999,99€</h5>
+                        <div class="ml-3">
+                            <input type="checkbox" class="form-check-input" name="items" th:value="${item.getId()}" th:id="${item.getId()}" checked disabled/>
+                            <label class="form-check-label ml-1" th:for="${item.getId()}" th:text="#{supplier.sets.item.add}">Artikel hinzufügen</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <form  class="form" th:object="${itemForm}" th:method="post" th:action="@{/admin/supplier/{suppId}/items/edit/{itemId}(suppId=${suppId}, itemId=${itemId})}">
             <div class="form-group">
                 <label for="name" th:text="#{supplier.items.add.name}">Artikelname</label>
@@ -78,11 +96,11 @@
             </div>
             <div class="form-group">
                 <label for="description" th:text="#{supplier.items.add.description}">Beschreibung</label>
-                <input type="text" name="description" th:value="*{description}" class="form-control" th:id="description" required th:placeholder="#{supplier.items.add.description.placeholder}">
+                <textarea name="description" th:text="*{description}" class="form-control" th:id="description" required th:placeholder="#{supplier.items.add.description.placeholder}"></textarea>
             </div>
             <div class="form-group">
                 <label for="price" th:text="#{supplier.items.add.price}">Preis</label>
-                <input type="number" min="0" step="any" name="price" th:value="*{price}" class="form-control" th:id="price" required>
+                <input type="number" min="0" th:max="${maxPrice}" step=".01" name="price" th:value="*{price}" class="form-control" th:id="price" required>
             </div>
             <div class="form-group">
                 <label for="category" th:text="#{supplier.items.add.category}">Kategorie</label>

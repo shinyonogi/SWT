@@ -20,6 +20,11 @@ public class ContactInformation {
 	private String address;
 	private String email;
 
+	/**
+	 * Empty constructor for {@code Spring}. Not in use.
+	 *
+	 * @deprecated
+	 */
 	@Deprecated
 	protected ContactInformation() {}
 
