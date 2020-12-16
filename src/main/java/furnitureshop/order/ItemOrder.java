@@ -97,7 +97,11 @@ public abstract class ItemOrder extends ShopOrder {
 	public boolean changeStatus(long entryId, OrderStatus newStatus) {
 		for (ItemOrderEntry orderEntry : orderWithStatus) {
 			if (orderEntry.getId() == entryId) {
+				final OrderStatus old = orderEntry.getStatus();
+
+				orderEntry.setCancelFee(newStatus == OrderStatus.CANCELLED && old == OrderStatus.STORED);
 				orderEntry.setStatus(newStatus);
+
 				return true;
 			}
 		}
@@ -112,6 +116,9 @@ public abstract class ItemOrder extends ShopOrder {
 	 */
 	public void changeAllStatus(OrderStatus newStatus) {
 		for (ItemOrderEntry orderEntry : orderWithStatus) {
+			final OrderStatus old = orderEntry.getStatus();
+
+			orderEntry.setCancelFee(newStatus == OrderStatus.CANCELLED && old == OrderStatus.STORED);
 			orderEntry.setStatus(newStatus);
 		}
 	}
@@ -147,12 +154,22 @@ public abstract class ItemOrder extends ShopOrder {
 		MonetaryAmount price = Currencies.ZERO_EURO;
 
 		for (ItemOrderEntry entry : orderWithStatus) {
-			if (entry.getStatus() == OrderStatus.CANCELLED) {
+			if (entry.getStatus() == OrderStatus.CANCELLED && entry.hasCancelFee()) {
 				price = price.add(entry.getItem().getPrice()).multiply(0.2);
 			}
 		}
 
 		return price;
+	}
+
+	public MonetaryAmount getItemTotal() {
+		return super.getTotal();
+	}
+
+	@Override
+	@SuppressWarnings("NullableProblems")
+	public MonetaryAmount getTotal() {
+		return getItemTotal().add(getCancelFee()).subtract(getRefund());
 	}
 
 	public List<ItemOrderEntry> getOrderEntries() {

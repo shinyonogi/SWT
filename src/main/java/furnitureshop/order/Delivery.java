@@ -57,7 +57,6 @@ public class Delivery extends ItemOrder {
 	}
 
 	@Override
-	@SuppressWarnings("NullableProblems")
 	public MonetaryAmount getTotal() {
 		return super.getTotal().add(lkw.getType().getDelieveryPrice());
 	}

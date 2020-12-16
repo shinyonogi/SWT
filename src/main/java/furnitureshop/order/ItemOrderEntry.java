@@ -21,6 +21,8 @@ public class ItemOrderEntry {
 	@Enumerated(EnumType.ORDINAL)
 	private OrderStatus status;
 
+	public boolean cancelFee;
+
 	/**
 	 * Empty constructor for {@code Spring}. Not in use.
 	 *
@@ -61,6 +63,14 @@ public class ItemOrderEntry {
 		Assert.notNull(status, "OrderStatus must not be null!");
 
 		this.status = status;
+	}
+
+	public boolean hasCancelFee() {
+		return cancelFee;
+	}
+
+	public void setCancelFee(boolean cancelFee) {
+		this.cancelFee = cancelFee;
 	}
 
 }
