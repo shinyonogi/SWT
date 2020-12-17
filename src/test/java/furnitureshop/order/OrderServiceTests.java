@@ -64,9 +64,9 @@ public class OrderServiceTests {
 		final Supplier supplier = new Supplier("test", 0.2);
 		supplierRepository.save(supplier);
 
-		Piece stuhl1 = new Piece(1, "Stuhl 1", Money.of(59.99, Currencies.EURO), "", "schwarz",
+		Piece stuhl1 = new Piece(1, "Stuhl 1", Money.of(59.99, Currencies.EURO), new byte[0], "schwarz",
 				"", supplier, 5, Category.CHAIR);
-		Piece sofa1_green = new Piece(2, "Sofa 1", Money.of(259.99, Currencies.EURO), "", "grün",
+		Piece sofa1_green = new Piece(2, "Sofa 1", Money.of(259.99, Currencies.EURO), new byte[0], "grün",
 				"", supplier, 50, Category.COUCH);
 
 		itemCatalog.save(stuhl1);

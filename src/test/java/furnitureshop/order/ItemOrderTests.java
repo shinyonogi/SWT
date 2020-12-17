@@ -42,9 +42,9 @@ public class ItemOrderTests {
 
 		final Supplier supplier = new Supplier("test", 0.2);
 
-		this.item1 = new Piece(1, "Stuhl 1", Money.of(59.99, Currencies.EURO), "", "schwarz",
+		this.item1 = new Piece(1, "Stuhl 1", Money.of(59.99, Currencies.EURO), new byte[0], "schwarz",
 				"", supplier, 5, Category.CHAIR);
-		this.item2 = new Piece(1, "Stuhl 2", Money.of(49.99, Currencies.EURO), "", "weiß",
+		this.item2 = new Piece(1, "Stuhl 2", Money.of(49.99, Currencies.EURO), new byte[0], "weiß",
 				"", supplier, 5, Category.CHAIR);
 	}
 

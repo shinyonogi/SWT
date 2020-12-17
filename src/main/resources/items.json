@@ -1,0 +1,390 @@
+{
+  "pieces": [
+    {
+      "id": 1,
+      "name": "Classic",
+      "groupid": 1,
+      "price": 49.99,
+      "picture": "chair_3_black.jpg",
+      "variant": "schwarz Holz",
+      "description": "Classic in schwarz mit Kunstleder und Eichenholz. Der Classic-Stuhl ist ein Allrounder und passt mit seinen neutralen Farben in jedes Zimmer.",
+      "weight": 7,
+      "category": "chair",
+      "supplier": "Herberts schicke Stühle"
+    },
+    {
+      "id": 2,
+      "name": "Classic",
+      "groupid": 1,
+      "price": 49.99,
+      "picture": "chair_3_white.jpg",
+      "variant": "weiß Holz",
+      "description": "Classic in weiß mit Kunstleder und Eichenholz. Der Classic-Stuhl ist ein Allrounder und passt mit seinen neutralen Farben in jedes Zimmer.",
+      "weight": 7,
+      "category": "chair",
+      "supplier": "Herberts schicke Stühle"
+    },
+    {
+      "id": 3,
+      "name": "Basic",
+      "groupid": 2,
+      "price": 39.99,
+      "picture": "chair_10_white.jpg",
+      "variant": "weiß Buchenholz",
+      "description": "Basic in weiß. Der Basic-Stuhl eignet sich gut als Küchenstuhl, da er sehr schlicht ist und eine spezielle wasserabweisende Beschichtung besitzt.",
+      "weight": 5,
+      "category": "chair",
+      "supplier": "Herberts schicke Stühle"
+    },
+    {
+      "id": 4,
+      "name": "Basic",
+      "groupid": 2,
+      "price": 39.99,
+      "picture": "chair_10_black.jpg",
+      "variant": "schwarz Buchenholz",
+      "description": "Basic in schwarz. Der Basic-Stuhl eignet sich gut als Küchenstuhl, da er sehr schlicht ist und eine spezielle wasserabweisende Beschichtung besitzt.",
+      "weight": 5,
+      "category": "chair",
+      "supplier": "Herberts schicke Stühle"
+    },
+    {
+      "id": 5,
+      "name": "Basic+",
+      "groupid": 2,
+      "price": 49.99,
+      "picture": "chair_2.jpg",
+      "variant": "schwarz Akazienholz",
+      "description": "BasicPlus in schwarz mit Akazienholz und Armlehnen für einen edlen Look. Der BasicPlus-Stuhl eignet sich gut als Küchenstuhl, da er sehr schlicht ist und eine spezielle wasserabweisende Beschichtung besitzt.",
+      "weight": 7,
+      "category": "chair",
+      "supplier": "Herberts schicke Stühle"
+    },
+    {
+      "id": 6,
+      "name": "Tropic",
+      "groupid": 3,
+      "price": 89.99,
+      "picture": "chair_4.jpg",
+      "variant": "blau Palisander",
+      "description": "Tropic mit blauem Lederpolster und edlem Palisanderholz. Der Tropic-Stuhl eignet sich gut als Küchen- oder Wohnzimmerstuhl, um einen Kaffee mit alten Freunden zu genießen.",
+      "weight": 7,
+      "category": "chair",
+      "supplier": "Herberts schicke Stühle"
+    },
+    {
+      "id": 7,
+      "name": "Savanna",
+      "groupid": 4,
+      "price": 89.99,
+      "picture": "chair_6.jpg",
+      "variant": "beige Balsaholz",
+      "description": "Savanna mit beigen Balsaholz. Der Savanna-Stuhl wurde den Farben der Savanne nachempfunden und ist ein Platz der Erholung. Er eignet sich gut für das Wohnzimmer.",
+      "weight": 8,
+      "category": "chair",
+      "supplier": "Herberts schicke Stühle"
+    },
+    {
+      "id": 8,
+      "name": "Comfort",
+      "groupid": 5,
+      "price": 99.99,
+      "picture": "chair_7.jpg",
+      "variant": "grau Stoff",
+      "description": "Comfort mit grauem Polster und Fußablage. Der Comfort-Sessel ist der Platz zum Abschalten nach der Arbeit.",
+      "weight": 10,
+      "category": "chair",
+      "supplier": "Herberts schicke Stühle"
+    },
+    {
+      "id": 9,
+      "name": "Freedom",
+      "groupid": 6,
+      "price": 69.99,
+      "picture": "chair_8.jpg",
+      "variant": "helles Rattan",
+      "description": "Freedom aus hellem Rattan und weißen Polstern. Der Freedom-Sessel eignet sich sowohl für den Außenbereich, als auch den Innenbereich. Er bietet ein luftiges Erlebnis mit weichen Polstern.",
+      "weight": 5,
+      "category": "chair",
+      "supplier": "Herberts schicke Stühle"
+    },
+    {
+      "id": 10,
+      "name": "Designer",
+      "groupid": 7,
+      "price": 129.99,
+      "picture": "chair_11.jpg",
+      "variant": "navy Leder",
+      "description": "Designer mit blau gefärbtem Echtleder und Akazienholz. Der Designer-Stuhl ist ein hochwertiger aber schlicht gehaltener Stuhl.",
+      "weight": 6,
+      "category": "chair",
+      "supplier": "Herberts schicke Stühle"
+    },
+    {
+      "id": 11,
+      "name": "Oldtimer",
+      "groupid": 8,
+      "price": 119.99,
+      "picture": "chair_9.jpg",
+      "variant": "braun Leder",
+      "description": "Oldtimer mit Lederbezug. Der Oldtimer-Stuhl zeichnet sich durch seine extrem gute Polsterung aus, welche auch nach dem schwersten Tag ein federleichtes Gefühl vermittelt.",
+      "weight": 10,
+      "category": "chair",
+      "supplier": "Herberts schicke Stühle"
+    },
+    {
+      "id": 12,
+      "name": "Focus",
+      "groupid": 9,
+      "price": 149.99,
+      "picture": "chair_5.jpg",
+      "variant": "schwarz Leder",
+      "description": "Focus mit schwarzem Leder. Der Focus-Sessel schafft durch seine einzigartige Form eine eigene Welt, um Bücher, Musik oder Filme noch mehr genießen zu können.",
+      "weight": 20,
+      "category": "chair",
+      "supplier": "Herberts schicke Stühle"
+    },
+    {
+      "id": 13,
+      "name": "Classic",
+      "groupid": 11,
+      "price": 799.99,
+      "picture": "sofa_4.jpg",
+      "variant": "weiß Stoff",
+      "description": "Classic in weiß. Die Classic-Couch ist ein Allrounder, dem es an nichts fehlt. Sie hat ein schlichtes, aber elegantes Design, gute Polster und Platz bis für 4 Leute.",
+      "weight": 60,
+      "category": "couch",
+      "supplier": "Müller Möbel"
+    },
+    {
+      "id": 14,
+      "name": "Basic",
+      "groupid": 12,
+      "price": 399.99,
+      "picture": "sofa_8.jpg",
+      "variant": "grau Stoff",
+      "description": "Basic in grau. Die Basic-Couch ist das Einsteigermodell in die Welt der Sofas. Sie bietet Platz für zwei Personen.",
+      "weight": 40,
+      "category": "couch",
+      "supplier": "Müller Möbel"
+    },
+    {
+      "id": 15,
+      "name": "Basic+",
+      "groupid": 13,
+      "price": 559.99,
+      "picture": "sofa_5.jpg",
+      "variant": "grau Stoff",
+      "description": "Basic+ in grau. Die BasicPlus-Couch ist ein Einsteigermodell in die Welt der Sofas. Sie bietet Platz für drei Personen.",
+      "weight": 50,
+      "category": "couch",
+      "supplier": "Müller Möbel"
+    },
+    {
+      "id": 16,
+      "name": "Vintage",
+      "groupid": 14,
+      "price": 999.99,
+      "picture": "sofa_3.jpg",
+      "variant": "braun Leder",
+      "description": "Vintage mit hellem Leder. Die Vintage-Couch sieht nicht nur cool aus, sondern besitzt auch besonders weiche Polster.",
+      "weight": 55,
+      "category": "couch",
+      "supplier": "Müller Möbel"
+    },
+    {
+      "id": 17,
+      "name": "Oldtimer",
+      "groupid": 15,
+      "price": 899.99,
+      "picture": "sofa_6.jpg",
+      "variant": "braun Leder",
+      "description": "Oldtimer mit Leder. Die Oldtimer-Couch zeichnet sich durch ihre extrem gute Polsterung und ihren Vintage Look aus.",
+      "weight": 70,
+      "category": "couch",
+      "supplier": "Müller Möbel"
+    },
+    {
+      "id": 18,
+      "name": "Prestige",
+      "groupid": 16,
+      "price": 1499.99,
+      "picture": "sofa_2_black.jpg",
+      "variant": "schwarz Leder",
+      "description": "Prestige mit schwarzem Leder. Die Prestige-Couch aus edlem Echtleder bietet zahlreiche Funktionen, wie verstellbare Kopflehnen.",
+      "weight": 130,
+      "category": "couch",
+      "supplier": "Müller Möbel"
+    },
+    {
+      "id": 19,
+      "name": "Prestige",
+      "groupid": 16,
+      "price": 1499.99,
+      "picture": "sofa_2_brown.jpg",
+      "variant": "braun Leder",
+      "description": "Prestige mit braunem Leder. Die Prestige-Couch aus edlem Echtleder bietet zahlreiche Funktionen, wie verstellbare Kopflehnen.",
+      "weight": 130,
+      "category": "couch",
+      "supplier": "Müller Möbel"
+    },
+    {
+      "id": 20,
+      "name": "Prestige-Comfort",
+      "groupid": 17,
+      "price": 1699.99,
+      "picture": "sofa_7.jpg",
+      "variant": "weiß",
+      "description": "Prestige-Comfort in weiß. Die Prestige-Comfort-Couch kommt mit extra weichen Lehnen und Kissen und bietet wie die Prestige-Couch ausreichend Platz.",
+      "weight": 120,
+      "category": "couch",
+      "supplier": "Müller Möbel"
+    },
+    {
+      "id": 21,
+      "name": "Classic",
+      "groupid": 21,
+      "price": 479.99,
+      "picture": "table_10.jpg",
+      "variant": "Eichenholz",
+      "description": "Classic aus Eichenholz. Der Classic-Tisch, welcher nur aus Eichenholz besteht, ist das Standardmodell, und gibt dem Raum eine natürliche Note. Er bietet ausreichend Platz für die ganze Familie.",
+      "weight": 25,
+      "category": "table",
+      "supplier": "Möbelmeister"
+    },
+    {
+      "id": 22,
+      "name": "Basic",
+      "groupid": 22,
+      "price": 49.99,
+      "picture": "table_9.jpg",
+      "variant": "schwarz",
+      "description": "Basic mit schwarzer quadratischer Tischplatte. Der Basic-Tisch eignet sich für ein bis zwei Personen.",
+      "weight": 8,
+      "category": "table",
+      "supplier": "Möbelmeister"
+    },
+    {
+      "id": 23,
+      "name": "Basic+",
+      "groupid": 23,
+      "price": 54.99,
+      "picture": "table_7.jpg",
+      "variant": "weiß",
+      "description": "Basic+ mit weißer runder Tischplatte. Der BasicPlus-Tisch bietet mehr Fläche als der Basic-Tisch und eignet sich für bis zu 3 Personen.",
+      "weight": 10,
+      "category": "table",
+      "supplier": "Möbelmeister"
+    },
+    {
+      "id": 24,
+      "name": "Focus",
+      "groupid": 24,
+      "price": 119.99,
+      "picture": "table_2.jpg",
+      "variant": "weiß",
+      "description": "Focus in weiß mit eingebauten Schubladen. Der Focus-Tisch hat ein effizientes Schubladendesign für mehr Produktivität und Ordnung. Er eignet sich hervorragend als Arbeitstisch.",
+      "weight": 20,
+      "category": "table",
+      "supplier": "Möbelmeister"
+    },
+    {
+      "id": 25,
+      "name": "Designer",
+      "groupid": 25,
+      "price": 449.99,
+      "picture": "table_3.jpg",
+      "variant": "massiv Wildeiche",
+      "description": "Designer mit massiver Wildeiche. Der Designer-Tisch bietet eine modische alternative zu herkömmlichen Tischen. Durch seine massive Bauart wird er zum Mittelpunkt des Raumes.",
+      "weight": 50,
+      "category": "table",
+      "supplier": "Möbelmeister"
+    },
+    {
+      "id": 26,
+      "name": "Vintage",
+      "groupid": 26,
+      "price": 369.99,
+      "picture": "table_4.jpg",
+      "variant": "Glas",
+      "description": "Vintage mit Glasplatte. Der Vintage-Tisch bietet viel Platz und wirkt durch seine runde Glasplatte einladend.",
+      "weight": 45,
+      "category": "table",
+      "supplier": "Möbelmeister"
+    },
+    {
+      "id": 27,
+      "name": "Oldtimer",
+      "groupid": 27,
+      "price": 579.99,
+      "picture": "table_5.jpg",
+      "variant": "Walnuss",
+      "description": "Oldtimer aus Walnussholz. Der Oldtimer-Tisch ist ein großer Familientisch und bietet Platz für 8 Personen.",
+      "weight": 40,
+      "category": "table",
+      "supplier": "Möbelmeister"
+    },
+    {
+      "id": 28,
+      "name": "Ceramic",
+      "groupid": 28,
+      "price": 269.99,
+      "picture": "table_6.jpg",
+      "variant": "weiße Keramik",
+      "description": "Ceramic mit weißer Keramikplatte. Der Ceramic-Tisch ist ein flacher stylischer Tisch fürs Wohnzimmer.",
+      "weight": 15,
+      "category": "table",
+      "supplier": "Möbelmeister"
+    },
+    {
+      "id": 29,
+      "name": "Exquisite",
+      "groupid": 29,
+      "price": 629.99,
+      "picture": "table_8.jpg",
+      "variant": "Ahorn",
+      "description": "Exquisite mit Ahornholz. Der Exquisite-Tisch ist ein großer hochwertiger Tisch mit Platz für 6 Personen.",
+      "weight": 25,
+      "category": "table",
+      "supplier": "Möbelmeister"
+    }
+  ],
+  "sets": [
+    {
+      "id": 101,
+      "name": "Wohnzimmer-Set",
+      "groupid": 41,
+      "price": 399.99,
+      "picture": "set_1.jpg",
+      "variant": "schwarz",
+      "description": "Set bestehend aus 1xBasic-Couch und 1xBasicPlus-Stuhl.",
+      "items": [
+        8, 14
+      ]
+    },
+    {
+      "id": 102,
+      "name": "Küchen-Set-1",
+      "groupid": 42,
+      "price": 119.99,
+      "picture": "set_2.jpg",
+      "variant": "schwarz",
+      "description": "Set bestehend aus 2xBasic-Stuhl(schwarz) und 1xBasicPlus-Tisch.",
+      "items": [
+        4, 4, 22
+      ]
+    },
+    {
+      "id": 103,
+      "name": "Küchen-Set-2",
+      "groupid": 42,
+      "price": 139.99,
+      "picture": "set_3.jpg",
+      "variant": "weiß",
+      "description": "Set bestehend aus 3xBasic-Stuhl(weiß) und 1xBasic-Tisch.",
+      "items": [
+        3, 3, 3, 23
+      ]
+    }
+  ]
+}

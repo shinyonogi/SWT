@@ -5,10 +5,7 @@ import org.salespointframework.catalog.Product;
 import org.springframework.util.Assert;
 
 import javax.money.MonetaryAmount;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 /**
  * This class represents an Item.
@@ -18,7 +15,9 @@ public abstract class Item extends Product {
 
 	private int groupId;
 
-	private String picture;
+	@Lob
+	private byte[] image;
+
 	private String variant;
 	private String description;
 
@@ -44,7 +43,7 @@ public abstract class Item extends Product {
 	 * @param groupId       Group which contains all variants of this particular Item
 	 * @param name          Name of the Item
 	 * @param customerPrice Price of the Item
-	 * @param picture       A path to the picture of the Item
+	 * @param image         Byte array of the picture of the Item
 	 * @param variant       Variant of the Item
 	 * @param description   Description of the Item
 	 * @param supplier      Supplier of the Item
@@ -52,20 +51,20 @@ public abstract class Item extends Product {
 	 *
 	 * @throws IllegalArgumentException If any of the arguments is {@code null}
 	 */
-	public Item(int groupId, String name, MonetaryAmount customerPrice, String picture, String variant,
+	public Item(int groupId, String name, MonetaryAmount customerPrice, byte[] image, String variant,
 			String description, Supplier supplier, Category category) {
 		super(name, customerPrice);
 
 		Assert.notNull(name, "Name must not be null");
 		Assert.notNull(customerPrice, "CustomerPrice must not be null");
-		Assert.notNull(picture, "Picture must not be null");
+		Assert.notNull(image, "Picture must not be null");
 		Assert.notNull(variant, "Varient must not be null");
 		Assert.notNull(description, "Description must not be null");
 		Assert.notNull(supplier, "Supplier must not be null");
 		Assert.notNull(category, "Category must not be null");
 
 		this.groupId = groupId;
-		this.picture = "/resources/img/inventory/" + picture;
+		this.image = image;
 		this.variant = variant;
 		this.description = description;
 		this.supplier = supplier;
@@ -98,16 +97,6 @@ public abstract class Item extends Product {
 
 	public int getGroupId() {
 		return groupId;
-	}
-
-	public String getPicture() {
-		return picture;
-	}
-
-	public void setPicture(String picture) {
-		Assert.notNull(picture, "Picture must not be null");
-
-		this.picture = picture;
 	}
 
 	public String getVariant() {
@@ -143,5 +132,15 @@ public abstract class Item extends Product {
 	public abstract MonetaryAmount getPartTotal();
 
 	public abstract int getWeight();
+
+	public byte[] getImage() {
+		return image;
+	}
+
+	public void setImage(byte[] image) {
+		Assert.notNull(image, "Image must not be null");
+
+		this.image = image;
+	}
 
 }

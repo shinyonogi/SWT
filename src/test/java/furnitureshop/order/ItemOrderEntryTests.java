@@ -24,7 +24,7 @@ public class ItemOrderEntryTests {
 	void setUp() {
 		final Supplier supplier = new Supplier("test", 0.2);
 
-		this.item = new Piece(1, "Stuhl 1", Money.of(59.99, Currencies.EURO), "", "schwarz",
+		this.item = new Piece(1, "Stuhl 1", Money.of(59.99, Currencies.EURO), new byte[0], "schwarz",
 				"", supplier, 5, Category.CHAIR);
 
 		entry = new ItemOrderEntry(item, OrderStatus.OPEN);

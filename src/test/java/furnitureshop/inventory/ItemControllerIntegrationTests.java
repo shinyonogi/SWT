@@ -54,16 +54,16 @@ public class ItemControllerIntegrationTests {
 
 	final Supplier setSupplier = new Supplier("Set Supplier", 0.05);
 
-	Piece sofa_black = new Piece(2, "Sofa 1", Money.of(259.99, Currencies.EURO), "sofa_2_black.jpg", "black",
+	Piece sofa_black = new Piece(2, "Sofa 1", Money.of(259.99, Currencies.EURO), new byte[0], "black",
 			"Sofa 1 in schwarz.", supplier, 80, Category.COUCH);
 
-	Piece sofa1_black = new Piece(3, "Sofa 1", Money.of(259.99, Currencies.EURO), "sofa_2_black.jpg", "black",
+	Piece sofa1_black = new Piece(3, "Sofa 1", Money.of(259.99, Currencies.EURO), new byte[0], "black",
 			"Sofa 1 in schwarz.", supplier, 80, Category.COUCH);
 
-	Piece stuhl = new Piece(1, "Stuhl 1", Money.of(59.99, Currencies.EURO), "chair_2.jpg", "schwarz",
+	Piece stuhl = new Piece(1, "Stuhl 1", Money.of(59.99, Currencies.EURO), new byte[0], "schwarz",
 			"Stuhl 1 in schwarz.", supplier, 5, Category.CHAIR);
 
-	Set set = new Set(4, "Set 1", Money.of(299.99, Currencies.EURO), "set_1.jpg", "black",
+	Set set = new Set(4, "Set 1", Money.of(299.99, Currencies.EURO), new byte[0], "black",
 			"Set bestehend aus Sofa 1 und Stuhl 1.", setSupplier, Arrays.asList(stuhl, sofa_black));
 
 	@BeforeEach
@@ -77,7 +77,7 @@ public class ItemControllerIntegrationTests {
 		final List<Supplier> suppliers = Arrays.asList(supplier, setSupplier);
 		final List<Item> items = new ArrayList<>();
 
-		Piece tisch = new Piece(3, "Tisch 1", Money.of(89.99, Currencies.EURO), "table_2.jpg", "weiß",
+		Piece tisch = new Piece(3, "Tisch 1", Money.of(89.99, Currencies.EURO), new byte[0], "weiß",
 				"Tisch 1 in weiß.", supplier, 30, Category.TABLE);
 
 		items.add(set);

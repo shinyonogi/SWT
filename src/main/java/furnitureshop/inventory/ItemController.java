@@ -1,6 +1,7 @@
 package furnitureshop.inventory;
 
 import furnitureshop.supplier.Supplier;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.javamoney.moneta.Money;
 import org.salespointframework.core.Currencies;
 import org.salespointframework.time.BusinessTime;
@@ -11,6 +12,10 @@ import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
 import javax.money.MonetaryAmount;
+import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -155,7 +160,7 @@ public class ItemController {
 				form.getGroupId(),
 				form.getName(),
 				Money.of(form.getPrice(), Currencies.EURO),
-				form.getPicture(),
+				new byte[0], //TODO
 				form.getVariant(),
 				form.getDescription(),
 				supplier.get(),
@@ -253,7 +258,7 @@ public class ItemController {
 				form.getGroupId(),
 				form.getName(),
 				Money.of(form.getPrice(), Currencies.EURO),
-				form.getPicture(),
+				new byte[0], //TODO
 				form.getVariant(),
 				form.getDescription(),
 				supplier.get(),
@@ -283,10 +288,11 @@ public class ItemController {
 		if (item instanceof Set) {
 			Set set = (Set) item;
 			model.addAttribute("items", set.getItems());
-			model.addAttribute("maxPrice", set.getPieceTotal().getNumber());
+			model.addAttribute("maxPrice", set.getPartTotal().getNumber());
 		}
 
-		model.addAttribute("itemForm", new ItemForm(item.getGroupId(), item.getWeight(), item.getName(), item.getPicture(), item.getVariant(), item.getDescription(), item.getSupplierPrice().getNumber().doubleValue(), item.getCategory(), new ArrayList<>()));
+		//TODO
+		model.addAttribute("itemForm", new ItemForm(item.getGroupId(), item.getWeight(), item.getName(), "", item.getVariant(), item.getDescription(), item.getSupplierPrice().getNumber().doubleValue(), item.getCategory(), new ArrayList<>()));
 		model.addAttribute("suppId", suppId);
 		model.addAttribute("itemId", item.getId());
 		model.addAttribute("categories", Category.values());
@@ -315,7 +321,7 @@ public class ItemController {
 		item.setName(form.getName());
 		item.setPrice(Money.of(form.getPrice(), Currencies.EURO));
 		item.setDescription(form.getDescription());
-		item.setPicture(form.getPicture());
+		item.setImage(new byte[0]); //TODO
 
 		itemService.addOrUpdateItem(item);
 
@@ -380,6 +386,19 @@ public class ItemController {
 		model.addAttribute("timeTo", time);
 
 		return "monthlyStatistic";
+	}
+
+	@GetMapping("/catalog/image/{id}")
+	public void renderImageFromDB(@PathVariable("id") Optional<Item> item, HttpServletResponse response) throws IOException {
+		if (item.isEmpty()) {
+			return;
+		}
+
+		if (item.get().getImage() != null) {
+			response.setContentType("image/jpeg");
+			InputStream is = new ByteArrayInputStream(item.get().getImage());
+			IOUtils.copy(is, response.getOutputStream());
+		}
 	}
 
 }

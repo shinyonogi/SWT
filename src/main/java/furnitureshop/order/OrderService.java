@@ -276,22 +276,10 @@ public class OrderService {
 
 			status = OrderStatus.CANCELLED;
 
-			if (order instanceof Pickup) {
-				for (ItemOrderEntry entry : entries) {
-					// Normal Status order
-					if (entry.getStatus().ordinal() < status.ordinal()) {
-						status = entry.getStatus();
-					}
-				}
-			} else if (order instanceof Delivery) {
-				for (ItemOrderEntry entry : entries) {
-					// Paid and Stored are switched in Delivery
-					if (entry.getStatus() == OrderStatus.PAID && status == OrderStatus.STORED) {
-						status = entry.getStatus();
-					} else if (entry.getStatus().ordinal() < status.ordinal()
-							&& (entry.getStatus() != OrderStatus.STORED || status != OrderStatus.PAID)) {
-						status = entry.getStatus();
-					}
+			for (ItemOrderEntry entry : entries) {
+				// Normal Status order
+				if (entry.getStatus().ordinal() < status.ordinal()) {
+					status = entry.getStatus();
 				}
 			}
 		}

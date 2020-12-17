@@ -5,8 +5,8 @@ package furnitureshop.order;
  */
 public enum OrderStatus {
 	OPEN,
-	STORED,
 	PAID,
+	STORED,
 	COMPLETED,
 	CANCELLED;
 }

@@ -120,7 +120,7 @@
             <tbody>
             <tr th:each="item : ${items}" class="table-light text-center">
                 <td class="align-middle">
-                    <img th:src="@{${item.getItem().getPicture()}}" class="img-fluid rounded" style="height: 150px"
+                    <img th:src="@{'/catalog/image/' + ${item.getItem().getId().getIdentifier()}}" class="img-fluid rounded" style="height: 150px"
                          src="../static/resources/img/inventory/chair_1.jpg" alt="Artikel">
                 </td>
                 <td class="align-middle">

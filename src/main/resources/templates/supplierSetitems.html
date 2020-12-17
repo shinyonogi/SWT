@@ -20,7 +20,7 @@
                     <div class="col-lg-2 col-md-6 mb-4" th:each="item : ${itemMap.get(category)}">
                         <div class="card bg-light">
                             <a class="card-img-top">
-                                <img class="img-fluid" th:src="@{${item.getPicture()}}"
+                                <img class="img-fluid" th:src="@{'/catalog/image/' + ${item.getId().getIdentifier()}}"
                                      src="../static/resources/img/inventory/chair_1.jpg" alt="Artikel"/>
                             </a>
                             <div class="card-body">
