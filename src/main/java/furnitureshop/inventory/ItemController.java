@@ -356,7 +356,13 @@ public class ItemController {
 	 */
 	@PostMapping("/admin/supplier/{suppId}/items/delete/{itemId}")
 	String deleteItemForSupplier(@PathVariable("suppId") long suppId, @PathVariable("itemId") Item item) {
-		if (suppId != item.getSupplier().getId()) {
+		Optional<Supplier> supplier = itemService.findSupplierById(suppId);
+
+		if (supplier.isEmpty()) {
+			return "redirect:/admin/suppliers";
+		}
+
+		if (supplier.get().getId() != item.getSupplier().getId()) {
 			return String.format("redirect:/admin/supplier/%d/items", suppId);
 		}
 
@@ -376,7 +382,13 @@ public class ItemController {
 	 */
 	@PostMapping("/admin/supplier/{suppId}/items/toggle/{itemId}")
 	String toggleItemForSupplier(@PathVariable("suppId") long suppId, @PathVariable("itemId") Item item) {
-		if (suppId != item.getSupplier().getId()) {
+		Optional<Supplier> supplier = itemService.findSupplierById(suppId);
+
+		if (supplier.isEmpty()) {
+			return "redirect:/admin/suppliers";
+		}
+
+		if (supplier.get().getId() != item.getSupplier().getId()) {
 			return String.format("redirect:/admin/supplier/%d/items", suppId);
 		}
 
