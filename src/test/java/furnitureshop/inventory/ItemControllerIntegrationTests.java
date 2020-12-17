@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.salespointframework.core.Currencies;
 import org.salespointframework.order.OrderManagement;
+import org.salespointframework.useraccount.UserAccount;
 import org.salespointframework.useraccount.UserAccountManagement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -16,13 +17,18 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.Matchers.contains;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -68,9 +74,14 @@ public class ItemControllerIntegrationTests {
 
 	@BeforeEach
 	void setUp() {
-		for (ShopOrder order : orderManagement.findBy(userAccountManagement.findByUsername("Dummy").get())) {
-			orderManagement.delete(order);
+		Optional<UserAccount> user = userAccountManagement.findByUsername("Dummy");
+
+		if (user.isPresent()) {
+			for (ShopOrder order : orderManagement.findBy(user.get())) {
+				orderManagement.delete(order);
+			}
 		}
+
 		itemCatalog.deleteAll();
 		supplierRepository.deleteAll();
 
@@ -178,6 +189,228 @@ public class ItemControllerIntegrationTests {
 				.andExpect(status().is3xxRedirection())
 				.andExpect(redirectedUrl("/catalog/" + Category.SET))
 				.andExpect(view().name("redirect:/catalog/" + Category.SET));
+	}
+
+	@Test
+	@WithMockUser(roles = "EMPLOYEE")
+	void returnsModelAndViewAddPiece() throws Exception {
+		mvc.perform(get("/admin/supplier/{id}/items/add", supplier.getId()))
+				.andExpect(status().isOk())
+				.andExpect(model().attributeExists("itemForm"))
+				.andExpect(model().attribute("suppId", supplier.getId()))
+				.andExpect(model().attribute("categories", Category.values()))
+				.andExpect(model().attribute("edit", false))
+				.andExpect(view().name("supplierItemform"));
+	}
+
+	@Test
+	@WithMockUser(roles = "EMPLOYEE")
+	void redirectsToOverviewAfterPieceAddition() throws Exception {
+
+		mvc.perform(post("/admin/supplier/{id}/items/add", supplier.getId())
+				.param("groupId", "0")
+				.param("weight", "50")
+				.param("name", "Item Name")
+				.param("picture", "picture")
+				.param("variant", "Variante")
+				.param("description", "Beschreibung")
+				.param("price", "50.65")
+				.param("category", "CHAIR")
+				.param("items", ""))
+				.andExpect(status().is3xxRedirection())
+				.andExpect(redirectedUrl(String.format("/admin/supplier/%s/items", supplier.getId())))
+				.andExpect(view().name(String.format("redirect:/admin/supplier/%s/items", supplier.getId())));
+		assertEquals(5, itemService.findAll().stream().count());
+	}
+
+	@Test
+	@WithMockUser(roles = "EMPLOYEE")
+	void redirectsToSupplierOverviewOnPieceAddingWithWrongSupplier() throws Exception {
+		Supplier supp = new Supplier("wrong", 0.05);
+		mvc.perform(post("/admin/supplier/{id}/items/add", supp.getId())
+				.param("groupId", "0")
+				.param("weight", "50")
+				.param("name", "Item Name")
+				.param("picture", "picture")
+				.param("variant", "Variante")
+				.param("description", "Beschreibung")
+				.param("price", "50.65")
+				.param("category", "CHAIR")
+				.param("items", ""))
+				.andExpect(status().is3xxRedirection())
+				.andExpect(redirectedUrl("/admin/suppliers"))
+				.andExpect(view().name("redirect:/admin/suppliers"));
+		assertEquals(4, itemService.findAll().stream().count());
+	}
+
+	@Test
+	@WithMockUser(roles = "EMPLOYEE")
+	void redirectsToSetAddOnPieceAddingWithSetSupplier() throws Exception {
+		mvc.perform(post("/admin/supplier/{id}/items/add", setSupplier.getId())
+				.param("groupId", "0")
+				.param("weight", "50")
+				.param("name", "Item Name")
+				.param("picture", "picture")
+				.param("variant", "Variante")
+				.param("description", "Beschreibung")
+				.param("price", "50.65")
+				.param("category", "CHAIR")
+				.param("items", ""))
+				.andExpect(status().is3xxRedirection())
+				.andExpect(redirectedUrl(String.format("/admin/supplier/%s/sets/add", setSupplier.getId())))
+				.andExpect(view().name(String.format("redirect:/admin/supplier/%s/sets/add", setSupplier.getId())));
+		assertEquals(4, itemService.findAll().stream().count());
+	}
+
+	@Test
+	@WithMockUser(roles = "EMPLOYEE")
+	void redirectsToAddSetOnAddPieceWithSetSupplier() throws Exception {
+		mvc.perform(get("/admin/supplier/{id}/items/add", setSupplier.getId()))
+				.andExpect(status().is3xxRedirection())
+				.andExpect(redirectedUrl(String.format("/admin/supplier/%s/sets/add", setSupplier.getId())))
+				.andExpect(view().name(String.format("redirect:/admin/supplier/%s/sets/add", setSupplier.getId())));
+	}
+
+	@Test
+	@WithMockUser(roles = "EMPLOYEE")
+	void redirectsToAddPieceOnAddSetWithoutSetSupplier() throws Exception {
+		mvc.perform(get("/admin/supplier/{id}/sets/add", supplier.getId()))
+				.andExpect(status().is3xxRedirection())
+				.andExpect(redirectedUrl(String.format("/admin/supplier/%s/items/add", supplier.getId())))
+				.andExpect(view().name(String.format("redirect:/admin/supplier/%s/items/add", supplier.getId())));
+	}
+
+	@Test
+	@WithMockUser(roles = "EMPLOYEE")
+	void returnModelAndViewAddSet() throws Exception {
+		mvc.perform(get("/admin/supplier/{id}/sets/add", setSupplier.getId()))
+				.andExpect(status().isOk())
+				.andExpect(model().attributeExists("itemMap"))
+				.andExpect(model().attribute("suppId", setSupplier.getId()))
+				.andExpect(view().name("supplierSetitems"));
+	}
+
+	@Test
+	@WithMockUser(roles = "EMPLOYEE")
+	void redirectsToSupplierOverviewOnNonexistentSupplier() throws Exception {
+		Supplier supp = new Supplier("wrong", 0.05);
+		mvc.perform(get("/admin/supplier/{id}/sets/add", supp.getId()))
+				.andExpect(status().is3xxRedirection())
+				.andExpect(redirectedUrl("/admin/suppliers"))
+				.andExpect(view().name("redirect:/admin/suppliers"));
+	}
+
+	@Test
+	@WithMockUser(roles = "EMPLOYEE")
+	void returnsModelAndViewOnItemSelectionWhenAddingSetsWithSetSupplier() throws Exception {
+
+		List<String> itemList = Arrays.asList(stuhl.getId().toString(), sofa_black.getId().toString());
+		MultiValueMap<String, String> itemMap = new LinkedMultiValueMap<>();
+		itemMap.put("itemList", itemList);
+
+		mvc.perform(post("/admin/supplier/{id}/sets/add", setSupplier.getId()).params(itemMap))
+				.andExpect(status().isOk())
+				.andExpect(model().attributeExists("setForm"))
+				//.andExpect(model().attribute("maxPrice", stuhl.getPrice().add(sofa_black.getPrice()).getNumber()))
+				.andExpect(model().attribute("suppId", setSupplier.getId()))
+				.andExpect(view().name("supplierSetform"));
+	}
+
+	@Test
+	@WithMockUser(roles = "EMPLOYEE")
+	void redirectsToSupplierOverviewOnItemSelectionWhenAddingSetsWithWrongSupplier() throws Exception {
+		Supplier supp = new Supplier("wrong", 0.05);
+		List<String> itemList = Arrays.asList(stuhl.getId().toString(), sofa_black.getId().toString());
+		MultiValueMap<String, String> itemMap = new LinkedMultiValueMap<>();
+		itemMap.put("itemList", itemList);
+
+		mvc.perform(post("/admin/supplier/{id}/sets/add", supp.getId()).params(itemMap))
+				.andExpect(status().is3xxRedirection())
+				.andExpect(redirectedUrl("/admin/suppliers"))
+				.andExpect(view().name("redirect:/admin/suppliers"));
+	}
+
+	@Test
+	@WithMockUser(roles = "EMPLOYEE")
+	void redirectsToAddItemOnItemSelectionWhenAddingSetsWithoutSetSupplier() throws Exception {
+		List<String> itemList = Arrays.asList(stuhl.getId().toString(), sofa_black.getId().toString());
+		MultiValueMap<String, String> itemMap = new LinkedMultiValueMap<>();
+		itemMap.put("itemList", itemList);
+
+		mvc.perform(post("/admin/supplier/{id}/sets/add", supplier.getId()).params(itemMap))
+				.andExpect(status().is3xxRedirection())
+				.andExpect(redirectedUrl(String.format("/admin/supplier/%s/items", supplier.getId())))
+				.andExpect(view().name(String.format("redirect:/admin/supplier/%s/items", supplier.getId())));
+	}
+
+	@Test
+	@WithMockUser(roles = "EMPLOYEE")
+	void redirectsToOverviewOnSetAddingWithSetSupplier() throws Exception {
+		List<String> itemList = Arrays.asList(stuhl.getId().toString(), sofa_black.getId().toString());
+		MultiValueMap<String, String> itemMap = new LinkedMultiValueMap<>();
+		itemMap.put("items", itemList);
+
+		mvc.perform(post("/admin/supplier/{id}/sets/add/set", setSupplier.getId())
+				.param("groupId", "0")
+				.param("weight", "100")
+				.param("name", "Set Name")
+				.param("picture", "picture")
+				.param("variant", "Variante")
+				.param("description", "Beschreibung")
+				.param("price", "99.99")
+				.param("category", "SET")
+				.params(itemMap))
+				.andExpect(status().is3xxRedirection())
+				.andExpect(redirectedUrl(String.format("/admin/supplier/%s/items", setSupplier.getId())))
+				.andExpect(view().name(String.format("redirect:/admin/supplier/%s/items", setSupplier.getId())));
+		assertEquals(5, itemService.findAll().stream().count());
+	}
+
+	@Test
+	@WithMockUser(roles = "EMPLOYEE")
+	void redirectsToOverviewOnSetAddingWithNonexistentSupplier() throws Exception {
+		Supplier supp = new Supplier("wrong", 0.05);
+		List<String> itemList = Arrays.asList(stuhl.getId().toString(), sofa_black.getId().toString());
+		MultiValueMap<String, String> itemMap = new LinkedMultiValueMap<>();
+		itemMap.put("items", itemList);
+
+		mvc.perform(post("/admin/supplier/{id}/sets/add/set", supp.getId())
+				.param("groupId", "0")
+				.param("weight", "100")
+				.param("name", "Set Name")
+				.param("picture", "picture")
+				.param("variant", "Variante")
+				.param("description", "Beschreibung")
+				.param("price", "99.99")
+				.param("category", "SET")
+				.params(itemMap))
+				.andExpect(status().is3xxRedirection())
+				.andExpect(redirectedUrl("/admin/suppliers"))
+				.andExpect(view().name("redirect:/admin/suppliers"));
+		assertEquals(4, itemService.findAll().stream().count());
+	}
+
+	@Test
+	@WithMockUser(roles = "EMPLOYEE")
+	void redirectsToOverviewOnSetAddingWithWrongSupplier() throws Exception {
+		List<String> itemList = Arrays.asList(stuhl.getId().toString(), sofa_black.getId().toString());
+		MultiValueMap<String, String> itemMap = new LinkedMultiValueMap<>();
+		itemMap.put("items", itemList);
+
+		mvc.perform(post("/admin/supplier/{id}/sets/add/set", supplier.getId())
+				.param("groupId", "0")
+				.param("weight", "100")
+				.param("name", "Set Name")
+				.param("picture", "picture")
+				.param("variant", "Variante")
+				.param("description", "Beschreibung")
+				.param("price", "99.99")
+				.param("category", "SET")
+				.params(itemMap))
+				.andExpect(status().is3xxRedirection())
+				.andExpect(redirectedUrl(String.format("/admin/supplier/%s/items", supplier.getId())))
+				.andExpect(view().name(String.format("redirect:/admin/supplier/%s/items", supplier.getId())));
+		assertEquals(4, itemService.findAll().stream().count());
 	}
 
 }

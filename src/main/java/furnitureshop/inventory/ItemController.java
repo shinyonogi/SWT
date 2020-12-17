@@ -122,7 +122,12 @@ public class ItemController {
 	@GetMapping("/admin/supplier/{id}/items/add")
 	String getAddItemForSupplier(@PathVariable("id") long suppId, Model model) {
 		Optional<Supplier> supplier = itemService.findSupplierById(suppId);
-		if (supplier.isPresent() && supplier.get().getName().equals("Set Supplier")) {
+
+		if (supplier.isEmpty()) {
+			return "redirect:/admin/suppliers";
+		}
+
+		if (supplier.get().getName().equals("Set Supplier")) {
 			return String.format("redirect:/admin/supplier/%s/sets/add", suppId);
 		}
 
@@ -152,8 +157,11 @@ public class ItemController {
 		final Optional<Supplier> supplier = itemService.findSupplierById(suppId);
 
 		if (supplier.isEmpty()) {
-			model.addAttribute("itemForm", form);
-			return "supplierItemform";
+			return "redirect:/admin/suppliers";
+		}
+
+		if (supplier.get().getName().equals("Set Supplier")) {
+			return String.format("redirect:/admin/supplier/%s/sets/add", suppId);
 		}
 
 		final Piece piece = new Piece(
@@ -185,6 +193,16 @@ public class ItemController {
 	 */
 	@GetMapping("/admin/supplier/{suppId}/sets/add")
 	String getDetailSetAddPage(@PathVariable("suppId") long suppId, Model model) {
+		Optional<Supplier> supplier = itemService.findSupplierById(suppId);
+
+		if (supplier.isEmpty()) {
+			return "redirect:/admin/suppliers";
+		}
+
+		if (!supplier.get().getName().equals("Set Supplier")) {
+			return String.format("redirect:/admin/supplier/%s/items/add", suppId);
+		}
+
 		final Map<Category, Streamable<Item>> itemMap = new EnumMap<>(Category.class);
 
 		for (Category category : Category.values()) {
@@ -224,7 +242,6 @@ public class ItemController {
 		for (Item item : itemList) {
 			maxPrice = maxPrice.add(item.getPrice());
 		}
-
 
 		model.addAttribute("setForm", new ItemForm(0, 0, "", "placeholder.png", "", "", 0, Category.SET, itemList));
 		model.addAttribute("maxPrice", maxPrice.getNumber());
