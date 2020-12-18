@@ -43,14 +43,6 @@ public class SupplierControllerIntegrationTests {
 
 	@Test
 	@WithMockUser(roles = "EMPLOYEE")
-	void returnsModelAndViewOfMonthlyStatistic() throws Exception {
-		mvc.perform(get("/admin/statistic").with(user("admin").roles("EMPLOYEE")))
-				.andExpect(status().isOk())
-				.andExpect(view().name("monthlyStatistic"));
-	}
-
-	@Test
-	@WithMockUser(roles = "EMPLOYEE")
 	void redirectsToSuppliersWhenYouAddASupplier() throws Exception {
 		mvc.perform(post("/admin/suppliers")
 				.param("name", "test")

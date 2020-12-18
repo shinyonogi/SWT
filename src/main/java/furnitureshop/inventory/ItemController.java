@@ -298,7 +298,13 @@ public class ItemController {
 	 */
 	@GetMapping("/admin/supplier/{suppId}/items/edit/{itemId}")
 	String getEditItemForSupplier(@PathVariable("suppId") long suppId, @PathVariable("itemId") Item item, Model model) {
-		if (suppId != item.getSupplier().getId()) {
+		Optional<Supplier> supplier = itemService.findSupplierById(suppId);
+
+		if (supplier.isEmpty()) {
+			return "redirect:/admin/suppliers";
+		}
+
+		if (supplier.get().getId() != item.getSupplier().getId()) {
 			return String.format("redirect:/admin/supplier/%d/items", suppId);
 		}
 
@@ -331,7 +337,13 @@ public class ItemController {
 	 */
 	@PostMapping("/admin/supplier/{suppId}/items/edit/{itemId}")
 	String editItemForSupplier(@PathVariable("suppId") long suppId, @PathVariable("itemId") Item item, @ModelAttribute("itemForm") ItemForm form) {
-		if (suppId != item.getSupplier().getId()) {
+		Optional<Supplier> supplier = itemService.findSupplierById(suppId);
+
+		if (supplier.isEmpty()) {
+			return "redirect:/admin/suppliers";
+		}
+
+		if (supplier.get().getId() != item.getSupplier().getId()) {
 			return String.format("redirect:/admin/supplier/%d/items", suppId);
 		}
 

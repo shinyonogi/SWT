@@ -25,9 +25,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.CoreMatchers.hasItem;
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.contains;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -479,6 +481,141 @@ public class ItemControllerIntegrationTests {
 				.andExpect(redirectedUrl(String.format("/admin/supplier/%s/items", supplier.getId())))
 				.andExpect(view().name(String.format("redirect:/admin/supplier/%s/items", supplier.getId())));
 		assertEquals(4, itemService.findAll().stream().count());
+	}
+
+	@Test
+	@WithMockUser(roles = "EMPLOYEE")
+	void returnsModelAndViewOnPieceEditWithCorrectSupplier() throws Exception {
+		mvc.perform(get("/admin/supplier/{suppId}/items/edit/{itemId}", sofa_black.getSupplier().getId(), sofa_black.getId()))
+				.andExpect(status().isOk())
+				.andExpect(model().attributeDoesNotExist("items"))
+				.andExpect(model().attributeDoesNotExist("maxPrice"))
+				.andExpect(model().attributeExists("itemForm"))
+				.andExpect(model().attribute("suppId", sofa_black.getSupplier().getId()))
+				.andExpect(model().attribute("itemId", sofa_black.getId()))
+				.andExpect(model().attribute("categories", Category.values()))
+				.andExpect(model().attribute("edit", true))
+				.andExpect(view().name("supplierItemform"));
+	}
+
+	@Test
+	@WithMockUser(roles = "EMPLOYEE")
+	void returnsModelAndViewOnSetEditWithCorrectSupplier() throws Exception {
+		mvc.perform(get("/admin/supplier/{suppId}/items/edit/{itemId}", set.getSupplier().getId(), set.getId()))
+				.andExpect(status().isOk())
+				.andExpect(model().attributeExists("items"))
+				.andExpect(model().attributeExists("maxPrice"))
+				.andExpect(model().attributeExists("itemForm"))
+				.andExpect(model().attribute("suppId", set.getSupplier().getId()))
+				.andExpect(model().attribute("itemId", set.getId()))
+				.andExpect(model().attribute("categories", Category.values()))
+				.andExpect(model().attribute("edit", true))
+				.andExpect(view().name("supplierItemform"));
+	}
+
+	@Test
+	@WithMockUser(roles = "EMPLOYEE")
+	void redirectsToOverviewOnItemEditWithNonexistentSupplier() throws Exception {
+		Supplier supp = new Supplier("wrong", 0.05);
+
+		mvc.perform(get("/admin/supplier/{suppId}/items/edit/{itemId}", supp.getId(), sofa_black.getId()))
+				.andExpect(status().is3xxRedirection())
+				.andExpect(redirectedUrl("/admin/suppliers"))
+				.andExpect(view().name("redirect:/admin/suppliers"));
+	}
+
+	@Test
+	@WithMockUser(roles = "EMPLOYEE")
+	void redirectsToOverviewOnItemEditWithWrongSupplier() throws Exception {
+		mvc.perform(get("/admin/supplier/{suppId}/items/edit/{itemId}", setSupplier.getId(), sofa_black.getId()))
+				.andExpect(status().is3xxRedirection())
+				.andExpect(redirectedUrl(String.format("/admin/supplier/%d/items", setSupplier.getId())))
+				.andExpect(view().name(String.format("redirect:/admin/supplier/%d/items", setSupplier.getId())));
+	}
+
+	@Test
+	@WithMockUser(roles = "EMPLOYEE")
+	void redirectsAfterSuccessfulEditOfItemWithCorrectSupplier() throws Exception {
+		List<String> itemList = new ArrayList<>();
+		MultiValueMap<String, String> itemMap = new LinkedMultiValueMap<>();
+		itemMap.put("items", itemList);
+
+		mvc.perform(post("/admin/supplier/{suppId}/items/edit/{itemId}", sofa_black.getSupplier().getId(), sofa_black.getId())
+				.param("groupId", String.valueOf(sofa_black.getGroupId()))
+				.param("weight", String.valueOf(sofa_black.getWeight()))
+				.param("name", "Sofa 50") // changed
+				.param("picture", "")
+				.param("variant", sofa_black.getVariant())
+				.param("description", "New") // changed
+				.param("price", "359.99") // changed
+				.param("category", "COUCH")
+				.params(itemMap))
+				.andExpect(status().is3xxRedirection())
+				.andExpect(redirectedUrl(String.format("/admin/supplier/%d/items", sofa1_black.getSupplier().getId())))
+				.andExpect(view().name(String.format("redirect:/admin/supplier/%d/items", sofa1_black.getSupplier().getId())));
+		//assertEquals("Sofa 50", sofa_black.getName()); TODO find way to test this!
+		//assertEquals("New", sofa_black.getDescription());
+		//assertEquals(Money.of(359.99, Currencies.EURO), sofa_black.getPrice());
+	}
+
+	@Test
+	@WithMockUser(roles = "EMPLOYEE")
+	void redirectsToItemOverviewWithoutEditOfItemWithNonexistentSupplier() throws Exception {
+		Supplier supp = new Supplier("wrong", 0.05);
+		List<String> itemList = new ArrayList<>();
+		MultiValueMap<String, String> itemMap = new LinkedMultiValueMap<>();
+		itemMap.put("items", itemList);
+
+		mvc.perform(post("/admin/supplier/{suppId}/items/edit/{itemId}", supp.getId(), sofa_black.getId())
+				.param("groupId", String.valueOf(sofa_black.getGroupId()))
+				.param("weight", String.valueOf(sofa_black.getWeight()))
+				.param("name", "Sofa 50") // changed
+				.param("picture", "")
+				.param("variant", sofa_black.getVariant())
+				.param("description", "New") // changed
+				.param("price", "359.99") // changed
+				.param("category", "COUCH")
+				.params(itemMap))
+				.andExpect(status().is3xxRedirection())
+				.andExpect(redirectedUrl("/admin/suppliers"))
+				.andExpect(view().name("redirect:/admin/suppliers"));
+		assertEquals("Sofa 1", sofa_black.getName());
+		assertEquals("Sofa 1 in schwarz.", sofa_black.getDescription());
+		assertEquals(Money.of(259.99, Currencies.EURO), sofa_black.getSupplierPrice());
+	}
+
+	@Test
+	@WithMockUser(roles = "EMPLOYEE")
+	void redirectsToItemOverviewWithoutEditOfItemWithWrongSupplier() throws Exception {
+		List<String> itemList = new ArrayList<>();
+		MultiValueMap<String, String> itemMap = new LinkedMultiValueMap<>();
+		itemMap.put("items", itemList);
+
+		mvc.perform(post("/admin/supplier/{suppId}/items/edit/{itemId}", setSupplier.getId(), sofa_black.getId())
+				.param("groupId", String.valueOf(sofa_black.getGroupId()))
+				.param("weight", String.valueOf(sofa_black.getWeight()))
+				.param("name", "Sofa 50") // changed
+				.param("picture", "")
+				.param("variant", sofa_black.getVariant())
+				.param("description", "New") // changed
+				.param("price", "359.99") // changed
+				.param("category", "COUCH")
+				.params(itemMap))
+				.andExpect(status().is3xxRedirection())
+				.andExpect(redirectedUrl(String.format("/admin/supplier/%d/items", setSupplier.getId())))
+				.andExpect(view().name(String.format("redirect:/admin/supplier/%d/items", setSupplier.getId())));
+		assertEquals("Sofa 1", sofa_black.getName());
+		assertEquals("Sofa 1 in schwarz.", sofa_black.getDescription());
+		assertEquals(Money.of(259.99, Currencies.EURO), sofa_black.getSupplierPrice());
+	}
+
+	@Test
+	@WithMockUser(roles = "EMPLOYEE")
+	void returnsModelAndViewOfMonthlyStatistic() throws Exception {
+		mvc.perform(get("/admin/statistic"))
+				.andExpect(status().isOk())
+				.andExpect(model().attributeExists("statistic"))
+				.andExpect(view().name("monthlyStatistic"));
 	}
 
 }
