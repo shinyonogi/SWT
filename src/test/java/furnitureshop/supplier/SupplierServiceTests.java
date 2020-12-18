@@ -115,4 +115,16 @@ public class SupplierServiceTests {
 		assertTrue(supplierService.changeSupplierSurcharge(id, 0.3));
 		assertFalse(supplierService.changeSupplierSurcharge(999999999, 0.1));
 	}
+
+	@Test
+	void testIllegalArgumentExceptionWhenYouSurchargeNegative() {
+		Long id = supplierRepository.findAll().stream().findAny().get().getId();
+		Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+			supplierService.changeSupplierSurcharge(id, -1);
+		});
+		String expectedMessage = "Surcharge must be greater equal to 0!";
+		String actualMessage = exception.getMessage();
+
+		assertEquals(actualMessage, expectedMessage);
+	}
 }
