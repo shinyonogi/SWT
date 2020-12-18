@@ -93,13 +93,8 @@ public class ItemControllerIntegrationTests {
 		set = new Set(4, "Set 1", Money.of(299.99, Currencies.EURO), new byte[0], "black",
 				"Set bestehend aus Sofa 1 und Stuhl 1.", setSupplier, Arrays.asList(stuhl, sofa_black));
 
-		items.add(set);
-		items.add(tisch);
-		items.add(stuhl);
-		items.add(sofa_black);
-
 		supplierRepository.saveAll(suppliers);
-		itemCatalog.saveAll(items);
+		itemCatalog.saveAll(Arrays.asList(set, tisch, stuhl, sofa_black));
 	}
 
 	@Test
@@ -373,7 +368,6 @@ public class ItemControllerIntegrationTests {
 	@Test
 	@WithMockUser(roles = "EMPLOYEE")
 	void returnsModelAndViewOnItemSelectionWhenAddingSetsWithSetSupplier() throws Exception {
-
 		List<String> itemList = Arrays.asList(stuhl.getId().toString(), sofa_black.getId().toString());
 		MultiValueMap<String, String> itemMap = new LinkedMultiValueMap<>();
 		itemMap.put("itemList", itemList);
@@ -616,6 +610,20 @@ public class ItemControllerIntegrationTests {
 				.andExpect(status().isOk())
 				.andExpect(model().attributeExists("statistic"))
 				.andExpect(view().name("monthlyStatistic"));
+	}
+
+	@Test
+	void returnImageFromExistingItem() throws Exception {
+		mvc.perform(get("/catalog/image/{id}", sofa1_black.getId()))
+				.andExpect(status().isOk())
+				.andExpect(content().bytes(sofa1_black.getImage()));
+	}
+
+	@Test
+	void returnImageFromUnknownItem() throws Exception {
+		mvc.perform(get("/catalog/image/{id}", "id"))
+				.andExpect(status().isOk())
+				.andExpect(content().bytes(new byte[0]));
 	}
 
 }

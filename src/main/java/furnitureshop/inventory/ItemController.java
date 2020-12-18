@@ -186,8 +186,8 @@ public class ItemController {
 	 * Creates a {@link EnumMap} mapping a {@link Category} to a {@link Streamable} of {@link Item} and binds that to
 	 * the model.
 	 *
-	 * @param suppId     The id of a {@link Supplier}
-	 * @param model      The {@code Spring} Page {@link Model}
+	 * @param suppId The id of a {@link Supplier}
+	 * @param model  The {@code Spring} Page {@link Model}
 	 *
 	 * @return Returns the view for set addition with the proper selection of {@link Item} instances.
 	 */
@@ -253,8 +253,8 @@ public class ItemController {
 	 * Handles all POST-Requests for '/admin/supplier/{id}/sets/add/set'.
 	 * Creates a new {@link Set} and saves it to {@link ItemCatalog} if the given {@link Supplier} is the SetSupplier.
 	 *
-	 * @param suppId   	The id of a {@link Supplier}
-	 * @param form 		A {@link ItemForm} with the information about a new {@link Set}
+	 * @param suppId The id of a {@link Supplier}
+	 * @param form   A {@link ItemForm} with the information about a new {@link Set}
 	 *
 	 * @return Either redirects to the supplier overview when {@link Supplier} is not found or to the item overview of
 	 * the SetSupplier when everything was correctly created.
@@ -435,11 +435,9 @@ public class ItemController {
 			return;
 		}
 
-		if (item.get().getImage() != null) {
-			response.setContentType("image/jpeg");
-			InputStream is = new ByteArrayInputStream(item.get().getImage());
-			IOUtils.copy(is, response.getOutputStream());
-		}
+		response.setContentType("image/jpeg");
+		InputStream is = new ByteArrayInputStream(item.get().getImage());
+		IOUtils.copy(is, response.getOutputStream());
 	}
 
 }
