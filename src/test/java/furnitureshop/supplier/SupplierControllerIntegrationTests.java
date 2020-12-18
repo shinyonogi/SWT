@@ -91,6 +91,22 @@ public class SupplierControllerIntegrationTests {
 
 	@Test
 	@WithMockUser(roles = "EMPLOYEE")
+	void redirectsToSuppliersWhenYouDeleteTheSetSupplier() throws Exception {
+		Supplier sup = null;
+		for (Supplier supplier : supplierRepository.findAll()) {
+			if (supplier.getName().equals("Set Supplier")) {
+				sup = supplier;
+			}
+		}
+
+		mvc.perform(post("/admin/supplier/delete/{id}", sup.getId()))
+				.andExpect(status().is3xxRedirection())
+				.andExpect(redirectedUrl("/admin/suppliers"))
+				.andExpect(view().name("redirect:/admin/suppliers"));
+	}
+
+	@Test
+	@WithMockUser(roles = "EMPLOYEE")
 	void returnsModelAndViewSupplierItemWhenYouTryToReachIt() throws Exception {
 		final long id = supplierRepository.findAll().stream().findAny().orElseGet(null).getId();
 
