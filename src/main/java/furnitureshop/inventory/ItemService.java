@@ -8,6 +8,7 @@ import furnitureshop.supplier.Supplier;
 import furnitureshop.supplier.SupplierService;
 import org.salespointframework.catalog.ProductIdentifier;
 import org.salespointframework.core.Currencies;
+import org.salespointframework.time.BusinessTime;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.util.Pair;
 import org.springframework.data.util.Streamable;
@@ -16,6 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import javax.money.MonetaryAmount;
+import java.lang.reflect.Array;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -29,6 +32,7 @@ public class ItemService {
 	private final ItemCatalog itemCatalog;
 	private final SupplierService supplierService;
 	private final OrderService orderService;
+	private final BusinessTime businessTime;
 
 	/**
 	 * Creates a new instance of an {@link ItemService}
@@ -36,17 +40,20 @@ public class ItemService {
 	 * @param itemCatalog     {@link ItemCatalog} which contains all items
 	 * @param supplierService {@link SupplierService} reference to the SupplierService
 	 * @param orderService    {@link OrderService} reference to the OrderService
+	 * @param businessTime	  {@link BusinessTime} reference to BusinessTime
 	 *
 	 * @throws IllegalArgumentException If {@code itemCatalog} is {@code null}
 	 */
-	public ItemService(ItemCatalog itemCatalog, @Lazy SupplierService supplierService, @Lazy OrderService orderService) {
+	public ItemService(ItemCatalog itemCatalog, @Lazy SupplierService supplierService, @Lazy OrderService orderService, BusinessTime businessTime) {
 		Assert.notNull(itemCatalog, "ItemCatalog must not be null!");
 		Assert.notNull(supplierService, "SupplierService must not be null!");
 		Assert.notNull(orderService, "OrderService must not be null!");
+		Assert.notNull(businessTime, "BusinessTime must not be null!");
 
 		this.itemCatalog = itemCatalog;
 		this.supplierService = supplierService;
 		this.orderService = orderService;
+		this.businessTime = businessTime;
 	}
 
 	/**
@@ -222,60 +229,57 @@ public class ItemService {
 		return supplierService.findById(id);
 	}
 
-	public Map<Supplier, MonetaryAmount[]> analyse(LocalDateTime today) {
-		final HashMap<Supplier, MonetaryAmount[]> supplierAmountMap = new HashMap<>();
+	public LocalDate getFirstOrderDate() {
+		LocalDateTime cur = businessTime.getTime();
 
 		for (ItemOrder itemOrder : orderService.findAllItemOrders()) {
-			final LocalDateTime orderDate = itemOrder.getDateCreated();
+			if (itemOrder.getCreated().isBefore(cur)) {
+				cur = itemOrder.getCreated();
+			}
+		}
+		return cur.toLocalDate();
+	}
 
-			final int index;
-			if (orderDate.isBefore(today) && orderDate.isAfter(today.minusDays(30))) {
-				index = 0;
-			} else if (orderDate.isBefore(today.minusDays(30)) && orderDate.isAfter(today.minusDays(60))) {
-				index = 1;
-			} else {
+	public List<StatisticEntry> analyse(LocalDate initDate, LocalDate compareDate) {
+		List<StatisticEntry> statisticEntries = new ArrayList<>();
+		boolean initFlag, compareFlag;
+
+		for (ItemOrder order: orderService.findAllItemOrders()) {
+			initFlag = order.getCreated().getMonth() == initDate.getMonth() && order.getCreated().getYear() == initDate.getYear();
+			compareFlag = order.getCreated().getMonth() == compareDate.getMonth() && order.getCreated().getYear() == compareDate.getYear();
+
+			if (!initFlag && !compareFlag) {
 				continue;
 			}
 
-			for (ItemOrderEntry entry : itemOrder.getOrderEntries()) {
-				if (entry.getStatus().equals(OrderStatus.COMPLETED)) {
-					if (entry.getItem() instanceof Set) {
-						final Set set = (Set) entry.getItem();
+			for (Map.Entry<Item, MonetaryAmount> entry : order.getProfits().entrySet()) {
+				StatisticEntry statEntry = null;
 
-						for (Pair<Piece, MonetaryAmount> pair : set.getPiecePrices()) {
-							final Supplier supplier = pair.getFirst().getSupplier();
-
-							if (!supplierAmountMap.containsKey(supplier)) {
-								supplierAmountMap.put(supplier, new MonetaryAmount[]{Currencies.ZERO_EURO, Currencies.ZERO_EURO});
-							}
-
-							supplierAmountMap.get(supplier)[index] = supplierAmountMap.get(supplier)[index].add(pair.getSecond());
-						}
-					} else {
-						final Supplier supplier = entry.getItem().getSupplier();
-
-						if (!supplierAmountMap.containsKey(supplier)) {
-							supplierAmountMap.put(supplier, new MonetaryAmount[]{Currencies.ZERO_EURO, Currencies.ZERO_EURO});
-						}
-
-						supplierAmountMap.get(supplier)[index] = supplierAmountMap.get(supplier)[index].add(entry.getItem().getPrice());
+				for (StatisticEntry statisticEntry : statisticEntries) {
+					if (statisticEntry.getSupplier().equals(entry.getKey().getSupplier())) {
+						statEntry = statisticEntry;
 					}
 				}
+
+				if (statEntry == null) {
+					statEntry = new StatisticEntry(entry.getKey().getSupplier());
+					statisticEntries.add(statEntry);
+				}
+
+				StatisticItemEntry itemEntry;
+
+				if (initFlag && !compareFlag) {
+					itemEntry = new StatisticItemEntry(entry.getKey(), entry.getValue(), Currencies.ZERO_EURO);
+				} else if (!initFlag) {
+					itemEntry = new StatisticItemEntry(entry.getKey(), Currencies.ZERO_EURO, entry.getValue());
+				} else {
+					itemEntry = new StatisticItemEntry(entry.getKey(), entry.getValue(), entry.getValue());
+				}
+
+				statEntry.addEntry(itemEntry);
 			}
 		}
 
-		for (Supplier supplier : supplierService.findAll()) {
-			if (supplier.getName().equals("Set Supplier")) {
-				continue;
-			}
-
-			if (!supplierAmountMap.containsKey(supplier)) {
-				supplierAmountMap.put(supplier, new MonetaryAmount[]{Currencies.ZERO_EURO, Currencies.ZERO_EURO});
-				continue;
-			}
-
-			supplierAmountMap.get(supplier)[1] = supplierAmountMap.get(supplier)[0].subtract(supplierAmountMap.get(supplier)[1]);
-		}
-		return supplierAmountMap;
+		return statisticEntries;
 	}
 }

@@ -5,7 +5,9 @@ import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.javamoney.moneta.Money;
 import org.salespointframework.core.Currencies;
 import org.salespointframework.time.BusinessTime;
+import org.springframework.data.util.Pair;
 import org.springframework.data.util.Streamable;
+import org.springframework.format.datetime.joda.LocalDateParser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.Assert;
@@ -16,7 +18,12 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Month;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoField;
+import java.time.temporal.TemporalAccessor;
 import java.util.*;
 
 /**
@@ -420,11 +427,43 @@ public class ItemController {
 	 */
 	@GetMapping("/admin/statistic")
 	String getMonthlyStatistic(Model model) {
-		final LocalDateTime time = businessTime.getTime();
+		LocalDate firstOrderDate = itemService.getFirstOrderDate();
+		LocalDateTime time = businessTime.getTime();
 
-		model.addAttribute("statistic", itemService.analyse(time));
-		model.addAttribute("timeFrom", time.minusDays(30));
-		model.addAttribute("timeTo", time);
+		List<LocalDate> months = getMonthListBetween(firstOrderDate, time.toLocalDate());
+
+		LocalDate initDate = LocalDate.of(time.getYear(), time.getMonth(), 1);
+		LocalDate compareDate = LocalDate.of(time.getYear(), time.getMonth(), 1).minusMonths(1);
+
+		model.addAttribute("months", months);
+		model.addAttribute("initDate", initDate);
+		model.addAttribute("compareDate", compareDate);
+		model.addAttribute("statistic", itemService.analyse(initDate, compareDate));
+
+		return "monthlyStatistic";
+	}
+
+	@PostMapping("/admin/statistic")
+	String setMonthlyStatisticValue(@RequestParam("init") String init, @RequestParam("compare") String compare, Model model) {
+		final TemporalAccessor initAccessor = DateTimeFormatter.ofPattern("MMMM yyyy").parse(init);
+		final int initMonth = initAccessor.get(ChronoField.MONTH_OF_YEAR);
+		final int initYear = initAccessor.get(ChronoField.YEAR);
+		final LocalDate initDate = LocalDate.of(initYear, initMonth, 1);
+
+		final TemporalAccessor compareAccessor = DateTimeFormatter.ofPattern("MMMM yyyy").parse(compare);
+		final int compareMonth = compareAccessor.get(ChronoField.MONTH_OF_YEAR);
+		final int compareYear = compareAccessor.get(ChronoField.YEAR);
+		final LocalDate compareDate = LocalDate.of(compareYear, compareMonth, 1);
+
+		LocalDate firstOrderDate = itemService.getFirstOrderDate();
+		LocalDateTime time = businessTime.getTime();
+
+		List<LocalDate> months = getMonthListBetween(firstOrderDate, time.toLocalDate());
+
+		model.addAttribute("months", months);
+		model.addAttribute("initDate", initDate);
+		model.addAttribute("compareDate", compareDate);
+		model.addAttribute("statistic", itemService.analyse(initDate, compareDate));
 
 		return "monthlyStatistic";
 	}
@@ -438,6 +477,22 @@ public class ItemController {
 		response.setContentType("image/jpeg");
 		InputStream is = new ByteArrayInputStream(item.get().getImage());
 		IOUtils.copy(is, response.getOutputStream());
+	}
+
+	private List<LocalDate> getMonthListBetween(LocalDate start, LocalDate end) {
+		List<LocalDate> months = new ArrayList<>();
+
+		if (end.isBefore(start)) {
+			return months;
+		}
+
+		start = LocalDate.of(start.getYear(), start.getMonth(), 1);
+		while (!start.isAfter(end)) {
+			months.add(start);
+			start = start.plusMonths(1);
+		}
+
+		return months;
 	}
 
 }

@@ -1,11 +1,14 @@
 package furnitureshop.order;
 
 import furnitureshop.inventory.Item;
+import furnitureshop.inventory.Piece;
+import furnitureshop.inventory.Set;
 import org.salespointframework.catalog.Product;
 import org.salespointframework.core.Currencies;
 import org.salespointframework.order.OrderLine;
 import org.salespointframework.quantity.Quantity;
 import org.salespointframework.useraccount.UserAccount;
+import org.springframework.data.util.Pair;
 import org.springframework.data.util.Streamable;
 import org.springframework.util.Assert;
 
@@ -14,9 +17,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @Entity
 public abstract class ItemOrder extends ShopOrder {
@@ -185,6 +186,34 @@ public abstract class ItemOrder extends ShopOrder {
 
 	public List<ItemOrderEntry> getOrderEntriesByItem(Item item) {
 		return Streamable.of(orderWithStatus).filter(e -> e.getItem().equals(item)).toList();
+	}
+
+	public Map<Item, MonetaryAmount> getProfits() {
+		HashMap<Item, MonetaryAmount> itemAmountMap = new HashMap<>();
+
+		for (ItemOrderEntry entry : orderWithStatus) {
+			if (entry.getStatus().equals(OrderStatus.COMPLETED)) {
+				if (entry.getItem() instanceof Set) {
+					final Set set = (Set) entry.getItem();
+
+					for (Pair<Piece, MonetaryAmount> pair : set.getPiecePrices()) {
+						if (itemAmountMap.containsKey(pair.getFirst())) {
+							itemAmountMap.put(pair.getFirst(), pair.getSecond().add(itemAmountMap.get(pair.getFirst())));
+						} else {
+							itemAmountMap.put(pair.getFirst(), pair.getSecond());
+						}
+					}
+				} else {
+					if (itemAmountMap.containsKey(entry.getItem())) {
+						itemAmountMap.put(entry.getItem(), entry.getItem().getPrice().add(itemAmountMap.get(entry.getItem())));
+					} else {
+						itemAmountMap.put(entry.getItem(), entry.getItem().getPrice());
+					}
+				}
+			}
+		}
+
+		return itemAmountMap;
 	}
 
 }
