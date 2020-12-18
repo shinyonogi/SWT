@@ -28,8 +28,7 @@ import java.util.Optional;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.contains;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -216,13 +215,13 @@ public class ItemControllerIntegrationTests {
 				.andExpect(status().is3xxRedirection())
 				.andExpect(redirectedUrl(String.format("/admin/supplier/%s/items", sofa_black.getSupplier().getId())))
 				.andExpect(view().name(String.format("redirect:/admin/supplier/%s/items", sofa_black.getSupplier().getId())));
-		//assertFalse(sofa_black.isVisible()); TODO find out why it is still true
+		assertFalse(itemCatalog.findById(sofa_black.getId()).get().isVisible());
 
 		mvc.perform(post("/admin/supplier/{suppId}/items/toggle/{itemId}", sofa_black.getSupplier().getId(), sofa_black.getId()))
 				.andExpect(status().is3xxRedirection())
 				.andExpect(redirectedUrl(String.format("/admin/supplier/%s/items", sofa_black.getSupplier().getId())))
 				.andExpect(view().name(String.format("redirect:/admin/supplier/%s/items", sofa_black.getSupplier().getId())));
-		assertTrue(sofa_black.isVisible());
+		assertTrue(itemCatalog.findById(sofa_black.getId()).get().isVisible());
 	}
 
 	@Test
@@ -232,7 +231,7 @@ public class ItemControllerIntegrationTests {
 				.andExpect(status().is3xxRedirection())
 				.andExpect(redirectedUrl(String.format("/admin/supplier/%s/items", setSupplier.getId())))
 				.andExpect(view().name(String.format("redirect:/admin/supplier/%s/items", setSupplier.getId())));
-		assertTrue(sofa_black.isVisible());
+		assertTrue(itemCatalog.findById(sofa_black.getId()).get().isVisible());
 	}
 
 	@Test
@@ -243,7 +242,7 @@ public class ItemControllerIntegrationTests {
 				.andExpect(status().is3xxRedirection())
 				.andExpect(redirectedUrl("/admin/suppliers"))
 				.andExpect(view().name("redirect:/admin/suppliers"));
-		assertTrue(sofa_black.isVisible());
+		assertTrue(itemCatalog.findById(sofa_black.getId()).get().isVisible());
 	}
 
 	@Test
@@ -375,7 +374,7 @@ public class ItemControllerIntegrationTests {
 		mvc.perform(post("/admin/supplier/{id}/sets/add", setSupplier.getId()).params(itemMap))
 				.andExpect(status().isOk())
 				.andExpect(model().attributeExists("setForm"))
-				//.andExpect(model().attribute("maxPrice", stuhl.getPrice().add(sofa_black.getPrice()).getNumber())) TODO find out how to check this
+				.andExpect(model().attributeExists("maxPrice"))
 				.andExpect(model().attribute("suppId", setSupplier.getId()))
 				.andExpect(view().name("supplierSetform"));
 	}
@@ -547,9 +546,9 @@ public class ItemControllerIntegrationTests {
 				.andExpect(status().is3xxRedirection())
 				.andExpect(redirectedUrl(String.format("/admin/supplier/%d/items", sofa1_black.getSupplier().getId())))
 				.andExpect(view().name(String.format("redirect:/admin/supplier/%d/items", sofa1_black.getSupplier().getId())));
-		//assertEquals("Sofa 50", sofa_black.getName()); TODO find way to test this!
-		//assertEquals("New", sofa_black.getDescription());
-		//assertEquals(Money.of(359.99, Currencies.EURO), sofa_black.getPrice());
+		assertEquals("Sofa 50", itemCatalog.findById(sofa_black.getId()).get().getName());
+		assertEquals("New", itemCatalog.findById(sofa_black.getId()).get().getDescription());
+		assertEquals(Money.of(359.99, Currencies.EURO), itemCatalog.findById(sofa_black.getId()).get().getSupplierPrice());
 	}
 
 	@Test
@@ -573,9 +572,9 @@ public class ItemControllerIntegrationTests {
 				.andExpect(status().is3xxRedirection())
 				.andExpect(redirectedUrl("/admin/suppliers"))
 				.andExpect(view().name("redirect:/admin/suppliers"));
-		assertEquals("Sofa 1", sofa_black.getName());
-		assertEquals("Sofa 1 in schwarz.", sofa_black.getDescription());
-		assertEquals(Money.of(259.99, Currencies.EURO), sofa_black.getSupplierPrice());
+		assertEquals("Sofa 1", itemCatalog.findById(sofa_black.getId()).get().getName());
+		assertEquals("Sofa 1 in schwarz.", itemCatalog.findById(sofa_black.getId()).get().getDescription());
+		assertEquals(Money.of(259.99, Currencies.EURO), itemCatalog.findById(sofa_black.getId()).get().getSupplierPrice());
 	}
 
 	@Test
@@ -598,9 +597,9 @@ public class ItemControllerIntegrationTests {
 				.andExpect(status().is3xxRedirection())
 				.andExpect(redirectedUrl(String.format("/admin/supplier/%d/items", setSupplier.getId())))
 				.andExpect(view().name(String.format("redirect:/admin/supplier/%d/items", setSupplier.getId())));
-		assertEquals("Sofa 1", sofa_black.getName());
-		assertEquals("Sofa 1 in schwarz.", sofa_black.getDescription());
-		assertEquals(Money.of(259.99, Currencies.EURO), sofa_black.getSupplierPrice());
+		assertEquals("Sofa 1", itemCatalog.findById(sofa_black.getId()).get().getName());
+		assertEquals("Sofa 1 in schwarz.", itemCatalog.findById(sofa_black.getId()).get().getDescription());
+		assertEquals(Money.of(259.99, Currencies.EURO), itemCatalog.findById(sofa_black.getId()).get().getSupplierPrice());
 	}
 
 	@Test
