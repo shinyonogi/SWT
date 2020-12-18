@@ -199,30 +199,18 @@ class OrderController {
 
 		final ItemOrder order;
 
+		// Pickup
 		if (form.getIndex() == 0) {
-			final Optional<Pickup> pickup = orderService.orderPickupItem(cart, contactInformation);
-
-			if (pickup.isEmpty()) {
-				model.addAttribute("result", 4);
-				return "orderCheckout";
-			}
-
-			order = pickup.get();
+			order = orderService.orderPickupItem(cart, contactInformation);
 		}
 		// Delivery
 		else if (form.getIndex() == 1) {
-			final Optional<Delivery> delivery = orderService.orderDelieveryItem(cart, contactInformation);
+			order = orderService.orderDelieveryItem(cart, contactInformation);
 
-			if (delivery.isEmpty()) {
-				model.addAttribute("result", 4);
-				return "orderCheckout";
-			}
-
-			model.addAttribute("lkw", delivery.get().getLkw());
-			model.addAttribute("deliveryDate", delivery.get().getDeliveryDate());
-			order = delivery.get();
+			model.addAttribute("lkw", ((Delivery) order).getLkw());
+			model.addAttribute("deliveryDate", ((Delivery) order).getDeliveryDate());
 		}
-		// Pickup
+		// Unknown
 		else {
 			// Display error message
 			model.addAttribute("result", 4);

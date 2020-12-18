@@ -303,7 +303,7 @@ public class LKWService {
 		throw new IllegalStateException("Invalid CalenderEntry Type");
 	}
 
-	public Optional<LKWCharter> createLKWOrder(LKW lkw, LocalDate date, ContactInformation contactInformation) {
+	public LKWCharter createLKWOrder(LKW lkw, LocalDate date, ContactInformation contactInformation) {
 		return orderService.orderLKW(lkw, date, contactInformation);
 	}
 

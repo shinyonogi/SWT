@@ -7,6 +7,7 @@ import org.salespointframework.order.OrderLine;
 import org.salespointframework.quantity.Quantity;
 import org.salespointframework.useraccount.UserAccount;
 import org.springframework.data.util.Streamable;
+import org.springframework.util.Assert;
 
 import javax.money.MonetaryAmount;
 import javax.persistence.CascadeType;
@@ -95,6 +96,8 @@ public abstract class ItemOrder extends ShopOrder {
 	 * @return boolean true if the change of status is successful, boolean false if unsuccessful
 	 */
 	public boolean changeStatus(long entryId, OrderStatus newStatus) {
+		Assert.notNull(newStatus, "OrderStatus must not be null!");
+
 		for (ItemOrderEntry orderEntry : orderWithStatus) {
 			if (orderEntry.getId() == entryId) {
 				final OrderStatus old = orderEntry.getStatus();
@@ -115,6 +118,8 @@ public abstract class ItemOrder extends ShopOrder {
 	 * @param newStatus The new {@link OrderStatus}
 	 */
 	public void changeAllStatus(OrderStatus newStatus) {
+		Assert.notNull(newStatus, "OrderStatus must not be null!");
+
 		for (ItemOrderEntry orderEntry : orderWithStatus) {
 			final OrderStatus old = orderEntry.getStatus();
 

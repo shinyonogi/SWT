@@ -49,6 +49,100 @@ public class ItemOrderTests {
 	}
 
 	@Test
+	void testGetRefund() {
+		order.addOrderLine(item1, Quantity.of(1));
+		order.addOrderLine(item2, Quantity.of(1));
+
+		order.getOrderEntriesByItem(item1).get(0).setStatus(OrderStatus.CANCELLED);
+		assertEquals(item1.getPrice(), order.getRefund(), "getRefund() should return the correct value");
+
+		order.getOrderEntriesByItem(item2).get(0).setStatus(OrderStatus.CANCELLED);
+		assertEquals(item1.getPrice().add(item2.getPrice()), order.getRefund(), "getRefund() should return the correct value");
+	}
+
+	@Test
+	void testGetMissingPayment() {
+		order.addOrderLine(item1, Quantity.of(1));
+		order.addOrderLine(item2, Quantity.of(1));
+
+		assertEquals(item1.getPrice().add(item2.getPrice()), order.getMissingPayment(), "getMissingPayment() should return the correct value");
+
+		order.getOrderEntriesByItem(item2).get(0).setStatus(OrderStatus.PAID);
+		assertEquals(item1.getPrice(), order.getMissingPayment(), "getMissingPayment() should return the correct value");
+
+		order.getOrderEntriesByItem(item2).get(0).setStatus(OrderStatus.CANCELLED);
+		assertEquals(item1.getPrice(), order.getMissingPayment(), "getMissingPayment() should return the correct value");
+	}
+
+	@Test
+	void testGetCancelFee() {
+		order.addOrderLine(item1, Quantity.of(1));
+
+		order.changeStatus(0, OrderStatus.STORED);
+		assertEquals(Currencies.ZERO_EURO, order.getCancelFee(), "getCancelFee() should return the correct value");
+
+		order.changeStatus(0, OrderStatus.CANCELLED);
+		assertEquals(item1.getPrice().multiply(0.2), order.getCancelFee(), "getCancelFee() should return the correct value");
+
+		order.changeStatus(0, OrderStatus.OPEN);
+		order.changeStatus(0, OrderStatus.CANCELLED);
+		assertEquals(Currencies.ZERO_EURO, order.getCancelFee(), "getCancelFee() should return the correct value");
+	}
+
+	@Test
+	void testGetItemTotal() {
+		order.addOrderLine(item1, Quantity.of(1));
+		assertEquals(item1.getPrice(), order.getItemTotal(), "getItemTotal() should return the correct value");
+
+		order.addOrderLine(item2, Quantity.of(1));
+		assertEquals(item1.getPrice().add(item2.getPrice()), order.getItemTotal(), "getItemTotal() should return the correct value");
+	}
+
+	@Test
+	void testGetTotal() {
+		order.addOrderLine(item1, Quantity.of(1));
+		order.addOrderLine(item2, Quantity.of(1));
+		assertEquals(item1.getPrice().add(item2.getPrice()).add(lkw.getType().getDelieveryPrice()), order.getTotal(), "getTotal() should return the correct value");
+
+		order.changeStatus(0, OrderStatus.CANCELLED);
+		assertEquals(item2.getPrice().add(lkw.getType().getDelieveryPrice()), order.getTotal(), "getTotal() should return the correct value");
+
+		order.changeStatus(0, OrderStatus.STORED);
+		order.changeStatus(0, OrderStatus.CANCELLED);
+		assertEquals(item1.getPrice().multiply(0.2).add(item2.getPrice()).add(lkw.getType().getDelieveryPrice()), order.getTotal(), "getTotal() should return the correct value");
+	}
+
+	@Test
+	void testRemoveEntry() {
+		order.addOrderLine(item1, Quantity.of(1));
+		assertTrue(order.removeEntry(0), "removeEntry() should have a valid EntryID");
+
+		order.addOrderLine(item1, Quantity.of(1));
+		assertFalse(order.removeEntry(1), "removeEntry() should not have a valid EntryID");
+	}
+
+	@Test
+	void testChangeStatus() {
+		order.addOrderLine(item1, Quantity.of(1));
+
+		assertTrue(order.changeStatus(0, OrderStatus.PAID), "changeStatus() should have a valid EntryID");
+		assertTrue(order.changeStatus(0, OrderStatus.CANCELLED), "changeStatus() should have a valid EntryID");
+		assertFalse(order.getOrderEntriesByItem(item1).get(0).hasCancelFee(), "changeStatus() shouldn't change cancel fee");
+
+		assertTrue(order.changeStatus(0, OrderStatus.STORED), "changeStatus() should have a valid EntryID");
+		assertTrue(order.changeStatus(0, OrderStatus.CANCELLED), "changeStatus() should have a valid EntryID");
+		assertTrue(order.getOrderEntriesByItem(item1).get(0).hasCancelFee(), "changeStatus() should change cancel fee");
+
+		assertFalse(order.changeStatus(1, OrderStatus.CANCELLED), "changeStatus() should not have a valid EntryID");
+	}
+
+	@Test
+	void testGetOrderEntriesByItem() {
+		order.addOrderLine(item1, Quantity.of(1));
+		assertEquals(order.getOrderEntriesByItem(item1), order.getOrderEntries(), "getOrderEntriesByItem() should return the right orderentry");
+	}
+
+	@Test
 	void testConstructorWithInvalidType() {
 		assertThrows(IllegalArgumentException.class, () -> new Pickup(null, info),
 				"Pickup() should throw an IllegalArgumentException if the name useraccount is invalid!"
@@ -106,28 +200,6 @@ public class ItemOrderTests {
 		assertTrue(ItemOrder.class.isAnnotationPresent(Entity.class), "ItemOrder must have @Entity!");
 		assertTrue(Pickup.class.isAnnotationPresent(Entity.class), "Pickup must have @Entity!");
 		assertTrue(Delivery.class.isAnnotationPresent(Entity.class), "Delivery must have @Entity!");
-	}
-
-	@Test
-	void testRemoveEntry() {
-		order.addOrderLine(item1, Quantity.of(1));
-		assertTrue(order.removeEntry(0), "removeEntry should have a valid EntryID");
-
-		order.addOrderLine(item1, Quantity.of(1));
-		assertFalse(order.removeEntry(1), "removeEntry should not have a valid EntryID");
-	}
-
-	@Test
-	void testChangeStatus() {
-		order.addOrderLine(item1, Quantity.of(1));
-		assertTrue(order.changeStatus(0, OrderStatus.CANCELLED), "changeStatus should have a valid EntryID");
-		assertFalse(order.changeStatus(1, OrderStatus.CANCELLED), "changeStatus should not have a valid EntryID");
-	}
-
-	@Test
-	void testGetOrderEntriesByItem() {
-		order.addOrderLine(item1, Quantity.of(1));
-		assertEquals(order.getOrderEntriesByItem(item1), order.getOrderEntries(), "getOrderEntriesByItem should return the right orderentry");
 	}
 
 }

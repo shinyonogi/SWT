@@ -36,7 +36,7 @@ public class LKWServiceTests {
 
 	@BeforeEach
 	void setUp() {
-		for (ShopOrder order : orderManagement.findBy(orderService.getDummyUser().get())) {
+		for (ShopOrder order : orderManagement.findBy(orderService.getDummyUser())) {
 			orderManagement.delete(order);
 		}
 		this.weekendDate = LocalDate.of(2023, 3, 19);
