@@ -427,13 +427,13 @@ public class ItemController {
 	 */
 	@GetMapping("/admin/statistic")
 	String getMonthlyStatistic(Model model) {
-		LocalDate firstOrderDate = itemService.getFirstOrderDate();
-		LocalDateTime time = businessTime.getTime();
+		final LocalDate firstOrderDate = itemService.getFirstOrderDate();
+		final LocalDateTime time = businessTime.getTime();
 
-		List<LocalDate> months = getMonthListBetween(firstOrderDate, time.toLocalDate());
+		final List<LocalDate> months = getMonthListBetween(firstOrderDate, time.toLocalDate());
 
-		LocalDate initDate = LocalDate.of(time.getYear(), time.getMonth(), 1);
-		LocalDate compareDate = LocalDate.of(time.getYear(), time.getMonth(), 1).minusMonths(1);
+		final LocalDate initDate = LocalDate.of(time.getYear(), time.getMonth(), 1);
+		final LocalDate compareDate = LocalDate.of(time.getYear(), time.getMonth(), 1).minusMonths(1);
 
 		model.addAttribute("months", months);
 		model.addAttribute("initDate", initDate);
@@ -455,10 +455,10 @@ public class ItemController {
 		final int compareYear = compareAccessor.get(ChronoField.YEAR);
 		final LocalDate compareDate = LocalDate.of(compareYear, compareMonth, 1);
 
-		LocalDate firstOrderDate = itemService.getFirstOrderDate();
-		LocalDateTime time = businessTime.getTime();
+		final LocalDate firstOrderDate = itemService.getFirstOrderDate();
+		final LocalDateTime time = businessTime.getTime();
 
-		List<LocalDate> months = getMonthListBetween(firstOrderDate, time.toLocalDate());
+		final List<LocalDate> months = getMonthListBetween(firstOrderDate, time.toLocalDate());
 
 		model.addAttribute("months", months);
 		model.addAttribute("initDate", initDate);
@@ -475,12 +475,12 @@ public class ItemController {
 		}
 
 		response.setContentType("image/jpeg");
-		InputStream is = new ByteArrayInputStream(item.get().getImage());
+		final InputStream is = new ByteArrayInputStream(item.get().getImage());
 		IOUtils.copy(is, response.getOutputStream());
 	}
 
 	private List<LocalDate> getMonthListBetween(LocalDate start, LocalDate end) {
-		List<LocalDate> months = new ArrayList<>();
+		final List<LocalDate> months = new ArrayList<>();
 
 		if (end.isBefore(start)) {
 			return months;

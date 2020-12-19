@@ -18,7 +18,7 @@ public class StatisticEntry {
 		Assert.notNull(supplier, "Supplier must not be null");
 
 		this.supplier = supplier;
-		statisticItemEntryList = new ArrayList<>();
+		this.statisticItemEntryList = new ArrayList<>();
 	}
 
 	public Supplier getSupplier() {
@@ -30,6 +30,8 @@ public class StatisticEntry {
 	}
 
 	public void addEntry(StatisticItemEntry entry) {
+		Assert.notNull(entry, "StatisticItemEntry must not be null!");
+
 		for (StatisticItemEntry itemEntry : statisticItemEntryList) {
 			if (itemEntry.equals(entry)) {
 				itemEntry.addInitProfit(entry.getInitProfit());
@@ -63,4 +65,5 @@ public class StatisticEntry {
 	public MonetaryAmount getDifference() {
 		return getInitProfit().subtract(getCompareProfit());
 	}
+
 }

@@ -76,10 +76,6 @@ public class ItemControllerIntegrationTests {
 		supplier = new Supplier("Supplier 1", 0.15);
 		setSupplier = new Supplier("Set Supplier", 0.05);
 
-		final List<Supplier> suppliers = Arrays.asList(supplier, setSupplier);
-		final List<Item> items = new ArrayList<>();
-
-
 		sofa_black = new Piece(2, "Sofa 1", Money.of(259.99, Currencies.EURO), new byte[0], "black",
 				"Sofa 1 in schwarz.", supplier, 80, Category.COUCH);
 		sofa1_black = new Piece(3, "Sofa 1", Money.of(259.99, Currencies.EURO), new byte[0], "black",
@@ -92,7 +88,7 @@ public class ItemControllerIntegrationTests {
 		set = new Set(4, "Set 1", Money.of(299.99, Currencies.EURO), new byte[0], "black",
 				"Set bestehend aus Sofa 1 und Stuhl 1.", setSupplier, Arrays.asList(stuhl, sofa_black));
 
-		supplierRepository.saveAll(suppliers);
+		supplierRepository.saveAll(Arrays.asList(supplier, setSupplier));
 		itemCatalog.saveAll(Arrays.asList(set, tisch, stuhl, sofa_black));
 	}
 
@@ -138,7 +134,7 @@ public class ItemControllerIntegrationTests {
 
 	@Test
 	void redirectsToCatalogWithInvalidCategory() throws Exception {
-		mvc.perform(get("/catalog/{category}","Bett"))
+		mvc.perform(get("/catalog/{category}", "Bett"))
 				.andExpect(status().is3xxRedirection())
 				.andExpect(redirectedUrl("/catalog"))
 				.andExpect(view().name("redirect:/catalog"));
@@ -167,7 +163,7 @@ public class ItemControllerIntegrationTests {
 	void redirectsToCatalogWithInvalidCategoryAndValidItem() throws Exception {
 		itemCatalog.save(sofa1_black);
 
-		mvc.perform(get("/catalog/{category}/{itemId}","bett", sofa1_black.getId()))
+		mvc.perform(get("/catalog/{category}/{itemId}", "bett", sofa1_black.getId()))
 				.andExpect(status().is3xxRedirection())
 				.andExpect(redirectedUrl("/catalog"))
 				.andExpect(view().name("redirect:/catalog"));
@@ -181,7 +177,7 @@ public class ItemControllerIntegrationTests {
 				.andExpect(redirectedUrl("/admin/supplier/" + sofa_black.getSupplier().getId() + "/items"))
 				.andExpect(view().name("redirect:/admin/supplier/" + sofa_black.getSupplier().getId() + "/items"));
 
-		mvc.perform(get("/catalog/{category}/{itemId}",Category.SET, set.getId()))
+		mvc.perform(get("/catalog/{category}/{itemId}", Category.SET, set.getId()))
 				.andExpect(status().is3xxRedirection())
 				.andExpect(redirectedUrl("/catalog/" + Category.SET))
 				.andExpect(view().name("redirect:/catalog/" + Category.SET));

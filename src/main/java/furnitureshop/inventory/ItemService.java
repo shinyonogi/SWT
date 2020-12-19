@@ -1,26 +1,25 @@
 package furnitureshop.inventory;
 
 import furnitureshop.order.ItemOrder;
-import furnitureshop.order.ItemOrderEntry;
 import furnitureshop.order.OrderService;
-import furnitureshop.order.OrderStatus;
 import furnitureshop.supplier.Supplier;
 import furnitureshop.supplier.SupplierService;
 import org.salespointframework.catalog.ProductIdentifier;
 import org.salespointframework.core.Currencies;
 import org.salespointframework.time.BusinessTime;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.data.util.Pair;
 import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import javax.money.MonetaryAmount;
-import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * This class manages all methods to add, remove or find an {@link Item} by its attributes.
@@ -280,6 +279,27 @@ public class ItemService {
 			}
 		}
 
+		for (Item item : findAll()) {
+			if (item instanceof Set) {
+				continue;
+			}
+
+			StatisticEntry statisticEntry = null;
+			for (StatisticEntry entry : statisticEntries) {
+				if (entry.getSupplier().equals(item.getSupplier())) {
+					statisticEntry = entry;
+				}
+			}
+
+			if (statisticEntry == null) {
+				statisticEntry = new StatisticEntry(item.getSupplier());
+				statisticEntries.add(statisticEntry);
+			}
+
+			statisticEntry.addEntry(new StatisticItemEntry(item, Currencies.ZERO_EURO, Currencies.ZERO_EURO));
+		}
+
 		return statisticEntries;
 	}
+
 }

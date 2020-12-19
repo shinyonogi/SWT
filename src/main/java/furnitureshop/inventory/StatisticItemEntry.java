@@ -1,12 +1,12 @@
 package furnitureshop.inventory;
 
-
 import com.mysema.commons.lang.Assert;
 
 import javax.money.MonetaryAmount;
 import java.util.Objects;
 
 public class StatisticItemEntry {
+
 	private final Item item;
 	private MonetaryAmount initProfit, compareProfit;
 
@@ -37,10 +37,14 @@ public class StatisticItemEntry {
 	}
 
 	public void addInitProfit(MonetaryAmount amount) {
+		Assert.notNull(amount, "Amount must not be null!");
+
 		initProfit = initProfit.add(amount);
 	}
 
 	public void addCompareProfit(MonetaryAmount amount) {
+		Assert.notNull(amount, "Amount must not be null!");
+
 		compareProfit = compareProfit.add(amount);
 	}
 
@@ -62,4 +66,5 @@ public class StatisticItemEntry {
 	public int hashCode() {
 		return Objects.hash(item);
 	}
+
 }
