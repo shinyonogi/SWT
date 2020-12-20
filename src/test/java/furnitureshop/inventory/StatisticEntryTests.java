@@ -6,8 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.salespointframework.core.Currencies;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class StatisticEntryTests {
 
@@ -93,6 +92,13 @@ public class StatisticEntryTests {
 		assertThrows(IllegalArgumentException.class, () -> new StatisticItemEntry(item1, Money.of(10, Currencies.EURO), null),
 				"StatisticItemEntry() should throw an IllegalArgumentException if the compare argument is invalid!"
 		);
+	}
+
+	@Test
+	void testStatisticItemEntryEquals() {
+		assertEquals(itemEntry1, itemEntry1);
+		assertNotEquals(itemEntry3, itemEntry1);
+		assertNotEquals(item2, itemEntry1);
 	}
 
 }
