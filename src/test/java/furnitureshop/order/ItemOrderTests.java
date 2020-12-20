@@ -3,6 +3,7 @@ package furnitureshop.order;
 import furnitureshop.inventory.Category;
 import furnitureshop.inventory.Item;
 import furnitureshop.inventory.Piece;
+import furnitureshop.inventory.Set;
 import furnitureshop.lkw.LKW;
 import furnitureshop.lkw.LKWType;
 import furnitureshop.supplier.Supplier;
@@ -13,9 +14,12 @@ import org.salespointframework.core.Currencies;
 import org.salespointframework.quantity.Quantity;
 import org.salespointframework.useraccount.UserAccount;
 
+import javax.money.MonetaryAmount;
 import javax.persistence.Entity;
 import java.lang.reflect.Modifier;
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
@@ -29,7 +33,7 @@ public class ItemOrderTests {
 
 	ItemOrder order;
 
-	Item item1, item2;
+	Item item1, item2, set;
 
 	@BeforeEach
 	void setUp() {
@@ -40,12 +44,14 @@ public class ItemOrderTests {
 
 		this.order = new Delivery(account, info, lkw, date);
 
-		final Supplier supplier = new Supplier("test", 0.2);
+		final Supplier supplier = new Supplier("test", 0);
 
-		this.item1 = new Piece(1, "Stuhl 1", Money.of(59.99, Currencies.EURO), new byte[0], "schwarz",
+		this.item1 = new Piece(1, "Stuhl 1", Money.of(60, Currencies.EURO), new byte[0], "schwarz",
 				"", supplier, 5, Category.CHAIR);
-		this.item2 = new Piece(1, "Stuhl 2", Money.of(49.99, Currencies.EURO), new byte[0], "weiß",
+		this.item2 = new Piece(1, "Stuhl 2", Money.of(50, Currencies.EURO), new byte[0], "weiß",
 				"", supplier, 5, Category.CHAIR);
+		this.set = new Set(2, "Set 1", Money.of(100, Currencies.EURO), new byte[0], "bunt",
+				"", supplier, Arrays.asList(item1, item2));
 	}
 
 	@Test
@@ -140,6 +146,27 @@ public class ItemOrderTests {
 	void testGetOrderEntriesByItem() {
 		order.addOrderLine(item1, Quantity.of(1));
 		assertEquals(order.getOrderEntriesByItem(item1), order.getOrderEntries(), "getOrderEntriesByItem() should return the right orderentry");
+	}
+
+	@Test
+	void testGetProfits() {
+		order.addOrderLine(item1, Quantity.of(2));
+		order.addOrderLine(set, Quantity.of(1));
+
+		Map<Item, MonetaryAmount> profits = order.getProfits();
+		assertEquals(0, profits.size(), "getProfits() should return the correct values");
+
+		order.changeStatus(0, OrderStatus.COMPLETED);
+		profits = order.getProfits();
+		assertEquals(1, profits.size(), "getProfits() should return the correct values");
+		assertEquals(60, profits.get(item1).getNumber().doubleValue(), 1e-10, "getProfits() should return the correct values");
+
+		final ItemOrderEntry setEntry = order.getOrderEntriesByItem(set).get(0);
+		setEntry.setStatus(OrderStatus.COMPLETED);
+		profits = order.getProfits();
+		assertEquals(2, profits.size(), "getProfits() should return the correct values");
+		assertEquals(114.545, profits.get(item1).getNumber().doubleValue(), 1e-3, "getProfits() should return the correct values");
+		assertEquals(45.455, profits.get(item2).getNumber().doubleValue(), 1e-3, "getProfits() should return the correct values");
 	}
 
 	@Test

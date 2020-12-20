@@ -192,24 +192,24 @@ public abstract class ItemOrder extends ShopOrder {
 		HashMap<Item, MonetaryAmount> itemAmountMap = new HashMap<>();
 
 		for (ItemOrderEntry entry : orderWithStatus) {
-			if (entry.getStatus().equals(OrderStatus.COMPLETED)) {
-				if (entry.getItem() instanceof Set) {
-					final Set set = (Set) entry.getItem();
+			if (entry.getStatus() != OrderStatus.COMPLETED) {
+				continue;
+			}
 
-					for (Pair<Piece, MonetaryAmount> pair : set.getPiecePrices()) {
-						if (itemAmountMap.containsKey(pair.getFirst())) {
-							itemAmountMap.put(pair.getFirst(), pair.getSecond().add(itemAmountMap.get(pair.getFirst())));
-						} else {
-							itemAmountMap.put(pair.getFirst(), pair.getSecond());
-						}
-					}
-				} else {
-					if (itemAmountMap.containsKey(entry.getItem())) {
-						itemAmountMap.put(entry.getItem(), entry.getItem().getPrice().add(itemAmountMap.get(entry.getItem())));
+			if (entry.getItem() instanceof Set) {
+				final Set set = (Set) entry.getItem();
+
+				for (Pair<Piece, MonetaryAmount> pair : set.getPiecePrices()) {
+					if (itemAmountMap.containsKey(pair.getFirst())) {
+						itemAmountMap.put(pair.getFirst(), pair.getSecond().add(itemAmountMap.get(pair.getFirst())));
 					} else {
-						itemAmountMap.put(entry.getItem(), entry.getItem().getPrice());
+						itemAmountMap.put(pair.getFirst(), pair.getSecond());
 					}
 				}
+			} else if (itemAmountMap.containsKey(entry.getItem())) {
+				itemAmountMap.put(entry.getItem(), entry.getItem().getPrice().add(itemAmountMap.get(entry.getItem())));
+			} else {
+				itemAmountMap.put(entry.getItem(), entry.getItem().getPrice());
 			}
 		}
 
