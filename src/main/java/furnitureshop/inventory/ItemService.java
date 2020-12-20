@@ -279,6 +279,10 @@ public class ItemService {
 			}
 		}
 
+		return statisticEntries;
+	}
+
+	public List<StatisticEntry> addItemsWithoutProfit(List<StatisticEntry> statisticEntries) {
 		for (Item item : findAll()) {
 			if (item instanceof Set) {
 				continue;
@@ -298,7 +302,6 @@ public class ItemService {
 
 			statisticEntry.addEntry(new StatisticItemEntry(item, Currencies.ZERO_EURO, Currencies.ZERO_EURO));
 		}
-
 		return statisticEntries;
 	}
 

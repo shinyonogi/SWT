@@ -460,10 +460,13 @@ public class ItemController {
 
 		final List<LocalDate> months = getMonthListBetween(firstOrderDate, time.toLocalDate());
 
+		List<StatisticEntry> statisticEntries = itemService.analyse(initDate, compareDate);
+		statisticEntries.addAll(itemService.addItemsWithoutProfit(statisticEntries));
+
 		model.addAttribute("months", months);
 		model.addAttribute("initDate", initDate);
 		model.addAttribute("compareDate", compareDate);
-		model.addAttribute("statistic", itemService.analyse(initDate, compareDate));
+		model.addAttribute("statistic", statisticEntries);
 
 		return "monthlyStatistic";
 	}
