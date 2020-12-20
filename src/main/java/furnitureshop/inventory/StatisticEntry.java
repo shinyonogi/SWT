@@ -31,6 +31,7 @@ public class StatisticEntry {
 
 	public void addEntry(StatisticItemEntry entry) {
 		Assert.notNull(entry, "StatisticItemEntry must not be null!");
+		Assert.isTrue(supplier.equals(entry.getItem().getSupplier()), "Supplier must be the same!");
 
 		for (StatisticItemEntry itemEntry : statisticItemEntryList) {
 			if (itemEntry.equals(entry)) {

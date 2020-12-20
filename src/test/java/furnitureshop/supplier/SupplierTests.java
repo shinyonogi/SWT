@@ -7,7 +7,7 @@ import javax.persistence.Entity;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class SupplierTest {
+public class SupplierTests {
 
 	@Test
 	void testSupplierConstructorWithInvalidType() {
