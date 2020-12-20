@@ -20,6 +20,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -608,17 +610,30 @@ public class ItemControllerIntegrationTests {
 	}
 
 	@Test
-	void returnImageFromExistingItem() throws Exception {
-		mvc.perform(get("/catalog/image/{id}", sofa1_black.getId()))
+	@WithMockUser(roles = "EMPLOYEE")
+	void returnsModelAndViewOfRequestMonthlyStatistic() throws Exception {
+		final DateTimeFormatter pattern = DateTimeFormatter.ofPattern("MMMM yyyy");
+		final String dec = LocalDate.of(2020, 12, 1).format(pattern);
+		final String nov = LocalDate.of(2020, 11, 1).format(pattern);
+
+		mvc.perform(post("/admin/statistic")
+				.param("init", dec).param("compare",nov))
 				.andExpect(status().isOk())
-				.andExpect(content().bytes(sofa1_black.getImage()));
+				.andExpect(model().attributeExists("statistic"))
+				.andExpect(view().name("monthlyStatistic"));
+	}
+
+	@Test
+	void returnImageFromExistingItem() throws Exception {
+		mvc.perform(get("/catalog/image/{id}", sofa_black.getId()))
+				.andExpect(status().isOk())
+				.andExpect(content().bytes(sofa_black.getImage()));
 	}
 
 	@Test
 	void returnImageFromUnknownItem() throws Exception {
 		mvc.perform(get("/catalog/image/{id}", "id"))
-				.andExpect(status().isOk())
-				.andExpect(content().bytes(new byte[0]));
+				.andExpect(status().is4xxClientError());
 	}
 
 }

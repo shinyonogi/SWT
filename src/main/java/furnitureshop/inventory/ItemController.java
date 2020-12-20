@@ -469,8 +469,9 @@ public class ItemController {
 	}
 
 	@GetMapping("/catalog/image/{id}")
-	public void renderImageFromDB(@PathVariable("id") Optional<Item> item, HttpServletResponse response) throws IOException {
+	public void getItemImage(@PathVariable("id") Optional<Item> item, HttpServletResponse response) throws IOException {
 		if (item.isEmpty()) {
+			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 			return;
 		}
 
