@@ -16,10 +16,8 @@ import org.springframework.util.Assert;
 import javax.money.MonetaryAmount;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+import java.util.Map.Entry;
 
 /**
  * This class manages all methods to add, remove or find an {@link Item} by its attributes.
@@ -39,7 +37,7 @@ public class ItemService {
 	 * @param itemCatalog     {@link ItemCatalog} which contains all items
 	 * @param supplierService {@link SupplierService} reference to the SupplierService
 	 * @param orderService    {@link OrderService} reference to the OrderService
-	 * @param businessTime	  {@link BusinessTime} reference to BusinessTime
+	 * @param businessTime    {@link BusinessTime} reference to BusinessTime
 	 *
 	 * @throws IllegalArgumentException If {@code itemCatalog} is {@code null}
 	 */
@@ -239,11 +237,11 @@ public class ItemService {
 		return cur.toLocalDate();
 	}
 
-	public List<StatisticEntry> analyse(LocalDate initDate, LocalDate compareDate) {
-		List<StatisticEntry> statisticEntries = new ArrayList<>();
+	public List<StatisticEntry> analyseProfits(LocalDate initDate, LocalDate compareDate) {
+		final List<StatisticEntry> statisticEntries = createEmptyStatistic();
 		boolean initFlag, compareFlag;
 
-		for (ItemOrder order: orderService.findAllItemOrders()) {
+		for (ItemOrder order : orderService.findAllItemOrders()) {
 			initFlag = order.getCreated().getMonth() == initDate.getMonth() && order.getCreated().getYear() == initDate.getYear();
 			compareFlag = order.getCreated().getMonth() == compareDate.getMonth() && order.getCreated().getYear() == compareDate.getYear();
 
@@ -251,18 +249,13 @@ public class ItemService {
 				continue;
 			}
 
-			for (Map.Entry<Item, MonetaryAmount> entry : order.getProfits().entrySet()) {
+			for (Entry<Item, MonetaryAmount> entry : order.getProfits().entrySet()) {
 				StatisticEntry statEntry = null;
 
 				for (StatisticEntry statisticEntry : statisticEntries) {
 					if (statisticEntry.getSupplier().equals(entry.getKey().getSupplier())) {
 						statEntry = statisticEntry;
 					}
-				}
-
-				if (statEntry == null) {
-					statEntry = new StatisticEntry(entry.getKey().getSupplier());
-					statisticEntries.add(statEntry);
 				}
 
 				StatisticItemEntry itemEntry;
@@ -279,10 +272,17 @@ public class ItemService {
 			}
 		}
 
+		statisticEntries.sort(
+				Comparator.comparing(StatisticEntry::getInitProfit, Comparator.reverseOrder())
+						.thenComparing(s -> s.getSupplier().getName())
+		);
+
 		return statisticEntries;
 	}
 
-	public List<StatisticEntry> addItemsWithoutProfit(List<StatisticEntry> statisticEntries) {
+	private List<StatisticEntry> createEmptyStatistic() {
+		final List<StatisticEntry> statisticEntries = new ArrayList<>();
+
 		for (Item item : findAll()) {
 			if (item instanceof Set) {
 				continue;
@@ -302,6 +302,7 @@ public class ItemService {
 
 			statisticEntry.addEntry(new StatisticItemEntry(item, Currencies.ZERO_EURO, Currencies.ZERO_EURO));
 		}
+
 		return statisticEntries;
 	}
 

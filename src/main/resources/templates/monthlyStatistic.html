@@ -87,7 +87,7 @@
                     </button>
                 </td>
             </tr>
-            <tr th:class="${'sup' + entry.getSupplier().getId()}" style="display: none" class="table-light" th:each="item : ${entry.getStatisticItemEntryList()}" th:with="dif = ${item.getDifference()}">
+            <tr th:class="${'sup' + entry.getSupplier().getId()}" style="display: none" class="table-light" th:each="item : ${entry.getStatisticItemEntries()}" th:with="dif = ${item.getDifference()}">
                 <td class="align-middle">
                     <img class="img-fluid mr-2" th:src="@{'/catalog/image/' + ${item.getItem().getId().getIdentifier()}}" style="width: 80px"
                          src="../static/resources/img/inventory/chair_1.jpg" alt="Artikel"/>

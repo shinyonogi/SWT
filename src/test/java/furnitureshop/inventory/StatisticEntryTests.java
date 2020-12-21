@@ -59,17 +59,17 @@ public class StatisticEntryTests {
 		);
 
 		statisticEntry.addEntry(itemEntry1);
-		assertEquals(1, statisticEntry.getStatisticItemEntryList().size(), "addEntry() should add the correct value!");
+		assertEquals(1, statisticEntry.getStatisticItemEntries().size(), "addEntry() should add the correct value!");
 		assertEquals(10, statisticEntry.getInitProfit().getNumber().doubleValue(), 1e-3, "addEntry() should add the correct value!");
 		assertEquals(20, statisticEntry.getCompareProfit().getNumber().doubleValue(), 1e-3,"addEntry() should add the correct value!");
 
 		statisticEntry.addEntry(itemEntry2);
-		assertEquals(1, statisticEntry.getStatisticItemEntryList().size(), "addEntry() should add the correct value!");
+		assertEquals(1, statisticEntry.getStatisticItemEntries().size(), "addEntry() should add the correct value!");
 		assertEquals(20, statisticEntry.getInitProfit().getNumber().doubleValue(), 1e-3, "addEntry() should add the correct value!");
 		assertEquals(40, statisticEntry.getCompareProfit().getNumber().doubleValue(), 1e-3,"addEntry() should add the correct value!");
 
 		statisticEntry.addEntry(itemEntry3);
-		assertEquals(2, statisticEntry.getStatisticItemEntryList().size(), "addEntry() should add the correct value!");
+		assertEquals(2, statisticEntry.getStatisticItemEntries().size(), "addEntry() should add the correct value!");
 		assertEquals(40, statisticEntry.getInitProfit().getNumber().doubleValue(), 1e-3, "addEntry() should add the correct value!");
 		assertEquals(60, statisticEntry.getCompareProfit().getNumber().doubleValue(), 1e-3,"addEntry() should add the correct value!");
 	}
@@ -92,13 +92,6 @@ public class StatisticEntryTests {
 		assertThrows(IllegalArgumentException.class, () -> new StatisticItemEntry(item1, Money.of(10, Currencies.EURO), null),
 				"StatisticItemEntry() should throw an IllegalArgumentException if the compare argument is invalid!"
 		);
-	}
-
-	@Test
-	void testStatisticItemEntryEquals() {
-		assertEquals(itemEntry1, itemEntry1);
-		assertNotEquals(itemEntry3, itemEntry1);
-		assertNotEquals(item2, itemEntry1);
 	}
 
 }

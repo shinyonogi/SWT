@@ -5,9 +5,7 @@ import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.javamoney.moneta.Money;
 import org.salespointframework.core.Currencies;
 import org.salespointframework.time.BusinessTime;
-import org.springframework.data.util.Pair;
 import org.springframework.data.util.Streamable;
-import org.springframework.format.datetime.joda.LocalDateParser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.Assert;
@@ -20,7 +18,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoField;
 import java.time.temporal.TemporalAccessor;
@@ -435,10 +432,12 @@ public class ItemController {
 		final LocalDate initDate = LocalDate.of(time.getYear(), time.getMonth(), 1);
 		final LocalDate compareDate = LocalDate.of(time.getYear(), time.getMonth(), 1).minusMonths(1);
 
+		final List<StatisticEntry> statisticEntries = itemService.analyseProfits(initDate, compareDate);
+
 		model.addAttribute("months", months);
 		model.addAttribute("initDate", initDate);
 		model.addAttribute("compareDate", compareDate);
-		model.addAttribute("statistic", itemService.analyse(initDate, compareDate));
+		model.addAttribute("statistic", statisticEntries);
 
 		return "monthlyStatistic";
 	}
@@ -460,8 +459,7 @@ public class ItemController {
 
 		final List<LocalDate> months = getMonthListBetween(firstOrderDate, time.toLocalDate());
 
-		List<StatisticEntry> statisticEntries = itemService.analyse(initDate, compareDate);
-		statisticEntries.addAll(itemService.addItemsWithoutProfit(statisticEntries));
+		final List<StatisticEntry> statisticEntries = itemService.analyseProfits(initDate, compareDate);
 
 		model.addAttribute("months", months);
 		model.addAttribute("initDate", initDate);

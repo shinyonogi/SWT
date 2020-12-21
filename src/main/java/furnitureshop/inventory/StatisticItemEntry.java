@@ -3,7 +3,6 @@ package furnitureshop.inventory;
 import com.mysema.commons.lang.Assert;
 
 import javax.money.MonetaryAmount;
-import java.util.Objects;
 
 public class StatisticItemEntry {
 
@@ -46,25 +45,6 @@ public class StatisticItemEntry {
 		Assert.notNull(amount, "Amount must not be null!");
 
 		compareProfit = compareProfit.add(amount);
-	}
-
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) {
-			return true;
-		}
-
-		if (!(o instanceof StatisticItemEntry)) {
-			return false;
-		}
-
-		StatisticItemEntry that = (StatisticItemEntry) o;
-		return item.equals(that.item);
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(item);
 	}
 
 }
