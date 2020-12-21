@@ -1,5 +1,7 @@
 package furnitureshop.inventory;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import java.util.List;
 
 /**
@@ -8,7 +10,7 @@ import java.util.List;
 public class ItemForm {
 
 	private final int groupId, weight;
-	private final String name, picture, variant, description;
+	private final String name, variant, description;
 	private final double price;
 
 	private final Category category;
@@ -17,21 +19,20 @@ public class ItemForm {
 
 	/**
 	 * Creates a new instance of an {@link ItemForm}
-	 *  @param groupId    The groupId of the item
-	 * @param weight        The weight of the item
+	 *
+	 * @param groupId     The groupId of the item
+	 * @param weight      The weight of the item
 	 * @param name        The name of the item
-	 * @param picture    The picture path of the item
-	 * @param variant        The variant of the item
-	 * @param description    The description of the item
-	 * @param price           The price of the item
-	 * @param category        The {@link Category} of the item
-	 * @param items			Collection of {@link Item} needed for {@link Set}
+	 * @param variant     The variant of the item
+	 * @param description The description of the item
+	 * @param price       The price of the item
+	 * @param category    The {@link Category} of the item
+	 * @param items       Collection of {@link Item} needed for {@link Set}
 	 */
-	public ItemForm(int groupId, int weight, String name, String picture, String variant, String description, double price, Category category, List<Item> items) {
+	public ItemForm(int groupId, int weight, String name, String variant, String description, double price, Category category, List<Item> items) {
 		this.groupId = groupId;
 		this.weight = weight;
 		this.name = name;
-		this.picture = picture;
 		this.variant = variant;
 		this.description = description;
 		this.price = price;
@@ -45,10 +46,6 @@ public class ItemForm {
 
 	public String getName() {
 		return name;
-	}
-
-	public String getPicture() {
-		return picture;
 	}
 
 	public String getVariant() {

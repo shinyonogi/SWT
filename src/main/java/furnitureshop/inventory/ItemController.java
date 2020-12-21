@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.money.MonetaryAmount;
 import javax.servlet.http.HttpServletResponse;
@@ -135,7 +136,7 @@ public class ItemController {
 			return String.format("redirect:/admin/supplier/%s/sets/add", suppId);
 		}
 
-		model.addAttribute("itemForm", new ItemForm(0, 0, "", "placeholder.png", "", "", 0, null, new ArrayList<>()));
+		model.addAttribute("itemForm", new ItemForm(0, 0, "", "", "", 0, null, new ArrayList<>()));
 		model.addAttribute("suppId", suppId);
 		model.addAttribute("categories", Category.values());
 		model.addAttribute("edit", false);
@@ -156,8 +157,9 @@ public class ItemController {
 	 * @return Returns a redirect to '/admin/supplier/{id}/items' when everything was successfully created. Otherwise
 	 * returns the user created {@link ItemForm} and the corresponding view.
 	 */
-	@PostMapping("/admin/supplier/{id}/items/add")
-	String addItemForSupplier(@PathVariable("id") long suppId, @ModelAttribute("itemForm") ItemForm form, Model model) {
+	@PostMapping(value = "/admin/supplier/{id}/items/add", consumes = {"multipart/form-data"})
+	String addItemForSupplier(@PathVariable("id") long suppId, @ModelAttribute("itemForm") ItemForm form,
+			@RequestParam("image") MultipartFile file, Model model) {
 		final Optional<Supplier> supplier = itemService.findSupplierById(suppId);
 
 		if (supplier.isEmpty()) {
@@ -168,11 +170,18 @@ public class ItemController {
 			return String.format("redirect:/admin/supplier/%s/sets/add", suppId);
 		}
 
+		byte[] image = new byte[0];
+		try {
+			image = file.getBytes();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 		final Piece piece = new Piece(
 				form.getGroupId(),
 				form.getName(),
 				Money.of(form.getPrice(), Currencies.EURO),
-				new byte[0], //TODO
+				image,
 				form.getVariant(),
 				form.getDescription(),
 				supplier.get(),
@@ -247,7 +256,7 @@ public class ItemController {
 			maxPrice = maxPrice.add(item.getPrice());
 		}
 
-		model.addAttribute("setForm", new ItemForm(0, 0, "", "placeholder.png", "", "", 0, Category.SET, itemList));
+		model.addAttribute("setForm", new ItemForm(0, 0, "", "", "", 0, Category.SET, itemList));
 		model.addAttribute("maxPrice", maxPrice.getNumber());
 		model.addAttribute("suppId", suppId);
 		return "supplierSetform";
@@ -263,8 +272,8 @@ public class ItemController {
 	 * @return Either redirects to the supplier overview when {@link Supplier} is not found or to the item overview of
 	 * the SetSupplier when everything was correctly created.
 	 */
-	@PostMapping("/admin/supplier/{suppId}/sets/add/set")
-	String addSetForSupplier(@PathVariable("suppId") long suppId, @ModelAttribute("setForm") ItemForm form) {
+	@PostMapping(value = "/admin/supplier/{suppId}/sets/add/set", consumes = {"multipart/form-data"})
+	String addSetForSupplier(@PathVariable("suppId") long suppId, @ModelAttribute("setForm") ItemForm form, @RequestParam("image") MultipartFile file) {
 		final Optional<Supplier> supplier = itemService.findSupplierById(suppId);
 
 		if (supplier.isEmpty()) {
@@ -275,11 +284,18 @@ public class ItemController {
 			return String.format("redirect:/admin/supplier/%d/items", suppId);
 		}
 
+		byte[] image = new byte[0];
+		try {
+			image = file.getBytes();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 		final Set set = new Set(
 				form.getGroupId(),
 				form.getName(),
 				Money.of(form.getPrice(), Currencies.EURO),
-				new byte[0], //TODO
+				image,
 				form.getVariant(),
 				form.getDescription(),
 				supplier.get(),
@@ -318,8 +334,8 @@ public class ItemController {
 			model.addAttribute("maxPrice", set.getPartTotal().getNumber());
 		}
 
-		//TODO
-		model.addAttribute("itemForm", new ItemForm(item.getGroupId(), item.getWeight(), item.getName(), "", item.getVariant(), item.getDescription(), item.getSupplierPrice().getNumber().doubleValue(), item.getCategory(), new ArrayList<>()));
+		model.addAttribute("itemForm", new ItemForm(item.getGroupId(), item.getWeight(), item.getName(), item.getVariant(), item.getDescription(), item.getSupplierPrice().getNumber().doubleValue(), item.getCategory(), new ArrayList<>()));
+		model.addAttribute("image", null);
 		model.addAttribute("suppId", suppId);
 		model.addAttribute("itemId", item.getId());
 		model.addAttribute("categories", Category.values());
@@ -339,8 +355,9 @@ public class ItemController {
 	 *
 	 * @return Redirects to the item overview of the given supplier.
 	 */
-	@PostMapping("/admin/supplier/{suppId}/items/edit/{itemId}")
-	String editItemForSupplier(@PathVariable("suppId") long suppId, @PathVariable("itemId") Item item, @ModelAttribute("itemForm") ItemForm form) {
+	@PostMapping(value = "/admin/supplier/{suppId}/items/edit/{itemId}", consumes = {"multipart/form-data"})
+	String editItemForSupplier(@PathVariable("suppId") long suppId, @PathVariable("itemId") Item item,
+			@ModelAttribute("itemForm") ItemForm form, @RequestParam("image") MultipartFile file) {
 		Optional<Supplier> supplier = itemService.findSupplierById(suppId);
 
 		if (supplier.isEmpty()) {
@@ -354,7 +371,11 @@ public class ItemController {
 		item.setName(form.getName());
 		item.setPrice(Money.of(form.getPrice(), Currencies.EURO));
 		item.setDescription(form.getDescription());
-		item.setImage(new byte[0]); //TODO
+		try {
+			item.setImage(file.getBytes());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 		itemService.addOrUpdateItem(item);
 

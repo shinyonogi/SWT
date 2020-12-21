@@ -75,13 +75,18 @@ public class OrderDataInitializer implements DataInitializer {
 			final ItemOrder order;
 			if (random.nextBoolean()) {
 				order = orderService.orderPickupItem(cart, info);
+
+				for (ItemOrderEntry entry : new ArrayList<>(order.getOrderEntries())) {
+					final OrderStatus status = OrderStatus.values()[random.nextInt(OrderStatus.values().length - 2) + 2];
+					orderService.changeItemEntryStatus(order, entry.getId(), status);
+				}
 			} else {
 				order = orderService.orderDelieveryItem(cart, info);
-			}
 
-			for (ItemOrderEntry entry : new ArrayList<>(order.getOrderEntries())) {
 				final OrderStatus status = OrderStatus.values()[random.nextInt(OrderStatus.values().length - 1) + 1];
-				orderService.changeItemEntryStatus(order, entry.getId(), status);
+				for (ItemOrderEntry entry : new ArrayList<>(order.getOrderEntries())) {
+					orderService.changeItemEntryStatus(order, entry.getId(), status);
+				}
 			}
 
 			businessTime.forward(Duration.of(-80, ChronoUnit.HOURS));
