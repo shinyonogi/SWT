@@ -3,6 +3,7 @@ package furnitureshop.order;
 import furnitureshop.inventory.Item;
 import furnitureshop.lkw.LKWType;
 import org.salespointframework.order.Cart;
+import org.salespointframework.order.CartItem;
 import org.salespointframework.quantity.Quantity;
 import org.salespointframework.time.BusinessTime;
 import org.springframework.data.util.Pair;
@@ -79,7 +80,15 @@ class OrderController {
 	 */
 	@PostMapping("/cart/add/{id}")
 	String addItem(@PathVariable("id") Item item, @RequestParam("number") int quantity, @ModelAttribute("cart") Cart cart) {
-		cart.addOrUpdateItem(item, Quantity.of(quantity));
+		int amount = 0;
+		for (CartItem cartItem : cart) {
+			if (cartItem.getProduct().equals(item)) {
+				amount += cartItem.getQuantity().getAmount().intValue();
+			}
+		}
+
+		final int additional = Math.min(99, amount + quantity) - amount;
+		cart.addOrUpdateItem(item, Quantity.of(additional));
 
 		return "redirect:/";
 	}
@@ -100,8 +109,8 @@ class OrderController {
 			if (amount <= 0) {
 				cart.removeItem(cartItemId);
 			} else {
-				final int newValue = amount - it.getQuantity().getAmount().intValue();
-				cart.addOrUpdateItem(it.getProduct(), newValue);
+				final int additional = amount - it.getQuantity().getAmount().intValue();
+				cart.addOrUpdateItem(it.getProduct(), additional);
 			}
 			return "redirect:/cart";
 		}).orElse("redirect:/cart");
