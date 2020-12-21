@@ -14,11 +14,13 @@ import org.salespointframework.useraccount.UserAccountManagement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -31,8 +33,7 @@ import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.contains;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
@@ -61,6 +62,8 @@ public class ItemControllerIntegrationTests {
 	Piece sofa_black, sofa1_black, stuhl, tisch;
 	Set set;
 	Supplier supplier, setSupplier;
+
+	MockMultipartFile multipartFile;
 
 	@BeforeEach
 	void setUp() {
@@ -92,6 +95,9 @@ public class ItemControllerIntegrationTests {
 
 		supplierRepository.saveAll(Arrays.asList(supplier, setSupplier));
 		itemCatalog.saveAll(Arrays.asList(set, tisch, stuhl, sofa_black));
+
+		this.multipartFile = new MockMultipartFile("image", "test.png",
+				"image/png", "Spring Framework".getBytes());
 	}
 
 	@Test
@@ -269,11 +275,11 @@ public class ItemControllerIntegrationTests {
 	@WithMockUser(roles = "EMPLOYEE")
 	void redirectsToOverviewAfterPieceAddition() throws Exception {
 
-		mvc.perform(post("/admin/supplier/{id}/items/add", supplier.getId())
+		mvc.perform(multipart("/admin/supplier/{id}/items/add", supplier.getId())
+				.file(multipartFile)
 				.param("groupId", "0")
 				.param("weight", "50")
 				.param("name", "Item Name")
-				.param("picture", "picture")
 				.param("variant", "Variante")
 				.param("description", "Beschreibung")
 				.param("price", "50.65")
@@ -289,11 +295,11 @@ public class ItemControllerIntegrationTests {
 	@WithMockUser(roles = "EMPLOYEE")
 	void redirectsToSupplierOverviewOnPieceAddingWithWrongSupplier() throws Exception {
 		Supplier supp = new Supplier("wrong", 0.05);
-		mvc.perform(post("/admin/supplier/{id}/items/add", supp.getId())
+		mvc.perform(multipart("/admin/supplier/{id}/items/add", supp.getId())
+				.file(multipartFile)
 				.param("groupId", "0")
 				.param("weight", "50")
 				.param("name", "Item Name")
-				.param("picture", "picture")
 				.param("variant", "Variante")
 				.param("description", "Beschreibung")
 				.param("price", "50.65")
@@ -308,11 +314,11 @@ public class ItemControllerIntegrationTests {
 	@Test
 	@WithMockUser(roles = "EMPLOYEE")
 	void redirectsToSetAddOnPieceAddingWithSetSupplier() throws Exception {
-		mvc.perform(post("/admin/supplier/{id}/items/add", setSupplier.getId())
+		mvc.perform(multipart("/admin/supplier/{id}/items/add", setSupplier.getId())
+				.file(multipartFile)
 				.param("groupId", "0")
 				.param("weight", "50")
 				.param("name", "Item Name")
-				.param("picture", "picture")
 				.param("variant", "Variante")
 				.param("description", "Beschreibung")
 				.param("price", "50.65")
@@ -411,11 +417,11 @@ public class ItemControllerIntegrationTests {
 		MultiValueMap<String, String> itemMap = new LinkedMultiValueMap<>();
 		itemMap.put("items", itemList);
 
-		mvc.perform(post("/admin/supplier/{id}/sets/add/set", setSupplier.getId())
+		mvc.perform(multipart("/admin/supplier/{id}/sets/add/set", setSupplier.getId())
+				.file(multipartFile)
 				.param("groupId", "0")
 				.param("weight", "100")
 				.param("name", "Set Name")
-				.param("picture", "picture")
 				.param("variant", "Variante")
 				.param("description", "Beschreibung")
 				.param("price", "99.99")
@@ -435,11 +441,11 @@ public class ItemControllerIntegrationTests {
 		MultiValueMap<String, String> itemMap = new LinkedMultiValueMap<>();
 		itemMap.put("items", itemList);
 
-		mvc.perform(post("/admin/supplier/{id}/sets/add/set", supp.getId())
+		mvc.perform(multipart("/admin/supplier/{id}/sets/add/set", supp.getId())
+				.file(multipartFile)
 				.param("groupId", "0")
 				.param("weight", "100")
 				.param("name", "Set Name")
-				.param("picture", "picture")
 				.param("variant", "Variante")
 				.param("description", "Beschreibung")
 				.param("price", "99.99")
@@ -458,11 +464,11 @@ public class ItemControllerIntegrationTests {
 		MultiValueMap<String, String> itemMap = new LinkedMultiValueMap<>();
 		itemMap.put("items", itemList);
 
-		mvc.perform(post("/admin/supplier/{id}/sets/add/set", supplier.getId())
+		mvc.perform(multipart("/admin/supplier/{id}/sets/add/set", supplier.getId())
+				.file(multipartFile)
 				.param("groupId", "0")
 				.param("weight", "100")
 				.param("name", "Set Name")
-				.param("picture", "picture")
 				.param("variant", "Variante")
 				.param("description", "Beschreibung")
 				.param("price", "99.99")
@@ -531,11 +537,11 @@ public class ItemControllerIntegrationTests {
 		MultiValueMap<String, String> itemMap = new LinkedMultiValueMap<>();
 		itemMap.put("items", itemList);
 
-		mvc.perform(post("/admin/supplier/{suppId}/items/edit/{itemId}", sofa_black.getSupplier().getId(), sofa_black.getId())
+		mvc.perform(multipart("/admin/supplier/{suppId}/items/edit/{itemId}", sofa_black.getSupplier().getId(), sofa_black.getId())
+				.file(multipartFile)
 				.param("groupId", String.valueOf(sofa_black.getGroupId()))
 				.param("weight", String.valueOf(sofa_black.getWeight()))
 				.param("name", "Sofa 50") // changed
-				.param("picture", "")
 				.param("variant", sofa_black.getVariant())
 				.param("description", "New") // changed
 				.param("price", "359.99") // changed
@@ -557,11 +563,11 @@ public class ItemControllerIntegrationTests {
 		MultiValueMap<String, String> itemMap = new LinkedMultiValueMap<>();
 		itemMap.put("items", itemList);
 
-		mvc.perform(post("/admin/supplier/{suppId}/items/edit/{itemId}", supp.getId(), sofa_black.getId())
+		mvc.perform(multipart("/admin/supplier/{suppId}/items/edit/{itemId}", supp.getId(), sofa_black.getId())
+				.file(multipartFile)
 				.param("groupId", String.valueOf(sofa_black.getGroupId()))
 				.param("weight", String.valueOf(sofa_black.getWeight()))
 				.param("name", "Sofa 50") // changed
-				.param("picture", "")
 				.param("variant", sofa_black.getVariant())
 				.param("description", "New") // changed
 				.param("price", "359.99") // changed
@@ -582,11 +588,11 @@ public class ItemControllerIntegrationTests {
 		MultiValueMap<String, String> itemMap = new LinkedMultiValueMap<>();
 		itemMap.put("items", itemList);
 
-		mvc.perform(post("/admin/supplier/{suppId}/items/edit/{itemId}", setSupplier.getId(), sofa_black.getId())
+		mvc.perform(multipart("/admin/supplier/{suppId}/items/edit/{itemId}", setSupplier.getId(), sofa_black.getId())
+				.file(multipartFile)
 				.param("groupId", String.valueOf(sofa_black.getGroupId()))
 				.param("weight", String.valueOf(sofa_black.getWeight()))
 				.param("name", "Sofa 50") // changed
-				.param("picture", "")
 				.param("variant", sofa_black.getVariant())
 				.param("description", "New") // changed
 				.param("price", "359.99") // changed
