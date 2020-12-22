@@ -75,7 +75,7 @@ public class ItemTests {
 	}
 
 	@Test
-	void testgetPartTotal() {
+	void testGetPartTotal() {
 		assertEquals(Money.of(10, Currencies.EURO), piece1.getPartTotal(), "getPartTotal() should return the correct value!");
 		assertEquals(Money.of(60, Currencies.EURO), set1.getPartTotal(), "getPartTotal() should return the correct value!");
 		assertEquals(Money.of(90, Currencies.EURO), set2.getPartTotal(), "getPartTotal() should return the correct value!");
@@ -84,7 +84,7 @@ public class ItemTests {
 	}
 
 	@Test
-	void getPieceTotal() {
+	void testGetPieceTotal() {
 		assertEquals(Money.of(60, Currencies.EURO), set1.getPieceTotal(), "getPieceTotal() should return the correct value!");
 		assertEquals(Money.of(100, Currencies.EURO), set2.getPieceTotal(), "getPieceTotal() should return the correct value!");
 	}

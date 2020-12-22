@@ -59,13 +59,13 @@ public abstract class ItemOrder extends ShopOrder {
 	@Override
 	@SuppressWarnings("NullableProblems")
 	public OrderLine addOrderLine(Product product, Quantity quantity) {
+		Assert.isTrue(product instanceof Item, "Product must be an Item");
+
 		final OrderLine orderLine = super.addOrderLine(product, quantity);
 
-		if (product instanceof Item) {
-			final int amount = quantity.getAmount().intValue();
-			for (int i = 0; i < amount; i++) {
-				orderWithStatus.add(new ItemOrderEntry((Item) product, OrderStatus.OPEN));
-			}
+		final int amount = quantity.getAmount().intValue();
+		for (int i = 0; i < amount; i++) {
+			orderWithStatus.add(new ItemOrderEntry((Item) product, OrderStatus.OPEN));
 		}
 
 		return orderLine;

@@ -106,6 +106,11 @@ public class CalendarTests {
 	}
 
 	@Test
+	void testGetId() {
+		assertEquals(0L, calendar.getId(), "getId() should return the correct value!");
+	}
+
+	@Test
 	void testCalendarIsEntity() {
 		assertTrue(Calendar.class.isAnnotationPresent(Entity.class), "Calendar must have @Entity!");
 	}

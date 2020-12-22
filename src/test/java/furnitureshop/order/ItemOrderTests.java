@@ -172,10 +172,10 @@ public class ItemOrderTests {
 	@Test
 	void testConstructorWithInvalidType() {
 		assertThrows(IllegalArgumentException.class, () -> new Pickup(null, info),
-				"Pickup() should throw an IllegalArgumentException if the name useraccount is invalid!"
+				"Pickup() should throw an IllegalArgumentException if the useraccount argument is invalid!"
 		);
 		assertThrows(IllegalArgumentException.class, () -> new Pickup(account, null),
-				"Pickup() should throw an IllegalArgumentException if the name contactinformation is invalid!"
+				"Pickup() should throw an IllegalArgumentException if the contactinformation argument is invalid!"
 		);
 		assertThrows(IllegalArgumentException.class, () -> new Delivery(null, info, lkw, date),
 				"Delivery() should throw an IllegalArgumentException if the useraccount argument is invalid!"

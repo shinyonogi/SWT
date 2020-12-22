@@ -64,6 +64,19 @@ public class LKWServiceTests {
 	}
 
 	@Test
+	void testFindById() {
+		assertThrows(IllegalArgumentException.class, () -> lkwService.findById(null),
+				"findById() should throw an IllegalArgumentException if the id argument is invalid!"
+		);
+
+		final LKW lkw = lkwService.findAll().get().findFirst().orElse(null);
+		final Optional<LKW> found = lkwService.findById(lkw.getId());
+		assertTrue(found.isPresent(), "findById() should find the correct LKW");
+
+		assertEquals(lkw, found.get(), "findById() should find the correct LKW");
+	}
+
+	@Test
 	void testFindNextAvailableDeliveryDateWithInvalidType() {
 		assertThrows(IllegalArgumentException.class, () -> lkwService.findNextAvailableDeliveryDate(null, type),
 				"findNextAvailableDeliveryDate() should throw an IllegalArgumentException if the date argument is invalid!"
