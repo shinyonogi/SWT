@@ -41,7 +41,8 @@ public class ItemService {
 	 *
 	 * @throws IllegalArgumentException If {@code itemCatalog} is {@code null}
 	 */
-	public ItemService(ItemCatalog itemCatalog, @Lazy SupplierService supplierService, @Lazy OrderService orderService, BusinessTime businessTime) {
+	public ItemService(ItemCatalog itemCatalog, @Lazy SupplierService supplierService,
+			@Lazy OrderService orderService, BusinessTime businessTime) {
 		Assert.notNull(itemCatalog, "ItemCatalog must not be null!");
 		Assert.notNull(supplierService, "SupplierService must not be null!");
 		Assert.notNull(orderService, "OrderService must not be null!");
@@ -94,150 +95,22 @@ public class ItemService {
 	}
 
 	/**
-	 * Finds all items in the catalog
+	 * Calculates the profit of all {@link ItemOrder} per {@link Supplier} and {@link Piece}
+	 * of the {@code initDate} and {@code compareDate}.
+	 * The {@link LocalDate}s represent the month of the {@link ItemOrder}.
 	 *
-	 * @return Returns all items in the {@code itemCatalog}
+	 * @param initDate    The {@link LocalDate} representing the month
+	 * @param compareDate The {@link LocalDate} representing the month to compare
+	 *
+	 * @return A {@link List} with {@link StatisticEntry}s which contain information
+	 * about the profit of the months
+	 *
+	 * @throws IllegalArgumentException If any argument is {@code null}
 	 */
-	public Streamable<Item> findAll() {
-		return itemCatalog.findAll();
-	}
-
-	/**
-	 * Finds all visibble items in the catalog
-	 *
-	 * @return Returns all visible items in the {@code itemCatalog}
-	 */
-	public Streamable<Item> findAllVisible() {
-		return itemCatalog.findAll().filter(Item::isVisible);
-	}
-
-	/**
-	 * Finds all items from a specific supplier
-	 *
-	 * @param supplier A {@link Supplier}
-	 *
-	 * @return Returns a stream of {@link Item}s with the same {@link Supplier}
-	 *
-	 * @throws IllegalArgumentException If {@code supplier} is {@code null}
-	 */
-	public Streamable<Item> findBySupplier(Supplier supplier) {
-		Assert.notNull(supplier, "Supplier must not be null!");
-
-		return itemCatalog.findAll().filter(it -> it.getSupplier() == supplier);
-	}
-
-	/**
-	 * Finds a specific item by its id
-	 *
-	 * @param id A {@link ProductIdentifier}
-	 *
-	 * @return Returns an {@link Item}
-	 *
-	 * @throws IllegalArgumentException If {@code id} is {@code null}
-	 */
-	public Optional<Item> findById(ProductIdentifier id) {
-		Assert.notNull(id, "Id must not be null!");
-
-		return itemCatalog.findById(id);
-	}
-
-	/**
-	 * Finds all items of a specific category
-	 *
-	 * @param category A {@link Category}
-	 *
-	 * @return Returns a stream of {@link Item}s all with the same category
-	 *
-	 * @throws IllegalArgumentException If {@code category} is {@code null}
-	 */
-	public Streamable<Item> findAllByCategory(Category category) {
-		Assert.notNull(category, "Category must not be null!");
-
-		return findAll().filter(it -> it.getCategory() == category);
-	}
-
-	/**
-	 * Finds all visible items of a specific category
-	 *
-	 * @param category A {@link Category}
-	 *
-	 * @return Returns a stream of visible {@link Item}s all with the same category
-	 *
-	 * @throws IllegalArgumentException If {@code category} is {@code null}
-	 */
-	public Streamable<Item> findAllVisibleByCategory(Category category) {
-		Assert.notNull(category, "Category must not be null!");
-
-		return findAllVisible().filter(it -> it.getCategory() == category);
-	}
-
-	/**
-	 * Finds all items of a specific category
-	 *
-	 * @param groupId GroupId
-	 *
-	 * @return Returns a stream of {@link Item}s all with the same {@code groupId}
-	 */
-	public Streamable<Item> findAllByGroupId(int groupId) {
-		return findAll().filter(it -> it.getGroupId() == groupId);
-	}
-
-	/**
-	 * Finds all visible items of a specific category
-	 *
-	 * @param groupId GroupId
-	 *
-	 * @return Returns a stream of visible {@link Item}s all with the same {@code groupId}
-	 */
-	public Streamable<Item> findAllVisibleByGroupId(int groupId) {
-		return findAllVisible().filter(it -> it.getGroupId() == groupId);
-	}
-
-	/**
-	 * Finds all sets of which a given item is a part of
-	 *
-	 * @param item An {@link Item}
-	 *
-	 * @return A list of {@link Set}s
-	 */
-	public List<Set> findAllSetsByItem(Item item) {
-		final List<Set> sets = new ArrayList<>();
-
-		for (Item it : findAll()) {
-			if (it instanceof Set) {
-				Set set = (Set) it;
-				if (set.getItems().contains(item)) {
-					sets.add(set);
-				}
-			}
-		}
-
-		return sets;
-	}
-
-	/**
-	 * Find a specific supplier with the given id
-	 *
-	 * @param id A {@link Supplier} id
-	 *
-	 * @return Returns a {@link Supplier}
-	 */
-	public Optional<Supplier> findSupplierById(long id) {
-		return supplierService.findById(id);
-	}
-
-	public LocalDate getFirstOrderDate() {
-		LocalDateTime cur = businessTime.getTime();
-
-		for (ItemOrder itemOrder : orderService.findAllItemOrders()) {
-			if (itemOrder.getCreated().isBefore(cur)) {
-				cur = itemOrder.getCreated();
-			}
-		}
-		return cur.toLocalDate();
-	}
-
 	public List<StatisticEntry> analyseProfits(LocalDate initDate, LocalDate compareDate) {
+		Assert.notNull(initDate, "InitDate must not be null!");
+		Assert.notNull(compareDate, "CompareDate must not be null!");
+
 		final List<StatisticEntry> statisticEntries = createEmptyStatistic();
 		boolean initFlag, compareFlag;
 
@@ -280,6 +153,166 @@ public class ItemService {
 		return statisticEntries;
 	}
 
+	/**
+	 * Gets the Orderdate from the first {@link ItemOrder}.
+	 *
+	 * @return The first {@link LocalDate} of all {@link ItemOrder}
+	 */
+	protected LocalDate getFirstOrderDate() {
+		LocalDateTime cur = businessTime.getTime();
+
+		for (ItemOrder itemOrder : orderService.findAllItemOrders()) {
+			if (itemOrder.getCreated().isBefore(cur)) {
+				cur = itemOrder.getCreated();
+			}
+		}
+		return cur.toLocalDate();
+	}
+
+	/**
+	 * Finds all {@link Item}s in the catalog
+	 *
+	 * @return Returns all {@link Item}s in the {@code itemCatalog}
+	 */
+	public Streamable<Item> findAll() {
+		return itemCatalog.findAll();
+	}
+
+	/**
+	 * Finds all visible {@link Item}s in the catalog
+	 *
+	 * @return Returns all visible {@link Item}s in the {@code itemCatalog}
+	 */
+	public Streamable<Item> findAllVisible() {
+		return itemCatalog.findAll().filter(Item::isVisible);
+	}
+
+	/**
+	 * Finds all {@link Item}s from a specific supplier
+	 *
+	 * @param supplier A {@link Supplier}
+	 *
+	 * @return Returns a stream of {@link Item}s with the same {@link Supplier}
+	 *
+	 * @throws IllegalArgumentException If {@code supplier} is {@code null}
+	 */
+	public Streamable<Item> findBySupplier(Supplier supplier) {
+		Assert.notNull(supplier, "Supplier must not be null!");
+
+		return itemCatalog.findAll().filter(it -> it.getSupplier() == supplier);
+	}
+
+	/**
+	 * Finds a specific {@link Item} by its id
+	 *
+	 * @param id A {@link ProductIdentifier}
+	 *
+	 * @return Returns an {@link Item}
+	 *
+	 * @throws IllegalArgumentException If {@code id} is {@code null}
+	 */
+	public Optional<Item> findById(ProductIdentifier id) {
+		Assert.notNull(id, "Id must not be null!");
+
+		return itemCatalog.findById(id);
+	}
+
+	/**
+	 * Finds all {@link Item}s of a specific category
+	 *
+	 * @param category A {@link Category}
+	 *
+	 * @return Returns a stream of {@link Item}s all with the same category
+	 *
+	 * @throws IllegalArgumentException If {@code category} is {@code null}
+	 */
+	public Streamable<Item> findAllByCategory(Category category) {
+		Assert.notNull(category, "Category must not be null!");
+
+		return findAll().filter(it -> it.getCategory() == category);
+	}
+
+	/**
+	 * Finds all visible {@link Item}s of a specific category
+	 *
+	 * @param category A {@link Category}
+	 *
+	 * @return Returns a stream of visible {@link Item}s all with the same category
+	 *
+	 * @throws IllegalArgumentException If {@code category} is {@code null}
+	 */
+	public Streamable<Item> findAllVisibleByCategory(Category category) {
+		Assert.notNull(category, "Category must not be null!");
+
+		return findAllVisible().filter(it -> it.getCategory() == category);
+	}
+
+	/**
+	 * Finds all {@link Item}s of a specific category
+	 *
+	 * @param groupId The GroupId of the {@link Item}
+	 *
+	 * @return Returns a stream of {@link Item}s all with the same {@code groupId}
+	 */
+	public Streamable<Item> findAllByGroupId(int groupId) {
+		return findAll().filter(it -> it.getGroupId() == groupId);
+	}
+
+	/**
+	 * Finds all visible items of a specific category
+	 *
+	 * @param groupId The GroupId of the {@link Item}
+	 *
+	 * @return Returns a stream of visible {@link Item}s all with the same {@code groupId}
+	 */
+	public Streamable<Item> findAllVisibleByGroupId(int groupId) {
+		return findAllVisible().filter(it -> it.getGroupId() == groupId);
+	}
+
+	/**
+	 * Finds all {@link Set}s of which a given {@link Item} is a part of
+	 *
+	 * @param item An {@link Item}
+	 *
+	 * @return A list of {@link Set}s
+	 *
+	 * @throws IllegalArgumentException If {@code item} is {@code null}
+	 */
+	public List<Set> findAllSetsByItem(Item item) {
+		Assert.notNull(item, "Item must not be null!");
+
+		final List<Set> sets = new ArrayList<>();
+
+		for (Item it : findAll()) {
+			if (it instanceof Set) {
+				final Set set = (Set) it;
+
+				if (set.getItems().contains(item)) {
+					sets.add(set);
+				}
+			}
+		}
+
+		return sets;
+	}
+
+	/**
+	 * Find a specific {@link Supplier} with the given id
+	 *
+	 * @param id A {@link Supplier} id
+	 *
+	 * @return Returns a {@link Supplier}
+	 */
+	public Optional<Supplier> findSupplierById(long id) {
+		return supplierService.findById(id);
+	}
+
+	/**
+	 * Helper method to create a empty {@link List} with empty {@link StatisticEntry}s.
+	 * Used to init all {@link StatisticEntry}s for each {@link Supplier}.
+	 *
+	 * @return A {@link List} with empty {@link StatisticEntry}s
+	 */
 	private List<StatisticEntry> createEmptyStatistic() {
 		final List<StatisticEntry> statisticEntries = new ArrayList<>();
 

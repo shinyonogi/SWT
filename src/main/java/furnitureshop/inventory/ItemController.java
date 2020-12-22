@@ -257,6 +257,7 @@ public class ItemController {
 		}
 
 		model.addAttribute("setForm", new ItemForm(0, 0, "", "", "", 0, Category.SET, itemList));
+		model.addAttribute("image", null);
 		model.addAttribute("maxPrice", maxPrice.getNumber());
 		model.addAttribute("suppId", suppId);
 		return "supplierSetform";
@@ -371,10 +372,13 @@ public class ItemController {
 		item.setName(form.getName());
 		item.setPrice(Money.of(form.getPrice(), Currencies.EURO));
 		item.setDescription(form.getDescription());
-		try {
-			item.setImage(file.getBytes());
-		} catch (IOException e) {
-			e.printStackTrace();
+
+		if (file != null && !file.isEmpty()) {
+			try {
+				item.setImage(file.getBytes());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 
 		itemService.addOrUpdateItem(item);
@@ -437,7 +441,7 @@ public class ItemController {
 	}
 
 	/**
-	 * Handles all GET-Requests for '/admin/statistic'
+	 * Handles all GET-Requests for '/admin/statistic'.
 	 *
 	 * @param model The {@code Spring} Page {@link Model}
 	 *
@@ -463,6 +467,16 @@ public class ItemController {
 		return "monthlyStatistic";
 	}
 
+
+	/**
+	 * Handles all POST-Requests for '/admin/statistic'.
+	 *
+	 * @param init    The String representing the month
+	 * @param compare The String representing the month to compare
+	 * @param model   The {@code Spring} Page {@link Model}
+	 *
+	 * @return Returns the montly statistic page with custom months.
+	 */
 	@PostMapping("/admin/statistic")
 	String setMonthlyStatisticValue(@RequestParam("init") String init, @RequestParam("compare") String compare, Model model) {
 		final TemporalAccessor initAccessor = DateTimeFormatter.ofPattern("MMMM yyyy").parse(init);
@@ -490,6 +504,13 @@ public class ItemController {
 		return "monthlyStatistic";
 	}
 
+	/**
+	 * Handles all GET-Requests for '/catalog/image/{id}'.
+	 * Displays the image of the {@link Item}.
+	 *
+	 * @param item     The {@link Item} from which you want the image
+	 * @param response The Resonse written to
+	 */
 	@GetMapping("/catalog/image/{id}")
 	public void getItemImage(@PathVariable("id") Optional<Item> item, HttpServletResponse response) throws IOException {
 		if (item.isEmpty()) {
@@ -502,7 +523,22 @@ public class ItemController {
 		IOUtils.copy(is, response.getOutputStream());
 	}
 
+	/**
+	 * Creates a {@link List} of {@link LocalDate}s with the first day of the month.
+	 * The {@link List} contains all months between the start and end date.
+	 * If the start date is after the end date, the {@link List} will be empty.
+	 *
+	 * @param start The first {@link LocalDate}
+	 * @param end   The last {@link LocalDate}
+	 *
+	 * @return A {@link List} with all months between
+	 *
+	 * @throws IllegalArgumentException If any argument is {@code null}
+	 */
 	private List<LocalDate> getMonthListBetween(LocalDate start, LocalDate end) {
+		Assert.notNull(start, "StartDate must not be null!");
+		Assert.notNull(end, "EndDate must not be null!");
+
 		final List<LocalDate> months = new ArrayList<>();
 
 		if (end.isBefore(start)) {

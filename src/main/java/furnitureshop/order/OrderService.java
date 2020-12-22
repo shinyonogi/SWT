@@ -245,6 +245,13 @@ public class OrderService {
 		}
 	}
 
+	/**
+	 * Calculates the {@link OrderStatus} for the complete {@link ShopOrder}.
+	 *
+	 * @param order The {@link ShopOrder} to evaluate
+	 *
+	 * @return The {@link OrderStatus} for the {@link ShopOrder}
+	 */
 	public OrderStatus getStatus(ShopOrder order) {
 		Assert.notNull(order, "Order must not be null");
 

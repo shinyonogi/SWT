@@ -38,7 +38,7 @@ public class LKWService {
 	/**
 	 * Creates a new instance of an {@link LKWService}
 	 *
-	 * @param lkwCatalog The {@link LKWCatalog} for all {@link LKW}s
+	 * @param lkwCatalog   The {@link LKWCatalog} for all {@link LKW}s
 	 * @param orderService The {@link OrderService} to create orders
 	 *
 	 * @throws IllegalArgumentException If the {@code lkwCatalog} or {@code orderService} is {@code null}
@@ -303,20 +303,54 @@ public class LKWService {
 		throw new IllegalStateException("Invalid CalenderEntry Type");
 	}
 
+	/**
+	 * Creates a {@link LKWCharter} with the {@link OrderService}.
+	 *
+	 * @return The created {@link LKWCharter}
+	 *
+	 * @throws IllegalArgumentException If any argument is {@code null}
+	 */
 	public LKWCharter createLKWOrder(LKW lkw, LocalDate date, ContactInformation contactInformation) {
 		return orderService.orderLKW(lkw, date, contactInformation);
 	}
 
+	/**
+	 * Finds all {@link LKW}s of a specific {@link LKWType}
+	 *
+	 * @param type A {@link LKWType}
+	 *
+	 * @return Returns a stream of {@link LKW}s all with the same category
+	 *
+	 * @throws IllegalArgumentException If {@code type} is {@code null}
+	 */
 	public Streamable<LKW> findByType(LKWType type) {
+		Assert.notNull(type, "LKWType must not be null!");
+
 		return lkwCatalog.findAll().filter(l -> l.getType() == type);
 	}
 
+	/**
+	 * Finds all {@link LKW}s in the catalog
+	 *
+	 * @return Returns all {@link LKW}s in the {@code lkwCatalog}
+	 */
 	public Streamable<LKW> findAll() {
 		return lkwCatalog.findAll();
 	}
 
-	public Optional<LKW> findById(ProductIdentifier productId) {
-		return lkwCatalog.findById(productId);
+	/**
+	 * Finds a specific {@link LKW} by its id
+	 *
+	 * @param id A {@link ProductIdentifier}
+	 *
+	 * @return Returns an {@link LKW}
+	 *
+	 * @throws IllegalArgumentException If {@code id} is {@code null}
+	 */
+	public Optional<LKW> findById(ProductIdentifier id) {
+		Assert.notNull(id, "Id must not be null!");
+
+		return lkwCatalog.findById(id);
 	}
 
 }
