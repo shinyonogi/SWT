@@ -37,7 +37,7 @@ public class Set extends Item {
 	 * @param groupId       Group which contains all variants of this particular Item
 	 * @param name          Name of the Item
 	 * @param customerPrice Price of the Item
-	 * @param picture       A path to the picture of the Item
+	 * @param image         Byte array of the picture of the Item
 	 * @param variant       Variant of the Item
 	 * @param description   Description of the Item
 	 * @param supplier      Supplier of the Item
@@ -45,8 +45,8 @@ public class Set extends Item {
 	 *
 	 * @throws IllegalArgumentException If any of the arguments is {@code null}
 	 */
-	public Set(int groupId, String name, MonetaryAmount customerPrice, String picture, String variant, String description, Supplier supplier, List<Item> items) {
-		super(groupId, name, customerPrice, picture, variant, description, supplier, Category.SET);
+	public Set(int groupId, String name, MonetaryAmount customerPrice, byte[] image, String variant, String description, Supplier supplier, List<Item> items) {
+		super(groupId, name, customerPrice, image, variant, description, supplier, Category.SET);
 
 		Assert.notNull(items, "Items must not be null!");
 

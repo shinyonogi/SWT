@@ -15,12 +15,12 @@
 
 
     <div class="container mt-3 mb-3">
-        <form class="form" method="post" th:object="${setForm}" th:action="@{/admin/supplier/{suppId}/sets/add/set(suppId=${suppId})}">
+        <form class="form" enctype="multipart/form-data" method="post" th:object="${setForm}" th:action="@{/admin/supplier/{suppId}/sets/add/set(suppId=${suppId})}">
             <div class="row">
             <div class="col-lg-2 col-md-6 mb-4" th:each="item : *{items}">
                 <div class="card bg-light">
                     <a class="card-img-top">
-                        <img class="img-fluid" th:src="@{${item.getPicture()}}"
+                        <img class="img-fluid" th:src="@{'/catalog/image/' + ${item.getId().getIdentifier()}}"
                              src="../static/resources/img/inventory/chair_1.jpg" alt="Artikel"/>
                     </a>
                     <div class="card-body">
@@ -44,14 +44,14 @@
                     </div>
                     <div class="form-group">
                         <label for="groupId" th:text="#{supplier.items.add.groupid}">Gruppennummer</label>
-                        <input type="number" min="0" max="100" name="groupId" th:value="*{groupId}" class="form-control" id="groupId" required th:placeholder="#{supplier.items.add.groupid.placeholder}">
+                        <input type="number" min="0" max="1000" name="groupId" th:value="*{groupId}" class="form-control" id="groupId" required th:placeholder="#{supplier.items.add.groupid.placeholder}">
                     </div>
                     <div class="form-group">
                         <input type="hidden" name="weight" th:value="*{weight}" class="form-control" id="weight">
                     </div>
                     <div class="form-group">
-                        <!-- <label for="picture" th:text="#{supplier.items.add.picture}">Bild</label>-->
-                        <input type="hidden" name="picture" th:value="*{picture}" class="form-control-file" id="picture" required>
+                        <label for="image" th:text="#{supplier.items.add.picture}">Bild</label>
+                        <input type="file" name="image" class="form-control-file" id="image" required>
                     </div>
                     <div class="form-group">
                         <label for="variant" th:text="#{supplier.items.add.variant}">Variante</label>

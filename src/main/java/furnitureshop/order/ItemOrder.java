@@ -1,21 +1,23 @@
 package furnitureshop.order;
 
 import furnitureshop.inventory.Item;
+import furnitureshop.inventory.Piece;
+import furnitureshop.inventory.Set;
 import org.salespointframework.catalog.Product;
 import org.salespointframework.core.Currencies;
 import org.salespointframework.order.OrderLine;
 import org.salespointframework.quantity.Quantity;
 import org.salespointframework.useraccount.UserAccount;
+import org.springframework.data.util.Pair;
 import org.springframework.data.util.Streamable;
+import org.springframework.util.Assert;
 
 import javax.money.MonetaryAmount;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @Entity
 public abstract class ItemOrder extends ShopOrder {
@@ -57,13 +59,13 @@ public abstract class ItemOrder extends ShopOrder {
 	@Override
 	@SuppressWarnings("NullableProblems")
 	public OrderLine addOrderLine(Product product, Quantity quantity) {
+		Assert.isTrue(product instanceof Item, "Product must be an Item");
+
 		final OrderLine orderLine = super.addOrderLine(product, quantity);
 
-		if (product instanceof Item) {
-			final int amount = quantity.getAmount().intValue();
-			for (int i = 0; i < amount; i++) {
-				orderWithStatus.add(new ItemOrderEntry((Item) product, OrderStatus.OPEN));
-			}
+		final int amount = quantity.getAmount().intValue();
+		for (int i = 0; i < amount; i++) {
+			orderWithStatus.add(new ItemOrderEntry((Item) product, OrderStatus.OPEN));
 		}
 
 		return orderLine;
@@ -95,9 +97,15 @@ public abstract class ItemOrder extends ShopOrder {
 	 * @return boolean true if the change of status is successful, boolean false if unsuccessful
 	 */
 	public boolean changeStatus(long entryId, OrderStatus newStatus) {
+		Assert.notNull(newStatus, "OrderStatus must not be null!");
+
 		for (ItemOrderEntry orderEntry : orderWithStatus) {
 			if (orderEntry.getId() == entryId) {
+				final OrderStatus old = orderEntry.getStatus();
+
+				orderEntry.setCancelFee(newStatus == OrderStatus.CANCELLED && old == OrderStatus.STORED);
 				orderEntry.setStatus(newStatus);
+
 				return true;
 			}
 		}
@@ -111,7 +119,12 @@ public abstract class ItemOrder extends ShopOrder {
 	 * @param newStatus The new {@link OrderStatus}
 	 */
 	public void changeAllStatus(OrderStatus newStatus) {
+		Assert.notNull(newStatus, "OrderStatus must not be null!");
+
 		for (ItemOrderEntry orderEntry : orderWithStatus) {
+			final OrderStatus old = orderEntry.getStatus();
+
+			orderEntry.setCancelFee(newStatus == OrderStatus.CANCELLED && old == OrderStatus.STORED);
 			orderEntry.setStatus(newStatus);
 		}
 	}
@@ -134,24 +147,37 @@ public abstract class ItemOrder extends ShopOrder {
 		MonetaryAmount amount = Currencies.ZERO_EURO;
 
 		for (ItemOrderEntry entry : orderWithStatus) {
-			if (entry.getStatus() == OrderStatus.OPEN || entry.getStatus() == OrderStatus.STORED) {
+			if (entry.getStatus() == OrderStatus.OPEN) {
+				amount = amount.add(entry.getItem().getPrice());
+			} else if (this instanceof Pickup && entry.getStatus() == OrderStatus.STORED) {
 				amount = amount.add(entry.getItem().getPrice());
 			}
 		}
 
-		return amount;	}
+		return amount;
+	}
 
 	@Override
 	public MonetaryAmount getCancelFee() {
 		MonetaryAmount price = Currencies.ZERO_EURO;
 
 		for (ItemOrderEntry entry : orderWithStatus) {
-			if (entry.getStatus() == OrderStatus.CANCELLED) {
+			if (entry.getStatus() == OrderStatus.CANCELLED && entry.hasCancelFee()) {
 				price = price.add(entry.getItem().getPrice()).multiply(0.2);
 			}
 		}
 
 		return price;
+	}
+
+	public MonetaryAmount getItemTotal() {
+		return super.getTotal();
+	}
+
+	@Override
+	@SuppressWarnings("NullableProblems")
+	public MonetaryAmount getTotal() {
+		return getItemTotal().add(getCancelFee()).subtract(getRefund());
 	}
 
 	public List<ItemOrderEntry> getOrderEntries() {
@@ -160,6 +186,34 @@ public abstract class ItemOrder extends ShopOrder {
 
 	public List<ItemOrderEntry> getOrderEntriesByItem(Item item) {
 		return Streamable.of(orderWithStatus).filter(e -> e.getItem().equals(item)).toList();
+	}
+
+	public Map<Item, MonetaryAmount> getProfits() {
+		HashMap<Item, MonetaryAmount> itemAmountMap = new HashMap<>();
+
+		for (ItemOrderEntry entry : orderWithStatus) {
+			if (entry.getStatus() != OrderStatus.COMPLETED) {
+				continue;
+			}
+
+			if (entry.getItem() instanceof Set) {
+				final Set set = (Set) entry.getItem();
+
+				for (Pair<Piece, MonetaryAmount> pair : set.getPiecePrices()) {
+					if (itemAmountMap.containsKey(pair.getFirst())) {
+						itemAmountMap.put(pair.getFirst(), pair.getSecond().add(itemAmountMap.get(pair.getFirst())));
+					} else {
+						itemAmountMap.put(pair.getFirst(), pair.getSecond());
+					}
+				}
+			} else if (itemAmountMap.containsKey(entry.getItem())) {
+				itemAmountMap.put(entry.getItem(), entry.getItem().getPrice().add(itemAmountMap.get(entry.getItem())));
+			} else {
+				itemAmountMap.put(entry.getItem(), entry.getItem().getPrice());
+			}
+		}
+
+		return itemAmountMap;
 	}
 
 }

@@ -8,29 +8,96 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        function toggle(e, b) {
+            let elements = document.getElementsByClassName(e)
+            let active = false
+
+            for (let x of elements) {
+                if (x.style.display === "none") {
+                    x.style.removeProperty('display')
+                    active = true
+                } else {
+                    x.style.display = "none";
+                    active = false
+                }
+            }
+
+            if (active) {
+                b.innerHTML = '<svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd">' +
+                    '<path d="M23.245 4l-11.245 14.374-11.219-14.374-.781.619 12 15.381 12-15.391-.755-.609z"/>' +
+                    '</svg>'
+            } else {
+                b.innerHTML = '<svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd">' +
+                    '<path d="M23.245 20l-11.245-14.374-11.219 14.374-.781-.619 12-15.381 12 15.391-.755.609z"/>' +
+                    '</svg>'
+            }
+        }
+    </script>
 </head>
 <body>
 
     <nav th:include="navigation :: navigation"></nav>
 
     <div class="container mt-3 mb-3">
-        <h4 class="mt-2" th:text="'Zeitraum vom ' + ${#temporals.format(timeFrom, 'dd.MM.yyyy')} + ' bis zum ' + ${#temporals.format(timeTo, 'dd.MM.yyyy')}">Statistik für April 2021</h4>
+        <h4 class="mt-2" th:text="#{statistic.title.page}">Statistik für April 2021</h4>
+
+        <div class="row">
+            <form class="form-inline w-100 m-2" method="post" th:action="@{/admin/statistic}">
+                <div class="col-lg-4 d-flex mb-2">
+                    <label class="control-label mr-2" for="init" th:text="#{statistic.init}"></label>
+                    <select class="custom-select" id="init" name="init">
+                        <option th:each="month : ${months}" th:selected="${initDate.equals(month)}" th:text="${#temporals.format(month, 'MMMM yyyy')}"></option>
+                    </select>
+                </div>
+                <div class="col-lg-4 align-baseline d-flex mb-2">
+                    <label class="control-label mr-2" for="compare" th:text="#{statistic.compare}"></label>
+                    <select class="custom-select" id="compare" name="compare">
+                        <option th:each="month : ${months}" th:selected="${compareDate.equals(month)}" th:text="${#temporals.format(month, 'MMMM yyyy')}"></option>
+                    </select>
+                </div>
+                <div class="col-lg-4 align-baseline mb-2">
+                    <button type="submit" class="btn btn-primary" th:text="#{statistic.submit}"></button>
+                </div>
+            </form>
+        </div>
 
         <table class="table table-hover">
             <thead class="thead-light">
             <tr>
-                <th scope="col" th:text="#{statistic.supplier}">Lieferant</th>
-                <th scope="col" th:text="#{statistic.total}">Einkaufsbetrag</th>
-                <th scope="col" th:text="#{statistic.difference}">Differenz Vormonat</th>
+                <th scope="col" style="width: 25%" th:text="#{statistic.supplier}">Lieferant</th>
+                <th scope="col" style="width: 35%" th:text="#{statistic.total} + ' ' + ${#temporals.format(initDate, 'MMMM yyyy')}">Einkaufsbetrag</th>
+                <th scope="col" style="width: 35%" th:text="#{statistic.difference} + ' ' + ${#temporals.format(compareDate, 'MMMM yyyy')}">Differenz Vormonat</th>
+                <th scope="col" style="width: 5%"></th>
             </tr>
             </thead>
-            <tbody>
-            <tr class="table-light" th:each="supplier : ${statistic.keySet()}">
-                <td th:text="${supplier.getName()}">Müller Möbel</td>
-                <td th:text="${statistic.get(supplier)[0].query(T(furnitureshop.FurnitureShop).MONETARY_QUERY)}">123.456,01€</td>
-                <td th:if="${statistic.get(supplier)[1].isNegative()}" class="text-danger" th:text="${statistic.get(supplier)[1].query(T(furnitureshop.FurnitureShop).MONETARY_QUERY)}">+5.034,01€</td>
-                <td th:if="${statistic.get(supplier)[1].isPositive()}" class="text-success" th:text="'+' + ${statistic.get(supplier)[1].query(T(furnitureshop.FurnitureShop).MONETARY_QUERY)}">+5.034,01€</td>
-                <td th:if="${statistic.get(supplier)[1].isZero()}" class="text-dark" th:text="${statistic.get(supplier)[1].query(T(furnitureshop.FurnitureShop).MONETARY_QUERY)}">+5.034,01€</td>
+            <tbody th:each="entry : ${statistic}">
+            <tr class="table-light" th:with="diff = ${entry.getDifference()}">
+                <td class="align-middle" th:text="${entry.getSupplier().getName()}">Müller Möbel</td>
+                <td class="align-middle" th:text="${entry.getInitProfit().query(T(furnitureshop.FurnitureShop).MONETARY_QUERY)}">123.456,01€</td>
+                <td class="align-middle text-danger" th:if="${diff.isNegative()}" th:text="${diff.query(T(furnitureshop.FurnitureShop).MONETARY_QUERY)}">+5.034,01€</td>
+                <td class="align-middle text-success" th:if="${diff.isPositive()}" th:text="'+' + ${diff.query(T(furnitureshop.FurnitureShop).MONETARY_QUERY)}">+5.034,01€</td>
+                <td class="align-middle text-dark" th:if="${diff.isZero()}" th:text="${diff.query(T(furnitureshop.FurnitureShop).MONETARY_QUERY)}">+5.034,01€</td>
+                <td>
+                    <button class="btn btn-primary-outline" th:onclick="'toggle(\'sup' + ${entry.getSupplier().getId()} + '\', ' + this + ')'">
+                        <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd">
+                            <path d="M23.245 20l-11.245-14.374-11.219 14.374-.781-.619 12-15.381 12 15.391-.755.609z"/>
+                        </svg>
+                    </button>
+                </td>
+            </tr>
+            <tr th:class="${'sup' + entry.getSupplier().getId()}" style="display: none" class="table-light" th:each="item : ${entry.getStatisticItemEntries()}" th:with="dif = ${item.getDifference()}">
+                <td class="align-middle">
+                    <img class="img-fluid mr-2" th:src="@{'/catalog/image/' + ${item.getItem().getId().getIdentifier()}}" style="width: 80px"
+                         src="../static/resources/img/inventory/chair_1.jpg" alt="Artikel"/>
+                    <label th:text="${item.getItem().getName()}">Müller Möbel</label>
+                </td>
+                <td class="align-middle"  th:text="${item.getInitProfit().query(T(furnitureshop.FurnitureShop).MONETARY_QUERY)}">123.456,01€</td>
+                <td class="align-middle text-danger" th:if="${dif.isNegative()}" th:text="${dif.query(T(furnitureshop.FurnitureShop).MONETARY_QUERY)}">+5.034,01€</td>
+                <td class="align-middle text-success" th:if="${dif.isPositive()}" th:text="'+' + ${dif.query(T(furnitureshop.FurnitureShop).MONETARY_QUERY)}">+5.034,01€</td>
+                <td class="align-middle text-dark" th:if="${dif.isZero()}" th:text="${dif.query(T(furnitureshop.FurnitureShop).MONETARY_QUERY)}">+5.034,01€</td>
+                <td></td>
             </tr>
             </tbody>
         </table>

@@ -17,10 +17,10 @@
     <div class="container mt-3 mb-3">
         <div class="row">
 
-            <div th:each="item : ${items}" class="col-lg-4 col-md-6 mb-4">
+            <div th:each="item : ${items}" class="col-lg-3 col-md-6 mb-4">
                 <div class="card h-100 bg-light">
                     <a class="card-img-top" th:href="@{/catalog/{category}/{id}(id=${item.getId()}, category=${item.getCategory().name().toLowerCase()})}">
-                        <img class="img-fluid" th:src="@{${item.getPicture()}}"
+                        <img class="img-fluid" th:src="@{'/catalog/image/' + ${item.getId().getIdentifier()}}"
                              src="../static/resources/img/inventory/chair_1.jpg" alt="Artikel"/>
                     </a>
 

@@ -54,7 +54,7 @@ public class OrderServiceTests {
 
 	@BeforeEach
 	void setUp() {
-		for (ShopOrder order : orderManagement.findBy(orderService.getDummyUser().get())) {
+		for (ShopOrder order : orderManagement.findBy(orderService.getDummyUser())) {
 			orderManagement.delete(order);
 		}
 
@@ -64,9 +64,9 @@ public class OrderServiceTests {
 		final Supplier supplier = new Supplier("test", 0.2);
 		supplierRepository.save(supplier);
 
-		Piece stuhl1 = new Piece(1, "Stuhl 1", Money.of(59.99, Currencies.EURO), "", "schwarz",
+		Piece stuhl1 = new Piece(1, "Stuhl 1", Money.of(59.99, Currencies.EURO), new byte[0], "schwarz",
 				"", supplier, 5, Category.CHAIR);
-		Piece sofa1_green = new Piece(2, "Sofa 1", Money.of(259.99, Currencies.EURO), "", "grün",
+		Piece sofa1_green = new Piece(2, "Sofa 1", Money.of(259.99, Currencies.EURO), new byte[0], "grün",
 				"", supplier, 50, Category.COUCH);
 
 		itemCatalog.save(stuhl1);
@@ -81,14 +81,12 @@ public class OrderServiceTests {
 	/**
 	 * testFindById method
 	 * Tests if u find the matching {@link Order} for a specific Id
-	 *
-	 * @throws Exception
 	 */
 	@Test
 	public void testFindById() {
 		ContactInformation exampleContactInformation = new ContactInformation("testName", "testAdresse", "testEmail");
 
-		Order order = orderService.orderPickupItem(exampleCart, exampleContactInformation).get();
+		Order order = orderService.orderPickupItem(exampleCart, exampleContactInformation);
 		assertEquals(this.orderService.findById(order.getId().getIdentifier()).get(), order, "Die Methode findById" +
 				"returned nicht die richtige Order für eine gegebene ID");
 
@@ -100,10 +98,7 @@ public class OrderServiceTests {
 	/**
 	 * testFindAll method
 	 * Tests if all {@link Order} that are saved in the repository are returned
-	 *
-	 * @throws Exception
 	 */
-
 	@Test
 	public void testFindAll() {
 		for (int i = 0; i < 10; i++) {
@@ -118,8 +113,6 @@ public class OrderServiceTests {
 	 * testOrderDeliveryItem method
 	 * Tests if a {@link Delivery} is booked for the correct delivery date, if all properties of the Order are correctly
 	 * mapped to the Delivery and that the correct Lkw is booked for a specific order
-	 *
-	 * @throws Exception
 	 */
 	@Test
 	public void testOrderDeliveryItem() {
@@ -127,9 +120,9 @@ public class OrderServiceTests {
 		LocalDate deliveryDate = lkwService.findNextAvailableDeliveryDate(this.businessTime.getTime().toLocalDate().plusDays(2), LKWType.SMALL);
 		LKW lkw = lkwService.createDeliveryLKW(deliveryDate, LKWType.SMALL).get();
 
-		Delivery order = orderService.orderDelieveryItem(exampleCart, exampleContactInformation).get();
+		Delivery order = orderService.orderDelieveryItem(exampleCart, exampleContactInformation);
 
-		Delivery goalOrder = (Delivery) exampleCart.addItemsTo(new Delivery(this.orderService.getDummyUser().get(), exampleContactInformation,
+		Delivery goalOrder = (Delivery) exampleCart.addItemsTo(new Delivery(this.orderService.getDummyUser(), exampleContactInformation,
 				lkw, deliveryDate));
 		assertEquals(order.getDeliveryDate(), goalOrder.getDeliveryDate(),
 				"Das Lieferdatum sollte übereinstimmen");
@@ -153,17 +146,13 @@ public class OrderServiceTests {
 	/**
 	 * testCancelLKW method
 	 * Tests if a {@link LKW} is properly cancelled
-	 *
-	 * @throws Exception
 	 */
 	@Test
 	public void testCancelLKW() {
 		ContactInformation exampleContactInformation = new ContactInformation("testName", "testAdresse", "testEmail");
 		LocalDate deliveryDate = lkwService.findNextAvailableDeliveryDate(this.businessTime.getTime().toLocalDate().plusDays(2), LKWType.SMALL);
 		LKW lkw = lkwService.createDeliveryLKW(deliveryDate, LKWType.SMALL).get();
-		Optional<LKWCharter> lkwCharterOptional = lkwService.createLKWOrder(lkw, deliveryDate, exampleContactInformation);
-		assertTrue(lkwCharterOptional.isPresent(), String.format("Irgendetwas lief beim Mieten eines kleinen LKW am {0} schief", deliveryDate));
-		LKWCharter lkwCharter = lkwCharterOptional.get();
+		LKWCharter lkwCharter = lkwService.createLKWOrder(lkw, deliveryDate, exampleContactInformation);
 		String lkwCharterIdentifier = lkwCharter.getId().getIdentifier();
 		assertTrue(orderService.cancelLKW(lkwCharter), "Irgendetwas lief beim stornieren des LKWs schief");
 		assertEquals(Optional.empty(), orderService.findById(lkwCharterIdentifier), "Der LKWCharter wurde nicht richtig gelöscht");
@@ -173,8 +162,6 @@ public class OrderServiceTests {
 	 * testRemoveItemFromOrders method
 	 * Tests if {@link Item} are properly removed out of all existing {@link ItemOrder} and that resulting empty {@link ItemOrder}
 	 * are deleted respectively
-	 *
-	 * @throws Exception
 	 */
 	@Test
 	public void testRemoveItemFromOrders() {
@@ -184,10 +171,7 @@ public class OrderServiceTests {
 
 		Item item = (Item) itemList.get(0).getProduct();
 
-		Optional<Pickup> orderOptional = orderService.orderPickupItem(exampleCart, exampleContactInformation);
-		assertTrue(orderOptional.isPresent(), "Beim Bestellen der Beispiellieferung lief etwas schief");
-		Pickup order = orderOptional.get();
-
+		Pickup order = orderService.orderPickupItem(exampleCart, exampleContactInformation);
 		orderService.removeItemFromOrders(item);
 
 		assertTrue(() -> {

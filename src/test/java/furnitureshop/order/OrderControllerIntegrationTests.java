@@ -54,7 +54,7 @@ public class OrderControllerIntegrationTests {
 	@BeforeEach
 	void setUp() {
 		supplier = new Supplier("supplier", 0.05);
-		item = new Piece(1, "Stuhl 1", Money.of(59.99, Currencies.EURO), "chair_2.jpg", "schwarz",
+		item = new Piece(1, "Stuhl 1", Money.of(59.99, Currencies.EURO), new byte[0], "schwarz",
 				"Stuhl 1 in schwarz.", supplier, 5, Category.CHAIR);
 		cart = new Cart();
 		cart.addOrUpdateItem(item, 5);

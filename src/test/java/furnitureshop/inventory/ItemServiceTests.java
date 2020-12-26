@@ -62,19 +62,19 @@ public class ItemServiceTests {
 		final List<Supplier> suppliers = Arrays.asList(supplier, setSupplier);
 		final List<Item> items = new ArrayList<>();
 
-		items.add(new Piece(1, "Tisch 1", Money.of(89.99, Currencies.EURO), "table_2.jpg", "weiß",
+		items.add(new Piece(1, "Tisch 1", Money.of(89.99, Currencies.EURO), new byte[0], "weiß",
 				"Tisch 1 in weiß.", supplier, 30, Category.TABLE));
-		items.add(new Piece(2, "Sofa 1", Money.of(259.99, Currencies.EURO), "sofa_2_black.jpg", "schwarz",
+		items.add(new Piece(2, "Sofa 1", Money.of(259.99, Currencies.EURO), new byte[0], "schwarz",
 				"Sofa 1 in schwarz.", supplier, 50, Category.COUCH));
 
-		Piece sofa1_brown = new Piece(2, "Sofa 1", Money.of(259.99, Currencies.EURO), "sofa_2_brown.jpg", "braun",
+		Piece sofa1_brown = new Piece(2, "Sofa 1", Money.of(259.99, Currencies.EURO), new byte[0], "braun",
 				"Sofa 1 in braun.", supplier, 80, Category.COUCH);
-		Piece stuhl1 = new Piece(3, "Stuhl 1", Money.of(59.99, Currencies.EURO), "chair_2.jpg", "schwarz",
+		Piece stuhl1 = new Piece(3, "Stuhl 1", Money.of(59.99, Currencies.EURO), new byte[0], "schwarz",
 				"Stuhl 1 in schwarz.", supplier, 5, Category.CHAIR);
 
 		items.add(stuhl1);
 		items.add(sofa1_brown);
-		items.add(new Set(4, "Set 1", Money.of(299.99, Currencies.EURO), "set_1.jpg", "black",
+		items.add(new Set(4, "Set 1", Money.of(299.99, Currencies.EURO), new byte[0], "black",
 				"Set bestehend aus Sofa 1 und Stuhl 1.", setSupplier, Arrays.asList(stuhl1, sofa1_brown))
 		);
 

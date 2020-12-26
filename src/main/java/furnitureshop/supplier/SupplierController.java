@@ -6,7 +6,6 @@ import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.PreUpdate;
 import java.util.Optional;
 
 /**
@@ -58,8 +57,6 @@ public class SupplierController {
 	 */
 	@PostMapping("/admin/suppliers")
 	String addSupplier(@ModelAttribute("supplierForm") SupplierForm form, Model model) {
-		final Optional<Supplier> suppliers = supplierService.findByName(form.getName());
-
 		model.addAttribute("suppliers", supplierService.findAll());
 		model.addAttribute("supplierForm", form);
 
@@ -75,6 +72,9 @@ public class SupplierController {
 			model.addAttribute("result", 2);
 			return "suppliers";
 		}
+
+		final Optional<Supplier> suppliers = supplierService.findByName(form.getName());
+
 		// Check if a supplier with the same name is already in the repository
 		if (suppliers.isPresent()) {
 			// Display error message

@@ -36,7 +36,7 @@ public class LKWServiceTests {
 
 	@BeforeEach
 	void setUp() {
-		for (ShopOrder order : orderManagement.findBy(orderService.getDummyUser().get())) {
+		for (ShopOrder order : orderManagement.findBy(orderService.getDummyUser())) {
 			orderManagement.delete(order);
 		}
 		this.weekendDate = LocalDate.of(2023, 3, 19);
@@ -61,6 +61,19 @@ public class LKWServiceTests {
 		for (LKWType type : LKWType.values()) {
 			assertEquals(2, lkwService.findByType(type).stream().count(), "findByType() should find the correct LKWs!");
 		}
+	}
+
+	@Test
+	void testFindById() {
+		assertThrows(IllegalArgumentException.class, () -> lkwService.findById(null),
+				"findById() should throw an IllegalArgumentException if the id argument is invalid!"
+		);
+
+		final LKW lkw = lkwService.findAll().get().findFirst().orElse(null);
+		final Optional<LKW> found = lkwService.findById(lkw.getId());
+		assertTrue(found.isPresent(), "findById() should find the correct LKW");
+
+		assertEquals(lkw, found.get(), "findById() should find the correct LKW");
 	}
 
 	@Test

@@ -9,22 +9,31 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.salespointframework.core.Currencies;
 import org.salespointframework.order.OrderManagement;
+import org.salespointframework.useraccount.UserAccount;
 import org.salespointframework.useraccount.UserAccountManagement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
-import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.CoreMatchers.hasItem;
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.contains;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
@@ -50,43 +59,45 @@ public class ItemControllerIntegrationTests {
 	@Autowired
 	UserAccountManagement userAccountManagement;
 
-	final Supplier supplier = new Supplier("Supplier 1", 0.15);
+	Piece sofa_black, sofa1_black, stuhl, tisch;
+	Set set;
+	Supplier supplier, setSupplier;
 
-	final Supplier setSupplier = new Supplier("Set Supplier", 0.05);
-
-	Piece sofa_black = new Piece(2, "Sofa 1", Money.of(259.99, Currencies.EURO), "sofa_2_black.jpg", "black",
-			"Sofa 1 in schwarz.", supplier, 80, Category.COUCH);
-
-	Piece sofa1_black = new Piece(3, "Sofa 1", Money.of(259.99, Currencies.EURO), "sofa_2_black.jpg", "black",
-			"Sofa 1 in schwarz.", supplier, 80, Category.COUCH);
-
-	Piece stuhl = new Piece(1, "Stuhl 1", Money.of(59.99, Currencies.EURO), "chair_2.jpg", "schwarz",
-			"Stuhl 1 in schwarz.", supplier, 5, Category.CHAIR);
-
-	Set set = new Set(4, "Set 1", Money.of(299.99, Currencies.EURO), "set_1.jpg", "black",
-			"Set bestehend aus Sofa 1 und Stuhl 1.", setSupplier, Arrays.asList(stuhl, sofa_black));
+	MockMultipartFile multipartFile;
 
 	@BeforeEach
 	void setUp() {
-		for (ShopOrder order : orderManagement.findBy(userAccountManagement.findByUsername("Dummy").get())) {
-			orderManagement.delete(order);
+		Optional<UserAccount> user = userAccountManagement.findByUsername("Dummy");
+
+		if (user.isPresent()) {
+			for (ShopOrder order : orderManagement.findBy(user.get())) {
+				orderManagement.delete(order);
+			}
 		}
+
 		itemCatalog.deleteAll();
 		supplierRepository.deleteAll();
 
-		final List<Supplier> suppliers = Arrays.asList(supplier, setSupplier);
-		final List<Item> items = new ArrayList<>();
+		supplier = new Supplier("Supplier 1", 0.15);
+		setSupplier = new Supplier("Set Supplier", 0.05);
 
-		Piece tisch = new Piece(3, "Tisch 1", Money.of(89.99, Currencies.EURO), "table_2.jpg", "weiß",
+		sofa_black = new Piece(2, "Sofa 1", Money.of(259.99, Currencies.EURO), new byte[0], "black",
+				"Sofa 1 in schwarz.", supplier, 80, Category.COUCH);
+		sofa1_black = new Piece(3, "Sofa 1", Money.of(259.99, Currencies.EURO), new byte[0], "black",
+				"Sofa 1 in schwarz.", supplier, 80, Category.COUCH);
+		stuhl = new Piece(1, "Stuhl 1", Money.of(59.99, Currencies.EURO), new byte[0], "schwarz",
+				"Stuhl 1 in schwarz.", supplier, 5, Category.CHAIR);
+		tisch = new Piece(3, "Tisch 1", Money.of(89.99, Currencies.EURO), new byte[0], "weiß",
 				"Tisch 1 in weiß.", supplier, 30, Category.TABLE);
 
-		items.add(set);
-		items.add(tisch);
-		items.add(stuhl);
-		items.add(sofa_black);
+		set = new Set(4, "Set 1", Money.of(299.99, Currencies.EURO), new byte[0], "black",
+				"Set bestehend aus Sofa 1 und Stuhl 1.", setSupplier, Arrays.asList(stuhl, sofa_black));
 
-		supplierRepository.saveAll(suppliers);
-		itemCatalog.saveAll(items);
+		supplierRepository.saveAll(Arrays.asList(supplier, setSupplier));
+		itemCatalog.saveAll(Arrays.asList(set, tisch, stuhl, sofa_black));
+
+		this.multipartFile = new MockMultipartFile("image", "test.png",
+				"image/png", "Spring Framework".getBytes());
 	}
 
 	@Test
@@ -131,7 +142,7 @@ public class ItemControllerIntegrationTests {
 
 	@Test
 	void redirectsToCatalogWithInvalidCategory() throws Exception {
-		mvc.perform(get("/catalog/{category}","Bett"))
+		mvc.perform(get("/catalog/{category}", "Bett"))
 				.andExpect(status().is3xxRedirection())
 				.andExpect(redirectedUrl("/catalog"))
 				.andExpect(view().name("redirect:/catalog"));
@@ -160,7 +171,7 @@ public class ItemControllerIntegrationTests {
 	void redirectsToCatalogWithInvalidCategoryAndValidItem() throws Exception {
 		itemCatalog.save(sofa1_black);
 
-		mvc.perform(get("/catalog/{category}/{itemId}","bett", sofa1_black.getId()))
+		mvc.perform(get("/catalog/{category}/{itemId}", "bett", sofa1_black.getId()))
 				.andExpect(status().is3xxRedirection())
 				.andExpect(redirectedUrl("/catalog"))
 				.andExpect(view().name("redirect:/catalog"));
@@ -174,10 +185,461 @@ public class ItemControllerIntegrationTests {
 				.andExpect(redirectedUrl("/admin/supplier/" + sofa_black.getSupplier().getId() + "/items"))
 				.andExpect(view().name("redirect:/admin/supplier/" + sofa_black.getSupplier().getId() + "/items"));
 
-		mvc.perform(get("/catalog/{category}/{itemId}",Category.SET, set.getId()))
+		mvc.perform(get("/catalog/{category}/{itemId}", Category.SET, set.getId()))
 				.andExpect(status().is3xxRedirection())
 				.andExpect(redirectedUrl("/catalog/" + Category.SET))
 				.andExpect(view().name("redirect:/catalog/" + Category.SET));
+	}
+
+	@Test
+	@WithMockUser(roles = "EMPLOYEE")
+	void redirectsToSupplierItemOverviewWithoutDeletingWithWrongSupplier() throws Exception {
+		mvc.perform(post("/admin/supplier/{suppId}/items/delete/{itemId}", setSupplier.getId(), sofa_black.getId()))
+				.andExpect(status().is3xxRedirection())
+				.andExpect(redirectedUrl(String.format("/admin/supplier/%s/items", setSupplier.getId())))
+				.andExpect(view().name(String.format("redirect:/admin/supplier/%s/items", setSupplier.getId())));
+		assertEquals(4, itemService.findAll().stream().count());
+	}
+
+	@Test
+	@WithMockUser(roles = "EMPLOYEE")
+	void redirectsToSupplierItemOverviewWithoutDeletingWithNonexistentSupplier() throws Exception {
+		Supplier supp = new Supplier("wrong", 0.05);
+		mvc.perform(post("/admin/supplier/{suppId}/items/delete/{itemId}", supp.getId(), sofa_black.getId()))
+				.andExpect(status().is3xxRedirection())
+				.andExpect(redirectedUrl("/admin/suppliers"))
+				.andExpect(view().name("redirect:/admin/suppliers"));
+		assertEquals(4, itemService.findAll().stream().count());
+	}
+
+	@Test
+	@WithMockUser(roles = "EMPLOYEE")
+	void redirectsToItemOverviewOnSuccessfulVisibilityToggle() throws Exception {
+		mvc.perform(post("/admin/supplier/{suppId}/items/toggle/{itemId}", sofa_black.getSupplier().getId(), sofa_black.getId()))
+				.andExpect(status().is3xxRedirection())
+				.andExpect(redirectedUrl(String.format("/admin/supplier/%s/items", sofa_black.getSupplier().getId())))
+				.andExpect(view().name(String.format("redirect:/admin/supplier/%s/items", sofa_black.getSupplier().getId())));
+		assertFalse(itemCatalog.findById(sofa_black.getId()).get().isVisible());
+
+		mvc.perform(post("/admin/supplier/{suppId}/items/toggle/{itemId}", sofa_black.getSupplier().getId(), sofa_black.getId()))
+				.andExpect(status().is3xxRedirection())
+				.andExpect(redirectedUrl(String.format("/admin/supplier/%s/items", sofa_black.getSupplier().getId())))
+				.andExpect(view().name(String.format("redirect:/admin/supplier/%s/items", sofa_black.getSupplier().getId())));
+		assertTrue(itemCatalog.findById(sofa_black.getId()).get().isVisible());
+	}
+
+	@Test
+	@WithMockUser(roles = "EMPLOYEE")
+	void redirectsToItemOverviewOnSuccessfulVisibilityToggleWithWrongSupplier() throws Exception {
+		mvc.perform(post("/admin/supplier/{suppId}/items/toggle/{itemId}", setSupplier.getId(), sofa_black.getId()))
+				.andExpect(status().is3xxRedirection())
+				.andExpect(redirectedUrl(String.format("/admin/supplier/%s/items", setSupplier.getId())))
+				.andExpect(view().name(String.format("redirect:/admin/supplier/%s/items", setSupplier.getId())));
+		assertTrue(itemCatalog.findById(sofa_black.getId()).get().isVisible());
+	}
+
+	@Test
+	@WithMockUser(roles = "EMPLOYEE")
+	void redirectsToItemOverviewOnSuccessfulVisibilityToggleWithNonexistentSupplier() throws Exception {
+		Supplier supp = new Supplier("wrong", 0.05);
+		mvc.perform(post("/admin/supplier/{suppId}/items/toggle/{itemId}", supp.getId(), sofa_black.getId()))
+				.andExpect(status().is3xxRedirection())
+				.andExpect(redirectedUrl("/admin/suppliers"))
+				.andExpect(view().name("redirect:/admin/suppliers"));
+		assertTrue(itemCatalog.findById(sofa_black.getId()).get().isVisible());
+	}
+
+	@Test
+	@WithMockUser(roles = "EMPLOYEE")
+	void returnsModelAndViewAddPiece() throws Exception {
+		mvc.perform(get("/admin/supplier/{id}/items/add", supplier.getId()))
+				.andExpect(status().isOk())
+				.andExpect(model().attributeExists("itemForm"))
+				.andExpect(model().attribute("suppId", supplier.getId()))
+				.andExpect(model().attribute("categories", Category.values()))
+				.andExpect(model().attribute("edit", false))
+				.andExpect(view().name("supplierItemform"));
+	}
+
+	@Test
+	@WithMockUser(roles = "EMPLOYEE")
+	void redirectsToSupplierOverviewOnAddPieceWithNonexistentSupplier() throws Exception {
+		Supplier supp = new Supplier("wrong", 0.05);
+		mvc.perform(get("/admin/supplier/{id}/items/add", supp.getId()))
+				.andExpect(status().is3xxRedirection())
+				.andExpect(redirectedUrl("/admin/suppliers"))
+				.andExpect(view().name("redirect:/admin/suppliers"));
+	}
+
+	@Test
+	@WithMockUser(roles = "EMPLOYEE")
+	void redirectsToOverviewAfterPieceAddition() throws Exception {
+
+		mvc.perform(multipart("/admin/supplier/{id}/items/add", supplier.getId())
+				.file(multipartFile)
+				.param("groupId", "0")
+				.param("weight", "50")
+				.param("name", "Item Name")
+				.param("variant", "Variante")
+				.param("description", "Beschreibung")
+				.param("price", "50.65")
+				.param("category", "CHAIR")
+				.param("items", ""))
+				.andExpect(status().is3xxRedirection())
+				.andExpect(redirectedUrl(String.format("/admin/supplier/%s/items", supplier.getId())))
+				.andExpect(view().name(String.format("redirect:/admin/supplier/%s/items", supplier.getId())));
+		assertEquals(5, itemService.findAll().stream().count());
+	}
+
+	@Test
+	@WithMockUser(roles = "EMPLOYEE")
+	void redirectsToSupplierOverviewOnPieceAddingWithWrongSupplier() throws Exception {
+		Supplier supp = new Supplier("wrong", 0.05);
+		mvc.perform(multipart("/admin/supplier/{id}/items/add", supp.getId())
+				.file(multipartFile)
+				.param("groupId", "0")
+				.param("weight", "50")
+				.param("name", "Item Name")
+				.param("variant", "Variante")
+				.param("description", "Beschreibung")
+				.param("price", "50.65")
+				.param("category", "CHAIR")
+				.param("items", ""))
+				.andExpect(status().is3xxRedirection())
+				.andExpect(redirectedUrl("/admin/suppliers"))
+				.andExpect(view().name("redirect:/admin/suppliers"));
+		assertEquals(4, itemService.findAll().stream().count());
+	}
+
+	@Test
+	@WithMockUser(roles = "EMPLOYEE")
+	void redirectsToSetAddOnPieceAddingWithSetSupplier() throws Exception {
+		mvc.perform(multipart("/admin/supplier/{id}/items/add", setSupplier.getId())
+				.file(multipartFile)
+				.param("groupId", "0")
+				.param("weight", "50")
+				.param("name", "Item Name")
+				.param("variant", "Variante")
+				.param("description", "Beschreibung")
+				.param("price", "50.65")
+				.param("category", "CHAIR")
+				.param("items", ""))
+				.andExpect(status().is3xxRedirection())
+				.andExpect(redirectedUrl(String.format("/admin/supplier/%s/sets/add", setSupplier.getId())))
+				.andExpect(view().name(String.format("redirect:/admin/supplier/%s/sets/add", setSupplier.getId())));
+		assertEquals(4, itemService.findAll().stream().count());
+	}
+
+	@Test
+	@WithMockUser(roles = "EMPLOYEE")
+	void redirectsToAddSetOnAddPieceWithSetSupplier() throws Exception {
+		mvc.perform(get("/admin/supplier/{id}/items/add", setSupplier.getId()))
+				.andExpect(status().is3xxRedirection())
+				.andExpect(redirectedUrl(String.format("/admin/supplier/%s/sets/add", setSupplier.getId())))
+				.andExpect(view().name(String.format("redirect:/admin/supplier/%s/sets/add", setSupplier.getId())));
+	}
+
+	@Test
+	@WithMockUser(roles = "EMPLOYEE")
+	void redirectsToAddPieceOnAddSetWithoutSetSupplier() throws Exception {
+		mvc.perform(get("/admin/supplier/{id}/sets/add", supplier.getId()))
+				.andExpect(status().is3xxRedirection())
+				.andExpect(redirectedUrl(String.format("/admin/supplier/%s/items/add", supplier.getId())))
+				.andExpect(view().name(String.format("redirect:/admin/supplier/%s/items/add", supplier.getId())));
+	}
+
+	@Test
+	@WithMockUser(roles = "EMPLOYEE")
+	void returnModelAndViewAddSet() throws Exception {
+		mvc.perform(get("/admin/supplier/{id}/sets/add", setSupplier.getId()))
+				.andExpect(status().isOk())
+				.andExpect(model().attributeExists("itemMap"))
+				.andExpect(model().attribute("suppId", setSupplier.getId()))
+				.andExpect(view().name("supplierSetitems"));
+	}
+
+	@Test
+	@WithMockUser(roles = "EMPLOYEE")
+	void redirectsToSupplierOverviewOnNonexistentSupplier() throws Exception {
+		Supplier supp = new Supplier("wrong", 0.05);
+		mvc.perform(get("/admin/supplier/{id}/sets/add", supp.getId()))
+				.andExpect(status().is3xxRedirection())
+				.andExpect(redirectedUrl("/admin/suppliers"))
+				.andExpect(view().name("redirect:/admin/suppliers"));
+	}
+
+	@Test
+	@WithMockUser(roles = "EMPLOYEE")
+	void returnsModelAndViewOnItemSelectionWhenAddingSetsWithSetSupplier() throws Exception {
+		List<String> itemList = Arrays.asList(stuhl.getId().toString(), sofa_black.getId().toString());
+		MultiValueMap<String, String> itemMap = new LinkedMultiValueMap<>();
+		itemMap.put("itemList", itemList);
+
+		mvc.perform(post("/admin/supplier/{id}/sets/add", setSupplier.getId()).params(itemMap))
+				.andExpect(status().isOk())
+				.andExpect(model().attributeExists("setForm"))
+				.andExpect(model().attributeExists("maxPrice"))
+				.andExpect(model().attribute("suppId", setSupplier.getId()))
+				.andExpect(view().name("supplierSetform"));
+	}
+
+	@Test
+	@WithMockUser(roles = "EMPLOYEE")
+	void redirectsToSupplierOverviewOnItemSelectionWhenAddingSetsWithWrongSupplier() throws Exception {
+		Supplier supp = new Supplier("wrong", 0.05);
+		List<String> itemList = Arrays.asList(stuhl.getId().toString(), sofa_black.getId().toString());
+		MultiValueMap<String, String> itemMap = new LinkedMultiValueMap<>();
+		itemMap.put("itemList", itemList);
+
+		mvc.perform(post("/admin/supplier/{id}/sets/add", supp.getId()).params(itemMap))
+				.andExpect(status().is3xxRedirection())
+				.andExpect(redirectedUrl("/admin/suppliers"))
+				.andExpect(view().name("redirect:/admin/suppliers"));
+	}
+
+	@Test
+	@WithMockUser(roles = "EMPLOYEE")
+	void redirectsToAddItemOnItemSelectionWhenAddingSetsWithoutSetSupplier() throws Exception {
+		List<String> itemList = Arrays.asList(stuhl.getId().toString(), sofa_black.getId().toString());
+		MultiValueMap<String, String> itemMap = new LinkedMultiValueMap<>();
+		itemMap.put("itemList", itemList);
+
+		mvc.perform(post("/admin/supplier/{id}/sets/add", supplier.getId()).params(itemMap))
+				.andExpect(status().is3xxRedirection())
+				.andExpect(redirectedUrl(String.format("/admin/supplier/%s/items", supplier.getId())))
+				.andExpect(view().name(String.format("redirect:/admin/supplier/%s/items", supplier.getId())));
+	}
+
+	@Test
+	@WithMockUser(roles = "EMPLOYEE")
+	void redirectsToOverviewOnSetAddingWithSetSupplier() throws Exception {
+		List<String> itemList = Arrays.asList(stuhl.getId().toString(), sofa_black.getId().toString());
+		MultiValueMap<String, String> itemMap = new LinkedMultiValueMap<>();
+		itemMap.put("items", itemList);
+
+		mvc.perform(multipart("/admin/supplier/{id}/sets/add/set", setSupplier.getId())
+				.file(multipartFile)
+				.param("groupId", "0")
+				.param("weight", "100")
+				.param("name", "Set Name")
+				.param("variant", "Variante")
+				.param("description", "Beschreibung")
+				.param("price", "99.99")
+				.param("category", "SET")
+				.params(itemMap))
+				.andExpect(status().is3xxRedirection())
+				.andExpect(redirectedUrl(String.format("/admin/supplier/%s/items", setSupplier.getId())))
+				.andExpect(view().name(String.format("redirect:/admin/supplier/%s/items", setSupplier.getId())));
+		assertEquals(5, itemService.findAll().stream().count());
+	}
+
+	@Test
+	@WithMockUser(roles = "EMPLOYEE")
+	void redirectsToOverviewOnSetAddingWithNonexistentSupplier() throws Exception {
+		Supplier supp = new Supplier("wrong", 0.05);
+		List<String> itemList = Arrays.asList(stuhl.getId().toString(), sofa_black.getId().toString());
+		MultiValueMap<String, String> itemMap = new LinkedMultiValueMap<>();
+		itemMap.put("items", itemList);
+
+		mvc.perform(multipart("/admin/supplier/{id}/sets/add/set", supp.getId())
+				.file(multipartFile)
+				.param("groupId", "0")
+				.param("weight", "100")
+				.param("name", "Set Name")
+				.param("variant", "Variante")
+				.param("description", "Beschreibung")
+				.param("price", "99.99")
+				.param("category", "SET")
+				.params(itemMap))
+				.andExpect(status().is3xxRedirection())
+				.andExpect(redirectedUrl("/admin/suppliers"))
+				.andExpect(view().name("redirect:/admin/suppliers"));
+		assertEquals(4, itemService.findAll().stream().count());
+	}
+
+	@Test
+	@WithMockUser(roles = "EMPLOYEE")
+	void redirectsToOverviewOnSetAddingWithWrongSupplier() throws Exception {
+		List<String> itemList = Arrays.asList(stuhl.getId().toString(), sofa_black.getId().toString());
+		MultiValueMap<String, String> itemMap = new LinkedMultiValueMap<>();
+		itemMap.put("items", itemList);
+
+		mvc.perform(multipart("/admin/supplier/{id}/sets/add/set", supplier.getId())
+				.file(multipartFile)
+				.param("groupId", "0")
+				.param("weight", "100")
+				.param("name", "Set Name")
+				.param("variant", "Variante")
+				.param("description", "Beschreibung")
+				.param("price", "99.99")
+				.param("category", "SET")
+				.params(itemMap))
+				.andExpect(status().is3xxRedirection())
+				.andExpect(redirectedUrl(String.format("/admin/supplier/%s/items", supplier.getId())))
+				.andExpect(view().name(String.format("redirect:/admin/supplier/%s/items", supplier.getId())));
+		assertEquals(4, itemService.findAll().stream().count());
+	}
+
+	@Test
+	@WithMockUser(roles = "EMPLOYEE")
+	void returnsModelAndViewOnPieceEditWithCorrectSupplier() throws Exception {
+		mvc.perform(get("/admin/supplier/{suppId}/items/edit/{itemId}", sofa_black.getSupplier().getId(), sofa_black.getId()))
+				.andExpect(status().isOk())
+				.andExpect(model().attributeDoesNotExist("items"))
+				.andExpect(model().attributeDoesNotExist("maxPrice"))
+				.andExpect(model().attributeExists("itemForm"))
+				.andExpect(model().attribute("suppId", sofa_black.getSupplier().getId()))
+				.andExpect(model().attribute("itemId", sofa_black.getId()))
+				.andExpect(model().attribute("categories", Category.values()))
+				.andExpect(model().attribute("edit", true))
+				.andExpect(view().name("supplierItemform"));
+	}
+
+	@Test
+	@WithMockUser(roles = "EMPLOYEE")
+	void returnsModelAndViewOnSetEditWithCorrectSupplier() throws Exception {
+		mvc.perform(get("/admin/supplier/{suppId}/items/edit/{itemId}", set.getSupplier().getId(), set.getId()))
+				.andExpect(status().isOk())
+				.andExpect(model().attributeExists("items"))
+				.andExpect(model().attributeExists("maxPrice"))
+				.andExpect(model().attributeExists("itemForm"))
+				.andExpect(model().attribute("suppId", set.getSupplier().getId()))
+				.andExpect(model().attribute("itemId", set.getId()))
+				.andExpect(model().attribute("categories", Category.values()))
+				.andExpect(model().attribute("edit", true))
+				.andExpect(view().name("supplierItemform"));
+	}
+
+	@Test
+	@WithMockUser(roles = "EMPLOYEE")
+	void redirectsToOverviewOnItemEditWithNonexistentSupplier() throws Exception {
+		Supplier supp = new Supplier("wrong", 0.05);
+
+		mvc.perform(get("/admin/supplier/{suppId}/items/edit/{itemId}", supp.getId(), sofa_black.getId()))
+				.andExpect(status().is3xxRedirection())
+				.andExpect(redirectedUrl("/admin/suppliers"))
+				.andExpect(view().name("redirect:/admin/suppliers"));
+	}
+
+	@Test
+	@WithMockUser(roles = "EMPLOYEE")
+	void redirectsToOverviewOnItemEditWithWrongSupplier() throws Exception {
+		mvc.perform(get("/admin/supplier/{suppId}/items/edit/{itemId}", setSupplier.getId(), sofa_black.getId()))
+				.andExpect(status().is3xxRedirection())
+				.andExpect(redirectedUrl(String.format("/admin/supplier/%d/items", setSupplier.getId())))
+				.andExpect(view().name(String.format("redirect:/admin/supplier/%d/items", setSupplier.getId())));
+	}
+
+	@Test
+	@WithMockUser(roles = "EMPLOYEE")
+	void redirectsAfterSuccessfulEditOfItemWithCorrectSupplier() throws Exception {
+		List<String> itemList = new ArrayList<>();
+		MultiValueMap<String, String> itemMap = new LinkedMultiValueMap<>();
+		itemMap.put("items", itemList);
+
+		mvc.perform(multipart("/admin/supplier/{suppId}/items/edit/{itemId}", sofa_black.getSupplier().getId(), sofa_black.getId())
+				.file(multipartFile)
+				.param("groupId", String.valueOf(sofa_black.getGroupId()))
+				.param("weight", String.valueOf(sofa_black.getWeight()))
+				.param("name", "Sofa 50") // changed
+				.param("variant", sofa_black.getVariant())
+				.param("description", "New") // changed
+				.param("price", "359.99") // changed
+				.param("category", "COUCH")
+				.params(itemMap))
+				.andExpect(status().is3xxRedirection())
+				.andExpect(redirectedUrl(String.format("/admin/supplier/%d/items", sofa1_black.getSupplier().getId())))
+				.andExpect(view().name(String.format("redirect:/admin/supplier/%d/items", sofa1_black.getSupplier().getId())));
+		assertEquals("Sofa 50", itemCatalog.findById(sofa_black.getId()).get().getName());
+		assertEquals("New", itemCatalog.findById(sofa_black.getId()).get().getDescription());
+		assertEquals(Money.of(359.99, Currencies.EURO), itemCatalog.findById(sofa_black.getId()).get().getSupplierPrice());
+	}
+
+	@Test
+	@WithMockUser(roles = "EMPLOYEE")
+	void redirectsToItemOverviewWithoutEditOfItemWithNonexistentSupplier() throws Exception {
+		Supplier supp = new Supplier("wrong", 0.05);
+		List<String> itemList = new ArrayList<>();
+		MultiValueMap<String, String> itemMap = new LinkedMultiValueMap<>();
+		itemMap.put("items", itemList);
+
+		mvc.perform(multipart("/admin/supplier/{suppId}/items/edit/{itemId}", supp.getId(), sofa_black.getId())
+				.file(multipartFile)
+				.param("groupId", String.valueOf(sofa_black.getGroupId()))
+				.param("weight", String.valueOf(sofa_black.getWeight()))
+				.param("name", "Sofa 50") // changed
+				.param("variant", sofa_black.getVariant())
+				.param("description", "New") // changed
+				.param("price", "359.99") // changed
+				.param("category", "COUCH")
+				.params(itemMap))
+				.andExpect(status().is3xxRedirection())
+				.andExpect(redirectedUrl("/admin/suppliers"))
+				.andExpect(view().name("redirect:/admin/suppliers"));
+		assertEquals("Sofa 1", itemCatalog.findById(sofa_black.getId()).get().getName());
+		assertEquals("Sofa 1 in schwarz.", itemCatalog.findById(sofa_black.getId()).get().getDescription());
+		assertEquals(Money.of(259.99, Currencies.EURO), itemCatalog.findById(sofa_black.getId()).get().getSupplierPrice());
+	}
+
+	@Test
+	@WithMockUser(roles = "EMPLOYEE")
+	void redirectsToItemOverviewWithoutEditOfItemWithWrongSupplier() throws Exception {
+		List<String> itemList = new ArrayList<>();
+		MultiValueMap<String, String> itemMap = new LinkedMultiValueMap<>();
+		itemMap.put("items", itemList);
+
+		mvc.perform(multipart("/admin/supplier/{suppId}/items/edit/{itemId}", setSupplier.getId(), sofa_black.getId())
+				.file(multipartFile)
+				.param("groupId", String.valueOf(sofa_black.getGroupId()))
+				.param("weight", String.valueOf(sofa_black.getWeight()))
+				.param("name", "Sofa 50") // changed
+				.param("variant", sofa_black.getVariant())
+				.param("description", "New") // changed
+				.param("price", "359.99") // changed
+				.param("category", "COUCH")
+				.params(itemMap))
+				.andExpect(status().is3xxRedirection())
+				.andExpect(redirectedUrl(String.format("/admin/supplier/%d/items", setSupplier.getId())))
+				.andExpect(view().name(String.format("redirect:/admin/supplier/%d/items", setSupplier.getId())));
+		assertEquals("Sofa 1", itemCatalog.findById(sofa_black.getId()).get().getName());
+		assertEquals("Sofa 1 in schwarz.", itemCatalog.findById(sofa_black.getId()).get().getDescription());
+		assertEquals(Money.of(259.99, Currencies.EURO), itemCatalog.findById(sofa_black.getId()).get().getSupplierPrice());
+	}
+
+	@Test
+	@WithMockUser(roles = "EMPLOYEE")
+	void returnsModelAndViewOfMonthlyStatistic() throws Exception {
+		mvc.perform(get("/admin/statistic"))
+				.andExpect(status().isOk())
+				.andExpect(model().attributeExists("statistic"))
+				.andExpect(view().name("monthlyStatistic"));
+	}
+
+	@Test
+	@WithMockUser(roles = "EMPLOYEE")
+	void returnsModelAndViewOfRequestMonthlyStatistic() throws Exception {
+		final DateTimeFormatter pattern = DateTimeFormatter.ofPattern("MMMM yyyy");
+		final String dec = LocalDate.of(2020, 12, 1).format(pattern);
+		final String nov = LocalDate.of(2020, 11, 1).format(pattern);
+
+		mvc.perform(post("/admin/statistic")
+				.param("init", dec).param("compare",nov))
+				.andExpect(status().isOk())
+				.andExpect(model().attributeExists("statistic"))
+				.andExpect(view().name("monthlyStatistic"));
+	}
+
+	@Test
+	void returnImageFromExistingItem() throws Exception {
+		mvc.perform(get("/catalog/image/{id}", sofa_black.getId()))
+				.andExpect(status().isOk())
+				.andExpect(content().bytes(sofa_black.getImage()));
+	}
+
+	@Test
+	void returnImageFromUnknownItem() throws Exception {
+		mvc.perform(get("/catalog/image/{id}", "id"))
+				.andExpect(status().is4xxClientError());
 	}
 
 }

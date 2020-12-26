@@ -1,6 +1,7 @@
 package furnitureshop.inventory;
 
 import furnitureshop.supplier.Supplier;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.javamoney.moneta.Money;
 import org.salespointframework.core.Currencies;
 import org.salespointframework.time.BusinessTime;
@@ -9,9 +10,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.money.MonetaryAmount;
+import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoField;
+import java.time.temporal.TemporalAccessor;
 import java.util.*;
 
 /**
@@ -117,13 +127,16 @@ public class ItemController {
 	@GetMapping("/admin/supplier/{id}/items/add")
 	String getAddItemForSupplier(@PathVariable("id") long suppId, Model model) {
 		Optional<Supplier> supplier = itemService.findSupplierById(suppId);
-		if (supplier.isPresent()) {
-			if (supplier.get().getName().equals("Set Supplier")) {
-				return String.format("redirect:/admin/supplier/%s/sets/add", suppId);
-			}
+
+		if (supplier.isEmpty()) {
+			return "redirect:/admin/suppliers";
 		}
 
-		model.addAttribute("itemForm", new ItemForm(0, 0, "", "placeholder.png", "", "", 0, null, new ArrayList<>()));
+		if (supplier.get().getName().equals("Set Supplier")) {
+			return String.format("redirect:/admin/supplier/%s/sets/add", suppId);
+		}
+
+		model.addAttribute("itemForm", new ItemForm(0, 0, "", "", "", 0, null, new ArrayList<>()));
 		model.addAttribute("suppId", suppId);
 		model.addAttribute("categories", Category.values());
 		model.addAttribute("edit", false);
@@ -139,25 +152,34 @@ public class ItemController {
 	 *
 	 * @param suppId The id of a {@link Supplier}
 	 * @param form   The {@link ItemForm} with the information about new {@link Item}
-	 * @param model  The {@code Spring} Page {@link Model}
-	 *
 	 * @return Returns a redirect to '/admin/supplier/{id}/items' when everything was successfully created. Otherwise
 	 * returns the user created {@link ItemForm} and the corresponding view.
 	 */
-	@PostMapping("/admin/supplier/{id}/items/add")
-	String addItemForSupplier(@PathVariable("id") long suppId, @ModelAttribute("itemForm") ItemForm form, Model model) {
+	@PostMapping(value = "/admin/supplier/{id}/items/add", consumes = {"multipart/form-data"})
+	String addItemForSupplier(@PathVariable("id") long suppId, @ModelAttribute("itemForm") ItemForm form,
+							  @RequestParam("image") MultipartFile file) {
 		final Optional<Supplier> supplier = itemService.findSupplierById(suppId);
 
 		if (supplier.isEmpty()) {
-			model.addAttribute("itemForm", form);
-			return "supplierItemform";
+			return "redirect:/admin/suppliers";
+		}
+
+		if (supplier.get().getName().equals("Set Supplier")) {
+			return String.format("redirect:/admin/supplier/%s/sets/add", suppId);
+		}
+
+		byte[] image = new byte[0];
+		try {
+			image = file.getBytes();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 
 		final Piece piece = new Piece(
 				form.getGroupId(),
 				form.getName(),
 				Money.of(form.getPrice(), Currencies.EURO),
-				form.getPicture(),
+				image,
 				form.getVariant(),
 				form.getDescription(),
 				supplier.get(),
@@ -175,13 +197,23 @@ public class ItemController {
 	 * Creates a {@link EnumMap} mapping a {@link Category} to a {@link Streamable} of {@link Item} and binds that to
 	 * the model.
 	 *
-	 * @param suppId     The id of a {@link Supplier}
-	 * @param model      The {@code Spring} Page {@link Model}
+	 * @param suppId The id of a {@link Supplier}
+	 * @param model  The {@code Spring} Page {@link Model}
 	 *
 	 * @return Returns the view for set addition with the proper selection of {@link Item} instances.
 	 */
 	@GetMapping("/admin/supplier/{suppId}/sets/add")
 	String getDetailSetAddPage(@PathVariable("suppId") long suppId, Model model) {
+		Optional<Supplier> supplier = itemService.findSupplierById(suppId);
+
+		if (supplier.isEmpty()) {
+			return "redirect:/admin/suppliers";
+		}
+
+		if (!supplier.get().getName().equals("Set Supplier")) {
+			return String.format("redirect:/admin/supplier/%s/items/add", suppId);
+		}
+
 		final Map<Category, Streamable<Item>> itemMap = new EnumMap<>(Category.class);
 
 		for (Category category : Category.values()) {
@@ -206,8 +238,22 @@ public class ItemController {
 	 * inserting the set information
 	 */
 	@PostMapping("/admin/supplier/{suppId}/sets/add")
-	String getSetForm(@PathVariable("suppId") long suppId, @RequestParam("itemList") List<Item> itemList, Model model) {
+	String getSetForm(@PathVariable("suppId") long suppId, @RequestParam("itemList") Optional<List<Item>> itemList, Model model) {
 		final Optional<Supplier> supplier = itemService.findSupplierById(suppId);
+
+		if (itemList.isEmpty()) {
+			final Map<Category, Streamable<Item>> itemMap = new EnumMap<>(Category.class);
+
+			for (Category category : Category.values()) {
+				itemMap.put(category, Streamable.of(itemService.findAllByCategory(category).stream().sorted().toArray(Item[]::new)));
+			}
+
+			model.addAttribute("lempty", true);
+			model.addAttribute("itemMap", itemMap);
+			model.addAttribute("suppId", suppId);
+
+			return "supplierSetitems";
+		}
 
 		if (supplier.isEmpty()) {
 			return "redirect:/admin/suppliers";
@@ -218,12 +264,12 @@ public class ItemController {
 		}
 
 		MonetaryAmount maxPrice = Currencies.ZERO_EURO;
-		for (Item item : itemList) {
+		for (Item item : itemList.get()) {
 			maxPrice = maxPrice.add(item.getPrice());
 		}
 
-
-		model.addAttribute("setForm", new ItemForm(0, 0, "", "placeholder.png", "", "", 0, Category.SET, itemList));
+		model.addAttribute("setForm", new ItemForm(0, 0, "", "", "", 0, Category.SET, itemList.get()));
+		model.addAttribute("image", null);
 		model.addAttribute("maxPrice", maxPrice.getNumber());
 		model.addAttribute("suppId", suppId);
 		return "supplierSetform";
@@ -233,14 +279,14 @@ public class ItemController {
 	 * Handles all POST-Requests for '/admin/supplier/{id}/sets/add/set'.
 	 * Creates a new {@link Set} and saves it to {@link ItemCatalog} if the given {@link Supplier} is the SetSupplier.
 	 *
-	 * @param suppId   	The id of a {@link Supplier}
-	 * @param form 		A {@link ItemForm} with the information about a new {@link Set}
+	 * @param suppId The id of a {@link Supplier}
+	 * @param form   A {@link ItemForm} with the information about a new {@link Set}
 	 *
 	 * @return Either redirects to the supplier overview when {@link Supplier} is not found or to the item overview of
 	 * the SetSupplier when everything was correctly created.
 	 */
-	@PostMapping("/admin/supplier/{suppId}/sets/add/set")
-	String addSetForSupplier(@PathVariable("suppId") long suppId, @ModelAttribute("setForm") ItemForm form) {
+	@PostMapping(value = "/admin/supplier/{suppId}/sets/add/set", consumes = {"multipart/form-data"})
+	String addSetForSupplier(@PathVariable("suppId") long suppId, @ModelAttribute("setForm") ItemForm form, @RequestParam("image") MultipartFile file) {
 		final Optional<Supplier> supplier = itemService.findSupplierById(suppId);
 
 		if (supplier.isEmpty()) {
@@ -251,11 +297,18 @@ public class ItemController {
 			return String.format("redirect:/admin/supplier/%d/items", suppId);
 		}
 
+		byte[] image = new byte[0];
+		try {
+			image = file.getBytes();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 		final Set set = new Set(
 				form.getGroupId(),
 				form.getName(),
 				Money.of(form.getPrice(), Currencies.EURO),
-				form.getPicture(),
+				image,
 				form.getVariant(),
 				form.getDescription(),
 				supplier.get(),
@@ -278,17 +331,24 @@ public class ItemController {
 	 */
 	@GetMapping("/admin/supplier/{suppId}/items/edit/{itemId}")
 	String getEditItemForSupplier(@PathVariable("suppId") long suppId, @PathVariable("itemId") Item item, Model model) {
-		if (suppId != item.getSupplier().getId()) {
+		Optional<Supplier> supplier = itemService.findSupplierById(suppId);
+
+		if (supplier.isEmpty()) {
+			return "redirect:/admin/suppliers";
+		}
+
+		if (supplier.get().getId() != item.getSupplier().getId()) {
 			return String.format("redirect:/admin/supplier/%d/items", suppId);
 		}
 
 		if (item instanceof Set) {
 			Set set = (Set) item;
 			model.addAttribute("items", set.getItems());
-			model.addAttribute("maxPrice", set.getPieceTotal().getNumber());
+			model.addAttribute("maxPrice", set.getPartTotal().getNumber());
 		}
 
-		model.addAttribute("itemForm", new ItemForm(item.getGroupId(), item.getWeight(), item.getName(), item.getPicture(), item.getVariant(), item.getDescription(), item.getSupplierPrice().getNumber().doubleValue(), item.getCategory(), new ArrayList<>()));
+		model.addAttribute("itemForm", new ItemForm(item.getGroupId(), item.getWeight(), item.getName(), item.getVariant(), item.getDescription(), item.getSupplierPrice().getNumber().doubleValue(), item.getCategory(), new ArrayList<>()));
+		model.addAttribute("image", null);
 		model.addAttribute("suppId", suppId);
 		model.addAttribute("itemId", item.getId());
 		model.addAttribute("categories", Category.values());
@@ -308,16 +368,30 @@ public class ItemController {
 	 *
 	 * @return Redirects to the item overview of the given supplier.
 	 */
-	@PostMapping("/admin/supplier/{suppId}/items/edit/{itemId}")
-	String editItemForSupplier(@PathVariable("suppId") long suppId, @PathVariable("itemId") Item item, @ModelAttribute("itemForm") ItemForm form) {
-		if (suppId != item.getSupplier().getId()) {
+	@PostMapping(value = "/admin/supplier/{suppId}/items/edit/{itemId}", consumes = {"multipart/form-data"})
+	String editItemForSupplier(@PathVariable("suppId") long suppId, @PathVariable("itemId") Item item,
+			@ModelAttribute("itemForm") ItemForm form, @RequestParam("image") MultipartFile file) {
+		Optional<Supplier> supplier = itemService.findSupplierById(suppId);
+
+		if (supplier.isEmpty()) {
+			return "redirect:/admin/suppliers";
+		}
+
+		if (supplier.get().getId() != item.getSupplier().getId()) {
 			return String.format("redirect:/admin/supplier/%d/items", suppId);
 		}
 
 		item.setName(form.getName());
 		item.setPrice(Money.of(form.getPrice(), Currencies.EURO));
 		item.setDescription(form.getDescription());
-		item.setPicture(form.getPicture());
+
+		if (file != null && !file.isEmpty()) {
+			try {
+				item.setImage(file.getBytes());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 
 		itemService.addOrUpdateItem(item);
 
@@ -335,7 +409,13 @@ public class ItemController {
 	 */
 	@PostMapping("/admin/supplier/{suppId}/items/delete/{itemId}")
 	String deleteItemForSupplier(@PathVariable("suppId") long suppId, @PathVariable("itemId") Item item) {
-		if (suppId != item.getSupplier().getId()) {
+		Optional<Supplier> supplier = itemService.findSupplierById(suppId);
+
+		if (supplier.isEmpty()) {
+			return "redirect:/admin/suppliers";
+		}
+
+		if (supplier.get().getId() != item.getSupplier().getId()) {
 			return String.format("redirect:/admin/supplier/%d/items", suppId);
 		}
 
@@ -355,7 +435,13 @@ public class ItemController {
 	 */
 	@PostMapping("/admin/supplier/{suppId}/items/toggle/{itemId}")
 	String toggleItemForSupplier(@PathVariable("suppId") long suppId, @PathVariable("itemId") Item item) {
-		if (suppId != item.getSupplier().getId()) {
+		Optional<Supplier> supplier = itemService.findSupplierById(suppId);
+
+		if (supplier.isEmpty()) {
+			return "redirect:/admin/suppliers";
+		}
+
+		if (supplier.get().getId() != item.getSupplier().getId()) {
 			return String.format("redirect:/admin/supplier/%d/items", suppId);
 		}
 
@@ -367,7 +453,7 @@ public class ItemController {
 	}
 
 	/**
-	 * Handles all GET-Requests for '/admin/statistic'
+	 * Handles all GET-Requests for '/admin/statistic'.
 	 *
 	 * @param model The {@code Spring} Page {@link Model}
 	 *
@@ -375,13 +461,109 @@ public class ItemController {
 	 */
 	@GetMapping("/admin/statistic")
 	String getMonthlyStatistic(Model model) {
+		final LocalDate firstOrderDate = itemService.getFirstOrderDate();
 		final LocalDateTime time = businessTime.getTime();
 
-		model.addAttribute("statistic", itemService.analyse(time));
-		model.addAttribute("timeFrom", time.minusDays(30));
-		model.addAttribute("timeTo", time);
+		final List<LocalDate> months = getMonthListBetween(firstOrderDate, time.toLocalDate());
+
+		final LocalDate initDate = LocalDate.of(time.getYear(), time.getMonth(), 1);
+		final LocalDate compareDate = LocalDate.of(time.getYear(), time.getMonth(), 1).minusMonths(1);
+
+		final List<StatisticEntry> statisticEntries = itemService.analyseProfits(initDate, compareDate);
+
+		model.addAttribute("months", months);
+		model.addAttribute("initDate", initDate);
+		model.addAttribute("compareDate", compareDate);
+		model.addAttribute("statistic", statisticEntries);
 
 		return "monthlyStatistic";
+	}
+
+
+	/**
+	 * Handles all POST-Requests for '/admin/statistic'.
+	 *
+	 * @param init    The String representing the month
+	 * @param compare The String representing the month to compare
+	 * @param model   The {@code Spring} Page {@link Model}
+	 *
+	 * @return Returns the montly statistic page with custom months.
+	 */
+	@PostMapping("/admin/statistic")
+	String setMonthlyStatisticValue(@RequestParam("init") String init, @RequestParam("compare") String compare, Model model) {
+		final TemporalAccessor initAccessor = DateTimeFormatter.ofPattern("MMMM yyyy").parse(init);
+		final int initMonth = initAccessor.get(ChronoField.MONTH_OF_YEAR);
+		final int initYear = initAccessor.get(ChronoField.YEAR);
+		final LocalDate initDate = LocalDate.of(initYear, initMonth, 1);
+
+		final TemporalAccessor compareAccessor = DateTimeFormatter.ofPattern("MMMM yyyy").parse(compare);
+		final int compareMonth = compareAccessor.get(ChronoField.MONTH_OF_YEAR);
+		final int compareYear = compareAccessor.get(ChronoField.YEAR);
+		final LocalDate compareDate = LocalDate.of(compareYear, compareMonth, 1);
+
+		final LocalDate firstOrderDate = itemService.getFirstOrderDate();
+		final LocalDateTime time = businessTime.getTime();
+
+		final List<LocalDate> months = getMonthListBetween(firstOrderDate, time.toLocalDate());
+
+		final List<StatisticEntry> statisticEntries = itemService.analyseProfits(initDate, compareDate);
+
+		model.addAttribute("months", months);
+		model.addAttribute("initDate", initDate);
+		model.addAttribute("compareDate", compareDate);
+		model.addAttribute("statistic", statisticEntries);
+
+		return "monthlyStatistic";
+	}
+
+	/**
+	 * Handles all GET-Requests for '/catalog/image/{id}'.
+	 * Displays the image of the {@link Item}.
+	 *
+	 * @param item     The {@link Item} from which you want the image
+	 * @param response The Resonse written to
+	 */
+	@GetMapping("/catalog/image/{id}")
+	public void getItemImage(@PathVariable("id") Optional<Item> item, HttpServletResponse response) throws IOException {
+		if (item.isEmpty()) {
+			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+			return;
+		}
+
+		response.setContentType("image/jpeg");
+		final InputStream is = new ByteArrayInputStream(item.get().getImage());
+		IOUtils.copy(is, response.getOutputStream());
+	}
+
+	/**
+	 * Creates a {@link List} of {@link LocalDate}s with the first day of the month.
+	 * The {@link List} contains all months between the start and end date.
+	 * If the start date is after the end date, the {@link List} will be empty.
+	 *
+	 * @param start The first {@link LocalDate}
+	 * @param end   The last {@link LocalDate}
+	 *
+	 * @return A {@link List} with all months between
+	 *
+	 * @throws IllegalArgumentException If any argument is {@code null}
+	 */
+	private List<LocalDate> getMonthListBetween(LocalDate start, LocalDate end) {
+		Assert.notNull(start, "StartDate must not be null!");
+		Assert.notNull(end, "EndDate must not be null!");
+
+		final List<LocalDate> months = new ArrayList<>();
+
+		if (end.isBefore(start)) {
+			return months;
+		}
+
+		start = LocalDate.of(start.getYear(), start.getMonth(), 1);
+		while (!start.isAfter(end)) {
+			months.add(start);
+			start = start.plusMonths(1);
+		}
+
+		return months;
 	}
 
 }

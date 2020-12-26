@@ -12,6 +12,7 @@ import org.salespointframework.order.OrderLine;
 import org.salespointframework.order.OrderManagement;
 import org.salespointframework.quantity.Quantity;
 import org.salespointframework.time.BusinessTime;
+import org.salespointframework.useraccount.Password;
 import org.salespointframework.useraccount.UserAccount;
 import org.salespointframework.useraccount.UserAccountManagement;
 import org.springframework.data.util.Streamable;
@@ -72,26 +73,20 @@ public class OrderService {
 	 *
 	 * @throws IllegalArgumentException if any argument is {@code null}
 	 */
-	public Optional<Pickup> orderPickupItem(Cart cart, ContactInformation contactInformation) {
+	public Pickup orderPickupItem(Cart cart, ContactInformation contactInformation) {
 		Assert.notNull(cart, "Cart must not be null");
 		Assert.notNull(contactInformation, "ContactInformation must not be null");
 
-		final Optional<UserAccount> useraccount = getDummyUser();
+		final UserAccount useraccount = getDummyUser();
 
-		if (useraccount.isEmpty()) {
-			return Optional.empty();
-		}
-
-		final Pickup order = new Pickup(useraccount.get(), contactInformation);
+		final Pickup order = new Pickup(useraccount, contactInformation);
 		order.setCreated(businessTime.getTime());
+		order.setUpdated(businessTime.getTime());
 
 		cart.addItemsTo(order);
 		orderManagement.save(order);
 
-		//For Salespoint dateCreated -> updated
-		findById(order.getId().getIdentifier()).ifPresent(orderManagement::save);
-
-		return Optional.of(order);
+		return order;
 	}
 
 	/**
@@ -106,15 +101,11 @@ public class OrderService {
 	 *
 	 * @throws IllegalArgumentException if any argument is {@code null}
 	 */
-	public Optional<Delivery> orderDelieveryItem(Cart cart, ContactInformation contactInformation) {
+	public Delivery orderDelieveryItem(Cart cart, ContactInformation contactInformation) {
 		Assert.notNull(cart, "Cart must not be null");
 		Assert.notNull(contactInformation, "ContactInformation must not be null");
 
-		final Optional<UserAccount> userAccount = getDummyUser();
-
-		if (userAccount.isEmpty()) {
-			return Optional.empty();
-		}
+		final UserAccount userAccount = getDummyUser();
 
 		int weight = 0;
 		for (CartItem cartItem : cart) {
@@ -129,24 +120,22 @@ public class OrderService {
 		final LKWType type = LKWType.getByWeight(weight).orElse(LKWType.LARGE);
 
 		LocalDate deliveryDate = businessTime.getTime().toLocalDate().plusDays(2);
-		deliveryDate = lkwService.findNextAvailableDeliveryDate(deliveryDate, type);
+		Optional<LKW> lkw;
 
-		final Optional<LKW> lkw = lkwService.createDeliveryLKW(deliveryDate, type);
-		if (lkw.isEmpty()) {
-			return Optional.empty();
-		}
+		do {
+			deliveryDate = lkwService.findNextAvailableDeliveryDate(deliveryDate, type);
+			lkw = lkwService.createDeliveryLKW(deliveryDate, type);
+		} while (lkw.isEmpty());
 
-		final Delivery order = new Delivery(userAccount.get(), contactInformation, lkw.get(), deliveryDate);
+		final Delivery order = new Delivery(userAccount, contactInformation, lkw.get(), deliveryDate);
 		order.setCreated(businessTime.getTime());
+		order.setUpdated(businessTime.getTime());
 
 		cart.addItemsTo(order);
 		order.changeAllStatus(OrderStatus.PAID);
 		orderManagement.save(order);
 
-		//For Salespoint dateCreated -> updated
-		findById(order.getId().getIdentifier()).ifPresent(orderManagement::save);
-
-		return Optional.of(order);
+		return order;
 	}
 
 	/**
@@ -160,27 +149,21 @@ public class OrderService {
 	 *
 	 * @throws IllegalArgumentException if any argument is {@code null}
 	 */
-	public Optional<LKWCharter> orderLKW(LKW lkw, LocalDate rentDate, ContactInformation contactInformation) {
+	public LKWCharter orderLKW(LKW lkw, LocalDate rentDate, ContactInformation contactInformation) {
 		Assert.notNull(lkw, "LKW must not be null");
 		Assert.notNull(rentDate, "RentDate must not be null");
 		Assert.notNull(contactInformation, "ContactInformation must not be null");
 
-		final Optional<UserAccount> userAccount = getDummyUser();
+		final UserAccount userAccount = getDummyUser();
 
-		if (userAccount.isEmpty()) {
-			return Optional.empty();
-		}
-
-		final LKWCharter order = new LKWCharter(userAccount.get(), contactInformation, lkw, rentDate);
+		final LKWCharter order = new LKWCharter(userAccount, contactInformation, lkw, rentDate);
 		order.setCreated(businessTime.getTime());
+		order.setUpdated(businessTime.getTime());
 
 		order.addOrderLine(lkw, Quantity.of(1));
 		orderManagement.save(order);
 
-		//For Salespoint dateCreated -> updated
-		findById(order.getId().getIdentifier()).ifPresent(orderManagement::save);
-
-		return Optional.of(order);
+		return order;
 	}
 
 	/**
@@ -204,6 +187,7 @@ public class OrderService {
 			return false;
 		}
 
+		order.setUpdated(businessTime.getTime());
 		orderManagement.save(order);
 
 		return true;
@@ -255,9 +239,48 @@ public class OrderService {
 			if (order.getOrderEntries().isEmpty()) {
 				orderManagement.delete(order);
 			} else {
+				order.setUpdated(businessTime.getTime());
 				orderManagement.save(order);
 			}
 		}
+	}
+
+	/**
+	 * Calculates the {@link OrderStatus} for the complete {@link ShopOrder}.
+	 *
+	 * @param order The {@link ShopOrder} to evaluate
+	 *
+	 * @return The {@link OrderStatus} for the {@link ShopOrder}
+	 */
+	public OrderStatus getStatus(ShopOrder order) {
+		Assert.notNull(order, "Order must not be null");
+
+		OrderStatus status = OrderStatus.OPEN;
+
+		if (order instanceof LKWCharter) {
+			if (((LKWCharter) order).getRentDate().isAfter(businessTime.getTime().toLocalDate())) {
+				status = OrderStatus.PAID;
+			} else {
+				status = OrderStatus.COMPLETED;
+			}
+		} else if (order instanceof ItemOrder) {
+			final List<ItemOrderEntry> entries = ((ItemOrder) order).getOrderEntries();
+
+			if (entries.isEmpty()) {
+				return status;
+			}
+
+			status = OrderStatus.CANCELLED;
+
+			for (ItemOrderEntry entry : entries) {
+				// Normal Status order
+				if (entry.getStatus().ordinal() < status.ordinal()) {
+					status = entry.getStatus();
+				}
+			}
+		}
+
+		return status;
 	}
 
 	/**
@@ -272,13 +295,7 @@ public class OrderService {
 	public Optional<ShopOrder> findById(String id) {
 		Assert.hasText(id, "Id must not be null");
 
-		final Optional<UserAccount> userAccount = getDummyUser();
-
-		if (userAccount.isEmpty()) {
-			return Optional.empty();
-		}
-
-		for (ShopOrder order : orderManagement.findBy(userAccount.get())) {
+		for (ShopOrder order : orderManagement.findBy(getDummyUser())) {
 			if (order.getId().getIdentifier().equals(id)) {
 				return Optional.of(order);
 			}
@@ -293,13 +310,7 @@ public class OrderService {
 	 * @return Every existing {@link ShopOrder}
 	 */
 	public Streamable<ShopOrder> findAll() {
-		final Optional<UserAccount> userAccount = getDummyUser();
-
-		if (userAccount.isEmpty()) {
-			return Streamable.empty();
-		}
-
-		return orderManagement.findBy(userAccount.get());
+		return orderManagement.findBy(getDummyUser());
 	}
 
 	/**
@@ -308,13 +319,7 @@ public class OrderService {
 	 * @return Every existing {@link ItemOrder}
 	 */
 	public Streamable<ItemOrder> findAllItemOrders() {
-		final Optional<UserAccount> userAccount = getDummyUser();
-
-		if (userAccount.isEmpty()) {
-			return Streamable.empty();
-		}
-
-		return orderManagement.findBy(userAccount.get())
+		return orderManagement.findBy(getDummyUser())
 				.filter(order -> order instanceof ItemOrder)
 				.map(order -> (ItemOrder) order);
 	}
@@ -335,8 +340,9 @@ public class OrderService {
 	 *
 	 * @return The dummy {@link UserAccount}
 	 */
-	public Optional<UserAccount> getDummyUser() {
-		return userAccountManagement.findByUsername("Dummy");
+	public UserAccount getDummyUser() {
+		return userAccountManagement.findByUsername("Dummy")
+				.orElseGet(() -> userAccountManagement.create("Dummy", Password.UnencryptedPassword.of("123")));
 	}
 
 	/**

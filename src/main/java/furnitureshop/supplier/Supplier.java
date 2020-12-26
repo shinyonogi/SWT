@@ -53,6 +53,12 @@ public class Supplier {
 		return surcharge;
 	}
 
+	public void setSurcharge(double surcharge) {
+		Assert.isTrue(surcharge >= 0, "Surcharge must greater than 0!");
+
+		this.surcharge = surcharge;
+	}
+
 	// for website display
 	public double getSurchargeInPercent() {
 		return surcharge * 100;
@@ -76,7 +82,4 @@ public class Supplier {
 		return Objects.hash(id);
 	}
 
-	public void setSurcharge(double surcharge) {
-		this.surcharge = surcharge;
-	}
 }

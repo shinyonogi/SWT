@@ -2,7 +2,6 @@ package furnitureshop.lkw;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.salespointframework.catalog.Product;
 
 import javax.persistence.Entity;
 import java.lang.reflect.Modifier;
@@ -20,13 +19,8 @@ public class CalendarEntryTests {
 	}
 
 	@Test
-	void testConstructorWithInvalidType() {
-		assertThrows(IllegalArgumentException.class, () -> new DeliveryEntry(null),
-				"DeliveryEntry() should throw an IllegalArgumentException if the date argument is invalid!"
-		);
-		assertThrows(IllegalArgumentException.class, () -> new CharterEntry(null),
-				"CharterEntry() should throw an IllegalArgumentException if the date argument is invalid!"
-		);
+	void testGetId() {
+		assertEquals(0L, entry.getId(), "getId() should return the correct value!");
 	}
 
 	@Test
@@ -50,6 +44,16 @@ public class CalendarEntryTests {
 
 		assertThrows(IllegalArgumentException.class, () -> entry.setQuantity(25),
 				"setQuantity() should throw an IllegalArgumentException if the quantity argument is invalid!"
+		);
+	}
+
+	@Test
+	void testConstructorWithInvalidType() {
+		assertThrows(IllegalArgumentException.class, () -> new DeliveryEntry(null),
+				"DeliveryEntry() should throw an IllegalArgumentException if the date argument is invalid!"
+		);
+		assertThrows(IllegalArgumentException.class, () -> new CharterEntry(null),
+				"CharterEntry() should throw an IllegalArgumentException if the date argument is invalid!"
 		);
 	}
 

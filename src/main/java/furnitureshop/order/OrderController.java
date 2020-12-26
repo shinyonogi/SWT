@@ -3,6 +3,7 @@ package furnitureshop.order;
 import furnitureshop.inventory.Item;
 import furnitureshop.lkw.LKWType;
 import org.salespointframework.order.Cart;
+import org.salespointframework.order.CartItem;
 import org.salespointframework.quantity.Quantity;
 import org.salespointframework.time.BusinessTime;
 import org.springframework.data.util.Pair;
@@ -79,7 +80,15 @@ class OrderController {
 	 */
 	@PostMapping("/cart/add/{id}")
 	String addItem(@PathVariable("id") Item item, @RequestParam("number") int quantity, @ModelAttribute("cart") Cart cart) {
-		cart.addOrUpdateItem(item, Quantity.of(quantity));
+		int amount = 0;
+		for (CartItem cartItem : cart) {
+			if (cartItem.getProduct().equals(item)) {
+				amount += cartItem.getQuantity().getAmount().intValue();
+			}
+		}
+
+		final int additional = Math.min(99, amount + quantity) - amount;
+		cart.addOrUpdateItem(item, Quantity.of(additional));
 
 		return "redirect:/";
 	}
@@ -100,8 +109,8 @@ class OrderController {
 			if (amount <= 0) {
 				cart.removeItem(cartItemId);
 			} else {
-				final int newValue = amount - it.getQuantity().getAmount().intValue();
-				cart.addOrUpdateItem(it.getProduct(), newValue);
+				final int additional = amount - it.getQuantity().getAmount().intValue();
+				cart.addOrUpdateItem(it.getProduct(), additional);
 			}
 			return "redirect:/cart";
 		}).orElse("redirect:/cart");
@@ -199,30 +208,18 @@ class OrderController {
 
 		final ItemOrder order;
 
+		// Pickup
 		if (form.getIndex() == 0) {
-			final Optional<Pickup> pickup = orderService.orderPickupItem(cart, contactInformation);
-
-			if (pickup.isEmpty()) {
-				model.addAttribute("result", 4);
-				return "orderCheckout";
-			}
-
-			order = pickup.get();
+			order = orderService.orderPickupItem(cart, contactInformation);
 		}
 		// Delivery
 		else if (form.getIndex() == 1) {
-			final Optional<Delivery> delivery = orderService.orderDelieveryItem(cart, contactInformation);
+			order = orderService.orderDelieveryItem(cart, contactInformation);
 
-			if (delivery.isEmpty()) {
-				model.addAttribute("result", 4);
-				return "orderCheckout";
-			}
-
-			model.addAttribute("lkw", delivery.get().getLkw());
-			model.addAttribute("deliveryDate", delivery.get().getDeliveryDate());
-			order = delivery.get();
+			model.addAttribute("lkw", ((Delivery) order).getLkw());
+			model.addAttribute("deliveryDate", ((Delivery) order).getDeliveryDate());
 		}
-		// Pickup
+		// Unknown
 		else {
 			// Display error message
 			model.addAttribute("result", 4);
@@ -430,24 +427,8 @@ class OrderController {
 	 */
 	@GetMapping("/admin/orders")
 	String getCustomerOrders(Model model) {
-		final Streamable<Pair<ShopOrder, OrderStatus>> orders = orderService.findAll().map(o -> {
-			if (o instanceof ItemOrder) {
-				OrderStatus min = OrderStatus.CANCELLED;
-				for (ItemOrderEntry entry : ((ItemOrder) o).getOrderEntries()) {
-					if (entry.getStatus().ordinal() < min.ordinal()) {
-						min = entry.getStatus();
-					}
-				}
-				return Pair.of(o, min);
-			} else if (o instanceof LKWCharter) {
-				if (((LKWCharter) o).getRentDate().isAfter(businessTime.getTime().toLocalDate())) {
-					return Pair.of(o, OrderStatus.PAID);
-				} else {
-					return Pair.of(o, OrderStatus.COMPLETED);
-				}
-			}
-			return null;
-		});
+		final Streamable<Pair<ShopOrder, OrderStatus>> orders = orderService.findAll()
+				.map(o -> Pair.of(o, orderService.getStatus(o)));
 
 		model.addAttribute("orders", orders.stream()
 				.sorted((p1, p2) -> p2.getFirst().getCreated().compareTo(p1.getFirst().getCreated()))

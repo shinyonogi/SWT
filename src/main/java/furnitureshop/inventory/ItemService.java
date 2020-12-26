@@ -1,23 +1,23 @@
 package furnitureshop.inventory;
 
 import furnitureshop.order.ItemOrder;
-import furnitureshop.order.ItemOrderEntry;
 import furnitureshop.order.OrderService;
-import furnitureshop.order.OrderStatus;
 import furnitureshop.supplier.Supplier;
 import furnitureshop.supplier.SupplierService;
 import org.salespointframework.catalog.ProductIdentifier;
 import org.salespointframework.core.Currencies;
+import org.salespointframework.time.BusinessTime;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.data.util.Pair;
 import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import javax.money.MonetaryAmount;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.Map.Entry;
 
 /**
  * This class manages all methods to add, remove or find an {@link Item} by its attributes.
@@ -29,6 +29,7 @@ public class ItemService {
 	private final ItemCatalog itemCatalog;
 	private final SupplierService supplierService;
 	private final OrderService orderService;
+	private final BusinessTime businessTime;
 
 	/**
 	 * Creates a new instance of an {@link ItemService}
@@ -36,17 +37,21 @@ public class ItemService {
 	 * @param itemCatalog     {@link ItemCatalog} which contains all items
 	 * @param supplierService {@link SupplierService} reference to the SupplierService
 	 * @param orderService    {@link OrderService} reference to the OrderService
+	 * @param businessTime    {@link BusinessTime} reference to BusinessTime
 	 *
 	 * @throws IllegalArgumentException If {@code itemCatalog} is {@code null}
 	 */
-	public ItemService(ItemCatalog itemCatalog, @Lazy SupplierService supplierService, @Lazy OrderService orderService) {
+	public ItemService(ItemCatalog itemCatalog, @Lazy SupplierService supplierService,
+			@Lazy OrderService orderService, BusinessTime businessTime) {
 		Assert.notNull(itemCatalog, "ItemCatalog must not be null!");
 		Assert.notNull(supplierService, "SupplierService must not be null!");
 		Assert.notNull(orderService, "OrderService must not be null!");
+		Assert.notNull(businessTime, "BusinessTime must not be null!");
 
 		this.itemCatalog = itemCatalog;
 		this.supplierService = supplierService;
 		this.orderService = orderService;
+		this.businessTime = businessTime;
 	}
 
 	/**
@@ -90,25 +95,100 @@ public class ItemService {
 	}
 
 	/**
-	 * Finds all items in the catalog
+	 * Calculates the profit of all {@link ItemOrder} per {@link Supplier} and {@link Piece}
+	 * of the {@code initDate} and {@code compareDate}.
+	 * The {@link LocalDate}s represent the month of the {@link ItemOrder}.
 	 *
-	 * @return Returns all items in the {@code itemCatalog}
+	 * @param initDate    The {@link LocalDate} representing the month
+	 * @param compareDate The {@link LocalDate} representing the month to compare
+	 *
+	 * @return A {@link List} with {@link StatisticEntry}s which contain information
+	 * about the profit of the months
+	 *
+	 * @throws IllegalArgumentException If any argument is {@code null}
+	 */
+	public List<StatisticEntry> analyseProfits(LocalDate initDate, LocalDate compareDate) {
+		Assert.notNull(initDate, "InitDate must not be null!");
+		Assert.notNull(compareDate, "CompareDate must not be null!");
+
+		final List<StatisticEntry> statisticEntries = createEmptyStatistic();
+		boolean initFlag, compareFlag;
+
+		for (ItemOrder order : orderService.findAllItemOrders()) {
+			initFlag = order.getCreated().getMonth() == initDate.getMonth() && order.getCreated().getYear() == initDate.getYear();
+			compareFlag = order.getCreated().getMonth() == compareDate.getMonth() && order.getCreated().getYear() == compareDate.getYear();
+
+			if (!initFlag && !compareFlag) {
+				continue;
+			}
+
+			for (Entry<Item, MonetaryAmount> entry : order.getProfits().entrySet()) {
+				StatisticEntry statEntry = null;
+
+				for (StatisticEntry statisticEntry : statisticEntries) {
+					if (statisticEntry.getSupplier().equals(entry.getKey().getSupplier())) {
+						statEntry = statisticEntry;
+					}
+				}
+
+				StatisticItemEntry itemEntry;
+
+				if (initFlag && !compareFlag) {
+					itemEntry = new StatisticItemEntry(entry.getKey(), entry.getValue(), Currencies.ZERO_EURO);
+				} else if (!initFlag) {
+					itemEntry = new StatisticItemEntry(entry.getKey(), Currencies.ZERO_EURO, entry.getValue());
+				} else {
+					itemEntry = new StatisticItemEntry(entry.getKey(), entry.getValue(), entry.getValue());
+				}
+
+				statEntry.addEntry(itemEntry);
+			}
+		}
+
+		statisticEntries.sort(
+				Comparator.comparing(StatisticEntry::getInitProfit, Comparator.reverseOrder())
+						.thenComparing(s -> s.getSupplier().getName())
+		);
+
+		return statisticEntries;
+	}
+
+	/**
+	 * Gets the Orderdate from the first {@link ItemOrder}.
+	 *
+	 * @return The first {@link LocalDate} of all {@link ItemOrder}
+	 */
+	protected LocalDate getFirstOrderDate() {
+		LocalDateTime cur = businessTime.getTime();
+
+		for (ItemOrder itemOrder : orderService.findAllItemOrders()) {
+			if (itemOrder.getCreated().isBefore(cur)) {
+				cur = itemOrder.getCreated();
+			}
+		}
+		return cur.toLocalDate();
+	}
+
+	/**
+	 * Finds all {@link Item}s in the catalog
+	 *
+	 * @return Returns all {@link Item}s in the {@code itemCatalog}
 	 */
 	public Streamable<Item> findAll() {
 		return itemCatalog.findAll();
 	}
 
 	/**
-	 * Finds all visibble items in the catalog
+	 * Finds all visible {@link Item}s in the catalog
 	 *
-	 * @return Returns all visible items in the {@code itemCatalog}
+	 * @return Returns all visible {@link Item}s in the {@code itemCatalog}
 	 */
 	public Streamable<Item> findAllVisible() {
 		return itemCatalog.findAll().filter(Item::isVisible);
 	}
 
 	/**
-	 * Finds all items from a specific supplier
+	 * Finds all {@link Item}s from a specific supplier
 	 *
 	 * @param supplier A {@link Supplier}
 	 *
@@ -123,7 +203,7 @@ public class ItemService {
 	}
 
 	/**
-	 * Finds a specific item by its id
+	 * Finds a specific {@link Item} by its id
 	 *
 	 * @param id A {@link ProductIdentifier}
 	 *
@@ -138,7 +218,7 @@ public class ItemService {
 	}
 
 	/**
-	 * Finds all items of a specific category
+	 * Finds all {@link Item}s of a specific category
 	 *
 	 * @param category A {@link Category}
 	 *
@@ -153,7 +233,7 @@ public class ItemService {
 	}
 
 	/**
-	 * Finds all visible items of a specific category
+	 * Finds all visible {@link Item}s of a specific category
 	 *
 	 * @param category A {@link Category}
 	 *
@@ -168,9 +248,9 @@ public class ItemService {
 	}
 
 	/**
-	 * Finds all items of a specific category
+	 * Finds all {@link Item}s of a specific category
 	 *
-	 * @param groupId GroupId
+	 * @param groupId The GroupId of the {@link Item}
 	 *
 	 * @return Returns a stream of {@link Item}s all with the same {@code groupId}
 	 */
@@ -181,7 +261,7 @@ public class ItemService {
 	/**
 	 * Finds all visible items of a specific category
 	 *
-	 * @param groupId GroupId
+	 * @param groupId The GroupId of the {@link Item}
 	 *
 	 * @return Returns a stream of visible {@link Item}s all with the same {@code groupId}
 	 */
@@ -190,18 +270,23 @@ public class ItemService {
 	}
 
 	/**
-	 * Finds all sets of which a given item is a part of
+	 * Finds all {@link Set}s of which a given {@link Item} is a part of
 	 *
 	 * @param item An {@link Item}
 	 *
 	 * @return A list of {@link Set}s
+	 *
+	 * @throws IllegalArgumentException If {@code item} is {@code null}
 	 */
 	public List<Set> findAllSetsByItem(Item item) {
+		Assert.notNull(item, "Item must not be null!");
+
 		final List<Set> sets = new ArrayList<>();
 
 		for (Item it : findAll()) {
 			if (it instanceof Set) {
-				Set set = (Set) it;
+				final Set set = (Set) it;
+
 				if (set.getItems().contains(item)) {
 					sets.add(set);
 				}
@@ -212,7 +297,7 @@ public class ItemService {
 	}
 
 	/**
-	 * Find a specific supplier with the given id
+	 * Find a specific {@link Supplier} with the given id
 	 *
 	 * @param id A {@link Supplier} id
 	 *
@@ -222,60 +307,36 @@ public class ItemService {
 		return supplierService.findById(id);
 	}
 
-	public Map<Supplier, MonetaryAmount[]> analyse(LocalDateTime today) {
-		final HashMap<Supplier, MonetaryAmount[]> supplierAmountMap = new HashMap<>();
+	/**
+	 * Helper method to create a empty {@link List} with empty {@link StatisticEntry}s.
+	 * Used to init all {@link StatisticEntry}s for each {@link Supplier}.
+	 *
+	 * @return A {@link List} with empty {@link StatisticEntry}s
+	 */
+	private List<StatisticEntry> createEmptyStatistic() {
+		final List<StatisticEntry> statisticEntries = new ArrayList<>();
 
-		for (ItemOrder itemOrder : orderService.findAllItemOrders()) {
-			final LocalDateTime orderDate = itemOrder.getDateCreated();
-
-			final int index;
-			if (orderDate.isBefore(today) && orderDate.isAfter(today.minusDays(30))) {
-				index = 0;
-			} else if (orderDate.isBefore(today.minusDays(30)) && orderDate.isAfter(today.minusDays(60))) {
-				index = 1;
-			} else {
+		for (Item item : findAll()) {
+			if (item instanceof Set) {
 				continue;
 			}
 
-			for (ItemOrderEntry entry : itemOrder.getOrderEntries()) {
-				if (entry.getStatus().equals(OrderStatus.COMPLETED)) {
-					if (entry.getItem() instanceof Set) {
-						final Set set = (Set) entry.getItem();
-
-						for (Pair<Piece, MonetaryAmount> pair : set.getPiecePrices()) {
-							final Supplier supplier = pair.getFirst().getSupplier();
-
-							if (!supplierAmountMap.containsKey(supplier)) {
-								supplierAmountMap.put(supplier, new MonetaryAmount[]{Currencies.ZERO_EURO, Currencies.ZERO_EURO});
-							}
-
-							supplierAmountMap.get(supplier)[index] = supplierAmountMap.get(supplier)[index].add(pair.getSecond());
-						}
-					} else {
-						final Supplier supplier = entry.getItem().getSupplier();
-
-						if (!supplierAmountMap.containsKey(supplier)) {
-							supplierAmountMap.put(supplier, new MonetaryAmount[]{Currencies.ZERO_EURO, Currencies.ZERO_EURO});
-						}
-
-						supplierAmountMap.get(supplier)[index] = supplierAmountMap.get(supplier)[index].add(entry.getItem().getPrice());
-					}
+			StatisticEntry statisticEntry = null;
+			for (StatisticEntry entry : statisticEntries) {
+				if (entry.getSupplier().equals(item.getSupplier())) {
+					statisticEntry = entry;
 				}
 			}
-		}
 
-		for (Supplier supplier : supplierService.findAll()) {
-			if (supplier.getName().equals("Set Supplier")) {
-				continue;
+			if (statisticEntry == null) {
+				statisticEntry = new StatisticEntry(item.getSupplier());
+				statisticEntries.add(statisticEntry);
 			}
 
-			if (!supplierAmountMap.containsKey(supplier)) {
-				supplierAmountMap.put(supplier, new MonetaryAmount[]{Currencies.ZERO_EURO, Currencies.ZERO_EURO});
-				continue;
-			}
-
-			supplierAmountMap.get(supplier)[1] = supplierAmountMap.get(supplier)[0].subtract(supplierAmountMap.get(supplier)[1]);
+			statisticEntry.addEntry(new StatisticItemEntry(item, Currencies.ZERO_EURO, Currencies.ZERO_EURO));
 		}
-		return supplierAmountMap;
+
+		return statisticEntries;
 	}
+
 }
