@@ -13,6 +13,11 @@
     <nav th:include="navigation :: navigation"></nav>
 
     <div class="container mt-3 mb-3">
+        <div class="alert alert-danger" th:if="${lempty}">
+            <h4 class="alert-heading" th:text="#{order.status.error}">Fehler!</h4>
+            <div th:text="#{supplier.sets.add.lempty}">Ungültiger Name</div>
+        </div>
+
         <form method="post" th:action="@{/admin/supplier/{suppId}/sets/add(suppId=${suppId})}">
             <div th:each="category : ${itemMap.keySet()}">
                 <h4 class="mt-3 mb-3" th:text="${category}">Kategorie</h4>

@@ -152,14 +152,12 @@ public class ItemController {
 	 *
 	 * @param suppId The id of a {@link Supplier}
 	 * @param form   The {@link ItemForm} with the information about new {@link Item}
-	 * @param model  The {@code Spring} Page {@link Model}
-	 *
 	 * @return Returns a redirect to '/admin/supplier/{id}/items' when everything was successfully created. Otherwise
 	 * returns the user created {@link ItemForm} and the corresponding view.
 	 */
 	@PostMapping(value = "/admin/supplier/{id}/items/add", consumes = {"multipart/form-data"})
 	String addItemForSupplier(@PathVariable("id") long suppId, @ModelAttribute("itemForm") ItemForm form,
-			@RequestParam("image") MultipartFile file, Model model) {
+							  @RequestParam("image") MultipartFile file) {
 		final Optional<Supplier> supplier = itemService.findSupplierById(suppId);
 
 		if (supplier.isEmpty()) {
@@ -240,8 +238,22 @@ public class ItemController {
 	 * inserting the set information
 	 */
 	@PostMapping("/admin/supplier/{suppId}/sets/add")
-	String getSetForm(@PathVariable("suppId") long suppId, @RequestParam("itemList") List<Item> itemList, Model model) {
+	String getSetForm(@PathVariable("suppId") long suppId, @RequestParam("itemList") Optional<List<Item>> itemList, Model model) {
 		final Optional<Supplier> supplier = itemService.findSupplierById(suppId);
+
+		if (itemList.isEmpty()) {
+			final Map<Category, Streamable<Item>> itemMap = new EnumMap<>(Category.class);
+
+			for (Category category : Category.values()) {
+				itemMap.put(category, Streamable.of(itemService.findAllByCategory(category).stream().sorted().toArray(Item[]::new)));
+			}
+
+			model.addAttribute("lempty", true);
+			model.addAttribute("itemMap", itemMap);
+			model.addAttribute("suppId", suppId);
+
+			return "supplierSetitems";
+		}
 
 		if (supplier.isEmpty()) {
 			return "redirect:/admin/suppliers";
@@ -252,11 +264,11 @@ public class ItemController {
 		}
 
 		MonetaryAmount maxPrice = Currencies.ZERO_EURO;
-		for (Item item : itemList) {
+		for (Item item : itemList.get()) {
 			maxPrice = maxPrice.add(item.getPrice());
 		}
 
-		model.addAttribute("setForm", new ItemForm(0, 0, "", "", "", 0, Category.SET, itemList));
+		model.addAttribute("setForm", new ItemForm(0, 0, "", "", "", 0, Category.SET, itemList.get()));
 		model.addAttribute("image", null);
 		model.addAttribute("maxPrice", maxPrice.getNumber());
 		model.addAttribute("suppId", suppId);
