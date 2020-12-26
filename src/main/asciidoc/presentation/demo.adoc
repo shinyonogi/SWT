@@ -1,0 +1,69 @@
+= Softwarevorstellung
+
+== Präsentatoren
+
+Präsentator: Marc Albrecht +
+Kundensicht: David Schroth +
+Adminsicht: Sebastian Jaster +
+
+== Kundensicht
+
+- Startseite
+  * Ersteindruck gewinnen
+- Katalog durchstöbern
+  * Schauen was verfügbar
+- Artikel auswählen -> In den Warenkorb
+  * Sofa (Classic): 1x
+- Weiteren Artikel hinzufügen über Kategorien
+  * Stuhl (Basic+): 3x
+- Anzahlanzahl im Warenkorb reduzieren
+  * Stuhl (Basic+): 3x -> 2x
+- Bestellen mit _Lieferung_
+  * Hans Müller
+  * Teststraße 1
+  * hans@mueller.de
+- Bestellzusammenfassung ansehen
+  * Lieferdatum ansehen
+  * Bestellnummer kopieren
+- Bestellung suchen und Bestellungsstatus ansehen
+  * Bestellnummer eingeben
+- Artikel stornieren
+  * Stuhl (Basic+): 1x stornieren
+- LKW prüfen und mieten
+  * 3,5t LKW mieten
+    ** Hans Müller
+    ** Teststraße 1
+    ** hans@mueller.de
+  * An einem Samstag prüfen (19.12.20) -> Fehler
+  * An einem Montag prüfen (21.12.20) -> Verfügbar
+  * LKW mieten
+
+== Adminsicht
+
+- Als Admin anmelden
+  * Name/Passwort: admin
+- Bestellungen Übersicht
+  * Liste aller Bestellungen durchscrollen
+- Bestellstatus ändern
+  * Bestellung anhand des Preises identifizieren
+  * Bestellstatus von einem Artikel ändern
+- Monatsstatistiken beurteilen
+  * Übersicht öffnen
+  * Gewinne/Verluste beurteilen
+- Lieferanten anzeigen
+  * Übersicht öffnen
+  * Auswahl schlechter Lieferant
+    ** Artikel anzeigen
+    ** Lieferant entfernen
+- Lieferant hinzufügen
+  * Name: MultiSofa
+  * Aufschlag: 15%
+- Artikel hinzufügen zu neuen Lieferant
+  * Name: Big Classic
+  * Preis: 715.99€
+  * Variante: weiß
+  * Gewicht: 70kg
+  * Gruppennummer: 20
+  * Beschreibung: Ein großes aber einfaches weißes Sofa
+  * Kategorie: COUCH
+- Änderungen im Katalog ansehen

@@ -74,7 +74,7 @@ Die Hauptnutzer des Webshops sind Kunden, die bereits mit der üblichen Webseite
 
 == Kontextabgrenzung
 
-image::./models/analysis/context_diagram_2.png[Kontextdiagramm,100%,100%,pdfwidth=100%,title= "Kontextdiagramm des Projektes {project_name}",align=center]
+image::./models/analysis/context_diagram_eng.png[Kontextdiagramm,100%,100%,pdfwidth=100%,title= "Kontextdiagramm des Projektes {project_name}",align=center]
 
 == Lösungsstrategie
 === Erfüllung der Qualitätsziele
@@ -88,7 +88,7 @@ image::./models/analysis/context_diagram_2.png[Kontextdiagramm,100%,100%,pdfwidt
 
 * Beschreibung der Architektur anhand der Top-Level-Architektur oder eines Client-Server-Diagramms
 
-image::./models/analysis/top_level_architecture_2.png[Top-Level-Architektur,100%,100%,pdfwidth=100%,title= "Top-Level-Architektur des Projektes {project_name}",align=center]
+image::./models/analysis/top_level_architecture_eng.png[Top-Level-Architektur,100%,100%,pdfwidth=100%,title= "Top-Level-Architektur des Projektes {project_name}",align=center]
 
 === Entwurfsentscheidungen
 * Verwendete Muster

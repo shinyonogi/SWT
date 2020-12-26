@@ -1,0 +1,34 @@
+= Protokoll Gruppe 17
+
+Treffen am 17.12.2020
+
+Ort:      BigBlueButton +
+Beginn:   13:00 Uhr +
+Ende:     15:00 Uhr
+
+__Schriftführer:__ Sebastian Jaster
+
+*Nächstes Treffen:* +
+18.12.2020, 17:00 Uhr, Discord
+
+__Teilnehmer:__
+//Tabellarisch oder Aufzählung, Kennzeichnung von Teilnehmern mit besonderer Rolle (z.B. Kunde)
+
+- Markus Richter
+- David Schroth
+- Marc Albrecht
+- Sebastian Jaster
+- Edgar Wolfert
+- Johannes Kaufmann
+- Shintaro Onogi
+- Gruppe 18
+
+== Bemerkungen
+- Anmerkungen Zwischenpräsentation:
+* zu Beginn Teilnehmer vorstellen und evtl Screenshot der Startseite als Teaser
+* Übergänge könnten flüssiger werden
+* Explizit erwähnen das Diagramme eine vereinfachte Version sind
+* bei Composite explizit Multiplizität und Varnamen and Aggregation
+* Lessons Learned: Evtl schrittweise einblenden
+* Use-Case Diagramm vielleicht mitverwenden
+* evtl die Bilder im Catalog noch etwas kleiner machen

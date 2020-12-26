@@ -1,0 +1,73 @@
+= Protokoll Gruppe 17
+
+Treffen am 14.12.2020
+
+Ort:      Discord +
+Beginn:   18:00 Uhr +
+Ende:     19:15 Uhr
+
+__Schriftführer:__ Sebastian Jaster
+
+*Nächstes Treffen:* +
+16.12.2020, 10:00 Uhr, Discord
+
+__Teilnehmer:__
+//Tabellarisch oder Aufzählung, Kennzeichnung von Teilnehmern mit besonderer Rolle (z.B. Kunde)
+
+- David Schroth
+- Marc Albrecht
+- Sebastian Jaster
+- Edgar Wolfert
+- Johannes Kaufmann
+- Shintaro Onogi
+
+== Bemerkungen
+- Aktualisierte Top-Level-Architektur sieht soweit gut aus
+* Für Präsentation ohne Pfeile und gruppiert nach Komponenten
+* Für Developerdocumentation noch eine englische Version
+- Aktuelle Version der Slides
+* Vereinfachung der Top-Level-Architektur
+* weiterhin soll noch für jedes Package eine Übersicht der Klassen gezeigt werden
+* Da David, Marc und Sebastian die Live-Demo machen, werden Shintaro, Johannes und Edgar mehr in der Präsentation vorstellen
+[option="headers"]
+|===
+|Teil |Vortragender 
+|Aufgabenstellung und Einleitung | Shintaro
+|Komponentenübersicht | Johannes
+|Komponente - Admin | Sebastian
+|Komponente - Supplier | David
+|Komponente - Inventory | Edgar
+|Komponente - Order | Johannes
+|Komponente - LKW | Marc
+|Probleme | Shintaro
+|Lessons Learned | Edgar
+|Demo | Marc, Sebastian, David
+|===
+- Live-Demo klingt sinnvoll
+
+
+== Aktueller Stand des Sprints
+*Issue referenziert die Issue ID von GitHub*
+
+// See http://asciidoctor.org/docs/user-manual/=tables
+[option="headers"]
+|===
+|Issue |Titel | Aufgabe |Verantwortlicher | Status
+|#44|Javadoc for order package | Javadoc für Order schreiben | Shintaro, Marc, Johannes | fertig
+|#45|Javadoc for supplier package | Javadoc für Supplier schreiben | Marc, David | fertig
+|#46|Javadoc for inventory package|Javadoc für Inventar schreiben| Edgar | fertig
+|#48|Integration and JUnit tests order package|Unit-/Integrationtest für order package implementieren | Shintaro, | in Arbeit
+|#49|Integration and JUnit tests supplier package| Unit-/Integrationtest für supplier package implementieren | David | in Arbeit
+|#51|Integration and JUnit tests inventory package| Unit-/Integrationtest für inventory package implementieren | Edgar | in Arbeit
+|#52|Frontend design| Frontend design bei manchen Seiten noch verbessern | Shintaro | in Arbeit
+|#56|Supplier monthly statistic | Grundlegende Funktionalität der Monatsstatistik |Marc, Sebastian | fertig
+|#58|Supplier set handling | Umgang von Sets bei Set-Erstellung | Marc | fertig
+|#60 |Supplier Deletion of Items | ItemOrderEntries müssen noch entfernt werden, wenn man einen Lieferanten löscht | Marc | fertig
+|#63 |Creation of items for presentation |Neue Items sollen angelegt werden. | Edgar | in Arbeit
+|#64 |Creation order dummy data |OrderDataInitializer erweitern | Johannes | fertig
+|#65 |Slides for presentation |Slides anlegen | Sebastian, David, Marc | in Arbeit
+|#66 |Demonstration of preparation |Software-Demonstration | Sebastian, David, Marc | in Arbeit
+|#67 |Simplify eUML for presentation |eUML vereinfachen | Sebastian | fertig
+|===
+
+
