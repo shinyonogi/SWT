@@ -330,14 +330,13 @@ class OrderController {
 	 *
 	 * @param orderId        The Identifier of the {@link ItemOrder}
 	 * @param itemEntryId    The Identifier of the {@link ItemOrderEntry}
-	 * @param model          The {@code Spring} Page {@link Model}
 	 * @param authentication The {@code Spring} {@link Authentication}
 	 *
 	 * @return The updates Orderoverview Page
 	 */
 	@PostMapping("/order/{orderId}/cancelItem")
 	String cancelItemOrder(@PathVariable("orderId") String orderId, @RequestParam("itemEntryId") long itemEntryId,
-			Model model, Authentication authentication) {
+						   Authentication authentication) {
 		final Optional<ShopOrder> order = orderService.findById(orderId);
 
 		if (order.isEmpty() || !(order.get() instanceof ItemOrder)) {
@@ -361,7 +360,6 @@ class OrderController {
 	 * @param orderId        The Identifier of the order
 	 * @param status         The new {@link OrderStatus} of the order
 	 * @param itemEntryId    The Identifier of the {@link ItemOrderEntry}
-	 * @param model          The {@code Spring} Page {@link Model}
 	 * @param authentication The {@code Spring} {@link Authentication}
 	 *
 	 * @return The updates Orderoverview Page
@@ -369,7 +367,7 @@ class OrderController {
 	@PreAuthorize("hasRole('EMPLOYEE')")
 	@PostMapping("/order/{orderId}/changeStatus")
 	String changeOrder(@PathVariable("orderId") String orderId, @RequestParam("status") OrderStatus status,
-			@RequestParam("itemEntryId") long itemEntryId, Model model, Authentication authentication) {
+					   @RequestParam("itemEntryId") long itemEntryId, Authentication authentication) {
 		final Optional<ShopOrder> order = orderService.findById(orderId);
 
 		if (order.isEmpty() || !(order.get() instanceof ItemOrder)) {
@@ -391,13 +389,12 @@ class OrderController {
 	 * Cancel a LKWCharter and deletes the Order.
 	 *
 	 * @param orderId        The Identifier of the order
-	 * @param model          The {@code Spring} Page {@link Model}
 	 * @param authentication The {@code Spring} {@link Authentication}
 	 *
 	 * @return Redirects to Orderlist (Employee) or Index
 	 */
 	@PostMapping("/order/{orderId}/cancelLkw")
-	String cancelLkwOrder(@PathVariable("orderId") String orderId, Model model, Authentication authentication) {
+	String cancelLkwOrder(@PathVariable("orderId") String orderId, Authentication authentication) {
 		final Optional<ShopOrder> order = orderService.findById(orderId);
 
 		if (order.isEmpty() || !(order.get() instanceof LKWCharter)) {
