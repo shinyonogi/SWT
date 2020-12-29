@@ -57,7 +57,7 @@
                         <option th:each="month : ${months}" th:selected="${compareDate.equals(month)}" th:text="${#temporals.format(month, 'MMMM yyyy')}"></option>
                     </select>
                 </div>
-                <div class="col-lg-4 align-baseline mb-2">
+                <div class="col-lg-4 align-baseline mb-2 text-right">
                     <button type="submit" class="btn btn-primary" th:text="#{statistic.submit}"></button>
                 </div>
             </form>
