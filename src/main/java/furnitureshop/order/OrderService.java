@@ -273,7 +273,6 @@ public class OrderService {
 			status = OrderStatus.CANCELLED;
 
 			for (ItemOrderEntry entry : entries) {
-				// Normal Status order
 				if (entry.getStatus().ordinal() < status.ordinal()) {
 					status = entry.getStatus();
 				}

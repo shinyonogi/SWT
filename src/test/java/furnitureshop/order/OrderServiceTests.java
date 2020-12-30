@@ -13,6 +13,7 @@ import furnitureshop.supplier.SupplierRepository;
 import org.javamoney.moneta.Money;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.salespointframework.catalog.Product;
 import org.salespointframework.core.Currencies;
 import org.salespointframework.order.*;
 import org.salespointframework.time.BusinessTime;
@@ -20,7 +21,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 
+import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
@@ -75,7 +78,14 @@ public class OrderServiceTests {
 		this.exampleCart = new Cart();
 
 		exampleCart.addOrUpdateItem(stuhl1, 1);
-		exampleCart.addOrUpdateItem(sofa1_green, 10);
+		exampleCart.addOrUpdateItem(sofa1_green, 2);
+
+		// Reset Time
+		final LocalDateTime time = LocalDateTime.of(2020, 12, 21, 0, 0);
+
+		businessTime.reset();
+		final Duration delta = Duration.between(businessTime.getTime(), time);
+		businessTime.forward(delta);
 	}
 
 	/**
@@ -83,16 +93,15 @@ public class OrderServiceTests {
 	 * Tests if u find the matching {@link Order} for a specific Id
 	 */
 	@Test
-	public void testFindById() {
-		ContactInformation exampleContactInformation = new ContactInformation("testName", "testAdresse", "testEmail");
+	void testFindById() {
+		final ContactInformation info = new ContactInformation("testName", "testAdresse", "testEmail");
+		final Pickup order = orderService.orderPickupItem(exampleCart, info);
 
-		Order order = orderService.orderPickupItem(exampleCart, exampleContactInformation);
-		assertEquals(this.orderService.findById(order.getId().getIdentifier()).get(), order, "Die Methode findById" +
-				"returned nicht die richtige Order für eine gegebene ID");
+		final Optional<ShopOrder> shopOrder = orderService.findById(order.getId().getIdentifier());
+		assertTrue(shopOrder.isPresent(), "findById() should find the correct Order!");
+		assertEquals(order, shopOrder.get(), "findById() should find the correct Order!");
 
-		assertEquals(Optional.empty(), orderService.findById("thisisatestid"), "Es wird kein leeres Optional returned" +
-				" wenn keine Order gefunden wird");
-
+		assertTrue(orderService.findById("id").isEmpty(), "findById() should not find an Order!");
 	}
 
 	/**
@@ -100,13 +109,41 @@ public class OrderServiceTests {
 	 * Tests if all {@link Order} that are saved in the repository are returned
 	 */
 	@Test
-	public void testFindAll() {
+	void testFindAll() {
 		for (int i = 0; i < 10; i++) {
-			ContactInformation exampleContactInformation = new ContactInformation("testName", "testAdresse", "testEmail");
-			orderService.orderPickupItem(exampleCart, exampleContactInformation);
+			final ContactInformation info = new ContactInformation("testName", "testAdresse", "testEmail");
+			orderService.orderPickupItem(exampleCart, info);
 		}
-		assertEquals(this.orderService.findAll().toList().size(), 10, "Es werden nicht alle Bestellungen gefunden und ausgegeben");
 
+		assertEquals(10L, orderService.findAll().stream().count(), "findAll() should find all Orders!");
+	}
+
+	/**
+	 * testOrderPickupItem method
+	 * Tests if {@link Pickup} has all correct properties of the Order
+	 */
+	@Test
+	void testOrderPickupItem() {
+		final ContactInformation info = new ContactInformation("testName", "testAdresse", "testEmail");
+
+		final Pickup order = orderService.orderPickupItem(exampleCart, info);
+
+		final Pickup goalOrder = new Pickup(orderService.getDummyUser(), info);
+		exampleCart.addItemsTo(goalOrder);
+
+		assertEquals(goalOrder.getContactInformation(), order.getContactInformation(), "orderPickupItem() should use the correct ContactInformation!");
+
+		final Iterator<OrderLine> goalOrderLineIterator = goalOrder.getOrderLines().get().iterator();
+		final Iterator<OrderLine> orderOrderLineIterator = order.getOrderLines().get().iterator();
+
+		for (int i = 0; i < goalOrder.getOrderLines().get().count(); i++) {
+			final OrderLine goalOrderEntry = goalOrderLineIterator.next();
+			final OrderLine orderOrderEntry = orderOrderLineIterator.next();
+
+			assertEquals(goalOrderEntry.getProductName(), orderOrderEntry.getProductName(), "orderPickupItem() should add the correct Item!");
+			assertEquals(goalOrderEntry.getPrice(), orderOrderEntry.getPrice(), "orderPickupItem() should add the correct Item!");
+			assertEquals(goalOrderEntry.getQuantity(), orderOrderEntry.getQuantity(), "orderPickupItem() should add the correct Item!");
+		}
 	}
 
 	/**
@@ -115,32 +152,52 @@ public class OrderServiceTests {
 	 * mapped to the Delivery and that the correct Lkw is booked for a specific order
 	 */
 	@Test
-	public void testOrderDeliveryItem() {
-		ContactInformation exampleContactInformation = new ContactInformation("testName", "testAdresse", "testEmail");
-		LocalDate deliveryDate = lkwService.findNextAvailableDeliveryDate(this.businessTime.getTime().toLocalDate().plusDays(2), LKWType.SMALL);
-		LKW lkw = lkwService.createDeliveryLKW(deliveryDate, LKWType.SMALL).get();
+	void testOrderDeliveryItem() {
+		final ContactInformation info = new ContactInformation("testName", "testAdresse", "testEmail");
 
-		Delivery order = orderService.orderDelieveryItem(exampleCart, exampleContactInformation);
+		final LocalDate deliveryDate = businessTime.getTime().toLocalDate().plusDays(2);
 
-		Delivery goalOrder = (Delivery) exampleCart.addItemsTo(new Delivery(this.orderService.getDummyUser(), exampleContactInformation,
-				lkw, deliveryDate));
-		assertEquals(order.getDeliveryDate(), goalOrder.getDeliveryDate(),
-				"Das Lieferdatum sollte übereinstimmen");
-		Iterator<OrderLine> goalOrderLineIterator = goalOrder.getOrderLines().get().iterator();
-		Iterator<OrderLine> orderOrderLineIterator = order.getOrderLines().get().iterator();
+		final LKW lkw = lkwService.createDeliveryLKW(deliveryDate, LKWType.SMALL).orElse(null);
+		final Delivery order = orderService.orderDelieveryItem(exampleCart, info);
+
+		final Delivery goalOrder = new Delivery(orderService.getDummyUser(), info, lkw, deliveryDate);
+		exampleCart.addItemsTo(goalOrder);
+
+		assertEquals(goalOrder.getDeliveryDate(), order.getDeliveryDate(), "orderDelieveryItem() should use the correct DeliveryDate!");
+		assertEquals(goalOrder.getContactInformation(), order.getContactInformation(), "orderDelieveryItem() should use the correct ContactInformation!");
+		assertEquals(goalOrder.getLkw(), order.getLkw(), "orderDelieveryItem() should use the correct LKW!");
+
+		final Iterator<OrderLine> goalOrderLineIterator = goalOrder.getOrderLines().get().iterator();
+		final Iterator<OrderLine> orderOrderLineIterator = order.getOrderLines().get().iterator();
+
 		for (int i = 0; i < goalOrder.getOrderLines().get().count(); i++) {
-			OrderLine goalOrderEntry = goalOrderLineIterator.next();
-			OrderLine orderOrderEntry = orderOrderLineIterator.next();
-			assertEquals(goalOrderEntry.getProductName(), orderOrderEntry.getProductName(),
-					"Der Produktname der OrderEntrys sollte übereinstimmen");
-			assertEquals(goalOrderEntry.getPrice(), orderOrderEntry.getPrice(),
-					"Der Preis der OrderEntrys sollte übereinstimmen");
-			assertEquals(goalOrderEntry.getQuantity(), orderOrderEntry.getQuantity(),
-					"Die Anzahl der Produkte in den OrderEntrys sollte übereinstimmen");
+			final OrderLine goalOrderEntry = goalOrderLineIterator.next();
+			final OrderLine orderOrderEntry = orderOrderLineIterator.next();
+
+			assertEquals(goalOrderEntry.getProductName(), orderOrderEntry.getProductName(), "orderDelieveryItem() should add the correct Item!");
+			assertEquals(goalOrderEntry.getPrice(), orderOrderEntry.getPrice(), "orderDelieveryItem() should add the correct Item!");
+			assertEquals(goalOrderEntry.getQuantity(), orderOrderEntry.getQuantity(), "orderDelieveryItem() should add the correct Item!");
 		}
-		assertEquals(order.getContactInformation(), goalOrder.getContactInformation(),
-				"Die Kontaktinformationen sollten übereinstimmen");
-		assertEquals(order.getLkw(), goalOrder.getLkw(), "Die gemieteten LKWs sollten übereinstimmen");
+	}
+
+
+	/**
+	 * testOrderLKW method
+	 * Tests if {@link LKWCharter} has all correct properties of the Order
+	 */
+	@Test
+	void testOrderLKW() {
+		final ContactInformation info = new ContactInformation("testName", "testAdresse", "testEmail");
+
+		final LocalDate date = businessTime.getTime().toLocalDate();
+		final LKW lkw = lkwService.createCharterLKW(date, LKWType.SMALL).orElse(null);
+
+		final LKWCharter order = orderService.orderLKW(lkw, date, info);
+		final LKWCharter goalOrder = new LKWCharter(orderService.getDummyUser(), info, lkw, date);
+
+		assertEquals(goalOrder.getRentDate(), order.getRentDate(), "orderLKW() should use the correct RentDate!");
+		assertEquals(goalOrder.getContactInformation(), order.getContactInformation(), "orderLKW() should use the correct ContactInformation!");
+		assertEquals(goalOrder.getLkw(), order.getLkw(), "orderLKW() should use the correct LKW!");
 	}
 
 	/**
@@ -148,14 +205,17 @@ public class OrderServiceTests {
 	 * Tests if a {@link LKW} is properly cancelled
 	 */
 	@Test
-	public void testCancelLKW() {
-		ContactInformation exampleContactInformation = new ContactInformation("testName", "testAdresse", "testEmail");
-		LocalDate deliveryDate = lkwService.findNextAvailableDeliveryDate(this.businessTime.getTime().toLocalDate().plusDays(2), LKWType.SMALL);
-		LKW lkw = lkwService.createDeliveryLKW(deliveryDate, LKWType.SMALL).get();
-		LKWCharter lkwCharter = lkwService.createLKWOrder(lkw, deliveryDate, exampleContactInformation);
-		String lkwCharterIdentifier = lkwCharter.getId().getIdentifier();
-		assertTrue(orderService.cancelLKW(lkwCharter), "Irgendetwas lief beim stornieren des LKWs schief");
-		assertEquals(Optional.empty(), orderService.findById(lkwCharterIdentifier), "Der LKWCharter wurde nicht richtig gelöscht");
+	void testCancelLKW() {
+		final ContactInformation info = new ContactInformation("testName", "testAdresse", "testEmail");
+
+		final LocalDate date = businessTime.getTime().toLocalDate();
+		final LKW lkw = lkwService.createCharterLKW(date, LKWType.SMALL).orElse(null);
+
+		final LKWCharter order = orderService.orderLKW(lkw, date, info);
+		final String id = order.getId().getIdentifier();
+
+		assertTrue(orderService.cancelLKW(order), "cancelLKW() should return the correct value!");
+		assertTrue(orderService.findById(id).isEmpty(), "cancelLKW() should cancel the Order!");
 	}
 
 	/**
@@ -164,30 +224,47 @@ public class OrderServiceTests {
 	 * are deleted respectively
 	 */
 	@Test
-	public void testRemoveItemFromOrders() {
-		ContactInformation exampleContactInformation = new ContactInformation("testName", "testAdresse", "testEmail");
+	void testRemoveItemFromOrders() {
+		final ContactInformation info = new ContactInformation("testName", "testAdresse", "testEmail");
+		final List<Product> items = exampleCart.get().map(CartItem::getProduct).collect(Collectors.toList());
+		final Item item = (Item) items.get(0);
 
-		List<CartItem> itemList = exampleCart.get().collect(Collectors.toList());
-
-		Item item = (Item) itemList.get(0).getProduct();
-
-		Pickup order = orderService.orderPickupItem(exampleCart, exampleContactInformation);
+		final String id = orderService.orderPickupItem(exampleCart, info).getId().getIdentifier();
 		orderService.removeItemFromOrders(item);
 
-		assertTrue(() -> {
-			for (ItemOrderEntry entry : ((ItemOrder) (orderService.findById(order.getId().getIdentifier()).get())).getOrderEntries()) {
-				if (entry.getItem() == item) {
-					return false;
-				}
-			}
-			return true;
-		}, "Die Items wurden nicht richtig aus der Bestellung gelöscht");
+		final ItemOrder itemOrder = (ItemOrder) orderService.findById(id).get();
+		assertTrue(() -> itemOrder.getOrderEntries().stream().noneMatch(entry -> entry.getItem().equals(item)), "removeItemFromOrders() should remove simular Items!");
 
-		Item item2 = (Item) itemList.get(1).getProduct();
-		assertNotEquals(item, item2, "Die Items sind gleich");
+		final Item item2 = (Item) items.get(1);
 
 		orderService.removeItemFromOrders(item2);
-		assertEquals(Optional.empty(), orderService.findById(order.getId().getIdentifier()), "Die leere Order wurde nicht entfernt");
-
+		assertTrue(orderService.findById(id).isEmpty(), "removeItemFromOrders() should remove empty Orders!");
 	}
+
+	@Test
+	void testGetStatus() {
+		final ContactInformation info = new ContactInformation("testName", "testAdresse", "testEmail");
+		final LKW lkw = new LKW(LKWType.SMALL);
+
+		LocalDate date = businessTime.getTime().toLocalDate().minusDays(1);
+		LKWCharter lkwOrder = new LKWCharter(orderService.getDummyUser(), info, lkw, date);
+		assertEquals(OrderStatus.COMPLETED, orderService.getStatus(lkwOrder), "getStatus() should return the correct OrderStatus!");
+
+		date = businessTime.getTime().toLocalDate().plusDays(1);
+		lkwOrder = new LKWCharter(orderService.getDummyUser(), info, lkw, date);
+		assertEquals(OrderStatus.PAID, orderService.getStatus(lkwOrder), "getStatus() should return the correct OrderStatus!");
+
+		final Pickup itemOrder = new Pickup(orderService.getDummyUser(), info);
+		assertEquals(OrderStatus.OPEN, orderService.getStatus(itemOrder), "getStatus() should return the correct OrderStatus!");
+
+		exampleCart.addItemsTo(itemOrder);
+		assertEquals(OrderStatus.OPEN, orderService.getStatus(itemOrder), "getStatus() should return the correct OrderStatus!");
+
+		itemOrder.changeAllStatus(OrderStatus.PAID);
+		assertEquals(OrderStatus.PAID, orderService.getStatus(itemOrder), "getStatus() should return the correct OrderStatus!");
+
+		itemOrder.changeStatus(0, OrderStatus.COMPLETED);
+		assertEquals(OrderStatus.PAID, orderService.getStatus(itemOrder), "getStatus() should return the correct OrderStatus!");
+	}
+
 }
