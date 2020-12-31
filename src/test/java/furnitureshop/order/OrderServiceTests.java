@@ -5,9 +5,7 @@ import furnitureshop.inventory.Category;
 import furnitureshop.inventory.Item;
 import furnitureshop.inventory.ItemCatalog;
 import furnitureshop.inventory.Piece;
-import furnitureshop.lkw.LKW;
-import furnitureshop.lkw.LKWService;
-import furnitureshop.lkw.LKWType;
+import furnitureshop.lkw.*;
 import furnitureshop.supplier.Supplier;
 import furnitureshop.supplier.SupplierRepository;
 import org.javamoney.moneta.Money;
@@ -42,6 +40,9 @@ public class OrderServiceTests {
 	ItemCatalog itemCatalog;
 
 	@Autowired
+	LKWCatalog lkwCatalog;
+
+	@Autowired
 	SupplierRepository supplierRepository;
 
 	@Autowired
@@ -63,6 +64,13 @@ public class OrderServiceTests {
 
 		itemCatalog.deleteAll();
 		supplierRepository.deleteAll();
+		lkwCatalog.deleteAll();
+
+		for (LKWType type : LKWType.values()) {
+			for (int i = 0; i < 2; i++) {
+				lkwCatalog.save(new LKW(LKWType.SMALL));
+			}
+		}
 
 		final Supplier supplier = new Supplier("test", 0.2);
 		supplierRepository.save(supplier);
@@ -86,6 +94,13 @@ public class OrderServiceTests {
 		businessTime.reset();
 		final Duration delta = Duration.between(businessTime.getTime(), time);
 		businessTime.forward(delta);
+	}
+
+	@Test
+	void testFindByIdWithInvalidType() {
+		assertThrows(IllegalArgumentException.class, () -> orderService.findById(null),
+				"findById() should throw an IllegalArgumentException if the identifier argument is invalid!"
+		);
 	}
 
 	/**
@@ -118,6 +133,19 @@ public class OrderServiceTests {
 		assertEquals(10L, orderService.findAll().stream().count(), "findAll() should find all Orders!");
 	}
 
+	@Test
+	void testOrderPickupItemWithInvalidType() {
+		final ContactInformation info = new ContactInformation("testName", "testAdresse", "testEmail");
+
+		assertThrows(IllegalArgumentException.class, () -> orderService.orderPickupItem(null, info),
+				"orderPickupItem() should throw an IllegalArgumentException if the cart argument is invalid!"
+		);
+
+		assertThrows(IllegalArgumentException.class, () -> orderService.orderPickupItem(exampleCart, null),
+				"orderPickupItem() should throw an IllegalArgumentException if the contactInformation argument is invalid!"
+		);
+	}
+
 	/**
 	 * testOrderPickupItem method
 	 * Tests if {@link Pickup} has all correct properties of the Order
@@ -131,7 +159,7 @@ public class OrderServiceTests {
 		final Pickup goalOrder = new Pickup(orderService.getDummyUser(), info);
 		exampleCart.addItemsTo(goalOrder);
 
-		assertEquals(goalOrder.getContactInformation(), order.getContactInformation(), "orderPickupItem() should use the correct ContactInformation!");
+		assertEquals(info, order.getContactInformation(), "orderPickupItem() should use the correct ContactInformation!");
 
 		final Iterator<OrderLine> goalOrderLineIterator = goalOrder.getOrderLines().get().iterator();
 		final Iterator<OrderLine> orderOrderLineIterator = order.getOrderLines().get().iterator();
@@ -144,6 +172,19 @@ public class OrderServiceTests {
 			assertEquals(goalOrderEntry.getPrice(), orderOrderEntry.getPrice(), "orderPickupItem() should add the correct Item!");
 			assertEquals(goalOrderEntry.getQuantity(), orderOrderEntry.getQuantity(), "orderPickupItem() should add the correct Item!");
 		}
+	}
+
+	@Test
+	void testOrderDeliveryItemWithInvalidType() {
+		final ContactInformation info = new ContactInformation("testName", "testAdresse", "testEmail");
+
+		assertThrows(IllegalArgumentException.class, () -> orderService.orderDelieveryItem(null, info),
+				"orderDelieveryItem() should throw an IllegalArgumentException if the cart argument is invalid!"
+		);
+
+		assertThrows(IllegalArgumentException.class, () -> orderService.orderPickupItem(exampleCart, null),
+				"orderDelieveryItem() should throw an IllegalArgumentException if the contactInformation argument is invalid!"
+		);
 	}
 
 	/**
@@ -163,9 +204,9 @@ public class OrderServiceTests {
 		final Delivery goalOrder = new Delivery(orderService.getDummyUser(), info, lkw, deliveryDate);
 		exampleCart.addItemsTo(goalOrder);
 
-		assertEquals(goalOrder.getDeliveryDate(), order.getDeliveryDate(), "orderDelieveryItem() should use the correct DeliveryDate!");
-		assertEquals(goalOrder.getContactInformation(), order.getContactInformation(), "orderDelieveryItem() should use the correct ContactInformation!");
-		assertEquals(goalOrder.getLkw(), order.getLkw(), "orderDelieveryItem() should use the correct LKW!");
+		assertEquals(deliveryDate, order.getDeliveryDate(), "orderDelieveryItem() should use the correct DeliveryDate!");
+		assertEquals(info, order.getContactInformation(), "orderDelieveryItem() should use the correct ContactInformation!");
+		assertEquals(lkw, order.getLkw(), "orderDelieveryItem() should use the correct LKW!");
 
 		final Iterator<OrderLine> goalOrderLineIterator = goalOrder.getOrderLines().get().iterator();
 		final Iterator<OrderLine> orderOrderLineIterator = order.getOrderLines().get().iterator();
@@ -180,6 +221,24 @@ public class OrderServiceTests {
 		}
 	}
 
+	@Test
+	void testOrderLKWWithInvalidType() {
+		final ContactInformation info = new ContactInformation("testName", "testAdresse", "testEmail");
+		final LocalDate date = businessTime.getTime().toLocalDate();
+		final LKW lkw = lkwService.createCharterLKW(date, LKWType.SMALL).orElse(null);
+
+		assertThrows(IllegalArgumentException.class, () -> orderService.orderLKW(null, date, info),
+				"orderLKW() should throw an IllegalArgumentException if the lkw argument is invalid!"
+		);
+
+		assertThrows(IllegalArgumentException.class, () -> orderService.orderLKW(lkw, null, info),
+				"orderLKW() should throw an IllegalArgumentException if the date argument is invalid!"
+		);
+
+		assertThrows(IllegalArgumentException.class, () -> orderService.orderLKW(lkw, date, null),
+				"orderLKW() should throw an IllegalArgumentException if the contactInformation argument is invalid!"
+		);
+	}
 
 	/**
 	 * testOrderLKW method
@@ -193,11 +252,17 @@ public class OrderServiceTests {
 		final LKW lkw = lkwService.createCharterLKW(date, LKWType.SMALL).orElse(null);
 
 		final LKWCharter order = orderService.orderLKW(lkw, date, info);
-		final LKWCharter goalOrder = new LKWCharter(orderService.getDummyUser(), info, lkw, date);
 
-		assertEquals(goalOrder.getRentDate(), order.getRentDate(), "orderLKW() should use the correct RentDate!");
-		assertEquals(goalOrder.getContactInformation(), order.getContactInformation(), "orderLKW() should use the correct ContactInformation!");
-		assertEquals(goalOrder.getLkw(), order.getLkw(), "orderLKW() should use the correct LKW!");
+		assertEquals(date, order.getRentDate(), "orderLKW() should use the correct RentDate!");
+		assertEquals(info, order.getContactInformation(), "orderLKW() should use the correct ContactInformation!");
+		assertEquals(lkw, order.getLkw(), "orderLKW() should use the correct LKW!");
+	}
+
+	@Test
+	void testCancelLKWWithInvalidType() {
+		assertThrows(IllegalArgumentException.class, () -> orderService.cancelLKW(null),
+				"cancelLKW() should throw an IllegalArgumentException if the order argument is invalid!"
+		);
 	}
 
 	/**
@@ -216,6 +281,47 @@ public class OrderServiceTests {
 
 		assertTrue(orderService.cancelLKW(order), "cancelLKW() should return the correct value!");
 		assertTrue(orderService.findById(id).isEmpty(), "cancelLKW() should cancel the Order!");
+	}
+
+	@Test
+	void testChangeItemEntryStatusWithInvalidType() {
+		final ContactInformation info = new ContactInformation("testName", "testAdresse", "testEmail");
+
+		final Pickup order = new Pickup(orderService.getDummyUser(), info);
+
+		assertThrows(IllegalArgumentException.class, () -> orderService.changeItemEntryStatus(null, 0, OrderStatus.CANCELLED),
+				"changeItemEntryStatus() should throw an IllegalArgumentException if the order argument is invalid!"
+		);
+
+		assertThrows(IllegalArgumentException.class, () -> orderService.changeItemEntryStatus(order, 0, null),
+				"changeItemEntryStatus() should throw an IllegalArgumentException if the status argument is invalid!"
+		);
+	}
+
+	/**
+	 * testCancelLKW method
+	 * Tests if a {@link LKW} is properly cancelled
+	 */
+	@Test
+	void testChangeItemEntryStatus() {
+		final ContactInformation info = new ContactInformation("testName", "testAdresse", "testEmail");
+
+		Pickup order = orderService.orderPickupItem(exampleCart, info);
+		order = (Pickup) orderService.findById(order.getId().getIdentifier()).orElse(null);
+
+		final long id = order.getOrderEntries().get(0).getId();
+
+		assertTrue(orderService.changeItemEntryStatus(order, id, OrderStatus.COMPLETED), "changeItemEntryStatus() should change the status!");
+		assertEquals(OrderStatus.COMPLETED, order.getOrderEntries().get(0).getStatus(), "changeItemEntryStatus() should change the status!");
+
+		assertFalse(orderService.changeItemEntryStatus(order, -1, OrderStatus.COMPLETED), "changeItemEntryStatus() should not change the status!");
+	}
+
+	@Test
+	void testRemoveItemFromOrdersWithInvalidType() {
+		assertThrows(IllegalArgumentException.class, () -> orderService.removeItemFromOrders(null),
+				"cancelLKW() should throw an IllegalArgumentException if the item argument is invalid!"
+		);
 	}
 
 	/**
