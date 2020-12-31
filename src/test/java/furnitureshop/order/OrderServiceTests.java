@@ -97,43 +97,6 @@ public class OrderServiceTests {
 	}
 
 	@Test
-	void testFindByIdWithInvalidType() {
-		assertThrows(IllegalArgumentException.class, () -> orderService.findById(null),
-				"findById() should throw an IllegalArgumentException if the identifier argument is invalid!"
-		);
-	}
-
-	/**
-	 * testFindById method
-	 * Tests if u find the matching {@link Order} for a specific Id
-	 */
-	@Test
-	void testFindById() {
-		final ContactInformation info = new ContactInformation("testName", "testAdresse", "testEmail");
-		final Pickup order = orderService.orderPickupItem(exampleCart, info);
-
-		final Optional<ShopOrder> shopOrder = orderService.findById(order.getId().getIdentifier());
-		assertTrue(shopOrder.isPresent(), "findById() should find the correct Order!");
-		assertEquals(order, shopOrder.get(), "findById() should find the correct Order!");
-
-		assertTrue(orderService.findById("id").isEmpty(), "findById() should not find an Order!");
-	}
-
-	/**
-	 * testFindAll method
-	 * Tests if all {@link Order} that are saved in the repository are returned
-	 */
-	@Test
-	void testFindAll() {
-		for (int i = 0; i < 10; i++) {
-			final ContactInformation info = new ContactInformation("testName", "testAdresse", "testEmail");
-			orderService.orderPickupItem(exampleCart, info);
-		}
-
-		assertEquals(10L, orderService.findAll().stream().count(), "findAll() should find all Orders!");
-	}
-
-	@Test
 	void testOrderPickupItemWithInvalidType() {
 		final ContactInformation info = new ContactInformation("testName", "testAdresse", "testEmail");
 
@@ -146,10 +109,6 @@ public class OrderServiceTests {
 		);
 	}
 
-	/**
-	 * testOrderPickupItem method
-	 * Tests if {@link Pickup} has all correct properties of the Order
-	 */
 	@Test
 	void testOrderPickupItem() {
 		final ContactInformation info = new ContactInformation("testName", "testAdresse", "testEmail");
@@ -187,11 +146,6 @@ public class OrderServiceTests {
 		);
 	}
 
-	/**
-	 * testOrderDeliveryItem method
-	 * Tests if a {@link Delivery} is booked for the correct delivery date, if all properties of the Order are correctly
-	 * mapped to the Delivery and that the correct Lkw is booked for a specific order
-	 */
 	@Test
 	void testOrderDeliveryItem() {
 		final ContactInformation info = new ContactInformation("testName", "testAdresse", "testEmail");
@@ -240,10 +194,6 @@ public class OrderServiceTests {
 		);
 	}
 
-	/**
-	 * testOrderLKW method
-	 * Tests if {@link LKWCharter} has all correct properties of the Order
-	 */
 	@Test
 	void testOrderLKW() {
 		final ContactInformation info = new ContactInformation("testName", "testAdresse", "testEmail");
@@ -256,31 +206,6 @@ public class OrderServiceTests {
 		assertEquals(date, order.getRentDate(), "orderLKW() should use the correct RentDate!");
 		assertEquals(info, order.getContactInformation(), "orderLKW() should use the correct ContactInformation!");
 		assertEquals(lkw, order.getLkw(), "orderLKW() should use the correct LKW!");
-	}
-
-	@Test
-	void testCancelLKWWithInvalidType() {
-		assertThrows(IllegalArgumentException.class, () -> orderService.cancelLKW(null),
-				"cancelLKW() should throw an IllegalArgumentException if the order argument is invalid!"
-		);
-	}
-
-	/**
-	 * testCancelLKW method
-	 * Tests if a {@link LKW} is properly cancelled
-	 */
-	@Test
-	void testCancelLKW() {
-		final ContactInformation info = new ContactInformation("testName", "testAdresse", "testEmail");
-
-		final LocalDate date = businessTime.getTime().toLocalDate();
-		final LKW lkw = lkwService.createCharterLKW(date, LKWType.SMALL).orElse(null);
-
-		final LKWCharter order = orderService.orderLKW(lkw, date, info);
-		final String id = order.getId().getIdentifier();
-
-		assertTrue(orderService.cancelLKW(order), "cancelLKW() should return the correct value!");
-		assertTrue(orderService.findById(id).isEmpty(), "cancelLKW() should cancel the Order!");
 	}
 
 	@Test
@@ -298,10 +223,6 @@ public class OrderServiceTests {
 		);
 	}
 
-	/**
-	 * testCancelLKW method
-	 * Tests if a {@link LKW} is properly cancelled
-	 */
 	@Test
 	void testChangeItemEntryStatus() {
 		final ContactInformation info = new ContactInformation("testName", "testAdresse", "testEmail");
@@ -318,17 +239,33 @@ public class OrderServiceTests {
 	}
 
 	@Test
+	void testCancelLKWWithInvalidType() {
+		assertThrows(IllegalArgumentException.class, () -> orderService.cancelLKW(null),
+				"cancelLKW() should throw an IllegalArgumentException if the order argument is invalid!"
+		);
+	}
+
+	@Test
+	void testCancelLKW() {
+		final ContactInformation info = new ContactInformation("testName", "testAdresse", "testEmail");
+
+		final LocalDate date = businessTime.getTime().toLocalDate();
+		final LKW lkw = lkwService.createCharterLKW(date, LKWType.SMALL).orElse(null);
+
+		final LKWCharter order = orderService.orderLKW(lkw, date, info);
+		final String id = order.getId().getIdentifier();
+
+		assertTrue(orderService.cancelLKW(order), "cancelLKW() should return the correct value!");
+		assertTrue(orderService.findById(id).isEmpty(), "cancelLKW() should cancel the Order!");
+	}
+
+	@Test
 	void testRemoveItemFromOrdersWithInvalidType() {
 		assertThrows(IllegalArgumentException.class, () -> orderService.removeItemFromOrders(null),
 				"cancelLKW() should throw an IllegalArgumentException if the item argument is invalid!"
 		);
 	}
 
-	/**
-	 * testRemoveItemFromOrders method
-	 * Tests if {@link Item} are properly removed out of all existing {@link ItemOrder} and that resulting empty {@link ItemOrder}
-	 * are deleted respectively
-	 */
 	@Test
 	void testRemoveItemFromOrders() {
 		final ContactInformation info = new ContactInformation("testName", "testAdresse", "testEmail");
@@ -345,6 +282,13 @@ public class OrderServiceTests {
 
 		orderService.removeItemFromOrders(item2);
 		assertTrue(orderService.findById(id).isEmpty(), "removeItemFromOrders() should remove empty Orders!");
+	}
+
+	@Test
+	void testGetStatusWithInvalidType() {
+		assertThrows(IllegalArgumentException.class, () -> orderService.getStatus(null),
+				"cancelLKW() should throw an IllegalArgumentException if the order argument is invalid!"
+		);
 	}
 
 	@Test
@@ -371,6 +315,35 @@ public class OrderServiceTests {
 
 		itemOrder.changeStatus(0, OrderStatus.COMPLETED);
 		assertEquals(OrderStatus.PAID, orderService.getStatus(itemOrder), "getStatus() should return the correct OrderStatus!");
+	}
+
+	@Test
+	void testFindByIdWithInvalidType() {
+		assertThrows(IllegalArgumentException.class, () -> orderService.findById(null),
+				"findById() should throw an IllegalArgumentException if the identifier argument is invalid!"
+		);
+	}
+
+	@Test
+	void testFindById() {
+		final ContactInformation info = new ContactInformation("testName", "testAdresse", "testEmail");
+		final Pickup order = orderService.orderPickupItem(exampleCart, info);
+
+		final Optional<ShopOrder> shopOrder = orderService.findById(order.getId().getIdentifier());
+		assertTrue(shopOrder.isPresent(), "findById() should find the correct Order!");
+		assertEquals(order, shopOrder.get(), "findById() should find the correct Order!");
+
+		assertTrue(orderService.findById("id").isEmpty(), "findById() should not find an Order!");
+	}
+
+	@Test
+	void testFindAll() {
+		for (int i = 0; i < 10; i++) {
+			final ContactInformation info = new ContactInformation("testName", "testAdresse", "testEmail");
+			orderService.orderPickupItem(exampleCart, info);
+		}
+
+		assertEquals(10L, orderService.findAll().stream().count(), "findAll() should find all Orders!");
 	}
 
 }

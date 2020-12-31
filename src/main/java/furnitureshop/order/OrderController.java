@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.IntFunction;
 import java.util.stream.Stream;
 
 /**
@@ -449,6 +448,7 @@ class OrderController {
 		return "customerOrders";
 	}
 
+	@SuppressWarnings("unchecked")
 	private Pair<ShopOrder, OrderStatus>[] createFilteredAndSortedOrders(int filter, int sort, boolean reversed) {
 		Stream<ShopOrder> orders = orderService.findAll().stream();
 
@@ -482,7 +482,7 @@ class OrderController {
 				.map(o -> Pair.of(o, orderService.getStatus(o)))
 				.sorted(sorting);
 
-		return orderWithStatus.toArray((IntFunction<Pair<ShopOrder, OrderStatus>[]>) Pair[]::new);
+		return orderWithStatus.toArray(Pair[]::new);
 	}
 
 }

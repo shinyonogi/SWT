@@ -199,7 +199,7 @@ public class ItemService {
 	public Streamable<Item> findBySupplier(Supplier supplier) {
 		Assert.notNull(supplier, "Supplier must not be null!");
 
-		return itemCatalog.findAll().filter(it -> it.getSupplier() == supplier);
+		return itemCatalog.findAll().filter(it -> it.getSupplier().equals(supplier));
 	}
 
 	/**
