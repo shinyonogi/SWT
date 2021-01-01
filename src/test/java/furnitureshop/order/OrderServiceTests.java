@@ -91,7 +91,6 @@ public class OrderServiceTests {
 		// Reset Time
 		final LocalDateTime time = LocalDateTime.of(2020, 12, 21, 0, 0);
 
-		businessTime.reset();
 		final Duration delta = Duration.between(businessTime.getTime(), time);
 		businessTime.forward(delta);
 	}

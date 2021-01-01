@@ -1,14 +1,14 @@
 package furnitureshop.inventory;
 
 import furnitureshop.FurnitureShop;
-import furnitureshop.order.OrderService;
-import furnitureshop.order.ShopOrder;
+import furnitureshop.order.*;
 import furnitureshop.supplier.Supplier;
 import furnitureshop.supplier.SupplierRepository;
 import org.javamoney.moneta.Money;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.salespointframework.core.Currencies;
+import org.salespointframework.order.Cart;
 import org.salespointframework.order.OrderManagement;
 import org.salespointframework.time.BusinessTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +16,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.util.Streamable;
 import org.springframework.test.context.ContextConfiguration;
 
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -59,28 +62,80 @@ public class ItemServiceTests {
 		itemCatalog.deleteAll();
 		supplierRepository.deleteAll();
 
-		final Supplier supplier = new Supplier("Supplier 1", 0.15);
-		final Supplier setSupplier = new Supplier("Set Supplier", 0.05);
+		final Supplier supplier = new Supplier("Supplier 1", 0);
+		final Supplier supplier2 = new Supplier("Supplier 2", 0);
+		final Supplier setSupplier = new Supplier("Set Supplier", 0);
 
 		final List<Item> items = new ArrayList<>();
 
-		piece1 = new Piece(1, "Tisch 1", Money.of(89.99, Currencies.EURO), new byte[0], "weiß",
+		piece1 = new Piece(1, "Tisch 1", Money.of(90, Currencies.EURO), new byte[0], "weiß",
 				"", supplier, 30, Category.TABLE);
-		piece2 = new Piece(2, "Sofa 1", Money.of(259.99, Currencies.EURO), new byte[0], "schwarz",
-				"", supplier, 50, Category.COUCH);
-		piece3 = new Piece(2, "Sofa 1", Money.of(259.99, Currencies.EURO), new byte[0], "braun",
-				"", supplier, 80, Category.COUCH);
-		piece4 = new Piece(3, "Stuhl 1", Money.of(59.99, Currencies.EURO), new byte[0], "schwarz",
+		piece2 = new Piece(2, "Sofa 1", Money.of(260, Currencies.EURO), new byte[0], "schwarz",
+				"", supplier2, 50, Category.COUCH);
+		piece3 = new Piece(2, "Sofa 2", Money.of(260, Currencies.EURO), new byte[0], "braun",
+				"", supplier2, 80, Category.COUCH);
+		piece4 = new Piece(3, "Stuhl 1", Money.of(60, Currencies.EURO), new byte[0], "schwarz",
 				"", supplier, 5, Category.CHAIR);
 
-		set1 = new Set(4, "Set 1", Money.of(299.99, Currencies.EURO), new byte[0], "black",
+		set1 = new Set(4, "Set 1", Money.of(300, Currencies.EURO), new byte[0], "black",
 				"", setSupplier, Arrays.asList(piece3, piece4));
 
-		item = new Piece(10, "Sofa 10", Money.of(9.99, Currencies.EURO), new byte[0], "rot",
+		item = new Piece(10, "Sofa 3", Money.of(10, Currencies.EURO), new byte[0], "rot",
 				"", supplier, 80, Category.COUCH);
 
-		supplierRepository.saveAll(Arrays.asList(supplier, setSupplier));
+		supplierRepository.saveAll(Arrays.asList(supplier, supplier2, setSupplier));
 		itemCatalog.saveAll(Arrays.asList(piece1, piece2, piece3, piece4, set1));
+
+		// Init test Orders
+		Cart cart = new Cart();
+		ContactInformation info = new ContactInformation("testName", "testAdresse", "testEmail");
+		LocalDateTime time = LocalDateTime.of(2020, 12, 21, 0, 0);
+
+		cart.addOrUpdateItem(piece1, 1);  // 90 -> 1
+		cart.addOrUpdateItem(piece4, 1);  // 60 -> 1
+		cart.addOrUpdateItem(set1, 2);    // 0
+		businessTime.forward(Duration.between(businessTime.getTime(), time));
+
+		Pickup order = orderService.orderPickupItem(cart, info);
+		order = (Pickup) orderService.findById(order.getId().getIdentifier()).orElse(null);
+		orderService.changeItemEntryStatus(order, order.getOrderEntries().get(0).getId(), OrderStatus.COMPLETED);
+		orderService.changeItemEntryStatus(order, order.getOrderEntries().get(1).getId(), OrderStatus.COMPLETED);
+		orderService.changeItemEntryStatus(order, order.getOrderEntries().get(2).getId(), OrderStatus.PAID);
+		orderService.changeItemEntryStatus(order, order.getOrderEntries().get(3).getId(), OrderStatus.CANCELLED);
+
+		cart = new Cart();
+		info = new ContactInformation("testName", "testAdresse", "testEmail");
+		time = LocalDateTime.of(2020, 11, 17, 0, 0);
+
+		cart.addOrUpdateItem(piece1, 1); // 90 -> 1
+		cart.addOrUpdateItem(piece2, 2); // 260 -> 2
+		cart.addOrUpdateItem(set1, 1); // 300 ( 56,25 -> 1, 243,75 -> 2 )
+		businessTime.forward(Duration.between(businessTime.getTime(), time));
+
+		order = orderService.orderPickupItem(cart, info);
+		order = (Pickup) orderService.findById(order.getId().getIdentifier()).orElse(null);
+		orderService.changeItemEntryStatus(order, order.getOrderEntries().get(0).getId(), OrderStatus.COMPLETED);
+		orderService.changeItemEntryStatus(order, order.getOrderEntries().get(1).getId(), OrderStatus.CANCELLED);
+		orderService.changeItemEntryStatus(order, order.getOrderEntries().get(2).getId(), OrderStatus.COMPLETED);
+		orderService.changeItemEntryStatus(order, order.getOrderEntries().get(3).getId(), OrderStatus.COMPLETED);
+
+		cart = new Cart();
+		info = new ContactInformation("testName", "testAdresse", "testEmail");
+		time = LocalDateTime.of(2020, 10, 12, 0, 0);
+
+		cart.addOrUpdateItem(piece1, 2); // 90 -> 1
+		cart.addOrUpdateItem(piece2, 1); // 260 -> 2
+		cart.addOrUpdateItem(set1, 1); // 0
+		businessTime.forward(Duration.between(businessTime.getTime(), time));
+
+		order = orderService.orderPickupItem(cart, info);
+		order = (Pickup) orderService.findById(order.getId().getIdentifier()).orElse(null);
+		orderService.changeItemEntryStatus(order, order.getOrderEntries().get(0).getId(), OrderStatus.PAID);
+		orderService.changeItemEntryStatus(order, order.getOrderEntries().get(1).getId(), OrderStatus.COMPLETED);
+		orderService.changeItemEntryStatus(order, order.getOrderEntries().get(2).getId(), OrderStatus.COMPLETED);
+		orderService.changeItemEntryStatus(order, order.getOrderEntries().get(3).getId(), OrderStatus.OPEN);
+
+		businessTime.reset();
 	}
 
 	@Test
@@ -138,7 +193,55 @@ public class ItemServiceTests {
 
 	@Test
 	void testAnalyseProfits() {
-		//TODO Write Test
+		List<StatisticEntry> profits = itemService.analyseProfits(
+				LocalDate.of(2020, 12, 1),
+				LocalDate.of(2020, 11, 1)
+		);
+
+		assertEquals(2L, profits.size(), "analyseProfits() should return the correct entries!");
+
+		for (StatisticEntry entry : profits) {
+			if (entry.getSupplier().getName().equals("Supplier 1")) {
+				assertEquals(2, entry.getStatisticItemEntries().size(), "analyseProfits() should return the correct entries!");
+
+				assertEquals(150.0, entry.getInitProfit().getNumber().doubleValue(), 0.01, "analyseProfits() should return the correct value!");
+				assertEquals(146.25, entry.getCompareProfit().getNumber().doubleValue(), 0.01, "analyseProfits() should return the correct value!");
+				assertEquals(3.75, entry.getDifference().getNumber().doubleValue(), 0.01, "analyseProfits() should return the correct value!");
+			} else if (entry.getSupplier().getName().equals("Supplier 2")) {
+				assertEquals(2, entry.getStatisticItemEntries().size(), "analyseProfits() should return the correct entries!");
+
+				assertEquals(0, entry.getInitProfit().getNumber().doubleValue(), 0.01, "analyseProfits() should return the correct value!");
+				assertEquals(503.75, entry.getCompareProfit().getNumber().doubleValue(), 0.01, "analyseProfits() should return the correct value!");
+				assertEquals(-503.75, entry.getDifference().getNumber().doubleValue(), 0.01, "analyseProfits() should return the correct value!");
+			} else {
+				fail("Invalid State!");
+			}
+		}
+
+		profits = itemService.analyseProfits(
+				LocalDate.of(2020, 10, 1),
+				LocalDate.of(2020, 10, 1)
+		);
+
+		assertEquals(2L, profits.size(), "analyseProfits() should return the correct entries!");
+
+		for (StatisticEntry entry : profits) {
+			if (entry.getSupplier().getName().equals("Supplier 1")) {
+				assertEquals(2, entry.getStatisticItemEntries().size(), "analyseProfits() should return the correct entries!");
+
+				assertEquals(90, entry.getInitProfit().getNumber().doubleValue(), 0.01, "analyseProfits() should return the correct value!");
+				assertEquals(90, entry.getCompareProfit().getNumber().doubleValue(), 0.01, "analyseProfits() should return the correct value!");
+				assertEquals(0, entry.getDifference().getNumber().doubleValue(), 0.01, "analyseProfits() should return the correct value!");
+			} else if (entry.getSupplier().getName().equals("Supplier 2")) {
+				assertEquals(2, entry.getStatisticItemEntries().size(), "analyseProfits() should return the correct entries!");
+
+				assertEquals(260, entry.getInitProfit().getNumber().doubleValue(), 0.01, "analyseProfits() should return the correct value!");
+				assertEquals(260, entry.getCompareProfit().getNumber().doubleValue(), 0.01, "analyseProfits() should return the correct value!");
+				assertEquals(0, entry.getDifference().getNumber().doubleValue(), 0.01, "analyseProfits() should return the correct value!");
+			} else {
+				fail("Invalid State!");
+			}
+		}
 	}
 
 	@Test
@@ -158,12 +261,16 @@ public class ItemServiceTests {
 		for (Supplier supplier : supplierRepository.findAll()) {
 			final Streamable<Item> items = itemService.findBySupplier(supplier);
 
-			if (supplier.getName().equals("Supplier 1")) {
-				assertEquals(4L, items.stream().count(), "findBySupplier() should find the correct items!");
-			} else if (supplier.getName().equals("Set Supplier")) {
-				assertEquals(1L, items.stream().count(), "findBySupplier() should find the correct items!");
-			} else {
-				fail("Invalid State!");
+			switch (supplier.getName()) {
+				case "Supplier 1": case "Supplier 2":
+					assertEquals(2L, items.stream().count(), "findBySupplier() should find the correct items!");
+					break;
+				case "Set Supplier":
+					assertEquals(1L, items.stream().count(), "findBySupplier() should find the correct items!");
+					break;
+				default:
+					fail("Invalid State!");
+					break;
 			}
 		}
 	}
@@ -218,6 +325,11 @@ public class ItemServiceTests {
 	void testFindAllSetsByItem() {
 		assertEquals(0L, itemService.findAllSetsByItem(piece1).size(), "findAllSetsByItem() should find the correct Sets!");
 		assertEquals(1L, itemService.findAllSetsByItem(piece3).size(), "findAllSetsByItem() should find the correct Sets!");
+	}
+
+	@Test
+	void testGetFirstOrderDate() {
+		assertEquals(LocalDate.of(2020, 10, 12), itemService.getFirstOrderDate());
 	}
 
 }

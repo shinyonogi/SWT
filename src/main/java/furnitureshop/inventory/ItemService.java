@@ -154,22 +154,6 @@ public class ItemService {
 	}
 
 	/**
-	 * Gets the Orderdate from the first {@link ItemOrder}.
-	 *
-	 * @return The first {@link LocalDate} of all {@link ItemOrder}
-	 */
-	protected LocalDate getFirstOrderDate() {
-		LocalDateTime cur = businessTime.getTime();
-
-		for (ItemOrder itemOrder : orderService.findAllItemOrders()) {
-			if (itemOrder.getCreated().isBefore(cur)) {
-				cur = itemOrder.getCreated();
-			}
-		}
-		return cur.toLocalDate();
-	}
-
-	/**
 	 * Finds all {@link Item}s in the catalog
 	 *
 	 * @return Returns all {@link Item}s in the {@code itemCatalog}
@@ -294,6 +278,22 @@ public class ItemService {
 		}
 
 		return sets;
+	}
+
+	/**
+	 * Gets the Orderdate from the first {@link ItemOrder}.
+	 *
+	 * @return The first {@link LocalDate} of all {@link ItemOrder}
+	 */
+	protected LocalDate getFirstOrderDate() {
+		LocalDateTime cur = businessTime.getTime();
+
+		for (ItemOrder itemOrder : orderService.findAllItemOrders()) {
+			if (itemOrder.getCreated().isBefore(cur)) {
+				cur = itemOrder.getCreated();
+			}
+		}
+		return cur.toLocalDate();
 	}
 
 	/**
