@@ -176,7 +176,6 @@ class OrderController {
 	 */
 	@PostMapping("/checkout")
 	String buy(@ModelAttribute("cart") Cart cart, @ModelAttribute("orderform") OrderForm form, Model model) {
-
 		final int weight = cart.get()
 				.filter(c -> c.getProduct() instanceof Item)
 				.mapToInt(c -> ((Item) c.getProduct()).getWeight() * c.getQuantity().getAmount().intValue())
@@ -205,8 +204,10 @@ class OrderController {
 			model.addAttribute("result", 3);
 			return "orderCheckout";
 		}
-		final ContactInformation contactInformation =
-				new ContactInformation(form.getName(), form.getAddress(), form.getEmail());
+
+		final ContactInformation contactInformation = new ContactInformation(
+				form.getName(), form.getAddress(), form.getEmail()
+		);
 
 		final ItemOrder order;
 

@@ -12,13 +12,13 @@ import furnitureshop.lkw.LKWService;
 import furnitureshop.lkw.LKWType;
 import furnitureshop.supplier.Supplier;
 import furnitureshop.supplier.SupplierRepository;
+import furnitureshop.utils.Utils;
 import org.javamoney.moneta.Money;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.salespointframework.core.Currencies;
 import org.salespointframework.order.Cart;
 import org.salespointframework.order.CartItem;
-import org.salespointframework.order.OrderManagement;
 import org.salespointframework.time.BusinessTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -34,7 +34,7 @@ import java.util.Optional;
 
 import static org.hamcrest.CoreMatchers.endsWith;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -55,13 +55,6 @@ public class OrderControllerIntegrationTests {
 	@Autowired
 	ItemCatalog itemCatalog;
 
-	Supplier supplier;
-	Item item;
-	CartItem cartItem;
-	Cart cart;
-	OrderForm orderForm;
-	ContactInformation contactInformation;
-
 	@Autowired
 	OrderService orderService;
 
@@ -72,63 +65,53 @@ public class OrderControllerIntegrationTests {
 	BusinessTime businessTime;
 
 	@Autowired
-	OrderManagement<ShopOrder> orderManagement;
-
-	@Autowired
 	SupplierRepository supplierRepository;
 
 	@Autowired
 	LKWCatalog lkwCatalog;
 
+	Item item;
+	CartItem cartItem;
+	Cart cart;
+	ContactInformation contactInformation;
+
 	@BeforeEach
 	void setUp() {
-		for (ShopOrder order : orderService.findAll()) {
-			orderManagement.delete(order);
-		}
-		lkwCatalog.deleteAll();
+		Utils.clearRepositories();
+
 		for (LKWType type : LKWType.values()) {
 			for (int i = 0; i < 2; i++) {
 				lkwCatalog.save(new LKW(type));
 			}
 		}
 
-		itemCatalog.deleteAll();
-		supplierRepository.deleteAll();
+		final Supplier supplier = new Supplier("Supplier", 0.05);
 
-		// Reset Time
-		final LocalDateTime time = LocalDateTime.of(2020, 12, 21, 0, 0);
-
-		final Duration delta = Duration.between(businessTime.getTime(), time);
-		businessTime.forward(delta);
-
-		supplier = new Supplier("supplier", 0.05);
-		supplierRepository.save(supplier);
 		item = new Piece(1, "Stuhl 1", Money.of(59.99, Currencies.EURO), new byte[0], "schwarz",
-				"Stuhl 1 in schwarz.", supplier, 5, Category.CHAIR);
+				"", supplier, 5, Category.CHAIR);
 
+		supplierRepository.save(supplier);
 		itemCatalog.save(item);
 
 		cart = new Cart();
 		cart.addOrUpdateItem(item, 5);
-		cartItem = cart.get().findAny().get();
+		cartItem = cart.get().findAny().orElse(null);
 
-		orderForm = new OrderForm("Max Mustermann", "Musterstr. 1", "muster@muster.de", 1);
 		contactInformation = new ContactInformation("Max Mustermann", "Musterstr. 1", "muster@muster.de");
 
-		//orderService.orderDelieveryItem(cart, contactInformation);
+		// Reset Time
+		final LocalDateTime time = LocalDateTime.of(2020, 12, 21, 0, 0);
+		final Duration delta = Duration.between(businessTime.getTime(), time);
+		businessTime.forward(delta);
 	}
 
 	/**
 	 * returnsModelAndViewWhenYouTryToReachCart method
 	 * Tests if you can reach the /cart
 	 * Expects to reach it
-	 *
-	 * @throws Exception
 	 */
-
 	@Test
 	void returnsModelAndViewCartWhenYouTryToReachCart() throws Exception {
-
 		mvc.perform(get("/cart"))
 				.andExpect(status().isOk())
 				.andExpect(view().name("cart"));
@@ -137,14 +120,11 @@ public class OrderControllerIntegrationTests {
 	/**
 	 * redirectsToHomeWhenYouAddAnItem method
 	 * Tests if you get redirected to "/" if you add an item to cart
-	 *
-	 * @throws Exception
 	 */
-
 	@Test
 	void redirectsToHomeWhenYouAddAnItem() throws Exception {
-		mvc.perform(post("/cart/add/{id}", itemCatalog.findAll().stream().findAny().get().getId())
-				.param("number", String.valueOf(5))
+		mvc.perform(post("/cart/add/{id}", item.getId())
+				.param("number", "5")
 				.flashAttr("cart", cart))
 				.andExpect(status().is3xxRedirection())
 				.andExpect(header().string("Location", endsWith("/")));
@@ -153,14 +133,11 @@ public class OrderControllerIntegrationTests {
 	/**
 	 * redirectsToCartWhenYouEditAnItem method
 	 * Tests if you get redirected to "/cart" if you edit an item in the cart
-	 *
-	 * @throws Exception
 	 */
-
 	@Test
 	void redirectsToCartWhenYouEditAnItem() throws Exception {
 		mvc.perform(post("/cart/change/{id}", cartItem.getId())
-				.param("amount", String.valueOf(3))
+				.param("amount", "3")
 				.flashAttr("cart", cart))
 				.andExpect(status().is3xxRedirection())
 				.andExpect(redirectedUrl("/cart"))
@@ -170,7 +147,7 @@ public class OrderControllerIntegrationTests {
 	@Test
 	void redirectsToCartWhenYouDeleteAnItemByEditing() throws Exception {
 		mvc.perform(post("/cart/change/{id}", cartItem.getId())
-				.param("amount", String.valueOf(-3))
+				.param("amount", "-3")
 				.flashAttr("cart", cart))
 				.andExpect(status().is3xxRedirection())
 				.andExpect(redirectedUrl("/cart"))
@@ -180,10 +157,7 @@ public class OrderControllerIntegrationTests {
 	/**
 	 * redirectsToCartWhenYouDeleteAnItem method
 	 * Tests if you get redirected to "/cart" if you delete an item in the cart
-	 *
-	 * @throws Exception
 	 */
-
 	@Test
 	void redirectsToCartWhenYouDeleteAnItem() throws Exception {
 		mvc.perform(post("/cart/delete/{id}", cartItem.getId())
@@ -196,10 +170,7 @@ public class OrderControllerIntegrationTests {
 	/**
 	 * returnsModelAndViewCheckoutWhenYouTryToReachCheckout() method
 	 * Tests if user can reach the "/orderCheckout" page if there are no item in the cart
-	 *
-	 * @throws Exception
 	 */
-
 	@Test
 	void returnsModelAndViewCheckoutWhenYouTryToCheckoutWithNoItems() throws Exception {
 		mvc.perform(get("/checkout"))
@@ -207,7 +178,7 @@ public class OrderControllerIntegrationTests {
 	}
 
 	@Test
-	void returnsModelAndViewCheckoutWhenYouTryToCheckoutWithItems() throws Exception{
+	void returnsModelAndViewCheckoutWhenYouTryToCheckoutWithItems() throws Exception {
 		mvc.perform(get("/checkout")
 				.flashAttr("cart", cart))
 				.andExpect(status().isOk())
@@ -227,10 +198,7 @@ public class OrderControllerIntegrationTests {
 	/**
 	 * returnsModelAndViewOrderSearchWhenYouTryToReachIt() method
 	 * Tests if user can reach the orderSearch page
-	 *
-	 * @throws Exception
 	 */
-
 	@Test
 	void returnsModelAndViewOrderSearchWhenYouTryToReachIt() throws Exception {
 		mvc.perform(get("/order"))
@@ -339,17 +307,9 @@ public class OrderControllerIntegrationTests {
 
 	@Test
 	void getOrderOverviewWithPickupOrder() throws Exception {
-		ShopOrder pickup = null;
-		for (ItemOrder order : orderService.findAllItemOrders()) {
-			if (order instanceof Pickup) {
-				pickup = order;
-			}
-		}
-		if (pickup == null) {
-			pickup = orderService.orderPickupItem(cart, contactInformation);
-		}
+		final Pickup pickup = orderService.orderPickupItem(cart, contactInformation);
 
-		mvc.perform(get(String.format("/order/%s", pickup.getId().getIdentifier())))
+		mvc.perform(get("/order/{id}", pickup.getId().getIdentifier()))
 				.andExpect(view().name("orderOverview"))
 				//.andExpect(model().attribute("items", ((ItemOrder) pickup).getOrderEntries()))
 				.andExpect(model().attribute("order", pickup))
@@ -358,26 +318,26 @@ public class OrderControllerIntegrationTests {
 
 	@Test
 	void getOrderOverviewWithDeliveryOrder() throws Exception {
-		ShopOrder delivery = orderService.orderDelieveryItem(cart, contactInformation);
+		final Delivery delivery = orderService.orderDelieveryItem(cart, contactInformation);
 
-		mvc.perform(get(String.format("/order/%s", delivery.getId().getIdentifier())))
+		mvc.perform(get("/order/{id}", delivery.getId().getIdentifier()))
 				.andExpect(view().name("orderOverview"))
 				//.andExpect(model().attribute("items", ((ItemOrder) pickup).getOrderEntries()))
 				.andExpect(model().attribute("order", delivery))
-				.andExpect(model().attribute("lkw", ((Delivery) delivery).getLkw()))
-				.andExpect(model().attribute("deliveryDate", ((Delivery) delivery).getDeliveryDate()))
+				.andExpect(model().attribute("lkw", delivery.getLkw()))
+				.andExpect(model().attribute("deliveryDate", delivery.getDeliveryDate()))
 				.andExpect(status().isOk());
 	}
 
 	@Test
 	void getOrderOverviewWithLKWCharter() throws Exception {
-		LocalDate deliveryDate = businessTime.getTime().toLocalDate();
-		Optional<LKW> olkw = lkwService.createCharterLKW(deliveryDate, LKWType.SMALL);
+		final LocalDate deliveryDate = businessTime.getTime().toLocalDate();
+		final Optional<LKW> olkw = lkwService.createCharterLKW(deliveryDate, LKWType.SMALL);
 		Assert.isTrue(olkw.isPresent(), "LKW Charter konnte nicht erstellt werden");
-		LKWCharter charter = lkwService.createLKWOrder(olkw.get(), deliveryDate, contactInformation);
 
+		final LKWCharter charter = lkwService.createLKWOrder(olkw.orElse(null), deliveryDate, contactInformation);
 
-		mvc.perform(get(String.format("/order/%s", charter.getId().getIdentifier())))
+		mvc.perform(get("/order/{id}", charter.getId().getIdentifier()))
 				.andExpect(view().name("orderOverview"))
 				//.andExpect(model().attribute("items", ((ItemOrder) pickup).getOrderEntries()))
 				.andExpect(model().attribute("order", charter))
@@ -389,61 +349,55 @@ public class OrderControllerIntegrationTests {
 
 	@Test
 	void TestCancelItemOrderWithoutAuthentication() throws Exception {
+		final Pickup pickup = orderService.orderPickupItem(cart, contactInformation);
 
-		Pickup pickup = orderService.orderPickupItem(cart, contactInformation);
+		final String orderId = pickup.getId().getIdentifier();
+		final long itemEntryId = pickup.getOrderEntries().get(0).getId();
+		final Item item = pickup.getOrderEntries().get(0).getItem();
 
-		String orderId = pickup.getId().getIdentifier();
-		Long itemEntryId = pickup.getOrderEntries().get(0).getId();
-		Item item = pickup.getOrderEntries().get(0).getItem();
-
-
-		mvc.perform(post(String.format("/order/%s/cancelItem", pickup.getId().getIdentifier()))
+		mvc.perform(post("/order/{id}/cancelItem", pickup.getId().getIdentifier())
 				.param("itemEntryId", String.valueOf(itemEntryId)))
 				.andExpect(redirectedUrl(String.format("/order/%s", pickup.getId().getIdentifier())));
 
-		Optional<ShopOrder> orderPostCancelOptional = orderService.findById(orderId);
+		final Optional<ShopOrder> orderPostCancelOptional = orderService.findById(orderId);
 		assertTrue(orderPostCancelOptional.isPresent(), "Order wurde nicht gefunden");
-		ShopOrder orderPostCancel = orderPostCancelOptional.get();
 
-		assertTrue(((ItemOrder) orderPostCancel).getOrderEntries().get(0).getId() == itemEntryId, "Das Item wurde" +
-				"nicht erfolgreich storniert");
+		final ShopOrder orderPostCancel = orderPostCancelOptional.get();
+		assertEquals(itemEntryId, ((ItemOrder) orderPostCancel).getOrderEntries().get(0).getId(), "Das Item wurde nicht erfolgreich storniert");
 	}
 
 	@Test
 	@WithMockUser(username = "admin", roles = "EMPLOYEE")
 	void TestChangeOrder() throws Exception {
+		final Pickup pickup = orderService.orderPickupItem(cart, contactInformation);
 
-		Pickup pickup = orderService.orderPickupItem(cart, contactInformation);
+		final String orderId = pickup.getId().getIdentifier();
+		final long itemEntryId = pickup.getOrderEntries().get(0).getId();
+		final Item item = pickup.getOrderEntries().get(0).getItem();
 
-		String orderId = pickup.getId().getIdentifier();
-		Long itemEntryId = pickup.getOrderEntries().get(0).getId();
-		Item item = pickup.getOrderEntries().get(0).getItem();
-
-		mvc.perform(post(String.format("/order/%s/changeStatus", pickup.getId().getIdentifier()))
+		mvc.perform(post("/order/{id}/changeStatus", pickup.getId().getIdentifier())
 				.param("itemEntryId", String.valueOf(itemEntryId))
 				.param("status", String.valueOf(OrderStatus.STORED)))
 				.andExpect(redirectedUrl(String.format("/order/%s", pickup.getId().getIdentifier())));
 
-		Optional<ShopOrder> orderPostCancelOptional = orderService.findById(orderId);
+		final Optional<ShopOrder> orderPostCancelOptional = orderService.findById(orderId);
 		assertTrue(orderPostCancelOptional.isPresent(), "Order wurde nicht gefunden");
-		ShopOrder orderPostCancel = orderPostCancelOptional.get();
 
-		assertTrue(((ItemOrder) orderPostCancel).getOrderEntries().get(0).getStatus() == OrderStatus.STORED,
-				"Der Status des Items wurde nicht erfolgreich geändert");
+		final ShopOrder orderPostCancel = orderPostCancelOptional.get();
+		assertSame(OrderStatus.STORED, ((ItemOrder) orderPostCancel).getOrderEntries().get(0).getStatus(), "Der Status des Items wurde nicht erfolgreich geändert");
 	}
 
 	@Test
 	void TestCancelLkw() throws Exception {
-
-		Optional<LKW> olkw = lkwService.createCharterLKW(businessTime.getTime().toLocalDate(), LKWType.SMALL);
+		final Optional<LKW> olkw = lkwService.createCharterLKW(businessTime.getTime().toLocalDate(), LKWType.SMALL);
 		Assert.isTrue(olkw.isPresent(), "LKW Charter konnte nicht erstellt werden");
-		LKWCharter charter = lkwService.createLKWOrder(olkw.get(), businessTime.getTime().toLocalDate(), contactInformation);
 
+		final LKWCharter charter = lkwService.createLKWOrder(olkw.orElse(null), businessTime.getTime().toLocalDate(), contactInformation);
 
-		mvc.perform(post(String.format("/order/%s/cancelLkw", charter.getId().getIdentifier())))
+		mvc.perform(post("/order/{id}/cancelLkw", charter.getId().getIdentifier()))
 				.andExpect(redirectedUrl("/"));
 
-		assertTrue(orderService.findById(charter.getId().getIdentifier()).isEmpty(), "Die Order wurde nicht" +
-				" gelöscht");
+		assertTrue(orderService.findById(charter.getId().getIdentifier()).isEmpty(), "Die Order wurde nicht gelöscht");
 	}
+
 }

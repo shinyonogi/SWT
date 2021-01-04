@@ -1,6 +1,8 @@
 package furnitureshop.supplier;
 
 import furnitureshop.FurnitureShop;
+import furnitureshop.utils.Utils;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -8,6 +10,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.Arrays;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
@@ -25,6 +29,20 @@ public class SupplierControllerIntegrationTests {
 
 	@Autowired
 	SupplierRepository supplierRepository;
+
+	Supplier defaultSupplier, setSupplier, testSupplier;
+
+	@BeforeEach
+	void setUp() {
+		Utils.clearRepositories();
+
+		defaultSupplier = new Supplier("default", 0);
+		setSupplier = new Supplier("Set Supplier", 0);
+
+		testSupplier = new Supplier("test", 1);
+
+		supplierRepository.saveAll(Arrays.asList(defaultSupplier, setSupplier));
+	}
 
 	@Test
 	@WithMockUser(roles = "EMPLOYEE")
@@ -48,10 +66,8 @@ public class SupplierControllerIntegrationTests {
 	@Test
 	@WithMockUser(roles = "EMPLOYEE")
 	void redirectsToSuppliersWhenYouAddAnExistingSupplier() throws Exception {
-		supplierRepository.save(new Supplier("test", 1));
-
 		mvc.perform(post("/admin/suppliers")
-				.param("name", "test")
+				.param("name", "default")
 				.param("surcharge", "1"))
 				.andExpect(status().isOk())
 				.andExpect(model().attribute("result", is(3)))
@@ -83,7 +99,7 @@ public class SupplierControllerIntegrationTests {
 	@Test
 	@WithMockUser(roles = "EMPLOYEE")
 	void redirectsToSuppliersWhenYouDeleteASupplier() throws Exception {
-		mvc.perform(post("/admin/supplier/delete/{id}", supplierRepository.findAll().iterator().next().getId()))
+		mvc.perform(post("/admin/supplier/delete/{id}", defaultSupplier.getId()))
 				.andExpect(status().is3xxRedirection())
 				.andExpect(redirectedUrl("/admin/suppliers"))
 				.andExpect(view().name("redirect:/admin/suppliers"));
@@ -92,14 +108,7 @@ public class SupplierControllerIntegrationTests {
 	@Test
 	@WithMockUser(roles = "EMPLOYEE")
 	void redirectsToSuppliersWhenYouDeleteTheSetSupplier() throws Exception {
-		Supplier sup = null;
-		for (Supplier supplier : supplierRepository.findAll()) {
-			if (supplier.getName().equals("Set Supplier")) {
-				sup = supplier;
-			}
-		}
-
-		mvc.perform(post("/admin/supplier/delete/{id}", sup.getId()))
+		mvc.perform(post("/admin/supplier/delete/{id}", setSupplier.getId()))
 				.andExpect(status().is3xxRedirection())
 				.andExpect(redirectedUrl("/admin/suppliers"))
 				.andExpect(view().name("redirect:/admin/suppliers"));
@@ -108,9 +117,7 @@ public class SupplierControllerIntegrationTests {
 	@Test
 	@WithMockUser(roles = "EMPLOYEE")
 	void returnsModelAndViewSupplierItemWhenYouTryToReachIt() throws Exception {
-		final long id = supplierRepository.findAll().stream().findAny().orElseGet(null).getId();
-
-		mvc.perform(get("/admin/supplier/{id}/items", id))
+		mvc.perform(get("/admin/supplier/{id}/items", defaultSupplier.getId()))
 				.andExpect(status().isOk())
 				.andExpect(view().name("supplierItem"));
 	}
@@ -118,9 +125,7 @@ public class SupplierControllerIntegrationTests {
 	@Test
 	@WithMockUser(roles = "EMPLOYEE")
 	void redirectsAdminSuppliersWhenYouChangeTheSurcharge() throws Exception {
-		final long id = supplierRepository.findAll().stream().findAny().orElseGet(null).getId();
-
-		mvc.perform(post("/admin/supplier/{id}/surcharge/edit", id)
+		mvc.perform(post("/admin/supplier/{id}/surcharge/edit", defaultSupplier.getId())
 				.param("surcharge", "0.2"))
 				.andExpect(status().is3xxRedirection())
 				.andExpect(view().name("redirect:/admin/suppliers"));

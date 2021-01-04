@@ -5,15 +5,21 @@ import furnitureshop.inventory.Category;
 import furnitureshop.inventory.Item;
 import furnitureshop.inventory.ItemCatalog;
 import furnitureshop.inventory.Piece;
-import furnitureshop.lkw.*;
+import furnitureshop.lkw.LKW;
+import furnitureshop.lkw.LKWCatalog;
+import furnitureshop.lkw.LKWService;
+import furnitureshop.lkw.LKWType;
 import furnitureshop.supplier.Supplier;
 import furnitureshop.supplier.SupplierRepository;
+import furnitureshop.utils.Utils;
 import org.javamoney.moneta.Money;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.salespointframework.catalog.Product;
 import org.salespointframework.core.Currencies;
-import org.salespointframework.order.*;
+import org.salespointframework.order.Cart;
+import org.salespointframework.order.CartItem;
+import org.salespointframework.order.OrderLine;
 import org.salespointframework.time.BusinessTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -32,9 +38,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @ContextConfiguration(classes = FurnitureShop.class)
 public class OrderServiceTests {
-
-	@Autowired
-	OrderManagement<ShopOrder> orderManagement;
 
 	@Autowired
 	ItemCatalog itemCatalog;
@@ -58,13 +61,7 @@ public class OrderServiceTests {
 
 	@BeforeEach
 	void setUp() {
-		for (ShopOrder order : orderManagement.findBy(orderService.getDummyUser())) {
-			orderManagement.delete(order);
-		}
-
-		itemCatalog.deleteAll();
-		supplierRepository.deleteAll();
-		lkwCatalog.deleteAll();
+		Utils.clearRepositories();
 
 		for (LKWType type : LKWType.values()) {
 			for (int i = 0; i < 2; i++) {
@@ -90,7 +87,6 @@ public class OrderServiceTests {
 
 		// Reset Time
 		final LocalDateTime time = LocalDateTime.of(2020, 12, 21, 0, 0);
-
 		final Duration delta = Duration.between(businessTime.getTime(), time);
 		businessTime.forward(delta);
 	}

@@ -31,8 +31,6 @@ public class AdminControllerIntegrationTests {
 	/**
 	 * Tests if you can access /admin when not logged in.
 	 * Expects to be redirected to login.
-	 *
-	 * @throws Exception
 	 */
 	@Test // #1
 	void redirectsToLoginPageWhenAccessingAdminResourceWhenNotAuthenticated() throws Exception {
@@ -44,8 +42,6 @@ public class AdminControllerIntegrationTests {
 	/**
 	 * Tests if you can access Admin Overview when not logged in.
 	 * Expects to be redirected to login.
-	 *
-	 * @throws Exception
 	 */
 	@Test // #2
 	void redirectsToLoginPageWhenAccessingAdminOverviewWhenNotAuthenticated() throws Exception {
@@ -57,8 +53,6 @@ public class AdminControllerIntegrationTests {
 	/**
 	 * Tests if you can access Logout when not logged in.
 	 * Expects to be redirected to login.
-	 *
-	 * @throws Exception
 	 */
 	/*
 	@Test // #3
@@ -71,8 +65,6 @@ public class AdminControllerIntegrationTests {
 	/**
 	 * Tests if you receive the right view when accessing login page.
 	 * Expects to receive login view.
-	 *
-	 * @throws Exception
 	 */
 	@Test // #4
 	void returnsModelAndViewWhenAccessingLoginWhenNotAuthenticated() throws Exception {
@@ -85,8 +77,6 @@ public class AdminControllerIntegrationTests {
 	/**
 	 * Tests if you stay unauthenticated and get redirected when using wron credentials.
 	 * Expects to be redirected to login and unauthenticated.
-	 *
-	 * @throws Exception
 	 */
 	@Test // #5
 	void redirectsToLoginAndIsUnauthenticatedOnWrongCredentials() throws Exception {
@@ -99,8 +89,6 @@ public class AdminControllerIntegrationTests {
 	/**
 	 * Tests if you get redirected to Admin Overview, get the correct roles assigned
 	 * on login and can access the Admin Overview with the correct role.
-	 *
-	 * @throws Exception
 	 */
 	@Test // #6
 	void redirectsToAdminOverviewOnSuccessfulLoginAndAssignsRole() throws Exception {
@@ -112,8 +100,6 @@ public class AdminControllerIntegrationTests {
 	/**
 	 * Tests if you can access Admin Overview when logged in.
 	 * Expect to get admin view.
-	 *
-	 * @throws Exception
 	 */
 	@Test // #7
 	@WithMockUser(roles = "EMPLOYEE")
@@ -126,8 +112,6 @@ public class AdminControllerIntegrationTests {
 	/**
 	 * Tests if you can access the login page when already logged in.
 	 * Expects to be redirected to Admin Overview.
-	 *
-	 * @throws Exception
 	 */
 	@Test // #8
 	@WithMockUser(roles = "EMPLOYEE")
@@ -141,8 +125,6 @@ public class AdminControllerIntegrationTests {
 	/**
 	 * Tests if you get redirected to the logout page and lose authentication.
 	 * Expects to be unauthenticated and redirected to login with logout param.
-	 *
-	 * @throws Exception
 	 */
 	@Test // #9
 	@WithMockUser(roles = "EMPLOYEE")
