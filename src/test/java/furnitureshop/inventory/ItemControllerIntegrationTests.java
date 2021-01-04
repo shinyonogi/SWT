@@ -1,13 +1,15 @@
 package furnitureshop.inventory;
 
 import furnitureshop.FurnitureShop;
+import furnitureshop.order.OrderService;
+import furnitureshop.order.ShopOrder;
 import furnitureshop.supplier.Supplier;
 import furnitureshop.supplier.SupplierRepository;
-import furnitureshop.utils.Utils;
 import org.javamoney.moneta.Money;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.salespointframework.core.Currencies;
+import org.salespointframework.order.OrderManagement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -46,7 +48,13 @@ public class ItemControllerIntegrationTests {
 	SupplierRepository supplierRepository;
 
 	@Autowired
+	OrderManagement<ShopOrder> orderManagement;
+
+	@Autowired
 	ItemService itemService;
+
+	@Autowired
+	OrderService orderService;
 
 	Piece sofa_black, sofa1_black, stuhl, tisch;
 	Set set;
@@ -56,7 +64,12 @@ public class ItemControllerIntegrationTests {
 
 	@BeforeEach
 	void setUp() {
-		Utils.clearRepositories();
+		for (ShopOrder order : orderService.findAll()) {
+			orderManagement.delete(order);
+		}
+
+		itemCatalog.deleteAll();
+		supplierRepository.deleteAll();
 
 		supplier = new Supplier("Supplier 1", 0.15);
 		setSupplier = new Supplier("Set Supplier", 0.05);

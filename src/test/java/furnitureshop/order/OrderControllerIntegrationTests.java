@@ -12,13 +12,13 @@ import furnitureshop.lkw.LKWService;
 import furnitureshop.lkw.LKWType;
 import furnitureshop.supplier.Supplier;
 import furnitureshop.supplier.SupplierRepository;
-import furnitureshop.utils.Utils;
 import org.javamoney.moneta.Money;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.salespointframework.core.Currencies;
 import org.salespointframework.order.Cart;
 import org.salespointframework.order.CartItem;
+import org.salespointframework.order.OrderManagement;
 import org.salespointframework.time.BusinessTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -56,19 +56,22 @@ public class OrderControllerIntegrationTests {
 	ItemCatalog itemCatalog;
 
 	@Autowired
-	OrderService orderService;
+	SupplierRepository supplierRepository;
+
+	@Autowired
+	LKWCatalog lkwCatalog;
+
+	@Autowired
+	OrderManagement<ShopOrder> orderManagement;
 
 	@Autowired
 	LKWService lkwService;
 
 	@Autowired
+	OrderService orderService;
+
+	@Autowired
 	BusinessTime businessTime;
-
-	@Autowired
-	SupplierRepository supplierRepository;
-
-	@Autowired
-	LKWCatalog lkwCatalog;
 
 	Item item;
 	CartItem cartItem;
@@ -77,7 +80,13 @@ public class OrderControllerIntegrationTests {
 
 	@BeforeEach
 	void setUp() {
-		Utils.clearRepositories();
+		for (ShopOrder order : orderService.findAll()) {
+			orderManagement.delete(order);
+		}
+
+		lkwCatalog.deleteAll();
+		itemCatalog.deleteAll();
+		supplierRepository.deleteAll();
 
 		for (LKWType type : LKWType.values()) {
 			for (int i = 0; i < 2; i++) {

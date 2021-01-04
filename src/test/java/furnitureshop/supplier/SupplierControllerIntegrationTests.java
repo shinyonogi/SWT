@@ -1,9 +1,12 @@
 package furnitureshop.supplier;
 
 import furnitureshop.FurnitureShop;
-import furnitureshop.utils.Utils;
+import furnitureshop.inventory.ItemCatalog;
+import furnitureshop.order.OrderService;
+import furnitureshop.order.ShopOrder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.salespointframework.order.OrderManagement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -28,13 +31,30 @@ public class SupplierControllerIntegrationTests {
 	MockMvc mvc;
 
 	@Autowired
+	ItemCatalog itemCatalog;
+
+	@Autowired
 	SupplierRepository supplierRepository;
+
+	@Autowired
+	OrderManagement<ShopOrder> orderManagement;
+
+	@Autowired
+	SupplierService supplierService;
+
+	@Autowired
+	OrderService orderService;
 
 	Supplier defaultSupplier, setSupplier, testSupplier;
 
 	@BeforeEach
 	void setUp() {
-		Utils.clearRepositories();
+		for (ShopOrder order : orderService.findAll()) {
+			orderManagement.delete(order);
+		}
+
+		itemCatalog.deleteAll();
+		supplierRepository.deleteAll();
 
 		defaultSupplier = new Supplier("default", 0);
 		setSupplier = new Supplier("Set Supplier", 0);

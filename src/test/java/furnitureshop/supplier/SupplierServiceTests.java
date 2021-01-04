@@ -5,11 +5,13 @@ import furnitureshop.inventory.Category;
 import furnitureshop.inventory.Item;
 import furnitureshop.inventory.ItemCatalog;
 import furnitureshop.inventory.Piece;
-import furnitureshop.utils.Utils;
+import furnitureshop.order.OrderService;
+import furnitureshop.order.ShopOrder;
 import org.javamoney.moneta.Money;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.salespointframework.core.Currencies;
+import org.salespointframework.order.OrderManagement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
@@ -24,20 +26,31 @@ import static org.junit.jupiter.api.Assertions.*;
 public class SupplierServiceTests {
 
 	@Autowired
+	ItemCatalog itemCatalog;
+
+	@Autowired
 	SupplierRepository supplierRepository;
+
+	@Autowired
+	OrderManagement<ShopOrder> orderManagement;
 
 	@Autowired
 	SupplierService supplierService;
 
 	@Autowired
-	ItemCatalog itemCatalog;
+	OrderService orderService;
 
 	Supplier testSupplier, defaultSupplier, defaultSupplier2;
 	Item item;
 
 	@BeforeEach
 	void setUp() {
-		Utils.clearRepositories();
+		for (ShopOrder order : orderService.findAll()) {
+			orderManagement.delete(order);
+		}
+
+		itemCatalog.deleteAll();
+		supplierRepository.deleteAll();
 
 		defaultSupplier = new Supplier("default1", 0);
 		defaultSupplier2 = new Supplier("default2", 0.2);

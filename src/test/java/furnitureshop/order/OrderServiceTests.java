@@ -11,7 +11,7 @@ import furnitureshop.lkw.LKWService;
 import furnitureshop.lkw.LKWType;
 import furnitureshop.supplier.Supplier;
 import furnitureshop.supplier.SupplierRepository;
-import furnitureshop.utils.Utils;
+import furnitureshop.supplier.SupplierService;
 import org.javamoney.moneta.Money;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,6 +20,7 @@ import org.salespointframework.core.Currencies;
 import org.salespointframework.order.Cart;
 import org.salespointframework.order.CartItem;
 import org.salespointframework.order.OrderLine;
+import org.salespointframework.order.OrderManagement;
 import org.salespointframework.time.BusinessTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -43,10 +44,19 @@ public class OrderServiceTests {
 	ItemCatalog itemCatalog;
 
 	@Autowired
+	SupplierRepository supplierRepository;
+
+	@Autowired
 	LKWCatalog lkwCatalog;
 
 	@Autowired
-	SupplierRepository supplierRepository;
+	OrderManagement<ShopOrder> orderManagement;
+
+	@Autowired
+	SupplierService supplierService;
+
+	@Autowired
+	LKWService lkwService;
 
 	@Autowired
 	OrderService orderService;
@@ -54,14 +64,17 @@ public class OrderServiceTests {
 	@Autowired
 	BusinessTime businessTime;
 
-	@Autowired
-	LKWService lkwService;
-
 	Cart exampleCart;
 
 	@BeforeEach
 	void setUp() {
-		Utils.clearRepositories();
+		for (ShopOrder order : orderService.findAll()) {
+			orderManagement.delete(order);
+		}
+
+		lkwCatalog.deleteAll();
+		itemCatalog.deleteAll();
+		supplierRepository.deleteAll();
 
 		for (LKWType type : LKWType.values()) {
 			for (int i = 0; i < 2; i++) {
