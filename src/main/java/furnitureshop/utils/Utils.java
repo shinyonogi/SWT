@@ -6,9 +6,9 @@ import furnitureshop.order.OrderService;
 import furnitureshop.order.ShopOrder;
 import furnitureshop.supplier.SupplierRepository;
 import org.salespointframework.order.OrderManagement;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 public class Utils {
 
 	private static OrderService orderService;
