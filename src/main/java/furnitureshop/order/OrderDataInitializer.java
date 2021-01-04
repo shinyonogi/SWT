@@ -43,7 +43,7 @@ public class OrderDataInitializer implements DataInitializer {
 	}
 
 	/**
-	 * This method initializes an (dummy-)user.
+	 * This method initializes an (dummy-)user and creates a bunch of dummy orders.
 	 * It returns if a dummy user already exists, creates a new dummy user if it doesn't exist
 	 */
 	@Override

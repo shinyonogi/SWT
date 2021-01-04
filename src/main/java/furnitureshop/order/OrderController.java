@@ -176,7 +176,6 @@ class OrderController {
 	 */
 	@PostMapping("/checkout")
 	String buy(@ModelAttribute("cart") Cart cart, @ModelAttribute("orderform") OrderForm form, Model model) {
-		final ContactInformation contactInformation = new ContactInformation(form.getName(), form.getAddress(), form.getEmail());
 
 		final int weight = cart.get()
 				.filter(c -> c.getProduct() instanceof Item)
@@ -189,23 +188,25 @@ class OrderController {
 		model.addAttribute("lkwtype", type);
 
 		// Check if name is invalid
-		if (!StringUtils.hasText(form.getName())) {
+		if (!StringUtils.hasText(form.getName().replaceAll("[^A-Za-z]", ""))) {
 			// Display error message
 			model.addAttribute("result", 1);
 			return "orderCheckout";
 		}
 		// Check if address is invalid
-		if (!StringUtils.hasText(form.getAddress())) {
+		if (!StringUtils.hasText(form.getAddress().replaceAll("[^A-Za-z]", ""))) {
 			// Display error message
 			model.addAttribute("result", 2);
 			return "orderCheckout";
 		}
 		// Check if email is invalid
-		if (!StringUtils.hasText(form.getEmail()) || !form.getEmail().matches(".+@.+")) {
+		if (!StringUtils.hasText(form.getEmail().replaceAll("[^A-Za-z@]", "")) || !form.getEmail().matches(".+@.+")) {
 			// Display error message
 			model.addAttribute("result", 3);
 			return "orderCheckout";
 		}
+		final ContactInformation contactInformation =
+				new ContactInformation(form.getName(), form.getAddress(), form.getEmail());
 
 		final ItemOrder order;
 

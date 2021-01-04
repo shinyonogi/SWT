@@ -12,10 +12,11 @@ import javax.persistence.*;
 @Entity
 public class ItemOrderEntry {
 
-	@Id @GeneratedValue
+	@Id
+	@GeneratedValue
 	private long id;
 
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	private Item item;
 
 	@Enumerated(EnumType.ORDINAL)
