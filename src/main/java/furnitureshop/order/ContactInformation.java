@@ -5,7 +5,6 @@ import org.springframework.util.Assert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import java.time.LocalDate;
 
 /**
  * This class represents the {@link ContactInformation} of the customer which is needed for an order

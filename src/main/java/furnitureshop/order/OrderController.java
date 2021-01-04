@@ -188,19 +188,19 @@ class OrderController {
 		model.addAttribute("lkwtype", type);
 
 		// Check if name is invalid
-		if (!StringUtils.hasText(form.getName().replaceAll("[^A-Za-z]", ""))) {
+		if (!StringUtils.hasText(form.getName())) {
 			// Display error message
 			model.addAttribute("result", 1);
 			return "orderCheckout";
 		}
 		// Check if address is invalid
-		if (!StringUtils.hasText(form.getAddress().replaceAll("[^A-Za-z]", ""))) {
+		if (!StringUtils.hasText(form.getAddress())) {
 			// Display error message
 			model.addAttribute("result", 2);
 			return "orderCheckout";
 		}
 		// Check if email is invalid
-		if (!StringUtils.hasText(form.getEmail().replaceAll("[^A-Za-z@]", "")) || !form.getEmail().matches(".+@.+")) {
+		if (!StringUtils.hasText(form.getEmail()) || !form.getEmail().matches(".+@.+")) {
 			// Display error message
 			model.addAttribute("result", 3);
 			return "orderCheckout";

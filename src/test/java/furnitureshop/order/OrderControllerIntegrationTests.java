@@ -17,6 +17,7 @@ import org.salespointframework.core.Currencies;
 import org.salespointframework.order.Cart;
 import org.salespointframework.order.CartItem;
 import org.salespointframework.order.Order;
+import org.salespointframework.time.BusinessTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -62,6 +63,9 @@ public class OrderControllerIntegrationTests {
 
 	@Autowired
 	LKWService lkwService;
+
+	@Autowired
+	BusinessTime businessTime;
 
 	@BeforeEach
 	void setUp() {
@@ -428,10 +432,10 @@ public class OrderControllerIntegrationTests {
 			}
 		}
 		if (charter == null) {
-			LocalDate deliveryDate = LocalDate.now();
-			Optional<LKW> olkw = lkwService.createCharterLKW(deliveryDate, LKWType.SMALL);
+			LocalDate date = lkwService.findNextAvailableDeliveryDate(LocalDate.now(), LKWType.SMALL);
+			Optional<LKW> olkw = lkwService.createCharterLKW(date, LKWType.SMALL);
 			Assert.isTrue(olkw.isPresent(), "LKW Charter konnte nicht erstellt werden");
-			charter = lkwService.createLKWOrder(olkw.get(), deliveryDate, contactInformation);
+			charter = lkwService.createLKWOrder(olkw.get(), date, contactInformation);
 		}
 
 		mvc.perform(post(String.format("/order/%s/cancelLkw", charter.getId().getIdentifier())))

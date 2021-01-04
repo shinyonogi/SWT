@@ -16,7 +16,7 @@ public class ItemOrderEntry {
 	@GeneratedValue
 	private long id;
 
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne
 	private Item item;
 
 	@Enumerated(EnumType.ORDINAL)
