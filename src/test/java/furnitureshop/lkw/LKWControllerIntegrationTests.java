@@ -1,10 +1,15 @@
 package furnitureshop.lkw;
 
+import furnitureshop.FurnitureShop;
+import furnitureshop.order.OrderService;
+import furnitureshop.order.ShopOrder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.salespointframework.order.OrderManagement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
@@ -16,10 +21,20 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@ContextConfiguration(classes = FurnitureShop.class)
 class LKWControllerIntegrationTests {
 
 	@Autowired
 	MockMvc mvc;
+
+	@Autowired
+	OrderService orderService;
+
+	@Autowired
+	OrderManagement<ShopOrder> orderManagement;
+
+	@Autowired
+	LKWCatalog lkwCatalog;
 
 	LocalDate oldDate, weekendDate, validDate;
 
@@ -28,6 +43,16 @@ class LKWControllerIntegrationTests {
 		this.oldDate = LocalDate.of(2000, 1, 1);
 		this.weekendDate = LocalDate.of(2023, 3, 19);
 		this.validDate = LocalDate.of(2023, 3, 20);
+
+		for (ShopOrder order : orderService.findAll()) {
+			orderManagement.delete(order);
+		}
+		lkwCatalog.deleteAll();
+		for (LKWType type : LKWType.values()) {
+			for (int i = 0; i < 2; i++) {
+				lkwCatalog.save(new LKW(type));
+			}
+		}
 	}
 
 	@Test

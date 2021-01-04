@@ -7,16 +7,18 @@ import furnitureshop.inventory.Item;
 import furnitureshop.inventory.ItemCatalog;
 import furnitureshop.inventory.Piece;
 import furnitureshop.lkw.LKW;
+import furnitureshop.lkw.LKWCatalog;
 import furnitureshop.lkw.LKWService;
 import furnitureshop.lkw.LKWType;
 import furnitureshop.supplier.Supplier;
+import furnitureshop.supplier.SupplierRepository;
 import org.javamoney.moneta.Money;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.salespointframework.core.Currencies;
 import org.salespointframework.order.Cart;
 import org.salespointframework.order.CartItem;
-import org.salespointframework.order.Order;
+import org.salespointframework.order.OrderManagement;
 import org.salespointframework.time.BusinessTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -25,7 +27,9 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static org.hamcrest.CoreMatchers.endsWith;
@@ -67,11 +71,43 @@ public class OrderControllerIntegrationTests {
 	@Autowired
 	BusinessTime businessTime;
 
+	@Autowired
+	OrderManagement<ShopOrder> orderManagement;
+
+	@Autowired
+	SupplierRepository supplierRepository;
+
+	@Autowired
+	LKWCatalog lkwCatalog;
+
 	@BeforeEach
 	void setUp() {
+		for (ShopOrder order : orderService.findAll()) {
+			orderManagement.delete(order);
+		}
+		lkwCatalog.deleteAll();
+		for (LKWType type : LKWType.values()) {
+			for (int i = 0; i < 2; i++) {
+				lkwCatalog.save(new LKW(type));
+			}
+		}
+
+		itemCatalog.deleteAll();
+		supplierRepository.deleteAll();
+
+		// Reset Time
+		final LocalDateTime time = LocalDateTime.of(2020, 12, 21, 0, 0);
+
+		final Duration delta = Duration.between(businessTime.getTime(), time);
+		businessTime.forward(delta);
+
 		supplier = new Supplier("supplier", 0.05);
+		supplierRepository.save(supplier);
 		item = new Piece(1, "Stuhl 1", Money.of(59.99, Currencies.EURO), new byte[0], "schwarz",
 				"Stuhl 1 in schwarz.", supplier, 5, Category.CHAIR);
+
+		itemCatalog.save(item);
+
 		cart = new Cart();
 		cart.addOrUpdateItem(item, 5);
 		cartItem = cart.get().findAny().get();
@@ -322,15 +358,7 @@ public class OrderControllerIntegrationTests {
 
 	@Test
 	void getOrderOverviewWithDeliveryOrder() throws Exception {
-		ShopOrder delivery = null;
-		for (ItemOrder order : orderService.findAllItemOrders()) {
-			if (order instanceof Delivery) {
-				delivery = order;
-			}
-		}
-		if (delivery == null) {
-			delivery = orderService.orderDelieveryItem(cart, contactInformation);
-		}
+		ShopOrder delivery = orderService.orderDelieveryItem(cart, contactInformation);
 
 		mvc.perform(get(String.format("/order/%s", delivery.getId().getIdentifier())))
 				.andExpect(view().name("orderOverview"))
@@ -343,18 +371,11 @@ public class OrderControllerIntegrationTests {
 
 	@Test
 	void getOrderOverviewWithLKWCharter() throws Exception {
-		LKWCharter charter = null;
-		for (Order order : orderService.findAllItemOrders()) {
-			if (order instanceof LKWCharter) {
-				charter = (LKWCharter) order;
-			}
-		}
-		if (charter == null) {
-			LocalDate deliveryDate = LocalDate.now();
-			Optional<LKW> olkw = lkwService.createCharterLKW(deliveryDate, LKWType.SMALL);
-			Assert.isTrue(olkw.isPresent(), "LKW Charter konnte nicht erstellt werden");
-			charter = lkwService.createLKWOrder(olkw.get(), deliveryDate, contactInformation);
-		}
+		LocalDate deliveryDate = businessTime.getTime().toLocalDate();
+		Optional<LKW> olkw = lkwService.createCharterLKW(deliveryDate, LKWType.SMALL);
+		Assert.isTrue(olkw.isPresent(), "LKW Charter konnte nicht erstellt werden");
+		LKWCharter charter = lkwService.createLKWOrder(olkw.get(), deliveryDate, contactInformation);
+
 
 		mvc.perform(get(String.format("/order/%s", charter.getId().getIdentifier())))
 				.andExpect(view().name("orderOverview"))
@@ -368,15 +389,9 @@ public class OrderControllerIntegrationTests {
 
 	@Test
 	void TestCancelItemOrderWithoutAuthentication() throws Exception {
-		ItemOrder pickup = null;
-		for (ItemOrder order : orderService.findAllItemOrders()) {
-			if (order instanceof Pickup) {
-				pickup = order;
-			}
-		}
-		if (pickup == null) {
-			pickup = orderService.orderPickupItem(cart, contactInformation);
-		}
+
+		Pickup pickup = orderService.orderPickupItem(cart, contactInformation);
+
 		String orderId = pickup.getId().getIdentifier();
 		Long itemEntryId = pickup.getOrderEntries().get(0).getId();
 		Item item = pickup.getOrderEntries().get(0).getItem();
@@ -397,15 +412,9 @@ public class OrderControllerIntegrationTests {
 	@Test
 	@WithMockUser(username = "admin", roles = "EMPLOYEE")
 	void TestChangeOrder() throws Exception {
-		ItemOrder pickup = null;
-		for (ItemOrder order : orderService.findAllItemOrders()) {
-			if (order instanceof Pickup) {
-				pickup = order;
-			}
-		}
-		if (pickup == null) {
-			pickup = orderService.orderPickupItem(cart, contactInformation);
-		}
+
+		Pickup pickup = orderService.orderPickupItem(cart, contactInformation);
+
 		String orderId = pickup.getId().getIdentifier();
 		Long itemEntryId = pickup.getOrderEntries().get(0).getId();
 		Item item = pickup.getOrderEntries().get(0).getItem();
@@ -425,18 +434,11 @@ public class OrderControllerIntegrationTests {
 
 	@Test
 	void TestCancelLkw() throws Exception {
-		LKWCharter charter = null;
-		for (Order order : orderService.findAllItemOrders()) {
-			if (order instanceof LKWCharter) {
-				charter = (LKWCharter) order;
-			}
-		}
-		if (charter == null) {
-			LocalDate date = lkwService.findNextAvailableDeliveryDate(LocalDate.now(), LKWType.SMALL);
-			Optional<LKW> olkw = lkwService.createCharterLKW(date, LKWType.SMALL);
-			Assert.isTrue(olkw.isPresent(), "LKW Charter konnte nicht erstellt werden");
-			charter = lkwService.createLKWOrder(olkw.get(), date, contactInformation);
-		}
+
+		Optional<LKW> olkw = lkwService.createCharterLKW(businessTime.getTime().toLocalDate(), LKWType.SMALL);
+		Assert.isTrue(olkw.isPresent(), "LKW Charter konnte nicht erstellt werden");
+		LKWCharter charter = lkwService.createLKWOrder(olkw.get(), businessTime.getTime().toLocalDate(), contactInformation);
+
 
 		mvc.perform(post(String.format("/order/%s/cancelLkw", charter.getId().getIdentifier())))
 				.andExpect(redirectedUrl("/"));
