@@ -1,79 +1,91 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title th:text="#{order.overview.title}">Kundenbestellungen</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <title th:text="#{order.overview.title}">Kundenbestellungen</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
 <body>
+    <nav th:include="navigation :: navigation"></nav>
 
-<nav th:include="navigation :: navigation"></nav>
+    <div class="container mt-3 mb-3">
+        <h4 class="mt-2" th:text="#{admin.overview.customerOrders}">Kundenbestellungen</h4>
 
-<div class="container mt-3 mb-3">
-	<h4 class="mt-2" th:text="#{admin.overview.customerOrders}">Kundenbestellungen</h4>
+        <div class="row">
+            <form class="form w-100 m-3" method="post" th:action="@{/admin/orders}">
+                <div class="row mb-2">
+                    <div class="col d-flex align-items-baseline">
+                        <label class="control-label mr-2" for="filter" th:text="#{order.overview.filter}"></label>
+                        <select class="custom-select" id="filter" name="filter">
+                            <option th:selected="${filterId == 0}" th:value="0" th:text="#{order.overview.filter.all}"></option>
+                            <option th:selected="${filterId == 1}" th:value="1" th:text="#{order.overview.filter.item}"></option>
+                            <option th:selected="${filterId == 2}" th:value="2" th:text="#{order.overview.filter.lkw}"></option>
+                        </select>
+                    </div>
 
-	<div class="row">
-		<form class="form-inline w-100 m-2" method="post" th:action="@{/admin/orders}">
-			<div class="col-lg-3 d-flex mb-2">
-				<label class="control-label mr-2" for="filter" th:text="#{order.overview.filter}"></label>
-				<select class="custom-select" id="filter" name="filter">
-					<option th:selected="${filterId == 0}" th:value="0" th:text="#{order.overview.filter.all}"></option>
-					<option th:selected="${filterId == 1}" th:value="1" th:text="#{order.overview.filter.item}"></option>
-					<option th:selected="${filterId == 2}" th:value="2" th:text="#{order.overview.filter.lkw}"></option>
-				</select>
-			</div>
-			<div class="col-lg-3 align-baseline d-flex mb-2">
-				<label class="control-label mr-2" for="sort" th:text="#{order.overview.sort}"></label>
-				<select class="custom-select" id="sort" name="sort">
-					<option th:selected="${sortId == 0}" th:value="0" th:text="#{order.overview.number}"></option>
-					<option th:selected="${sortId == 1}" th:value="1" th:text="#{order.overview.date}"></option>
-					<option th:selected="${sortId == 2}" th:value="2" th:text="#{order.overview.total}"></option>
-					<option th:selected="${sortId == 3}" th:value="3" th:text="#{order.overview.status}"></option>
-				</select>
-			</div>
-			<div class="col-lg-3 align-baseline d-flex mb-2">
-				<label class="control-label mr-2" for="reverse" th:text="#{order.overview.reverse}"></label>
-				<select class="custom-select" id="reverse" name="reverse">
-					<option th:selected="${!reversed}" th:value="false" th:text="#{order.overview.ascending}"></option>
-					<option th:selected="${reversed}" th:value="true" th:text="#{order.overview.descending}"></option>
-				</select>
-			</div>
-			<div class="col-lg-3 align-baseline mb-2 text-right">
-				<button type="submit" class="btn btn-primary" th:text="#{order.overview.submit}"></button>
-			</div>
-		</form>
-	</div>
+                    <div class="col d-flex align-items-baseline">
+                        <label class="control-label mr-2" for="text" th:text="#{order.overview.filtertext}"></label>
+                        <input class="form-control" type="text" id="text" name="text" th:value="${filterText}" th:placeholder="#{order.overview.filtertext.placeholder}">
+                    </div>
+                    <div class="col col-md-3"></div>
+                </div>
 
-	<table class="table table-hover">
-		<thead class="thead-light">
-			<tr>
-				<th scope="col" th:text="#{order.overview.number}" style="width: 30%">Bestell-Nr.</th>
-				<th scope="col" th:text="#{order.overview.date}">Bestelldatum</th>
-				<th scope="col" th:text="#{order.overview.total}">Betrag</th>
-				<th scope="col" th:text="#{order.overview.status}" style="width: 15%">Status</th>
-				<th scope="col"></th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr class="mt-3 mb-3 table-light align-items-baseline" th:each="order : ${orders}">
-				<td th:text="${order.getFirst().getId()}">5318008</td>
-				<td th:text=" ${#temporals.format(order.getFirst().getDateCreated(), 'dd.MM.yyyy HH:mm:ss')}">23.03.2021</td>
-				<td th:text="${order.getFirst().getTotal().query(T(furnitureshop.FurnitureShop).MONETARY_QUERY)}">999,99€</td>
-				<td th:text="${#messages.msgOrNull('order.overview.status.' + order.getSecond().name().toLowerCase())}"></td>
-				<td>
-					<form th:action="@{/order}" method="post">
-						<input type="hidden" th:value="${order.getFirst().getId()}" id="orderId" name="orderId"/>
-						<button type="submit" class="btn btn-outline-primary" role="button" th:text="#{order.overview.check}">Bestellung ansehen</button>
-					</form>
-				</td>
-			</tr>
-		</tbody>
-	</table>
-</div>
+                <div class="row">
+                    <div class="col d-flex align-items-baseline">
+                        <label class="control-label mr-2" for="sort" th:text="#{order.overview.sort}"></label>
+                        <select class="custom-select" id="sort" name="sort">
+                            <option th:selected="${sortId == 0}" th:value="0" th:text="#{order.overview.number}"></option>
+                            <option th:selected="${sortId == 1}" th:value="1" th:text="#{order.overview.date}"></option>
+                            <option th:selected="${sortId == 2}" th:value="2" th:text="#{order.overview.total}"></option>
+                            <option th:selected="${sortId == 3}" th:value="3" th:text="#{order.overview.status}"></option>
+                        </select>
+                    </div>
+
+                    <div class="col col- d-flex align-items-baseline">
+                        <label class="control-label mr-2" for="reverse" th:text="#{order.overview.reverse}"></label>
+                        <select class="custom-select" id="reverse" name="reverse">
+                            <option th:selected="${!reversed}" th:value="false" th:text="#{order.overview.ascending}"></option>
+                            <option th:selected="${reversed}" th:value="true" th:text="#{order.overview.descending}"></option>
+                        </select>
+                    </div>
+
+                    <div class="col col-md-3 text-right align-items-baseline">
+                        <button type="submit" class="btn btn-primary" th:text="#{order.overview.submit}"></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <table class="table table-hover">
+            <thead class="thead-light">
+            <tr>
+                <th scope="col" th:text="#{order.overview.number}" style="width: 30%">Bestell-Nr.</th>
+                <th scope="col" th:text="#{order.overview.date}">Bestelldatum</th>
+                <th scope="col" th:text="#{order.overview.total}">Betrag</th>
+                <th scope="col" th:text="#{order.overview.status}" style="width: 15%">Status</th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="mt-3 mb-3 table-light align-items-baseline" th:each="order : ${orders}">
+                <td th:text="${order.getFirst().getId()}">5318008</td>
+                <td th:text=" ${#temporals.format(order.getFirst().getDateCreated(), 'dd.MM.yyyy HH:mm:ss')}">23.03.2021</td>
+                <td th:text="${order.getFirst().getTotal().query(T(furnitureshop.FurnitureShop).MONETARY_QUERY)}">999,99€</td>
+                <td th:text="${#messages.msgOrNull('order.overview.status.' + order.getSecond().name().toLowerCase())}"></td>
+                <td>
+                    <form th:action="@{/order}" method="post">
+                        <input type="hidden" th:value="${order.getFirst().getId()}" id="orderId" name="orderId"/>
+                        <button type="submit" class="btn btn-outline-primary" role="button" th:text="#{order.overview.check}">Bestellung ansehen</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 
 </body>
 </html> 

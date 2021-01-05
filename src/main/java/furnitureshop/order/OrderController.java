@@ -427,9 +427,10 @@ class OrderController {
 	 */
 	@GetMapping("/admin/orders")
 	String getCustomerOrders(Model model) {
-		final Pair<ShopOrder, OrderStatus>[] orders = createFilteredAndSortedOrders(0, 1, true);
+		final Pair<ShopOrder, OrderStatus>[] orders = createFilteredAndSortedOrders("", 0, 1, true);
 
 		model.addAttribute("orders", orders);
+		model.addAttribute("filterText", "");
 		model.addAttribute("filterId", 0);
 		model.addAttribute("sortId", 1);
 		model.addAttribute("reversed", true);
@@ -438,11 +439,12 @@ class OrderController {
 	}
 
 	@PostMapping("/admin/orders")
-	String sortAndFilterCustomerOrders(@RequestParam("filter") int filterId, @RequestParam("sort") int sortId,
-			@RequestParam("reverse") boolean reversed, Model model) {
-		final Pair<ShopOrder, OrderStatus>[] orders = createFilteredAndSortedOrders(filterId, sortId, reversed);
+	String sortAndFilterCustomerOrders(@RequestParam("text") String filterText, @RequestParam("filter") int filterId,
+			@RequestParam("sort") int sortId, @RequestParam("reverse") boolean reversed, Model model) {
+		final Pair<ShopOrder, OrderStatus>[] orders = createFilteredAndSortedOrders(filterText, filterId, sortId, reversed);
 
 		model.addAttribute("orders", orders);
+		model.addAttribute("filterText", filterText);
 		model.addAttribute("filterId", filterId);
 		model.addAttribute("sortId", sortId);
 		model.addAttribute("reversed", reversed);
@@ -451,13 +453,22 @@ class OrderController {
 	}
 
 	@SuppressWarnings("unchecked")
-	private Pair<ShopOrder, OrderStatus>[] createFilteredAndSortedOrders(int filter, int sort, boolean reversed) {
+	private Pair<ShopOrder, OrderStatus>[] createFilteredAndSortedOrders(String filterText, int filter, int sort, boolean reversed) {
 		Stream<ShopOrder> orders = orderService.findAll().stream();
 
 		if (filter == 1) {
 			orders = orders.filter(o -> o instanceof ItemOrder);
 		} else if (filter == 2) {
 			orders = orders.filter(o -> o instanceof LKWCharter);
+		}
+
+		final String text = filterText.trim().toLowerCase();
+		if (!text.isEmpty()) {
+			orders = orders.filter(o -> o.getId().getIdentifier().toLowerCase().contains(text)
+					|| o.getContactInformation().getName().toLowerCase().contains(text)
+					|| o.getContactInformation().getAddress().toLowerCase().contains(text)
+					|| o.getContactInformation().getEmail().toLowerCase().contains(text)
+			);
 		}
 
 		Comparator<Pair<ShopOrder, OrderStatus>> sorting;
