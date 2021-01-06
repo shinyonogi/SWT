@@ -389,6 +389,21 @@ public class ItemControllerIntegrationTests {
 				.andExpect(view().name("supplierSetform"));
 	}
 
+
+	@Test
+	@WithMockUser(roles = "EMPLOYEE")
+	void returnsModelAndViewOnEmptyItemSelectionWhenAddingSetsWithSetSupplier() throws Exception {
+		final MultiValueMap<String, String> itemMap = new LinkedMultiValueMap<>();
+		itemMap.put("itemList", new ArrayList<>());
+
+		mvc.perform(post("/admin/supplier/{id}/sets/add", setSupplier.getId()).params(itemMap))
+				.andExpect(status().isOk())
+				.andExpect(model().attribute("lempty", true))
+				.andExpect(model().attributeExists("itemMap"))
+				.andExpect(model().attribute("suppId", setSupplier.getId()))
+				.andExpect(view().name("supplierSetitems"));
+	}
+
 	@Test
 	@WithMockUser(roles = "EMPLOYEE")
 	void redirectsToSupplierOverviewOnItemSelectionWhenAddingSetsWithWrongSupplier() throws Exception {
