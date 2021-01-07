@@ -1,5 +1,9 @@
 /* CSS RESET */
 
+body {
+    padding-top: 70px;
+}
+
 header.masthead {
   position: relative;
   overflow: hidden;

@@ -1,84 +1,104 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>LKW Mieten</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  	<title>LKW Mieten</title>
+  	<meta charset="utf-8">
+  	<meta name="viewport" content="width=device-width, initial-scale=1">
+  	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	<link th:href="@{/resources/css/style.css}" rel="stylesheet"
+		  href="../static/resources/css/style.css" type="text/css"/>
 </head>
 <body>
 
-<nav th:include="navigation :: navigation"></nav>
+	<nav th:include="navigation :: navigation"></nav>
 
-<div class="container mt-3 mb-3">
-	<div class="row">
-		<div class="col-2"></div>
-		<div class="col-4">
-			<div class="alert alert-danger" th:if="${result > 0}">
-				<h4 class="alert-heading" th:text="#{order.status.error}">Fehler!</h4>
+	<header class="cart-header text-center text-black">
+		<h1 th:text="#{checkout.ready}">Ready to complete your order?</h1>
+	</header>
 
-				<div th:if="${result == 1}" th:text="#{order.status.name}">Ungültiger Name</div>
-				<div th:if="${result == 2}" th:text="#{order.status.address}">Ungültige Adresse</div>
-				<div th:if="${result == 3}" th:text="#{order.status.email}">Ungültige E-Mail</div>
-				<div th:if="${result == 4}" th:text="#{order.status.date}">Ungültiges Datum</div>
-				<div th:if="${result == 5}" th:text="#{order.status.unavailable}">LKW nicht verfügbar</div>
-				<div th:if="${result == 6}" th:text="#{order.status.order}">Fehler bei der Bestellung</div>
-			</div>
+	<div class="container mt-3 mb-3">
+		<div class="row">
+			<div class="col-4">
+				<div class="alert alert-danger" th:if="${result > 0}">
+					<h4 class="alert-heading" th:text="#{order.status.error}">Fehler!</h4>
 
-			<div class="alert alert-success" th:if="${result < 0}">
-				<h4 class="alert-heading" th:text="#{order.status.success}">Erfolgreich!</h4>
-
-				<div th:if="${result == -1}" th:text="#{order.status.available}">LKW verfügbar</div>
-			</div>
-
-			<div class="card bg-light">
-				<div class="card-img-top">
-					<img class="img-fluid" th:src="@{${type.getPicture()}}"
-						 src="../static/resources/img/lkw/smalllkw.jpg" alt="LKW"/>
+					<div th:if="${result == 1}" th:text="#{order.status.name}">Ungültiger Name</div>
+					<div th:if="${result == 2}" th:text="#{order.status.address}">Ungültige Adresse</div>
+					<div th:if="${result == 3}" th:text="#{order.status.email}">Ungültige E-Mail</div>
+					<div th:if="${result == 4}" th:text="#{order.status.date}">Ungültiges Datum</div>
+					<div th:if="${result == 5}" th:text="#{order.status.unavailable}">LKW nicht verfügbar</div>
+					<div th:if="${result == 6}" th:text="#{order.status.order}">Fehler bei der Bestellung</div>
 				</div>
-				<div class="card-body pb-2">
-					<div class="d-flex justify-content-between align-items-baseline">
-						<h4 th:text="#{lkw.size}">Größe:</h4>
-						<h5 class="text-right" th:text="${type.getName()}">5,5t</h5>
-					</div>
-					<div class="d-flex justify-content-between align-items-baseline">
-						<h4 th:text="#{lkw.price}">Preis:</h4>
-						<h5 class="text-right" th:text="${type.getCharterPrice().query(T(furnitureshop.FurnitureShop).MONETARY_QUERY)}">10 EUR</h5>
-					</div>
+
+				<div class="alert alert-success" th:if="${result < 0}">
+					<h4 class="alert-heading" th:text="#{order.status.success}">Erfolgreich!</h4>
+
+					<div th:if="${result == -1}" th:text="#{order.status.available}">LKW verfügbar</div>
 				</div>
 			</div>
 
+			<div class="col-md-4 order-md-2 mb-4 mt-5">
+				<h4 class="d-flex justify-content-between align-items-center mb-3">
+					<span class="text-muted">Order Overview</span>
+				</h4>
+				<ul class="list-group mb-3 sticky-top" >
+					<li class="list-group-item d-flex justify-content-between lh-condensed">
+						<img class="img-fluid" th:src="@{${type.getPicture()}}"
+							 src="../static/resources/img/lkw/smalllkw.jpg" alt="LKW"/>
+					</li>
+					<li class="list-group-item d-flex justify-content-between lh-condensed">
+						<div>
+							<h6 class="my-0" th:text="#{lkw.size} + ' ' + ${type.getName()}">Größe: 5,5t</h6>
+							<small class="text-muted" th:text="#{checkout.lkw}">LKW</small>
+						</div>
+						<span class="text-muted" th:text="${type.getCharterPrice().query(T(furnitureshop.FurnitureShop).MONETARY_QUERY)}">12€</span>
+					</li>
+					<li class="list-group-item d-flex justify-content-between bg-light">
+						<div class="text-info">
+							<h6 class="my-0" th:text="#{checkout.additional.cost}"></h6>
+						</div>
+						<span class="text-info">0.00€</span>
+					</li>
+					<li class="list-group-item d-flex justify-content-between">
+						<span th:text="#{checkout.total}">Total (EUR)</span>
+						<strong th:text="${type.getCharterPrice().query(T(furnitureshop.FurnitureShop).MONETARY_QUERY)}">20€</strong>
+					</li>
+				</ul>
+			</div>
+
+			<div class="col-md-8 order-md-1 mt-5">
+				<h4 class="mb-3" th:text="#{checkout.address}">Billing/Delivery Address</h4>
+				<form method="post" th:object="${lkwform}" th:action="@{/lkw/checkout/{name}(name=${type.name().toLowerCase()})}" role="form" class="form" id="form">
+					<div class="form-group mb-3">
+						<label for="name" th:text="#{order.name}">Name:</label>
+						<input type="text" name="name" th:value="*{name}" class="form-control form-control-lg rounded-pill" id="name" required th:placeholder="#{order.name.placeholder}">
+					</div>
+					<div class="form-group mb-3">
+						<label for="address" th:text="#{order.address}">Adresse:</label>
+						<input type="text" name="address" th:value="*{address}" class="form-control form-control-lg rounded-pill" id="address" required th:placeholder="#{order.address.placeholder}">
+					</div>
+					<div class="form-group mb-3">
+						<label for="email" th:text="#{order.email}">E-Mail:</label>
+						<input type="email" name="email" th:value="*{email}" class="form-control form-control-lg rounded-pill" id="email" required th:placeholder="#{order.email.placeholder}">
+					</div>
+					<div class="form-group mb-3">
+						<label for="date" th:text="#{order.date}">Datum:</label>
+						<div class="d-flex">
+							<input type="date" name="date" th:value="*{date}" class="form-control form-control-lg rounded-pill" id="date" required>
+							<button type="submit" th:text="#{lkw.check}" formnovalidate name="check" class="btn btn-outline-primary ml-3">Prüfen</button>
+						</div>
+					</div>
+					<div class="form-group mt-4">
+						<button type="submit" class="btn btn-lg btn-primary btn-block rounded-pill" th:text="#{lkw.buy}">LKW mieten</button>
+					</div>
+				</form>
+			</div>
+			<div class="col-2"></div>
 		</div>
-		<div class="col-4">
-			<form method="post" th:object="${lkwform}" th:action="@{/lkw/checkout/{name}(name=${type.name().toLowerCase()})}" role="form" class="form" id="form">
-				<div class="form-group">
-		    		<label for="name" th:text="#{order.name}">Name:</label>
-		    		<input type="text" name="name" th:value="*{name}" class="form-control rounded-pill border-0 shadow-sm px-4" id="name" required th:placeholder="#{order.name.placeholder}">
-		  		</div>
-				<div class="form-group">
-					<label for="address" th:text="#{order.address}">Adresse:</label>
-					<input type="text" name="address" th:value="*{address}" class="form-control rounded-pill border-0 shadow-sm px-4" id="address" required th:placeholder="#{order.address.placeholder}">
-				</div>
-		  		<div class="form-group">
-		    		<label for="email" th:text="#{order.email}">E-Mail:</label>
-		    		<input type="email" name="email" th:value="*{email}" class="form-control rounded-pill border-0 shadow-sm px-4" id="email" required th:placeholder="#{order.email.placeholder}">
-		  		</div>
-		  		<div class="form-group">
-					<label for="date" th:text="#{order.date}">Datum:</label>
-					<div class="d-flex">
-						<input type="date" name="date" th:value="*{date}" class="form-control rounded-pill border-0 shadow-sm px-4 mr-md-2" id="date" required>
-						<button type="submit" th:text="#{lkw.check}" formnovalidate name="check" class="btn btn-outline-primary">Prüfen</button>
-					</div>
-				</div>
-		  		<button type="submit" th:text="#{lkw.buy}" name="buy" class="btn btn-primary">LKW mieten</button>
-			</form>
-		</div>
-		<div class="col-2"></div>
 	</div>
-</div>
 
 </body>
 </html> 

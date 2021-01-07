@@ -8,15 +8,19 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link th:href="@{/resources/css/style.css}" rel="stylesheet"
+          href="../static/resources/css/style.css" type="text/css"/>
 </head>
 <body>
 
     <nav th:include="navigation :: navigation"></nav>
 
+    <header class="cart-header text-center text-black">
+        <h1 th:text="#{checkout.ready}">Ready to complete your order?</h1>
+    </header>
+
     <div class="container mt-3 mb-3">
         <div class="row">
-
-            <div class="col-2"></div>
             <div class="col-4">
                 <div class="alert alert-danger" th:if="${result > 0}">
                     <h4 class="alert-heading" th:text="#{order.status.error}">Fehler!</h4>
@@ -26,55 +30,68 @@
                     <div th:if="${result == 3}" th:text="#{order.status.email}">Ungültige E-Mail</div>
                     <div th:if="${result == 4}" th:text="#{order.status.order}">Fehler bei der Bestellung</div>
                 </div>
-
-                <div class="border bg-light rounded p-1">
-                    <h2 class="pt-2 pl-2" th:text="#{checkout.overview}">Übersicht</h2>
-                    <div class="pt-3">
-                        <div class="d-flex justify-content-between align-items-end pl-2 pr-2">
-                            <h5 th:text="#{checkout.total}">Artikelgesamtpreis:</h5>
-                            <h5 th:text="${cart.getPrice().query(T(furnitureshop.FurnitureShop).MONETARY_QUERY)}">10 EUR</h5>
-                        </div>
-                        <div class="d-flex justify-content-between align-items-end pl-2 pr-2">
-                            <h5 th:text="#{checkout.delivery.cost}">ggf. zzgl. Lieferkosten:</h5>
-                            <h5 th:text="${lkwtype.getDelieveryPrice().query(T(furnitureshop.FurnitureShop).MONETARY_QUERY)}">10 EUR</h5>
-                        </div>
-                    </div>
-                </div>
-
             </div>
-            <div class="col-4">
+
+            <div class="col-md-4 order-md-2 mb-4 mt-5">
+                <h4 class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="text-muted">Order Overview</span>
+                </h4>
+
+                <ul class="list-group mb-3 sticky-top" >
+                    <li class="list-group-item d-flex justify-content-between lh-condensed" th:each="cartItem : ${cart}">
+                        <div>
+                            <h6 class="my-0" th:text="${cartItem.getProductName()}">Product name</h6>
+                            <small class="text-muted" th:text="#{checkout.furniture}">Furniture</small>
+                        </div>
+                        <span class="text-muted" th:text="${cartItem.getPrice()}">12€</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between bg-light">
+                        <div class="text-info">
+                            <h6 class="my-0" th:text="#{checkout.delivery.cost}"></h6>
+                            <small th:text="'LKW ' + ${lkwtype.toString()}">LKW Type</small>
+                        </div>
+                        <span class="text-info" th:text="'+' + ${lkwtype.getDelieveryPrice().query(T(furnitureshop.FurnitureShop).MONETARY_QUERY)}">4.99€</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span th:text="#{checkout.total}">Total (EUR)</span>
+                        <strong th:text="${cart.getPrice().add(lkwtype.getDelieveryPrice()).query(T(furnitureshop.FurnitureShop).MONETARY_QUERY)}">20€</strong>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col-md-8 order-md-1 mt-5">
+                <h4 class="mb-3" th:text="#{checkout.address}">Billing/Delivery Address</h4>
                 <form class="form" th:object="${orderform}" method="post" th:action="@{/checkout}">
-                    <div class="form-group">
+                    <div class="form-group mb-3">
                         <label for="name" th:text="#{order.name}">Name:</label>
-                        <input type="text" name="name" th:value="*{name}" class="form-control rounded-pill border-0 shadow-sm px-4" id="name" required th:placeholder="#{order.name.placeholder}">
+                        <input type="text" name="name" th:value="*{name}" class="form-control form-control-lg rounded-pill" id="name" required th:placeholder="#{order.name.placeholder}">
                     </div>
-                    <div class="form-group">
+                    <div class="form-group mb-3">
                         <label for="address" th:text="#{order.address}">Adresse:</label>
-                        <input type="text" name="address" th:value="*{address}" class="form-control rounded-pill border-0 shadow-sm px-4" id="address" required th:placeholder="#{order.address.placeholder}">
+                        <input type="text" name="address" th:value="*{address}" class="form-control form-control-lg rounded-pill" id="address" required th:placeholder="#{order.address.placeholder}">
                     </div>
-                    <div class="form-group">
+                    <div class="form-group mb-3">
                         <label for="email" th:text="#{order.email}">E-Mail:</label>
-                        <input type="email" name="email" th:value="*{email}" class="form-control rounded-pill border-0 shadow-sm px-4" id="email" required th:placeholder="#{order.email.placeholder}">
+                        <input type="email" name="email" th:value="*{email}" class="form-control form-control-lg rounded-pill" id="email" required th:placeholder="#{order.email.placeholder}">
                     </div>
-                    <div class="custom-control custom-radio custom-control-inline">
+                    <div class="custom-control custom-radio custom-control-inline mt-2">
                         <input class="form-check-input" type="radio" name="orderType1" id="orderType1" value="1" th:field="*{index}">
                         <label class="form-check-label" for="orderType1" th:text="#{checkout.delivery}">
                             Lieferung
                         </label>
                     </div>
-                    <div class="custom-control custom-radio custom-control-inline">
+                    <div class="custom-control custom-radio custom-control-inline mt-2">
                         <input class="form-check-input" type="radio" name="orderType2" id="orderType2" value="0" th:field="*{index}">
                         <label class="form-check-label" for="orderType2" th:text="#{checkout.pickup}">
                             Abholung
                         </label>
                     </div>
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-primary mt-3" th:text="#{checkout.complete}">Bestellung abschicken</button>
+                    <div class="form-group mt-4">
+                        <button type="submit" class="btn btn-lg btn-primary btn-block rounded-pill" th:text="#{checkout.complete}">Bestellung abschicken</button>
                     </div>
                 </form>
             </div>
             <div class="col-2"></div>
-
         </div>
     </div>
 
