@@ -45,10 +45,10 @@
                         </div>
                         <span class="text-muted" th:text="${cartItem.getPrice().query(T(furnitureshop.FurnitureShop).MONETARY_QUERY)}">12€</span>
                     </li>
-                    <li class="list-group-item d-flex justify-content-between">
+                    <!--li class="list-group-item d-flex justify-content-between">
                         <span th:text="#{checkout.items}">Total (EUR)</span>
                         <strong th:text="${cart.getPrice().query(T(furnitureshop.FurnitureShop).MONETARY_QUERY)}">20€</strong>
-                    </li>
+                    </li-->
                     <li class="list-group-item d-flex justify-content-between bg-light">
                         <div class="text-info">
                             <h6 class="my-0" th:text="#{checkout.delivery.cost}"></h6>

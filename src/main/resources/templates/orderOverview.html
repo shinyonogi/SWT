@@ -131,8 +131,38 @@
                 <td class="align-middle">
                     <h5 th:text="${item.getItem().getPrice().query(T(furnitureshop.FurnitureShop).MONETARY_QUERY)}">999,99€</h5>
                 </td>
-                <td class="align-middle">
-                    <h5 th:text="${#messages.msgOrNull('order.overview.status.' + item.getStatus().name().toLowerCase())}">paid</h5>
+                <td class="align-middle" style="width: 20%">
+                    <!--h5 th:text="${#messages.msgOrNull('order.overview.status.' + item.getStatus().name().toLowerCase())}">paid</h5-->
+                    <div class="progress" th:if="${item.getStatus().toString() == 'OPEN'}">
+                        <div class="progress-bar progress-bar-striped bg-info" role="progressbar"
+                             aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width:25%">
+                            <span th:text="${#messages.msgOrNull('order.overview.status.' + item.getStatus().name().toLowerCase())}">PAID</span>
+                        </div>
+                    </div>
+                    <div class="progress" th:if="${item.getStatus().toString() == 'PAID'}">
+                        <div class="progress-bar progress-bar-striped bg-success" role="progressbar"
+                             aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width:50%">
+                            <span th:text="${#messages.msgOrNull('order.overview.status.' + item.getStatus().name().toLowerCase())}">PAID</span>
+                        </div>
+                    </div>
+                    <div class="progress" th:if="${item.getStatus().toString() == 'STORED'}">
+                        <div class="progress-bar bg-success progress-bar-striped" role="progressbar"
+                             aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width:75%">
+                            <span th:text="${#messages.msgOrNull('order.overview.status.' + item.getStatus().name().toLowerCase())}">PAID</span>
+                        </div>
+                    </div>
+                    <div class="progress" th:if="${item.getStatus().toString() == 'COMPLETED'}">
+                        <div class="progress-bar bg-success progress-bar-striped" role="progressbar"
+                             aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%">
+                            <span th:text="${#messages.msgOrNull('order.overview.status.' + item.getStatus().name().toLowerCase())}">PAID</span>
+                        </div>
+                    </div>
+                    <div class="progress" th:if="${item.getStatus().toString() == 'CANCELLED'}">
+                        <div class="progress-bar bg-danger progress-bar-striped" role="progressbar"
+                             aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%">
+                            <span th:text="${#messages.msgOrNull('order.overview.status.' + item.getStatus().name().toLowerCase())}">PAID</span>
+                        </div>
+                    </div>
                 </td>
                 <td class="align-middle">
                     <div class="dropdown" sec:authorize="hasRole('EMPLOYEE')">
