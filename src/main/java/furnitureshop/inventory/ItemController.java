@@ -9,6 +9,7 @@ import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -136,7 +137,7 @@ public class ItemController {
 			return String.format("redirect:/admin/supplier/%s/sets/add", suppId);
 		}
 
-		model.addAttribute("itemForm", new ItemForm(0, 0, "", "", "", 0, null, new ArrayList<>()));
+		model.addAttribute("itemForm", new ItemForm(0, 0, "", "", "", 0, Category.CHAIR, new ArrayList<>()));
 		model.addAttribute("suppId", suppId);
 		model.addAttribute("categories", Category.values());
 		model.addAttribute("edit", false);
@@ -157,7 +158,7 @@ public class ItemController {
 	 */
 	@PostMapping(value = "/admin/supplier/{id}/items/add", consumes = {"multipart/form-data"})
 	String addItemForSupplier(@PathVariable("id") long suppId, @ModelAttribute("itemForm") ItemForm form,
-							  @RequestParam("image") MultipartFile file) {
+							  @RequestParam("image") MultipartFile file, Model model) {
 		final Optional<Supplier> supplier = itemService.findSupplierById(suppId);
 
 		if (supplier.isEmpty()) {
@@ -168,8 +169,50 @@ public class ItemController {
 			return String.format("redirect:/admin/supplier/%s/sets/add", suppId);
 		}
 
+		model.addAttribute("itemForm", form);
+		model.addAttribute("suppId", suppId);
+		model.addAttribute("categories", Category.values());
+
+		if (!StringUtils.hasText(form.getName())) {
+			// Display error message
+			model.addAttribute("result", 1);
+			return "supplierItemform";
+		}
+
+		if (!StringUtils.hasText(form.getVariant())) {
+			// Display error message
+			model.addAttribute("result", 2);
+			return "supplierItemform";
+		}
+
+		if (!StringUtils.hasText(form.getDescription())) {
+			// Display error message
+			model.addAttribute("result", 3);
+			return "supplierItemform";
+		}
+
+		if (form.getWeight() <= 0) {
+			// Display error message
+			model.addAttribute("result", 4);
+			return "supplierItemform";
+		}
+
+		if (form.getPrice() < 0) {
+			model.addAttribute("result", 5);
+			return "supplierItemform";
+		}
+
+		if (form.getCategory() == null) {
+			model.addAttribute("result", 6);
+			return "supplierItemform";
+		}
+
 		byte[] image = new byte[0];
 		try {
+			if (file.getBytes().length == 0) {
+				model.addAttribute("result", 7);
+				return "supplierItemform";
+			}
 			image = file.getBytes();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -286,7 +329,8 @@ public class ItemController {
 	 * the SetSupplier when everything was correctly created.
 	 */
 	@PostMapping(value = "/admin/supplier/{suppId}/sets/add/set", consumes = {"multipart/form-data"})
-	String addSetForSupplier(@PathVariable("suppId") long suppId, @ModelAttribute("setForm") ItemForm form, @RequestParam("image") MultipartFile file) {
+	String addSetForSupplier(@PathVariable("suppId") long suppId, @ModelAttribute("setForm") ItemForm form,
+							 @RequestParam("image") MultipartFile file, Model model) {
 		final Optional<Supplier> supplier = itemService.findSupplierById(suppId);
 
 		if (supplier.isEmpty()) {
@@ -297,8 +341,43 @@ public class ItemController {
 			return String.format("redirect:/admin/supplier/%d/items", suppId);
 		}
 
+		model.addAttribute("setForm", form);
+		model.addAttribute("suppId", suppId);
+
+		if (!StringUtils.hasText(form.getName())) {
+			// Display error message
+			model.addAttribute("result", 1);
+			return "supplierSetform";
+		}
+
+		if (!StringUtils.hasText(form.getVariant())) {
+			// Display error message
+			model.addAttribute("result", 2);
+			return "supplierSetform";
+		}
+
+		if (!StringUtils.hasText(form.getDescription())) {
+			// Display error message
+			model.addAttribute("result", 3);
+			return "supplierSetform";
+		}
+
+		MonetaryAmount maxPrice = Currencies.ZERO_EURO;
+		for (Item item : form.getItems()) {
+			maxPrice = maxPrice.add(item.getPrice());
+		}
+
+		if (form.getPrice() < 0 || form.getPrice() > maxPrice.getNumber().doubleValue()) {
+			model.addAttribute("result", 5);
+			return "supplierSetform";
+		}
+
 		byte[] image = new byte[0];
 		try {
+			if (file.getBytes().length == 0) {
+				model.addAttribute("result", 7);
+				return "supplierSetform";
+			}
 			image = file.getBytes();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -370,7 +449,7 @@ public class ItemController {
 	 */
 	@PostMapping(value = "/admin/supplier/{suppId}/items/edit/{itemId}", consumes = {"multipart/form-data"})
 	String editItemForSupplier(@PathVariable("suppId") long suppId, @PathVariable("itemId") Item item,
-			@ModelAttribute("itemForm") ItemForm form, @RequestParam("image") MultipartFile file) {
+			@ModelAttribute("itemForm") ItemForm form, @RequestParam("image") MultipartFile file, Model model) {
 		Optional<Supplier> supplier = itemService.findSupplierById(suppId);
 
 		if (supplier.isEmpty()) {
@@ -379,6 +458,29 @@ public class ItemController {
 
 		if (supplier.get().getId() != item.getSupplier().getId()) {
 			return String.format("redirect:/admin/supplier/%d/items", suppId);
+		}
+
+		model.addAttribute("itemForm", form);
+		model.addAttribute("edit", true);
+		model.addAttribute("suppId", suppId);
+		model.addAttribute("itemId", item.getId());
+		model.addAttribute("categories", Category.values());
+
+		if (!StringUtils.hasText(form.getName())) {
+			// Display error message
+			model.addAttribute("result", 1);
+			return "supplierItemform";
+		}
+
+		if (!StringUtils.hasText(form.getDescription())) {
+			// Display error message
+			model.addAttribute("result", 3);
+			return "supplierItemform";
+		}
+
+		if (form.getPrice() < 0) {
+			model.addAttribute("result", 5);
+			return "supplierItemform";
 		}
 
 		item.setName(form.getName());

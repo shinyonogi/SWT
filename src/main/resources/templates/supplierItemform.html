@@ -14,6 +14,29 @@
 <body>
     <nav th:include="navigation :: navigation"></nav>
 
+    <div class="container mt-3 mb-3">
+        <div class="row">
+            <div class="col-4">
+            </div>
+            <div class="col-4">
+                <div class="alert alert-danger" th:if="${result > 0}">
+                <h4 class="alert-heading" th:text="#{supplier.items.status}">Fehler!</h4>
+
+                <div th:if="${result == 1}" th:text="#{supplier.items.status.name}">Ungültiger Name</div>
+                <div th:if="${result == 2}" th:text="#{supplier.items.status.variant}">Ungültige Variante</div>
+                <div th:if="${result == 3}" th:text="#{supplier.items.status.description}">Ungültige Beschreibung</div>
+                <div th:if="${result == 4}" th:text="#{supplier.items.status.weight}">Ungültiges Gewicht</div>
+                <div th:if="${result == 5}" th:text="#{supplier.items.status.price}">Ungültiger Preis</div>
+                <div th:if="${result == 6}" th:text="#{supplier.items.status.category}">Ungültige Kategorie</div>
+                <div th:if="${result == 7}" th:text="#{supplier.items.status.image}">Ungültiges Bild</div>
+                </div>
+            </div>
+            <div class="col-4">
+
+            </div>
+        </div>
+    </div>
+
     <div class="container mt-3 mb-3" th:unless="${edit}">
         <form class="form" enctype="multipart/form-data" th:object="${itemForm}" method="post" th:action="@{/admin/supplier/{id}/items/add(id=${suppId})}">
             <div class="form-group">
@@ -68,8 +91,7 @@
                         <h5 class="card-title" th:text="${item.getName()}">Name</h5>
                         <h5 class="text-dark" th:text="${item.getPrice().query(T(furnitureshop.FurnitureShop).MONETARY_QUERY)}">999,99€</h5>
                         <div class="ml-3">
-                            <input type="checkbox" class="form-check-input" name="items" th:value="${item.getId()}" th:id="${item.getId()}" checked disabled/>
-                            <label class="form-check-label ml-1" th:for="${item.getId()}" th:text="#{supplier.sets.item.add}">Artikel hinzufügen</label>
+                            <input type="hidden" class="form-check-input" name="items" th:value="${item.getId()}" th:id="${item.getId()}" required/>
                         </div>
                     </div>
                 </div>
@@ -104,11 +126,9 @@
                 <label for="price" th:text="#{supplier.items.add.price}">Preis</label>
                 <input type="number" min="0" th:max="${maxPrice}" step=".01" name="price" th:value="*{price}" class="form-control" th:id="price" required>
             </div>
-            <div class="form-group">
+            <div class="form-group hidden">
                 <label for="category" th:text="#{supplier.items.add.category}">Kategorie</label>
-                <select class="form-control" name="category" th:id="category" th:value="*{category}" disabled>
-                    <option th:each="category : ${categories}" th:if="${category == itemForm.getCategory()}" th:text="${category.toString()}"></option>
-                </select>
+                <input type="text" name="category" th:value="*{category}" class="form-control" th:id="category" readonly>
             </div>
             <div class="form-group">
                 <input type="hidden" th:value="${itemId}" name="itemId">
