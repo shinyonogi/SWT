@@ -145,7 +145,7 @@ class OrderController {
 	 */
 	@GetMapping("/checkout")
 	String checkout(@ModelAttribute("cart") Cart cart, Model model) {
-		model.addAttribute("orderform", new OrderForm("", "", "", 0));
+		model.addAttribute("orderform", new OrderForm("", "", "", 1));
 
 		if (cart.isEmpty()) {
 			return "redirect:/cart";
@@ -192,8 +192,14 @@ class OrderController {
 			model.addAttribute("result", 1);
 			return "orderCheckout";
 		}
+		// Check order type is invalid
+		if (form.getIndex() != 0 && form.getIndex() != 1) {
+			// Display error message
+			model.addAttribute("result", 4);
+			return "orderCheckout";
+		}
 		// Check if address is invalid
-		if (!StringUtils.hasText(form.getAddress())) {
+		if (form.getIndex() == 1 && !StringUtils.hasText(form.getAddress())) {
 			// Display error message
 			model.addAttribute("result", 2);
 			return "orderCheckout";
@@ -206,7 +212,9 @@ class OrderController {
 		}
 
 		final ContactInformation contactInformation = new ContactInformation(
-				form.getName(), form.getAddress(), form.getEmail()
+				form.getName(),
+				form.getAddress() != null ? form.getAddress() : "",
+				form.getEmail()
 		);
 
 		final ItemOrder order;
@@ -216,17 +224,11 @@ class OrderController {
 			order = orderService.orderPickupItem(cart, contactInformation);
 		}
 		// Delivery
-		else if (form.getIndex() == 1) {
+		else {
 			order = orderService.orderDelieveryItem(cart, contactInformation);
 
 			model.addAttribute("lkw", ((Delivery) order).getLkw());
 			model.addAttribute("deliveryDate", ((Delivery) order).getDeliveryDate());
-		}
-		// Unknown
-		else {
-			// Display error message
-			model.addAttribute("result", 4);
-			return "orderCheckout";
 		}
 
 		final List<Pair<Item, Integer>> items = new ArrayList<>();

@@ -28,7 +28,7 @@
                             <h6 th:text="#{order.name}"></h6>
                             <div th:text="${order.getContactInformation().getName()}"></div>
                         </div>
-                        <div class="d-flex flex-row align-items-baseline justify-content-between">
+                        <div class="d-flex flex-row align-items-baseline justify-content-between" th:if="${!order.getContactInformation().getAddress().isEmpty()}">
                             <h6 th:text="#{order.address}"></h6>
                             <div th:text="${order.getContactInformation().getAddress()}"></div>
                         </div>
