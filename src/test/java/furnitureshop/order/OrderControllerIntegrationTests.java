@@ -192,16 +192,6 @@ public class OrderControllerIntegrationTests {
 				.andExpect(view().name("orderCheckout"));
 	}
 
-	/*
-	@Test
-	void returnsModelAndViewOrderSummaryIfValuesAreValid() throws Exception {
-		mvc.perform(post("/checkout")
-				.flashAttr("cart", cart)
-				.flashAttr("orderform", orderForm))
-				.andDo(print());
-	}
-	*/
-
 	/**
 	 * returnsModelAndViewOrderSearchWhenYouTryToReachIt() method
 	 * Tests if user can reach the orderSearch page
@@ -249,14 +239,14 @@ public class OrderControllerIntegrationTests {
 
 	@Test
 	void returnsNullWhenChangingOptions() throws Exception {
-		mvc.perform(get("/admin/orders"))
+		mvc.perform(post("/admin/orders"))
 				.andExpect(status().is3xxRedirection());
 	}
 
 	@Test
 	@WithMockUser(roles = "EMPLOYEE")
 	void returnsCustomerOrdersWhenChangingOptions() throws Exception {
-		mvc.perform(get("/admin/orders")
+		mvc.perform(post("/admin/orders")
 				.param("text", "abc")
 				.param("filter", "1")
 				.param("sort", "0")
