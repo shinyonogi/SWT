@@ -15,10 +15,7 @@ import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Stream;
 
 /**
@@ -380,6 +377,45 @@ class OrderController {
 		final ItemOrder itemOrder = ((ItemOrder) order.get());
 
 		orderService.changeItemEntryStatus(itemOrder, itemEntryId, status);
+
+		return String.format("redirect:/order/%s", orderId);
+	}
+
+	/**
+	 * Handles all POST-Request for '/order/{orderId}/changeWholeStatus'.
+	 * Changes the {@link OrderStatus} of an {@link ItemOrderEntry}
+	 *
+	 * @param orderId 	The Identifier of the order
+	 * @param status	The new {@link OrderStatus} of the order
+	 *
+	 * @return	The updates Orderoverview Page
+	 */
+
+
+	@PreAuthorize("hasRole('EMPLOYEE')")
+	@PostMapping("/order/{orderId}/changeWholeStatus")
+	String changeWholeOrder(@PathVariable("orderId") String orderId, @RequestParam("status") OrderStatus status) {
+		final Optional<ShopOrder> order = orderService.findById(orderId);
+
+		if (order.isEmpty() || !(order.get() instanceof ItemOrder)) {
+			return "redirect:/admin/orders";
+		}
+
+		final ItemOrder itemOrder = ((ItemOrder) order.get());
+
+		final List<ItemOrderEntry> entries = itemOrder.getOrderEntries();
+
+		/*
+		for (ItemOrderEntry entry : entries) {
+			orderService.changeItemEntryStatus(itemOrder, entry.getId(), status);
+		}
+		*/
+
+		int list_size = entries.size();
+
+		for(int iter = 0; iter < list_size; iter++) {
+			orderService.changeItemEntryStatus(itemOrder, entries.get(iter).getId(), status);
+		}
 
 		return String.format("redirect:/order/%s", orderId);
 	}
