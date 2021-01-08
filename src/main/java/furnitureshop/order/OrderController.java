@@ -320,7 +320,6 @@ class OrderController {
 			model.addAttribute("cancelable", ((LKWCharter) order).getRentDate().isAfter(businessTime.getTime().toLocalDate()));
 			model.addAttribute("charterDate", ((LKWCharter) order).getRentDate());
 		} else {
-			model.addAttribute("result", 1);
 			return "redirect:/order";
 		}
 
@@ -362,24 +361,20 @@ class OrderController {
 	 * Handles all POST-Request for '/order/{orderId}/changeStatus'.
 	 * Changes the {@link OrderStatus} of an {@link ItemOrderEntry}
 	 *
-	 * @param orderId        The Identifier of the order
-	 * @param status         The new {@link OrderStatus} of the order
-	 * @param itemEntryId    The Identifier of the {@link ItemOrderEntry}
-	 * @param authentication The {@code Spring} {@link Authentication}
+	 * @param orderId     The Identifier of the order
+	 * @param status      The new {@link OrderStatus} of the order
+	 * @param itemEntryId The Identifier of the {@link ItemOrderEntry}
 	 *
 	 * @return The updates Orderoverview Page
 	 */
 	@PreAuthorize("hasRole('EMPLOYEE')")
 	@PostMapping("/order/{orderId}/changeStatus")
 	String changeOrder(@PathVariable("orderId") String orderId, @RequestParam("status") OrderStatus status,
-			@RequestParam("itemEntryId") long itemEntryId, Authentication authentication) {
+			@RequestParam("itemEntryId") long itemEntryId) {
 		final Optional<ShopOrder> order = orderService.findById(orderId);
 
 		if (order.isEmpty() || !(order.get() instanceof ItemOrder)) {
-			if (authentication != null && authentication.isAuthenticated()) {
-				return "redirect:/admin/orders";
-			}
-			return "redirect:/order";
+			return "redirect:/admin/orders";
 		}
 
 		final ItemOrder itemOrder = ((ItemOrder) order.get());

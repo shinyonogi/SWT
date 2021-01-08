@@ -39,11 +39,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-
 /**
  * IntegrationTest for {@link OrderController}
  */
-
 @SpringBootTest
 @AutoConfigureMockMvc
 @ContextConfiguration(classes = FurnitureShop.class)
@@ -150,7 +148,7 @@ public class OrderControllerIntegrationTests {
 				.flashAttr("cart", cart))
 				.andExpect(status().is3xxRedirection())
 				.andExpect(redirectedUrl("/cart"))
-				.andExpect(view().name("redirect:/cart"));
+				.andExpect(redirectedUrl("/cart"));
 	}
 
 	@Test
@@ -160,7 +158,7 @@ public class OrderControllerIntegrationTests {
 				.flashAttr("cart", cart))
 				.andExpect(status().is3xxRedirection())
 				.andExpect(redirectedUrl("/cart"))
-				.andExpect(view().name("redirect:/cart"));
+				.andExpect(redirectedUrl("/cart"));
 	}
 
 	/**
@@ -173,7 +171,7 @@ public class OrderControllerIntegrationTests {
 				.flashAttr("cart", cart))
 				.andExpect(status().is3xxRedirection())
 				.andExpect(redirectedUrl("/cart"))
-				.andExpect(view().name("redirect:/cart"));
+				.andExpect(redirectedUrl("/cart"));
 	}
 
 	/**
@@ -183,7 +181,7 @@ public class OrderControllerIntegrationTests {
 	@Test
 	void returnsModelAndViewCheckoutWhenYouTryToCheckoutWithNoItems() throws Exception {
 		mvc.perform(get("/checkout"))
-				.andExpect(view().name("redirect:/cart"));
+				.andExpect(redirectedUrl("/cart"));
 	}
 
 	@Test
@@ -226,9 +224,19 @@ public class OrderControllerIntegrationTests {
 	}
 
 	@Test
+	void redirectsAfterOrderSearch() throws Exception {
+		final Pickup pickup = orderService.orderPickupItem(cart, contactInformation);
+
+		mvc.perform(post("/order")
+				.param("orderId", pickup.getId().getIdentifier()))
+				.andExpect(status().is3xxRedirection())
+				.andExpect(redirectedUrl("/order/" + pickup.getId().getIdentifier()));
+	}
+
+	@Test
 	void returnsNullWhenYouTryToReachItNotAsAdmin() throws Exception {
 		mvc.perform(get("/admin/orders"))
-				.andExpect(status().is(302));
+				.andExpect(status().is3xxRedirection());
 	}
 
 	@Test
@@ -240,82 +248,103 @@ public class OrderControllerIntegrationTests {
 	}
 
 	@Test
-	void returnsOrderCheckoutWhenYouTryToBuyWithInvalidContactInformation() throws Exception {
-		OrderForm orderForm = new OrderForm("", "", "", 1);
+	void returnsNullWhenChangingOptions() throws Exception {
+		mvc.perform(get("/admin/orders"))
+				.andExpect(status().is3xxRedirection());
+	}
 
+	@Test
+	@WithMockUser(roles = "EMPLOYEE")
+	void returnsCustomerOrdersWhenChangingOptions() throws Exception {
+		mvc.perform(get("/admin/orders")
+				.param("text", "abc")
+				.param("filter", "1")
+				.param("sort", "0")
+				.param("reverse", "false"))
+				.andExpect(status().isOk())
+				.andExpect(view().name("customerOrders"));
+	}
+
+	@Test
+	void returnsOrderCheckoutWhenYouTryToBuyWithInvalidContactInformation() throws Exception {
 		mvc.perform(post("/checkout")
 				.flashAttr("cart", cart)
-				.flashAttr("orderform", orderForm))
+				.param("name", "")
+				.param("address", "Address")
+				.param("email", "1@1")
+				.param("index", "1"))
 				.andExpect(status().isOk())
 				.andExpect(view().name("orderCheckout"))
 				.andExpect(model().attribute("result", 1));
 
-		orderForm = new OrderForm("test", "", "", 1);
-
 		mvc.perform(post("/checkout")
 				.flashAttr("cart", cart)
-				.flashAttr("orderform", orderForm))
+				.param("name", "Name")
+				.param("address", "")
+				.param("email", "1@1")
+				.param("index", "1"))
 				.andExpect(status().isOk())
 				.andExpect(view().name("orderCheckout"))
 				.andExpect(model().attribute("result", 2));
 
-		orderForm = new OrderForm("test", "test", "@", 1);
-
 		mvc.perform(post("/checkout")
 				.flashAttr("cart", cart)
-				.flashAttr("orderform", orderForm))
+				.param("name", "Name")
+				.param("address", "Address")
+				.param("email", "")
+				.param("index", "1"))
 				.andExpect(status().isOk())
 				.andExpect(view().name("orderCheckout"))
 				.andExpect(model().attribute("result", 3));
-	}
 
-	//@Todo
-	/*
-	@Test
-	void testCorrectWeightCalculationInOrderCheckout() throws Exception{
-		Item item2 = new Piece(1, "Stuhl 2", Money.of(59.99, Currencies.EURO), new byte[0], "schwarz",
-				"Stuhl 1 in schwarz.", supplier, 5, Category.CHAIR);
-
-		Cart cart = new Cart();
-		cart.addOrUpdateItem(item2, 5);
-		OrderForm orderForm = new OrderForm("test","test","1@1", 1);
 
 		mvc.perform(post("/checkout")
 				.flashAttr("cart", cart)
-				.flashAttr("orderform", orderForm))
+				.param("name", "Name")
+				.param("address", "Address")
+				.param("email", "")
+				.param("index", "2"))
 				.andExpect(status().isOk())
-				.andExpect(view().name("orderSummary"))
-				.andExpect(model().attribute("lkwtype", LKWType.SMALL));
-
-		Cart cart2 = new Cart();
-		cart2.addOrUpdateItem(item2, 401);
-
-		mvc.perform(post("/checkout")
-				.flashAttr("cart", cart2)
-				.flashAttr("orderform", orderForm))
-				.andExpect(status().isOk())
-				.andExpect(view().name("orderSummary"))
-				.andExpect(model().attribute("lkwtype", LKWType.MEDIUM));
-
-		Cart cart3 = new Cart();
-		cart3.addOrUpdateItem(item2, 801);
-
-		mvc.perform(post("/checkout")
-				.flashAttr("cart", cart3)
-				.flashAttr("orderform", orderForm))
-				.andExpect(status().isOk())
-				.andExpect(view().name("orderSummary"))
-				.andExpect(model().attribute("lkwtype", LKWType.LARGE));
+				.andExpect(view().name("orderCheckout"))
+				.andExpect(model().attribute("result", 4));
 	}
-	*/
+
 	@Test
-	void getOrderOverviewWithNotExistingOrderId() throws Exception {
+	void returnsModelAndViewAfterPickupOrderCheckout() throws Exception {
+		mvc.perform(post("/checkout")
+				.flashAttr("cart", cart)
+				.param("name", "Name")
+				.param("address", "")
+				.param("email", "1@1")
+				.param("index", "0"))
+				.andExpect(status().isOk())
+				.andExpect(view().name("orderSummary"));
+
+		assertEquals(1, orderService.findAll().stream().count());
+	}
+
+	@Test
+	void returnsModelAndViewAfterDeliveryOrderCheckout() throws Exception {
+		mvc.perform(post("/checkout")
+				.flashAttr("cart", cart)
+				.param("name", "Name")
+				.param("address", "Adresse")
+				.param("email", "1@1")
+				.param("index", "1"))
+				.andExpect(status().isOk())
+				.andExpect(view().name("orderSummary"));
+
+		assertEquals(1, orderService.findAll().stream().count());
+	}
+
+	@Test
+	void returnsModelAndViewOrderOverviewWithNotExistingOrderId() throws Exception {
 		mvc.perform(get("/order/someRandomId"))
 				.andExpect(redirectedUrl("/order"));
 	}
 
 	@Test
-	void getOrderOverviewWithPickupOrder() throws Exception {
+	void returnsModelAndViewOrderOverviewWithPickupOrder() throws Exception {
 		final Pickup pickup = orderService.orderPickupItem(cart, contactInformation);
 
 		mvc.perform(get("/order/{id}", pickup.getId().getIdentifier()))
@@ -326,7 +355,7 @@ public class OrderControllerIntegrationTests {
 	}
 
 	@Test
-	void getOrderOverviewWithDeliveryOrder() throws Exception {
+	void returnsModelAndViewOrderOverviewWithDeliveryOrder() throws Exception {
 		final Delivery delivery = orderService.orderDelieveryItem(cart, contactInformation);
 
 		mvc.perform(get("/order/{id}", delivery.getId().getIdentifier()))
@@ -339,7 +368,7 @@ public class OrderControllerIntegrationTests {
 	}
 
 	@Test
-	void getOrderOverviewWithLKWCharter() throws Exception {
+	void returnsModelAndViewOrderOverviewWithLKWCharter() throws Exception {
 		final LocalDate deliveryDate = businessTime.getTime().toLocalDate();
 		final Optional<LKW> olkw = lkwService.createCharterLKW(deliveryDate, LKWType.SMALL);
 		Assert.isTrue(olkw.isPresent(), "LKW Charter konnte nicht erstellt werden");
@@ -357,7 +386,7 @@ public class OrderControllerIntegrationTests {
 	}
 
 	@Test
-	void TestCancelItemOrderWithoutAuthentication() throws Exception {
+	void returnsModelAndViewOrderOverviewCancelItemOrderWithoutAuthentication() throws Exception {
 		final Pickup pickup = orderService.orderPickupItem(cart, contactInformation);
 
 		final String orderId = pickup.getId().getIdentifier();
@@ -371,13 +400,30 @@ public class OrderControllerIntegrationTests {
 		final Optional<ShopOrder> orderPostCancelOptional = orderService.findById(orderId);
 		assertTrue(orderPostCancelOptional.isPresent(), "Order wurde nicht gefunden");
 
-		final ShopOrder orderPostCancel = orderPostCancelOptional.get();
-		assertEquals(itemEntryId, ((ItemOrder) orderPostCancel).getOrderEntries().get(0).getId(), "Das Item wurde nicht erfolgreich storniert");
+		final ItemOrder orderPostCancel = (ItemOrder) orderPostCancelOptional.get();
+		assertEquals(itemEntryId, orderPostCancel.getOrderEntries().get(0).getId(), "Das Item wurde nicht erfolgreich storniert");
+	}
+
+	@Test
+	void redirectOrderOverviewCancelItemWithInvalidOrderWithoutAuthentication() throws Exception {
+		mvc.perform(post("/order/{id}/cancelItem", "random")
+				.param("itemEntryId", "1"))
+				.andExpect(status().is3xxRedirection())
+				.andExpect(redirectedUrl("/order"));
 	}
 
 	@Test
 	@WithMockUser(username = "admin", roles = "EMPLOYEE")
-	void TestChangeOrder() throws Exception {
+	void redirectOrderOverviewCancelItemWithInvalidOrderWithAuthentication() throws Exception {
+		mvc.perform(post("/order/{id}/cancelItem", "random")
+				.param("itemEntryId", "1"))
+				.andExpect(status().is3xxRedirection())
+				.andExpect(redirectedUrl("/admin/orders"));
+	}
+
+	@Test
+	@WithMockUser(username = "admin", roles = "EMPLOYEE")
+	void returnsModelAndViewOrderOverviewChangeOrder() throws Exception {
 		final Pickup pickup = orderService.orderPickupItem(cart, contactInformation);
 
 		final String orderId = pickup.getId().getIdentifier();
@@ -397,7 +443,25 @@ public class OrderControllerIntegrationTests {
 	}
 
 	@Test
-	void TestCancelLkw() throws Exception {
+	void redirectOrderOverviewChangeOrderWithInvalidOrderWithoutAuthentication() throws Exception {
+		mvc.perform(post("/order/{id}/changeStatus", "random")
+				.param("itemEntryId", "1")
+				.param("status", String.valueOf(OrderStatus.STORED)))
+				.andExpect(status().is3xxRedirection());
+	}
+
+	@Test
+	@WithMockUser(username = "admin", roles = "EMPLOYEE")
+	void redirectOrderOverviewChangeOrderWithInvalidOrderWithAuthentication() throws Exception {
+		mvc.perform(post("/order/{id}/changeStatus", "random")
+				.param("itemEntryId", "1")
+				.param("status", String.valueOf(OrderStatus.STORED)))
+				.andExpect(status().is3xxRedirection())
+				.andExpect(redirectedUrl("/admin/orders"));
+	}
+
+	@Test
+	void returnsModelAndViewOrderOverviewCancelLkw() throws Exception {
 		final Optional<LKW> olkw = lkwService.createCharterLKW(businessTime.getTime().toLocalDate(), LKWType.SMALL);
 		Assert.isTrue(olkw.isPresent(), "LKW Charter konnte nicht erstellt werden");
 
@@ -407,6 +471,35 @@ public class OrderControllerIntegrationTests {
 				.andExpect(redirectedUrl("/"));
 
 		assertTrue(orderService.findById(charter.getId().getIdentifier()).isEmpty(), "Die Order wurde nicht gelöscht");
+	}
+
+	@Test
+	@WithMockUser(username = "admin", roles = "EMPLOYEE")
+	void returnsModelAndViewOrderOverviewCancelLkwWithAuthentication() throws Exception {
+		final Optional<LKW> olkw = lkwService.createCharterLKW(businessTime.getTime().toLocalDate(), LKWType.SMALL);
+		Assert.isTrue(olkw.isPresent(), "LKW Charter konnte nicht erstellt werden");
+
+		final LKWCharter charter = lkwService.createLKWOrder(olkw.orElse(null), businessTime.getTime().toLocalDate(), contactInformation);
+
+		mvc.perform(post("/order/{id}/cancelLkw", charter.getId().getIdentifier()))
+				.andExpect(redirectedUrl("/admin/orders"));
+
+		assertTrue(orderService.findById(charter.getId().getIdentifier()).isEmpty(), "Die Order wurde nicht gelöscht");
+	}
+
+	@Test
+	void redirectOrderOverviewCancelLkwWithInvalidOrderWithoutAuthentication() throws Exception {
+		mvc.perform(post("/order/{id}/cancelLkw", "random"))
+				.andExpect(status().is3xxRedirection())
+				.andExpect(redirectedUrl("/order"));
+	}
+
+	@Test
+	@WithMockUser(username = "admin", roles = "EMPLOYEE")
+	void redirectOrderOverviewCancelLkwWithInvalidOrderWithAuthentication() throws Exception {
+		mvc.perform(post("/order/{id}/cancelLkw", "random"))
+				.andExpect(status().is3xxRedirection())
+				.andExpect(redirectedUrl("/admin/orders"));
 	}
 
 }
