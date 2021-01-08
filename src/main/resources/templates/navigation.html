@@ -7,17 +7,19 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css">
 </head>
 <body>
     <div th:fragment="navigation" class="container">
-        <nav class="navbar fixed-top navbar-expand-sm navbar-light bg-light">
+        <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
             <a class="navbar-brand" th:href="@{/}">
                 <img th:src="@{/resources/img/gui/logo.png}" src="../static/resources/img/gui/logo.png" height="50px" alt="Logo"/>
             </a>
-            <ul class="navbar-nav mr-auto">
+            <ul class="navbar-nav w-100 nav-justified">
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" th:href="@{/catalog}" th:text="#{navbar.catalog}" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Katalog
+                    <a class="nav-link dropdown-toggle" th:href="@{/catalog}" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-couch"></i>
+                        <span th:text="#{navbar.catalog}">Katalog</span>
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" th:each="category : ${T(furnitureshop.inventory.Category).values()}" th:href="@{/catalog/{category}(category=${category.name().toLowerCase()})}" th:text="${#messages.msgOrNull('navbar.catalog.' + category.name().toLowerCase())}">Chair</a>
@@ -26,25 +28,43 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/lkws}" th:text="#{navbar.lkw}">LKW mieten</a>
-                </li>
-            </ul>
-
-            <ul class="navbar-nav">
-
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/order}" th:text="#{navbar.orders}">Bestellungen</a>
+                    <a class="nav-link" th:href="@{/lkws}">
+                        <i class="fas fa-truck"></i>
+                        <span th:text="#{navbar.lkw}">LKW Mieten</span>
+                        </a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/cart}" th:text="#{navbar.cart}">Warenkorb</a>
+                    <a class="nav-link" th:href="@{/order}">
+                        <i class="fas fa-truck-loading"></i>
+                        <span th:text="#{navbar.orders}">Bestellungen</span></a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/admin/overview}" th:text="#{navbar.admin}">Admin</a>
+                    <a class="nav-link" th:href="@{/cart}">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span th:text="#{navbar.cart}">Warenkorb</span></a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/logout}" sec:authorize="${hasRole('EMPLOYEE')}" th:text="#{navbar.logout}">Logout</a>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" th:href="@{/admin/overview}"  id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-toolbox"></i>
+                        <span th:text="#{navbar.admin}"></span>
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="nav-link" th:href="@{/admin/overview}" sec:authorize="${!hasRole('EMPLOYEE')}">
+                            <i class="fas fa-sign-in-alt"></i>
+                            <span th:text="#{login.button}">Login</span>
+                        </a>
+                        <a class="nav-link" th:href="@{/admin/overview}" sec:authorize="${hasRole('EMPLOYEE')}">
+                            <i class="fas fa-user-circle"></i>
+                            <span th:text="#{navbar.overview}">Übersicht</span>
+                        </a>
+                        <a class="nav-link" th:href="@{/logout}" sec:authorize="${hasRole('EMPLOYEE')}">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span th:text="#{navbar.logout}">Logout</span>
+                        </a>
+                    </div>
                 </li>
             </ul>
         </nav>
