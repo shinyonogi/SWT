@@ -402,19 +402,13 @@ class OrderController {
 		}
 
 		final ItemOrder itemOrder = ((ItemOrder) order.get());
-
 		final List<ItemOrderEntry> entries = itemOrder.getOrderEntries();
 
-		/*
-		for (ItemOrderEntry entry : entries) {
-			orderService.changeItemEntryStatus(itemOrder, entry.getId(), status);
-		}
-		*/
-
-		int list_size = entries.size();
-
-		for(int iter = 0; iter < list_size; iter++) {
-			orderService.changeItemEntryStatus(itemOrder, entries.get(iter).getId(), status);
+		if (entries.size() > 0) {
+			for (int i = 0; i < entries.size() - 1; i++) {
+				itemOrder.changeStatus(entries.get(i).getId(), status);
+			}
+			orderService.changeItemEntryStatus(itemOrder, entries.get(entries.size() - 1).getId(), status);
 		}
 
 		return String.format("redirect:/order/%s", orderId);

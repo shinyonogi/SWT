@@ -61,7 +61,7 @@ public class OrderDataInitializer implements DataInitializer {
 				new ContactInformation("Fred", "Dorfteich 7", "hans@wurst.de")
 		};
 
-		for (int i = 0; i < 15; i++) {
+		for (int i = 0; i < 30; i++) {
 			final Cart cart = new Cart();
 			final int max = random.nextInt(5) + 2;
 
