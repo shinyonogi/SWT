@@ -483,11 +483,23 @@ public class ItemController {
 			return "supplierItemform";
 		}
 
+		if (item instanceof Set) {
+			MonetaryAmount maxPrice = Currencies.ZERO_EURO;
+			for (Item i : ((Set) item).getItems()) {
+				maxPrice = maxPrice.add(i.getPrice());
+			}
+
+			if (form.getPrice() > maxPrice.getNumber().doubleValue()) {
+				model.addAttribute("result", 5);
+				return "supplierItemform";
+			}
+		}
+
 		item.setName(form.getName());
 		item.setPrice(Money.of(form.getPrice(), Currencies.EURO));
 		item.setDescription(form.getDescription());
 
-		if (file != null && !file.isEmpty()) {
+		if (!file.isEmpty()) {
 			try {
 				item.setImage(file.getBytes());
 			} catch (IOException e) {
