@@ -23,6 +23,9 @@ public class ContactInformationTests {
 		assertThrows(IllegalArgumentException.class, () -> new ContactInformation("name", "address", null),
 				"ContactInformation() should throw an IllegalArgumentException if the email argument is invalid!"
 		);
+		assertThrows(IllegalArgumentException.class, () -> new ContactInformation("name", "address", ""),
+				"ContactInformation() should throw an IllegalArgumentException if the email argument is invalid!"
+		);
 	}
 
 	@Test

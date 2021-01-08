@@ -11,6 +11,29 @@
     <link th:href="@{/resources/css/style.css}" rel="stylesheet"
           href="../static/resources/css/style.css" type="text/css"/>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css">
+    <script>
+        function toggle(b) {
+            let add = document.getElementById('address')
+
+            for (let s of ['delivery', 'items', 'sum1', 'sum2']) {
+                let e = document.getElementById(s)
+
+                let vis = s === 'sum2' ? !b : b
+
+                if (vis) {
+                    e.style.removeProperty('content-visibility')
+                    e.style.removeProperty('padding')
+                    e.style.removeProperty('border')
+                } else {
+                    e.style.setProperty('content-visibility', 'hidden')
+                    e.style.setProperty('padding', '0')
+                    e.style.setProperty('border', '0')
+                }
+            }
+
+            add.required = b
+        }
+    </script>
 </head>
 <body>
 
@@ -38,7 +61,7 @@
                     <span class="text-muted" th:text="#{checkout.overview}">Order Overview</span>
                 </h4>
 
-                <ul class="list-group mb-3 sticky-top" >
+                <ul class="list-group mb-3 sticky-top">
                     <li class="list-group-item d-flex justify-content-between lh-condensed" th:each="cartItem : ${cart}">
                         <div>
                             <h6 class="my-0" th:text="${cartItem.getProductName()}">Product name</h6>
@@ -46,20 +69,24 @@
                         </div>
                         <span class="text-muted" th:text="${cartItem.getPrice().query(T(furnitureshop.FurnitureShop).MONETARY_QUERY)}">12€</span>
                     </li>
-                    <!--li class="list-group-item d-flex justify-content-between">
+                    <li class="list-group-item d-flex justify-content-between" id="items">
                         <span th:text="#{checkout.items}">Total (EUR)</span>
                         <strong th:text="${cart.getPrice().query(T(furnitureshop.FurnitureShop).MONETARY_QUERY)}">20€</strong>
-                    </li-->
-                    <li class="list-group-item d-flex justify-content-between bg-light">
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between bg-light" id="delivery">
                         <div class="text-info">
                             <h6 class="my-0" th:text="#{checkout.delivery.cost}"></h6>
                             <small th:text="'LKW ' + ${lkwtype.getName()}">LKW Type</small>
                         </div>
                         <span class="text-info" th:text="'+' + ${lkwtype.getDelieveryPrice().query(T(furnitureshop.FurnitureShop).MONETARY_QUERY)}">4.99€</span>
                     </li>
-                    <li class="list-group-item d-flex justify-content-between">
+                    <li class="list-group-item d-flex justify-content-between" id="sum1">
                         <span th:text="#{checkout.total}">Total (EUR)</span>
                         <strong th:text="${cart.getPrice().add(lkwtype.getDelieveryPrice()).query(T(furnitureshop.FurnitureShop).MONETARY_QUERY)}">20€</strong>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between" id="sum2" style="content-visibility: hidden; padding: 0; border: 0;">
+                        <span th:text="#{checkout.total}">Total (EUR)</span>
+                        <strong th:text="${cart.getPrice().query(T(furnitureshop.FurnitureShop).MONETARY_QUERY)}">20€</strong>
                     </li>
                 </ul>
             </div>
@@ -80,13 +107,13 @@
                         <input type="email" name="email" th:value="*{email}" class="form-control form-control-lg rounded-pill" id="email" required th:placeholder="#{order.email.placeholder}">
                     </div>
                     <div class="custom-control custom-radio custom-control-inline mt-2">
-                        <input class="form-check-input" type="radio" name="orderType1" id="orderType1" value="1" th:field="*{index}">
+                        <input class="form-check-input" type="radio" onchange="toggle(true)" name="orderType1" id="orderType1" value="1" th:field="*{index}">
                         <label class="form-check-label" for="orderType1" th:text="#{checkout.delivery}">
                             Lieferung
                         </label>
                     </div>
                     <div class="custom-control custom-radio custom-control-inline mt-2">
-                        <input class="form-check-input" type="radio" name="orderType2" id="orderType2" value="0" th:field="*{index}">
+                        <input class="form-check-input" type="radio" onchange="toggle(false)" name="orderType2" id="orderType2" value="0" th:field="*{index}">
                         <label class="form-check-label" for="orderType2" th:text="#{checkout.pickup}">
                             Abholung
                         </label>
