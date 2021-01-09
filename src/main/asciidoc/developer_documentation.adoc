@@ -74,7 +74,7 @@ Die Hauptnutzer des Webshops sind Kunden, die bereits mit der üblichen Webseite
 
 == Kontextabgrenzung
 
-image::./models/analysis/context_diagram_eng.png[Kontextdiagramm,100%,100%,pdfwidth=100%,title= "Kontextdiagramm des Projektes {project_name}",align=center]
+image::./models/analysis/context_diagram_eng.png[Kontextdiagramm,100%,100%,pdfwidth=100%,title= "Kontextdiagramm des Projektes Möbelgeschäft",align=center]
 
 == Lösungsstrategie
 === Erfüllung der Qualitätsziele
@@ -88,7 +88,7 @@ image::./models/analysis/context_diagram_eng.png[Kontextdiagramm,100%,100%,pdfwi
 
 * Beschreibung der Architektur anhand der Top-Level-Architektur oder eines Client-Server-Diagramms
 
-image::./models/analysis/top_level_architecture_eng.png[Top-Level-Architektur,100%,100%,pdfwidth=100%,title= "Top-Level-Architektur des Projektes {project_name}",align=center]
+image::./models/analysis/top_level_architecture_eng.png[Top-Level-Architektur,100%,100%,pdfwidth=100%,title= "Top-Level-Architektur des Projektes Möbelgeschäft",align=center]
 
 === Entwurfsentscheidungen
 * Verwendete Muster
@@ -232,7 +232,16 @@ wird die Art der Verwendung dieser externen Klasse in der Spalte *Art der Verwen
 |===
 
 == Laufzeitsicht
-* Darstellung der Komponenteninteraktion anhand eines Sequenzdiagramms, welches die relevantesten Interaktionen darstellt.
+
+image::./models/design/sequence/orderPickupSeq.png[seqPickupOrder,100%,100%,pdfwidth=100%,title= "Sequenzdiagramm - Pickup Order",align=center]
+
+image::./models/design/sequence/orderDeliverySeq.png[seqDeliveryOrder,100%,100%,pdfwidth=100%,title= "Sequenzdiagramm - Delivery Order",align=center]
+
+image::./models/design/sequence/viewCatalogSeq.png[seqCatalog,100%,100%,pdfwidth=100%,title= "Sequenzdiagramm - View Catalog",align=center]
+
+image::./models/design/sequence/viewCategorySeq.png[seqCatalogCat,100%,100%,pdfwidth=100%,title= "Sequenzdiagramm - View Catalog by Category",align=center]
+
+image::./models/design/sequence/viewCustomerOrdersSeq.png[seqCustomerOrders,100%,100%,pdfwidth=100%,title= "Sequenzdiagramm - View Customer Orders",align=center]
 
 == Technische Schulden
 * Auflistung der nicht erreichten Quality Gates und der zugehörigen SonarQube Issues zum Zeitpunkt der Abgabe
