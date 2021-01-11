@@ -56,7 +56,7 @@
       "picture": "chair_2.jpg",
       "variant": "schwarz Akazienholz",
       "description": "BasicPlus in schwarz mit Akazienholz und Armlehnen für einen edlen Look. Der BasicPlus-Stuhl eignet sich gut als Küchenstuhl, da er sehr schlicht ist und eine spezielle wasserabweisende Beschichtung besitzt.",
-      "weight": 7,
+      "weight": 10,
       "category": "chair",
       "supplier": "Herberts schicke Stühle"
     },
@@ -68,7 +68,7 @@
       "picture": "chair_4.jpg",
       "variant": "blau Palisander",
       "description": "Tropic mit blauem Lederpolster und edlem Palisanderholz. Der Tropic-Stuhl eignet sich gut als Küchen- oder Wohnzimmerstuhl, um einen Kaffee mit alten Freunden zu genießen.",
-      "weight": 7,
+      "weight": 10,
       "category": "chair",
       "supplier": "Herberts schicke Stühle"
     },
@@ -80,7 +80,7 @@
       "picture": "chair_6.jpg",
       "variant": "beige Balsaholz",
       "description": "Savanna mit beigen Balsaholz. Der Savanna-Stuhl wurde den Farben der Savanne nachempfunden und ist ein Platz der Erholung. Er eignet sich gut für das Wohnzimmer.",
-      "weight": 8,
+      "weight": 12,
       "category": "chair",
       "supplier": "Herberts schicke Stühle"
     },
@@ -92,7 +92,7 @@
       "picture": "chair_7.jpg",
       "variant": "grau Stoff",
       "description": "Comfort mit grauem Polster und Fußablage. Der Comfort-Sessel ist der Platz zum Abschalten nach der Arbeit.",
-      "weight": 10,
+      "weight": 15,
       "category": "chair",
       "supplier": "Herberts schicke Stühle"
     },
@@ -116,7 +116,7 @@
       "picture": "chair_11.jpg",
       "variant": "navy Leder",
       "description": "Designer mit blau gefärbtem Echtleder und Akazienholz. Der Designer-Stuhl ist ein hochwertiger aber schlicht gehaltener Stuhl.",
-      "weight": 6,
+      "weight": 7,
       "category": "chair",
       "supplier": "Herberts schicke Stühle"
     },
@@ -128,7 +128,7 @@
       "picture": "chair_9.jpg",
       "variant": "braun Leder",
       "description": "Oldtimer mit Lederbezug. Der Oldtimer-Stuhl zeichnet sich durch seine extrem gute Polsterung aus, welche auch nach dem schwersten Tag ein federleichtes Gefühl vermittelt.",
-      "weight": 10,
+      "weight": 15,
       "category": "chair",
       "supplier": "Herberts schicke Stühle"
     },
@@ -140,7 +140,7 @@
       "picture": "chair_5.jpg",
       "variant": "schwarz Leder",
       "description": "Focus mit schwarzem Leder. Der Focus-Sessel schafft durch seine einzigartige Form eine eigene Welt, um Bücher, Musik oder Filme noch mehr genießen zu können.",
-      "weight": 20,
+      "weight": 30,
       "category": "chair",
       "supplier": "Herberts schicke Stühle"
     },
@@ -152,7 +152,7 @@
       "picture": "sofa_4.jpg",
       "variant": "weiß Stoff",
       "description": "Classic in weiß. Die Classic-Couch ist ein Allrounder, dem es an nichts fehlt. Sie hat ein schlichtes, aber elegantes Design, gute Polster und Platz bis für 4 Leute.",
-      "weight": 60,
+      "weight": 80,
       "category": "couch",
       "supplier": "Müller Möbel"
     },
@@ -164,7 +164,7 @@
       "picture": "sofa_8.jpg",
       "variant": "grau Stoff",
       "description": "Basic in grau. Die Basic-Couch ist das Einsteigermodell in die Welt der Sofas. Sie bietet Platz für zwei Personen.",
-      "weight": 40,
+      "weight": 60,
       "category": "couch",
       "supplier": "Müller Möbel"
     },
@@ -176,7 +176,7 @@
       "picture": "sofa_5.jpg",
       "variant": "grau Stoff",
       "description": "Basic+ in grau. Die BasicPlus-Couch ist ein Einsteigermodell in die Welt der Sofas. Sie bietet Platz für drei Personen.",
-      "weight": 50,
+      "weight": 70,
       "category": "couch",
       "supplier": "Müller Möbel"
     },
@@ -188,7 +188,7 @@
       "picture": "sofa_3.jpg",
       "variant": "braun Leder",
       "description": "Vintage mit hellem Leder. Die Vintage-Couch sieht nicht nur cool aus, sondern besitzt auch besonders weiche Polster.",
-      "weight": 55,
+      "weight": 80,
       "category": "couch",
       "supplier": "Müller Möbel"
     },
@@ -200,7 +200,7 @@
       "picture": "sofa_6.jpg",
       "variant": "braun Leder",
       "description": "Oldtimer mit Leder. Die Oldtimer-Couch zeichnet sich durch ihre extrem gute Polsterung und ihren Vintage Look aus.",
-      "weight": 70,
+      "weight": 80,
       "category": "couch",
       "supplier": "Müller Möbel"
     },
@@ -212,7 +212,7 @@
       "picture": "sofa_2_black.jpg",
       "variant": "schwarz Leder",
       "description": "Prestige mit schwarzem Leder. Die Prestige-Couch aus edlem Echtleder bietet zahlreiche Funktionen, wie verstellbare Kopflehnen.",
-      "weight": 130,
+      "weight": 150,
       "category": "couch",
       "supplier": "Müller Möbel"
     },
@@ -224,7 +224,7 @@
       "picture": "sofa_2_brown.jpg",
       "variant": "braun Leder",
       "description": "Prestige mit braunem Leder. Die Prestige-Couch aus edlem Echtleder bietet zahlreiche Funktionen, wie verstellbare Kopflehnen.",
-      "weight": 130,
+      "weight": 150,
       "category": "couch",
       "supplier": "Müller Möbel"
     },
@@ -236,7 +236,7 @@
       "picture": "sofa_7.jpg",
       "variant": "weiß",
       "description": "Prestige-Comfort in weiß. Die Prestige-Comfort-Couch kommt mit extra weichen Lehnen und Kissen und bietet wie die Prestige-Couch ausreichend Platz.",
-      "weight": 120,
+      "weight": 150,
       "category": "couch",
       "supplier": "Müller Möbel"
     },
@@ -332,7 +332,7 @@
       "picture": "table_6.jpg",
       "variant": "weiße Keramik",
       "description": "Ceramic mit weißer Keramikplatte. Der Ceramic-Tisch ist ein flacher stylischer Tisch fürs Wohnzimmer.",
-      "weight": 15,
+      "weight": 20,
       "category": "table",
       "supplier": "Möbelmeister"
     },
