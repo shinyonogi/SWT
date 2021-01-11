@@ -22,9 +22,7 @@ import org.springframework.util.MultiValueMap;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.is;
@@ -276,16 +274,12 @@ public class ItemControllerIntegrationTests {
 	@Test
 	@WithMockUser(roles = "EMPLOYEE")
 	void redirectsToOverviewAfterPieceAddition() throws Exception {
+		ItemForm form = new ItemForm(0, 50, "Item Name", "Variante", "Beschreibung",
+				50.65, Category.CHAIR, Map.of());
+
 		mvc.perform(multipart("/admin/supplier/{id}/items/add", supplier.getId())
 				.file(multipartFile)
-				.param("groupId", "0")
-				.param("weight", "50")
-				.param("name", "Item Name")
-				.param("variant", "Variante")
-				.param("description", "Beschreibung")
-				.param("price", "50.65")
-				.param("category", "CHAIR")
-				.param("items", ""))
+				.flashAttr("itemForm", form))
 				.andExpect(status().is3xxRedirection())
 				.andExpect(redirectedUrl(String.format("/admin/supplier/%s/items", supplier.getId())))
 				.andExpect(view().name(String.format("redirect:/admin/supplier/%s/items", supplier.getId())));
@@ -296,16 +290,12 @@ public class ItemControllerIntegrationTests {
 	@Test
 	@WithMockUser(roles = "EMPLOYEE")
 	void returnsModelAndViewAddPieceWithInvalidName() throws Exception {
+		ItemForm form = new ItemForm(0, 50, "", "Variante", "Beschreibung",
+				50.65, Category.CHAIR, Map.of());
+
 		mvc.perform(multipart("/admin/supplier/{id}/items/add", supplier.getId())
 				.file(multipartFile)
-				.param("groupId", "0")
-				.param("weight", "50")
-				.param("name", "")
-				.param("variant", "Variante")
-				.param("description", "Beschreibung")
-				.param("price", "50.65")
-				.param("category", "CHAIR")
-				.param("items", ""))
+				.flashAttr("itemForm", form))
 				.andExpect(model().attribute("result", is(1)))
 				.andExpect(view().name("supplierItemform"));
 	}
@@ -313,16 +303,12 @@ public class ItemControllerIntegrationTests {
 	@Test
 	@WithMockUser(roles = "EMPLOYEE")
 	void returnsModelAndViewAddPieceWithInvalidVariant() throws Exception {
+		ItemForm form = new ItemForm(0, 100, "Item Name", "", "Beschreibung",
+				99.99, Category.CHAIR, Map.of());
+
 		mvc.perform(multipart("/admin/supplier/{id}/items/add", supplier.getId())
 				.file(multipartFile)
-				.param("groupId", "0")
-				.param("weight", "50")
-				.param("name", "Item Name")
-				.param("variant", "")
-				.param("description", "Beschreibung")
-				.param("price", "50.65")
-				.param("category", "CHAIR")
-				.param("items", ""))
+				.flashAttr("itemForm", form))
 				.andExpect(model().attribute("result", is(2)))
 				.andExpect(view().name("supplierItemform"));
 	}
@@ -330,16 +316,12 @@ public class ItemControllerIntegrationTests {
 	@Test
 	@WithMockUser(roles = "EMPLOYEE")
 	void returnsModelAndViewAddPieceWithInvalidDescription() throws Exception {
+		ItemForm form = new ItemForm(0, 50, "Item Name", "Variante", "",
+				50.65, Category.CHAIR, Map.of());
+
 		mvc.perform(multipart("/admin/supplier/{id}/items/add", supplier.getId())
 				.file(multipartFile)
-				.param("groupId", "0")
-				.param("weight", "50")
-				.param("name", "Item Name")
-				.param("variant", "Variante")
-				.param("description", "")
-				.param("price", "50.65")
-				.param("category", "CHAIR")
-				.param("items", ""))
+				.flashAttr("itemForm", form))
 				.andExpect(model().attribute("result", is(3)))
 				.andExpect(view().name("supplierItemform"));
 	}
@@ -347,16 +329,12 @@ public class ItemControllerIntegrationTests {
 	@Test
 	@WithMockUser(roles = "EMPLOYEE")
 	void returnsModelAndViewAddPieceWithInvalidWeight() throws Exception {
+		ItemForm form = new ItemForm(0, 0, "Item Name", "Variante", "Beschreibung",
+				99.99, Category.CHAIR, Map.of());
+
 		mvc.perform(multipart("/admin/supplier/{id}/items/add", supplier.getId())
 				.file(multipartFile)
-				.param("groupId", "0")
-				.param("weight", "0")
-				.param("name", "Item Name")
-				.param("variant", "Variante")
-				.param("description", "Beschreibung")
-				.param("price", "50.65")
-				.param("category", "CHAIR")
-				.param("items", ""))
+				.flashAttr("itemForm", form))
 				.andExpect(model().attribute("result", is(4)))
 				.andExpect(view().name("supplierItemform"));
 	}
@@ -364,16 +342,12 @@ public class ItemControllerIntegrationTests {
 	@Test
 	@WithMockUser(roles = "EMPLOYEE")
 	void returnsModelAndViewAddPieceWithInvalidPrice() throws Exception {
+		ItemForm form = new ItemForm(0, 50, "Item Name", "Variante", "Beschreibung",
+				-1, Category.CHAIR, Map.of());
+
 		mvc.perform(multipart("/admin/supplier/{id}/items/add", supplier.getId())
 				.file(multipartFile)
-				.param("groupId", "0")
-				.param("weight", "50")
-				.param("name", "Item Name")
-				.param("variant", "Variante")
-				.param("description", "Beschreibung")
-				.param("price", "-1")
-				.param("category", "CHAIR")
-				.param("items", ""))
+				.flashAttr("itemForm", form))
 				.andExpect(model().attribute("result", is(5)))
 				.andExpect(view().name("supplierItemform"));
 	}
@@ -381,16 +355,12 @@ public class ItemControllerIntegrationTests {
 	@Test
 	@WithMockUser(roles = "EMPLOYEE")
 	void returnsModelAndViewAddPieceWithInvalidCategory() throws Exception {
+		ItemForm form = new ItemForm(0, 50, "Item Name", "Variante", "Beschreibung",
+				50.65, null, Map.of());
+
 		mvc.perform(multipart("/admin/supplier/{id}/items/add", supplier.getId())
 				.file(multipartFile)
-				.param("groupId", "0")
-				.param("weight", "50")
-				.param("name", "Item Name")
-				.param("variant", "Variante")
-				.param("description", "Beschreibung")
-				.param("price", "50.65")
-				.param("category", "")
-				.param("items", ""))
+				.flashAttr("itemForm", form))
 				.andExpect(model().attribute("result", is(6)))
 				.andExpect(view().name("supplierItemform"));
 	}
@@ -398,17 +368,13 @@ public class ItemControllerIntegrationTests {
 	@Test
 	@WithMockUser(roles = "EMPLOYEE")
 	void returnsModelAndViewAddPieceWithInvalidImage() throws Exception {
+		ItemForm form = new ItemForm(0, 50, "Item Name", "Variante", "Beschreibung",
+				50.65, Category.CHAIR, Map.of());
+
 		mvc.perform(multipart("/admin/supplier/{id}/items/add", supplier.getId())
 				.file(new MockMultipartFile("image", "test.png",
 						"image/png", new byte[0]))
-				.param("groupId", "0")
-				.param("weight", "50")
-				.param("name", "Item Name")
-				.param("variant", "Variante")
-				.param("description", "Beschreibung")
-				.param("price", "50.65")
-				.param("category", "CHAIR")
-				.param("items", ""))
+				.flashAttr("itemForm", form))
 				.andExpect(model().attribute("result", is(7)))
 				.andExpect(view().name("supplierItemform"));
 	}
@@ -417,17 +383,12 @@ public class ItemControllerIntegrationTests {
 	@WithMockUser(roles = "EMPLOYEE")
 	void redirectsToSupplierOverviewOnPieceAddingWithWrongSupplier() throws Exception {
 		final Supplier supp = new Supplier("wrong", 0.05);
+		ItemForm form = new ItemForm(0, 50, "Item Name", "Variante", "Beschreibung",
+				50.65, Category.CHAIR, Map.of());
 
 		mvc.perform(multipart("/admin/supplier/{id}/items/add", supp.getId())
 				.file(multipartFile)
-				.param("groupId", "0")
-				.param("weight", "50")
-				.param("name", "Item Name")
-				.param("variant", "Variante")
-				.param("description", "Beschreibung")
-				.param("price", "50.65")
-				.param("category", "CHAIR")
-				.param("items", ""))
+				.flashAttr("itemForm", form))
 				.andExpect(status().is3xxRedirection())
 				.andExpect(redirectedUrl("/admin/suppliers"))
 				.andExpect(view().name("redirect:/admin/suppliers"));
@@ -438,16 +399,12 @@ public class ItemControllerIntegrationTests {
 	@Test
 	@WithMockUser(roles = "EMPLOYEE")
 	void redirectsToSetAddOnPieceAddingWithSetSupplier() throws Exception {
+		ItemForm form = new ItemForm(0, 50, "Item Name", "Variante", "Beschreibung",
+				50.65, Category.CHAIR, Map.of());
+
 		mvc.perform(multipart("/admin/supplier/{id}/items/add", setSupplier.getId())
 				.file(multipartFile)
-				.param("groupId", "0")
-				.param("weight", "50")
-				.param("name", "Item Name")
-				.param("variant", "Variante")
-				.param("description", "Beschreibung")
-				.param("price", "50.65")
-				.param("category", "CHAIR")
-				.param("items", ""))
+				.flashAttr("itemForm", form))
 				.andExpect(status().is3xxRedirection())
 				.andExpect(redirectedUrl(String.format("/admin/supplier/%s/sets/add", setSupplier.getId())))
 				.andExpect(view().name(String.format("redirect:/admin/supplier/%s/sets/add", setSupplier.getId())));
@@ -478,7 +435,6 @@ public class ItemControllerIntegrationTests {
 	void returnModelAndViewAddSet() throws Exception {
 		mvc.perform(get("/admin/supplier/{id}/sets/add", setSupplier.getId()))
 				.andExpect(status().isOk())
-				.andExpect(model().attributeExists("itemMap"))
 				.andExpect(model().attribute("suppId", setSupplier.getId()))
 				.andExpect(view().name("supplierSetitems"));
 	}
@@ -497,11 +453,11 @@ public class ItemControllerIntegrationTests {
 	@Test
 	@WithMockUser(roles = "EMPLOYEE")
 	void returnsModelAndViewOnItemSelectionWhenAddingSetsWithSetSupplier() throws Exception {
-		final List<String> itemList = Arrays.asList(stuhl.getId().toString(), sofa_black.getId().toString());
-		final MultiValueMap<String, String> itemMap = new LinkedMultiValueMap<>();
-		itemMap.put("itemList", itemList);
+		ItemForm form = new ItemForm(0, 100, "", "", "",
+				0, Category.SET, Map.of(stuhl, 1, sofa_black, 1));
 
-		mvc.perform(post("/admin/supplier/{id}/sets/add", setSupplier.getId()).params(itemMap))
+		mvc.perform(post("/admin/supplier/{id}/sets/add", setSupplier.getId())
+				.flashAttr("setForm", form))
 				.andExpect(status().isOk())
 				.andExpect(model().attributeExists("setForm"))
 				.andExpect(model().attributeExists("maxPrice"))
@@ -513,13 +469,13 @@ public class ItemControllerIntegrationTests {
 	@Test
 	@WithMockUser(roles = "EMPLOYEE")
 	void returnsModelAndViewOnEmptyItemSelectionWhenAddingSetsWithSetSupplier() throws Exception {
-		final MultiValueMap<String, String> itemMap = new LinkedMultiValueMap<>();
-		itemMap.put("itemList", new ArrayList<>());
+		ItemForm form = new ItemForm(0, 100, "Set Name", "Variante", "Beschreibung",
+				99.99, Category.SET, Map.of());
 
-		mvc.perform(post("/admin/supplier/{id}/sets/add", setSupplier.getId()).params(itemMap))
+		mvc.perform(post("/admin/supplier/{id}/sets/add", setSupplier.getId())
+				.flashAttr("setForm", form))
 				.andExpect(status().isOk())
 				.andExpect(model().attribute("lempty", true))
-				.andExpect(model().attributeExists("itemMap"))
 				.andExpect(model().attribute("suppId", setSupplier.getId()))
 				.andExpect(view().name("supplierSetitems"));
 	}
@@ -528,11 +484,12 @@ public class ItemControllerIntegrationTests {
 	@WithMockUser(roles = "EMPLOYEE")
 	void redirectsToSupplierOverviewOnItemSelectionWhenAddingSetsWithWrongSupplier() throws Exception {
 		final Supplier supp = new Supplier("wrong", 0.05);
-		final List<String> itemList = Arrays.asList(stuhl.getId().toString(), sofa_black.getId().toString());
-		final MultiValueMap<String, String> itemMap = new LinkedMultiValueMap<>();
-		itemMap.put("itemList", itemList);
 
-		mvc.perform(post("/admin/supplier/{id}/sets/add", supp.getId()).params(itemMap))
+		ItemForm form = new ItemForm(0, 100, "Set Name", "Variante", "Beschreibung",
+				99.99, Category.SET, Map.of(stuhl, 1, sofa_black, 1));
+
+		mvc.perform(post("/admin/supplier/{id}/sets/add", supp.getId())
+				.flashAttr("setForm", form))
 				.andExpect(status().is3xxRedirection())
 				.andExpect(redirectedUrl("/admin/suppliers"))
 				.andExpect(view().name("redirect:/admin/suppliers"));
@@ -541,11 +498,11 @@ public class ItemControllerIntegrationTests {
 	@Test
 	@WithMockUser(roles = "EMPLOYEE")
 	void redirectsToAddItemOnItemSelectionWhenAddingSetsWithoutSetSupplier() throws Exception {
-		final List<String> itemList = Arrays.asList(stuhl.getId().toString(), sofa_black.getId().toString());
-		final MultiValueMap<String, String> itemMap = new LinkedMultiValueMap<>();
-		itemMap.put("itemList", itemList);
+		ItemForm form = new ItemForm(0, 100, "Set Name", "Variante", "Beschreibung",
+				99.99, Category.SET, Map.of(stuhl, 1, sofa_black, 1));
 
-		mvc.perform(post("/admin/supplier/{id}/sets/add", supplier.getId()).params(itemMap))
+		mvc.perform(post("/admin/supplier/{id}/sets/add", supplier.getId())
+				.flashAttr("setForm", form))
 				.andExpect(status().is3xxRedirection())
 				.andExpect(redirectedUrl(String.format("/admin/supplier/%s/items", supplier.getId())))
 				.andExpect(view().name(String.format("redirect:/admin/supplier/%s/items", supplier.getId())));
@@ -554,20 +511,12 @@ public class ItemControllerIntegrationTests {
 	@Test
 	@WithMockUser(roles = "EMPLOYEE")
 	void redirectsToOverviewOnSetAddingWithSetSupplier() throws Exception {
-		final List<String> itemList = Arrays.asList(stuhl.getId().toString(), sofa_black.getId().toString());
-		final MultiValueMap<String, String> itemMap = new LinkedMultiValueMap<>();
-		itemMap.put("items", itemList);
+		ItemForm form = new ItemForm(0, 100, "Set Name", "Variante", "Beschreibung",
+				99.99, Category.SET, Map.of(stuhl, 1, sofa_black, 1));
 
 		mvc.perform(multipart("/admin/supplier/{id}/sets/add/set", setSupplier.getId())
 				.file(multipartFile)
-				.param("groupId", "0")
-				.param("weight", "100")
-				.param("name", "Set Name")
-				.param("variant", "Variante")
-				.param("description", "Beschreibung")
-				.param("price", "99.99")
-				.param("category", "SET")
-				.params(itemMap))
+				.flashAttr("setForm", form))
 				.andExpect(status().is3xxRedirection())
 				.andExpect(redirectedUrl(String.format("/admin/supplier/%s/items", setSupplier.getId())))
 				.andExpect(view().name(String.format("redirect:/admin/supplier/%s/items", setSupplier.getId())));
@@ -578,20 +527,12 @@ public class ItemControllerIntegrationTests {
 	@Test
 	@WithMockUser(roles = "EMPLOYEE")
 	void returnsModelAndViewAddSetWithInvalidName() throws Exception {
-		final List<String> itemList = Arrays.asList(stuhl.getId().toString(), sofa_black.getId().toString());
-		final MultiValueMap<String, String> itemMap = new LinkedMultiValueMap<>();
-		itemMap.put("items", itemList);
+		ItemForm form = new ItemForm(0, 50, "", "Variante", "Beschreibung",
+				50.65, Category.SET, Map.of(stuhl, 1, sofa_black, 1));
 
 		mvc.perform(multipart("/admin/supplier/{id}/sets/add/set", setSupplier.getId())
 				.file(multipartFile)
-				.param("groupId", "0")
-				.param("weight", "50")
-				.param("name", "")
-				.param("variant", "Variante")
-				.param("description", "Beschreibung")
-				.param("price", "50.65")
-				.param("category", "SET")
-				.params(itemMap))
+				.flashAttr("setForm", form))
 				.andExpect(model().attribute("result", is(1)))
 				.andExpect(view().name("supplierSetform"));
 	}
@@ -599,20 +540,12 @@ public class ItemControllerIntegrationTests {
 	@Test
 	@WithMockUser(roles = "EMPLOYEE")
 	void returnsModelAndViewAddSetWithInvalidVariant() throws Exception {
-		final List<String> itemList = Arrays.asList(stuhl.getId().toString(), sofa_black.getId().toString());
-		final MultiValueMap<String, String> itemMap = new LinkedMultiValueMap<>();
-		itemMap.put("items", itemList);
+		ItemForm form = new ItemForm(0, 100, "Set Name", "", "Beschreibung",
+				99.99, Category.SET, Map.of(stuhl, 1, sofa_black, 1));
 
 		mvc.perform(multipart("/admin/supplier/{id}/sets/add/set", setSupplier.getId())
 				.file(multipartFile)
-				.param("groupId", "0")
-				.param("weight", "50")
-				.param("name", "Set Name")
-				.param("variant", "")
-				.param("description", "Beschreibung")
-				.param("price", "50.65")
-				.param("category", "SET")
-				.params(itemMap))
+				.flashAttr("setForm", form))
 				.andExpect(model().attribute("result", is(2)))
 				.andExpect(view().name("supplierSetform"));
 	}
@@ -620,20 +553,12 @@ public class ItemControllerIntegrationTests {
 	@Test
 	@WithMockUser(roles = "EMPLOYEE")
 	void returnsModelAndViewAddSetWithInvalidDescription() throws Exception {
-		final List<String> itemList = Arrays.asList(stuhl.getId().toString(), sofa_black.getId().toString());
-		final MultiValueMap<String, String> itemMap = new LinkedMultiValueMap<>();
-		itemMap.put("items", itemList);
+		ItemForm form = new ItemForm(0, 50, "Set Name", "Variante", "",
+				50.65, Category.SET, Map.of(stuhl, 1, sofa_black, 1));
 
 		mvc.perform(multipart("/admin/supplier/{id}/sets/add/set", setSupplier.getId())
 				.file(multipartFile)
-				.param("groupId", "0")
-				.param("weight", "50")
-				.param("name", "Set Name")
-				.param("variant", "Variante")
-				.param("description", "")
-				.param("price", "50.65")
-				.param("category", "SET")
-				.params(itemMap))
+				.flashAttr("setForm", form))
 				.andExpect(model().attribute("result", is(3)))
 				.andExpect(view().name("supplierSetform"));
 	}
@@ -641,33 +566,21 @@ public class ItemControllerIntegrationTests {
 	@Test
 	@WithMockUser(roles = "EMPLOYEE")
 	void returnsModelAndViewAddSetWithInvalidPrice() throws Exception {
-		final List<String> itemList = Arrays.asList(stuhl.getId().toString(), sofa_black.getId().toString());
-		final MultiValueMap<String, String> itemMap = new LinkedMultiValueMap<>();
-		itemMap.put("items", itemList);
+		ItemForm form = new ItemForm(0, 100, "Set Name", "Variante", "Beschreibung",
+				-1, Category.SET, Map.of(stuhl, 1, sofa_black, 1));
 
 		mvc.perform(multipart("/admin/supplier/{id}/sets/add/set", setSupplier.getId())
 				.file(multipartFile)
-				.param("groupId", "0")
-				.param("weight", "50")
-				.param("name", "Set Name")
-				.param("variant", "Variante")
-				.param("description", "Beschreibung")
-				.param("price", "-1")
-				.param("category", "SET")
-				.params(itemMap))
+				.flashAttr("setForm", form))
 				.andExpect(model().attribute("result", is(5)))
 				.andExpect(view().name("supplierSetform"));
 
+		form = new ItemForm(0, 50, "Set Name", "Variante", "Beschreibung",
+				1000, Category.SET, Map.of(stuhl, 1, sofa_black, 1));
+
 		mvc.perform(multipart("/admin/supplier/{id}/sets/add/set", setSupplier.getId())
 				.file(multipartFile)
-				.param("groupId", "0")
-				.param("weight", "50")
-				.param("name", "Item Name")
-				.param("variant", "Variante")
-				.param("description", "Beschreibung")
-				.param("price", "1000")
-				.param("category", "SET")
-				.params(itemMap))
+				.flashAttr("setForm", form))
 				.andExpect(model().attribute("result", is(5)))
 				.andExpect(view().name("supplierSetform"));
 	}
@@ -679,17 +592,13 @@ public class ItemControllerIntegrationTests {
 		final MultiValueMap<String, String> itemMap = new LinkedMultiValueMap<>();
 		itemMap.put("items", itemList);
 
+		ItemForm form = new ItemForm(0, 100, "Set Name", "Variante", "Beschreibung",
+				50, Category.SET, Map.of(stuhl, 1, sofa_black, 1));
+
 		mvc.perform(multipart("/admin/supplier/{id}/sets/add/set", setSupplier.getId())
 				.file(new MockMultipartFile("image", "test.png",
 						"image/png", new byte[0]))
-				.param("groupId", "0")
-				.param("weight", "50")
-				.param("name", "Set Name")
-				.param("variant", "Variante")
-				.param("description", "Beschreibung")
-				.param("price", "50.65")
-				.param("category", "SET")
-				.params(itemMap))
+				.flashAttr("setForm", form))
 				.andExpect(model().attribute("result", is(7)))
 				.andExpect(view().name("supplierSetform"));
 	}
@@ -698,20 +607,13 @@ public class ItemControllerIntegrationTests {
 	@WithMockUser(roles = "EMPLOYEE")
 	void redirectsToOverviewOnSetAddingWithNonexistentSupplier() throws Exception {
 		final Supplier supp = new Supplier("wrong", 0.05);
-		final List<String> itemList = Arrays.asList(stuhl.getId().toString(), sofa_black.getId().toString());
-		final MultiValueMap<String, String> itemMap = new LinkedMultiValueMap<>();
-		itemMap.put("items", itemList);
+
+		ItemForm form = new ItemForm(0, 100, "Set Name", "Variante", "Beschreibung",
+				99.99, Category.SET, Map.of(stuhl, 1, sofa_black, 1));
 
 		mvc.perform(multipart("/admin/supplier/{id}/sets/add/set", supp.getId())
 				.file(multipartFile)
-				.param("groupId", "0")
-				.param("weight", "100")
-				.param("name", "Set Name")
-				.param("variant", "Variante")
-				.param("description", "Beschreibung")
-				.param("price", "99.99")
-				.param("category", "SET")
-				.params(itemMap))
+				.flashAttr("setForm", form))
 				.andExpect(status().is3xxRedirection())
 				.andExpect(redirectedUrl("/admin/suppliers"))
 				.andExpect(view().name("redirect:/admin/suppliers"));
@@ -722,20 +624,12 @@ public class ItemControllerIntegrationTests {
 	@Test
 	@WithMockUser(roles = "EMPLOYEE")
 	void redirectsToOverviewOnSetAddingWithWrongSupplier() throws Exception {
-		final List<String> itemList = Arrays.asList(stuhl.getId().toString(), sofa_black.getId().toString());
-		final MultiValueMap<String, String> itemMap = new LinkedMultiValueMap<>();
-		itemMap.put("items", itemList);
+		ItemForm form = new ItemForm(0, 100, "Set Name", "Variante", "Beschreibung",
+				99.99, Category.SET, Map.of(stuhl, 1, sofa_black, 1));
 
 		mvc.perform(multipart("/admin/supplier/{id}/sets/add/set", supplier.getId())
 				.file(multipartFile)
-				.param("groupId", "0")
-				.param("weight", "100")
-				.param("name", "Set Name")
-				.param("variant", "Variante")
-				.param("description", "Beschreibung")
-				.param("price", "99.99")
-				.param("category", "SET")
-				.params(itemMap))
+				.flashAttr("setForm", form))
 				.andExpect(status().is3xxRedirection())
 				.andExpect(redirectedUrl(String.format("/admin/supplier/%s/items", supplier.getId())))
 				.andExpect(view().name(String.format("redirect:/admin/supplier/%s/items", supplier.getId())));
@@ -796,16 +690,12 @@ public class ItemControllerIntegrationTests {
 	@Test
 	@WithMockUser(roles = "EMPLOYEE")
 	void redirectsAfterSuccessfulEditOfItemWithCorrectSupplier() throws Exception {
+		ItemForm form = new ItemForm(sofa_black.getGroupId(), sofa_black.getWeight(), "Sofa 50", sofa_black.getVariant(), "New",
+				359.99, Category.COUCH, Map.of());
+
 		mvc.perform(multipart("/admin/supplier/{suppId}/items/edit/{itemId}", sofa_black.getSupplier().getId(), sofa_black.getId())
 				.file(multipartFile)
-				.param("groupId", String.valueOf(sofa_black.getGroupId()))
-				.param("weight", String.valueOf(sofa_black.getWeight()))
-				.param("name", "Sofa 50") // changed
-				.param("variant", sofa_black.getVariant())
-				.param("description", "New") // changed
-				.param("price", "359.99") // changed
-				.param("category", "COUCH")
-				.param("items", ""))
+				.flashAttr("itemForm", form))
 				.andExpect(status().is3xxRedirection())
 				.andExpect(redirectedUrl(String.format("/admin/supplier/%d/items", sofa1_black.getSupplier().getId())))
 				.andExpect(view().name(String.format("redirect:/admin/supplier/%d/items", sofa1_black.getSupplier().getId())));
@@ -818,16 +708,12 @@ public class ItemControllerIntegrationTests {
 	@Test
 	@WithMockUser(roles = "EMPLOYEE")
 	void returnsModelAndViewEditItemWithInvalidName() throws Exception {
+		ItemForm form = new ItemForm(sofa_black.getGroupId(), sofa_black.getWeight(), "", sofa_black.getVariant(), "New",
+				359.99, Category.COUCH, Map.of());
+
 		mvc.perform(multipart("/admin/supplier/{suppId}/items/edit/{itemId}", sofa_black.getSupplier().getId(), sofa_black.getId())
 				.file(multipartFile)
-				.param("groupId", String.valueOf(sofa_black.getGroupId()))
-				.param("weight", String.valueOf(sofa_black.getWeight()))
-				.param("name", "")
-				.param("variant", sofa_black.getVariant())
-				.param("description", "New")
-				.param("price", "359.99")
-				.param("category", "COUCH")
-				.param("items", ""))
+				.flashAttr("itemForm", form))
 				.andExpect(model().attribute("result", is(1)))
 				.andExpect(view().name("supplierItemform"));
 	}
@@ -835,16 +721,12 @@ public class ItemControllerIntegrationTests {
 	@Test
 	@WithMockUser(roles = "EMPLOYEE")
 	void returnsModelAndViewEditItemWithInvalidDescription() throws Exception {
+		ItemForm form = new ItemForm(sofa_black.getGroupId(), sofa_black.getWeight(), "Name", sofa_black.getVariant(), "",
+				359.99, Category.COUCH, Map.of());
+
 		mvc.perform(multipart("/admin/supplier/{suppId}/items/edit/{itemId}", sofa_black.getSupplier().getId(), sofa_black.getId())
 				.file(multipartFile)
-				.param("groupId", String.valueOf(sofa_black.getGroupId()))
-				.param("weight", String.valueOf(sofa_black.getWeight()))
-				.param("name", "Name")
-				.param("variant", sofa_black.getVariant())
-				.param("description", "")
-				.param("price", "359.99")
-				.param("category", "COUCH")
-				.param("items", ""))
+				.flashAttr("itemForm", form))
 				.andExpect(model().attribute("result", is(3)))
 				.andExpect(view().name("supplierItemform"));
 	}
@@ -852,33 +734,21 @@ public class ItemControllerIntegrationTests {
 	@Test
 	@WithMockUser(roles = "EMPLOYEE")
 	void returnsModelAndViewEditItemWithInvalidPrice() throws Exception {
+		ItemForm form = new ItemForm(sofa_black.getGroupId(), sofa_black.getWeight(), "Name", sofa_black.getVariant(), "New",
+				-1, Category.COUCH, Map.of());
+
 		mvc.perform(multipart("/admin/supplier/{suppId}/items/edit/{itemId}", sofa_black.getSupplier().getId(), sofa_black.getId())
 				.file(multipartFile)
-				.param("groupId", String.valueOf(sofa_black.getGroupId()))
-				.param("weight", String.valueOf(sofa_black.getWeight()))
-				.param("name", "Name")
-				.param("variant", sofa_black.getVariant())
-				.param("description", "New")
-				.param("price", "-1")
-				.param("category", "COUCH")
-				.param("items", ""))
+				.flashAttr("itemForm", form))
 				.andExpect(model().attribute("result", is(5)))
 				.andExpect(view().name("supplierItemform"));
 
-		final List<String> itemList = Arrays.asList(stuhl.getId().toString(), sofa_black.getId().toString());
-		final MultiValueMap<String, String> itemMap = new LinkedMultiValueMap<>();
-		itemMap.put("items", itemList);
+		form = new ItemForm(set.getGroupId(), set.getWeight(), "Set Name", "Variante", "Beschreibung",
+				1000, Category.SET, Map.of(stuhl, 1, sofa_black, 1));
 
 		mvc.perform(multipart("/admin/supplier/{suppId}/items/edit/{itemId}", set.getSupplier().getId(), set.getId())
 				.file(multipartFile)
-				.param("groupId", String.valueOf(set.getGroupId()))
-				.param("weight", String.valueOf(set.getWeight()))
-				.param("name", "Set Name")
-				.param("variant", "")
-				.param("description", "Beschreibung")
-				.param("price", "1000")
-				.param("category", "SET")
-				.params(itemMap))
+				.flashAttr("itemForm", form))
 				.andExpect(model().attribute("result", is(5)))
 				.andExpect(view().name("supplierItemform"));
 	}
@@ -888,16 +758,12 @@ public class ItemControllerIntegrationTests {
 	void redirectsToItemOverviewWithoutEditOfItemWithNonexistentSupplier() throws Exception {
 		final Supplier supp = new Supplier("wrong", 0.05);
 
+		ItemForm form = new ItemForm(sofa_black.getGroupId(), sofa_black.getWeight(), "Sofa 50", sofa_black.getVariant(), "New",
+				359.99, Category.COUCH, Map.of());
+
 		mvc.perform(multipart("/admin/supplier/{suppId}/items/edit/{itemId}", supp.getId(), sofa_black.getId())
 				.file(multipartFile)
-				.param("groupId", String.valueOf(sofa_black.getGroupId()))
-				.param("weight", String.valueOf(sofa_black.getWeight()))
-				.param("name", "Sofa 50") // changed
-				.param("variant", sofa_black.getVariant())
-				.param("description", "New") // changed
-				.param("price", "359.99") // changed
-				.param("category", "COUCH")
-				.param("items", ""))
+				.flashAttr("itemForm", form))
 				.andExpect(status().is3xxRedirection())
 				.andExpect(redirectedUrl("/admin/suppliers"))
 				.andExpect(view().name("redirect:/admin/suppliers"));
@@ -910,16 +776,12 @@ public class ItemControllerIntegrationTests {
 	@Test
 	@WithMockUser(roles = "EMPLOYEE")
 	void redirectsToItemOverviewWithoutEditOfItemWithWrongSupplier() throws Exception {
+		ItemForm form = new ItemForm(sofa_black.getGroupId(), sofa_black.getWeight(), "Sofa 50", sofa_black.getVariant(), "New",
+				359.99, Category.COUCH, Map.of());
+
 		mvc.perform(multipart("/admin/supplier/{suppId}/items/edit/{itemId}", setSupplier.getId(), sofa_black.getId())
 				.file(multipartFile)
-				.param("groupId", String.valueOf(sofa_black.getGroupId()))
-				.param("weight", String.valueOf(sofa_black.getWeight()))
-				.param("name", "Sofa 50") // changed
-				.param("variant", sofa_black.getVariant())
-				.param("description", "New") // changed
-				.param("price", "359.99") // changed
-				.param("category", "COUCH")
-				.param("items", ""))
+				.flashAttr("itemForm", form))
 				.andExpect(status().is3xxRedirection())
 				.andExpect(redirectedUrl(String.format("/admin/supplier/%d/items", setSupplier.getId())))
 				.andExpect(view().name(String.format("redirect:/admin/supplier/%d/items", setSupplier.getId())));

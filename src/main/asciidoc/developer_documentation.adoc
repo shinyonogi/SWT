@@ -7,6 +7,7 @@
 |===
 |Version | Bearbeitungsdatum   | Autor 
 |0.1	|25.11.2020 | David Schroth, Marc Albrecht, Sebastian Jaster, Edgar Wolfert, Johannes Kaufmann, Shintaro Onogi
+|1.0	|11.01.2021 | David Schroth, Marc Albrecht, Sebastian Jaster, Edgar Wolfert, Johannes Kaufmann, Shintaro Onogi
 |===
 
 == Einführung und Ziele
@@ -74,32 +75,189 @@ Die Hauptnutzer des Webshops sind Kunden, die bereits mit der üblichen Webseite
 
 == Kontextabgrenzung
 
-image::./models/analysis/context_diagram_eng.png[Kontextdiagramm,100%,100%,pdfwidth=100%,title= "Kontextdiagramm des Projektes {project_name}",align=center]
+image::./models/analysis/context_diagram_eng.png[Kontextdiagramm,100%,100%,pdfwidth=100%,title= "Kontextdiagramm des Projektes Möbelgeschäft",align=center]
 
 == Lösungsstrategie
 === Erfüllung der Qualitätsziele
 [options="header"]
 |=== 
 |Qualitätsziel |Lösungsansatz
-|... |...
+|Zuverlässigkeit a|
+* *Erreichbarkeit* Solange keine Systemunabhängigen Störungen vorliegen, läuft das System stabil und ist ohne Probleme erreichbar.
+|Sicherheit a|
+* *Vertraulichkeit* Auf Bestellungen kann nur vom jeweiligen Kunden selbst, Mitarbeitern und Administratoren zugegriffen werden.
+|Benutzerfreundlichkeit a|
+* *Erlernbarkeit* Die Anwendung ist übersichtlich aufgebaut, sodass ihre Funktionsweise von Benutzern schnell erlernt werden kann.
+* *Fehlervermeidung* Fehlerhafte Eingaben werden im System abgefangen und dem Benutzer mitgeteilt.
+* *Gestaltung der Benutzeroberfläche* Sorgt für eine angenehmes und zufriedenstelledes Benutzererlebnis.
+* *Zugänglichkeit* Das System soll für so viele Leute wie möglich gut bedienbar sein. Das wird unter anderem durch klare Kontraste und die Unterstützung mehrerer Sprachen realisiert.
+|Wartbarkeit a|
+* *Modularität* Die Anwendung besteht aus möglichst eigenständigen Bestandteilen, sodass Änderungen eines Bestandteils wenig Auswirkungen auf den Rest der Anwendung haben.
+* *Wiederverwendbarkeit* Bestandteile der Anwendung können mit wenig Aufwand in anderen Bereichen wiederverwendet werden.
+* *Modifizierbarkeit* Die Anwendung kann ohne Qualitätsverlust verändert und erweitert werden.
 |===
 
 === Softwarearchitektur
 
 * Beschreibung der Architektur anhand der Top-Level-Architektur oder eines Client-Server-Diagramms
 
-image::./models/analysis/top_level_architecture_eng.png[Top-Level-Architektur,100%,100%,pdfwidth=100%,title= "Top-Level-Architektur des Projektes {project_name}",align=center]
+image::./models/analysis/top_level_architecture_eng.png[Top-Level-Architektur,100%,100%,pdfwidth=100%,title= "Top-Level-Architektur des Projektes Möbelgeschäft",align=center]
 
 === Entwurfsentscheidungen
 * Verwendete Muster
+- Verwendung des Composite-Pattern um Artikel und Sets zu modellieren
+- Spring MVC
+
 * Persistenz
+- Die Anwendung nutzt *Annotation-basiertes Mapping* um Java Klassen in Tabellen einer Datenbankkonvertieren. Als Datenbank wird *H2* genutzt.
+- Die Persistenz ist standardmäßig deaktiviert. Um sie zu aktivieren, müssen folgende Zeilen in der _application.properties_ nicht mehr auskommentiert sein:
+....
+# spring.datasource.url=jdbc:h2:./db/furnitureshop
+# spring.jpa.hibernate.ddl-auto=update
+....
 * Benutzeroberfläche
+- Benutzung von Bootstrap für die Webseitengestaltung
+
 * Verwendung externer Frameworks
 
 [options="header", cols="1,2"]
 |===
 |Externes Package |Verwendet von (Klasse der eigenen Anwendung)
-|... |... 
+|salespointframework.catalog a| 
+ * OrderService 
+ * Item
+ * ItemCatalog
+ * ItemService
+ * LKW
+ * LKWCatalog
+ * LKWService
+ * ItemOrder
+|salespointframework.core a|
+ * ItemDataInitializer
+ * ItemController
+ * LKWDataInitializer
+ * LKWController
+ * OrderDataInitializer
+ * OrderController
+ * SupplierDataInitializer
+ * SupplierController
+ * ItemService
+ * Set
+ * StaticEntry
+ * LKWType
+ * ItemOrder
+ * LKWCharter
+| salespointframework.order a|
+ * ItemOrder
+ * OrderController
+ * OrderDataInitializer
+ * OrderService
+ * ShopOrder
+| salespointframework.Quantity a|
+ * ItemOrder
+ * OrderController
+ * OrderService
+| salespointframework.SalespointSecurityConfiguration a|
+ * FurnitureShop
+| salespointframework.time a|
+ * LKWController
+ * ItemController
+ * ItemService
+ * OrderController
+ * OrderDataInitializer
+ * OrderService
+| salespointframework.useraccount a|
+ * OrderService
+ * Delivery
+ * ItemOrder
+ * LKWCharter
+ * Pickup
+ * ShopOrder
+| salespointframework.EnableSalespoint a|
+ * FurnitureShop
+| springframework.boot a| 
+ * FurnitureShop
+| springframework.data a|
+ * ItemController
+ * ItemService
+ * Set
+ * LKWCatalog
+ * LKWService
+ * ItemOrder
+ * OrderController
+ * OrderService
+ * SupplierRepository
+ * SupplierService
+| springframework.security a|
+ * FurnitureShop
+ * AdminController
+ * OrderController
+| springframework.ui a|
+ * OrderController
+ * ItemController
+ * LKWController
+ * SupplierController
+| springframework.util a|
+ * Supplier
+ * Category
+ * Item
+ * ItemController
+ * ItemDataInitilizer
+ * ItemService
+ * Piece
+ * Set
+ * Calendar
+ * CalendarEntry
+ * DeliveryEntry
+ * LKW
+ * LKWController
+ * LKWDataInitilizer
+ * LKWService
+ * LKWType
+ * ContactInformation
+ * Delivery
+ * ItemOrder
+ * ItemOrderEntry
+ * LKWCharter
+ * OrderController
+ * OrderDataInitilizer
+ * OrderService
+ * ShopOrder
+ * SupplierController
+ * SupplierDataInitializer
+ * SupplierService
+| springframework.web a| 
+ * ItemController
+ * FurnitureShop
+ * AdminController
+ * ItemForm
+ * LKWController
+ * OrderController
+ * SupplierController
+| sprimgframework.context a|
+ * LKWService
+ * FurnitureShop
+ * ItemService
+| springframework.stereotype a|
+ * OrderController
+ * AdminController
+ * ItemController
+ * LKWController
+ * SupplierController
+ * ItemDataIntitializer
+ * LKWDataInitializer
+ * OrderDataInitializer
+ * SupplierDataInitializer
+ * ItemService
+ * LKWService
+ * OrderService
+ * SupplierService
+| springframework.transaction a|
+ * LKWService
+ * ItemService
+ * SupplierService
+| springframework.format a| 
+ * LKWCharterForm
 |===
 
 == Bausteinsicht
@@ -232,7 +390,16 @@ wird die Art der Verwendung dieser externen Klasse in der Spalte *Art der Verwen
 |===
 
 == Laufzeitsicht
-* Darstellung der Komponenteninteraktion anhand eines Sequenzdiagramms, welches die relevantesten Interaktionen darstellt.
+
+image::./models/design/sequence/orderPickupSeq.png[seqPickupOrder,100%,100%,pdfwidth=100%,title= "Sequenzdiagramm - Pickup Order",align=center]
+
+image::./models/design/sequence/orderDeliverySeq.png[seqDeliveryOrder,100%,100%,pdfwidth=100%,title= "Sequenzdiagramm - Delivery Order",align=center]
+
+image::./models/design/sequence/viewCatalogSeq.png[seqCatalog,100%,100%,pdfwidth=100%,title= "Sequenzdiagramm - View Catalog",align=center]
+
+image::./models/design/sequence/viewCategorySeq.png[seqCatalogCat,100%,100%,pdfwidth=100%,title= "Sequenzdiagramm - View Catalog by Category",align=center]
+
+image::./models/design/sequence/viewCustomerOrdersSeq.png[seqCustomerOrders,100%,100%,pdfwidth=100%,title= "Sequenzdiagramm - View Customer Orders",align=center]
 
 == Technische Schulden
 * Auflistung der nicht erreichten Quality Gates und der zugehörigen SonarQube Issues zum Zeitpunkt der Abgabe

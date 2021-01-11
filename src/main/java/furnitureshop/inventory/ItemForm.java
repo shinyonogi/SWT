@@ -1,8 +1,6 @@
 package furnitureshop.inventory;
 
-import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
+import java.util.Map;
 
 /**
  * This data class is used to parse the input of the user when adding and editing an {@link Item}
@@ -15,11 +13,10 @@ public class ItemForm {
 
 	private final Category category;
 
-	private final List<Item> items;
+	private Map<Item, Integer> items;
 
 	/**
 	 * Creates a new instance of an {@link ItemForm}
-	 *
 	 * @param groupId     The groupId of the item
 	 * @param weight      The weight of the item
 	 * @param name        The name of the item
@@ -29,7 +26,7 @@ public class ItemForm {
 	 * @param category    The {@link Category} of the item
 	 * @param items       Collection of {@link Item} needed for {@link Set}
 	 */
-	public ItemForm(int groupId, int weight, String name, String variant, String description, double price, Category category, List<Item> items) {
+	public ItemForm(int groupId, int weight, String name, String variant, String description, double price, Category category, Map<Item, Integer> items) {
 		this.groupId = groupId;
 		this.weight = weight;
 		this.name = name;
@@ -68,7 +65,9 @@ public class ItemForm {
 		return weight;
 	}
 
-	public List<Item> getItems() {
+	public Map<Item, Integer> getItems() {
 		return items;
 	}
+
+	public void setItems(Map<Item, Integer> items) { this.items = items; }
 }

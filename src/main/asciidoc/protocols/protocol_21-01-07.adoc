@@ -1,0 +1,37 @@
+= Protokoll Gruppe 17
+
+Treffen am 01.01.2021
+
+Ort:      BigBlueButton +
+Beginn:   13:00 Uhr +
+Ende:     14:40 Uhr
+
+__Schriftführer:__ Sebastian Jaster
+
+*Nächstes Treffen:* +
+11.01.2021, 14:50 Uhr, Discord
+
+__Teilnehmer:__
+//Tabellarisch oder Aufzählung, Kennzeichnung von Teilnehmern mit besonderer Rolle (z.B. Kunde)
+
+- Markus Richter
+- David Schroth
+- Marc Albrecht
+- Sebastian Jaster
+- Edgar Wolfert
+- Johannes Kaufmann
+- Shintaro Onogi
+
+== Bemerkungen
+- Muss-Kriterien sind soweit erfüllt
+* Bei Abholung sollte Adresse optional sein bei Bestellaufgabe
+- Cross-Testing (folgendes erhält die andere Gruppe:)
+* kleine Doku für Seitenutzung
+** Credentials für Login
+** bereits bekannte Bugs aufschreiben
+** Besonderheiten, wie z.B. Abweichungen vom Pflichtenheft
+* Pflichtenheft
+* Entwicklerdokumentation
+* aktuelle JAR
+- Entwicklerdokumentation
+* 2-3 Akzeptanztestfälle mal anhand von Sequenzdiagrammen und aktueller Software modellieren
