@@ -7,6 +7,7 @@
 |===
 |Version | Bearbeitungsdatum   | Autor 
 |0.1	|25.11.2020 | David Schroth, Marc Albrecht, Sebastian Jaster, Edgar Wolfert, Johannes Kaufmann, Shintaro Onogi
+|1.0	|11.01.2021 | David Schroth, Marc Albrecht, Sebastian Jaster, Edgar Wolfert, Johannes Kaufmann, Shintaro Onogi
 |===
 
 == Einführung und Ziele
@@ -104,8 +105,19 @@ image::./models/analysis/top_level_architecture_eng.png[Top-Level-Architektur,10
 
 === Entwurfsentscheidungen
 * Verwendete Muster
+- Verwendung des Composite-Pattern um Artikel und Sets zu modellieren
+- Spring MVC
+
 * Persistenz
+- Die Anwendung nutzt *Annotation-basiertes Mapping* um Java Klassen in Tabellen einer Datenbankkonvertieren. Als Datenbank wird *H2* genutzt.
+- Die Persistenz ist standardmäßig deaktiviert. Um sie zu aktivieren, müssen folgende Zeilen in der _application.properties_ nicht mehr auskommentiert sein:
+....
+# spring.datasource.url=jdbc:h2:./db/furnitureshop
+# spring.jpa.hibernate.ddl-auto=update
+....
 * Benutzeroberfläche
+- Benutzung von Bootstrap für die Webseitengestaltung
+
 * Verwendung externer Frameworks
 
 [options="header", cols="1,2"]
