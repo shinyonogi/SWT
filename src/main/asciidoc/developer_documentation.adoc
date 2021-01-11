@@ -125,7 +125,7 @@ image::./models/analysis/top_level_architecture_eng.png[Top-Level-Architektur,10
  * ItemController
  * LKWDataInitializer
  * LKWController
- * OrderDataInitializerr
+ * OrderDataInitializer
  * OrderController
  * SupplierDataInitializer
  * SupplierController
