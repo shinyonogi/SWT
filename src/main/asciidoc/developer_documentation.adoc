@@ -81,7 +81,19 @@ image::./models/analysis/context_diagram_eng.png[Kontextdiagramm,100%,100%,pdfwi
 [options="header"]
 |=== 
 |Qualitätsziel |Lösungsansatz
-|... |...
+|Zuverlässigkeit a|
+* *Erreichbarkeit* Solange keine Systemunabhängigen Störungen vorliegen, läuft das System stabil und ist ohne Probleme erreichbar.
+|Sicherheit a|
+* *Vertraulichkeit* Auf Bestellungen kann nur vom jeweiligen Kunden selbst, Mitarbeitern und Administratoren zugegriffen werden.
+|Benutzerfreundlichkeit a|
+* *Erlernbarkeit* Die Anwendung ist übersichtlich aufgebaut, sodass ihre Funktionsweise von Benutzern schnell erlernt werden kann.
+* *Fehlervermeidung* Fehlerhafte Eingaben werden im System abgefangen und dem Benutzer mitgeteilt.
+* *Gestaltung der Benutzeroberfläche* Sorgt für eine angenehmes und zufriedenstelledes Benutzererlebnis.
+* *Zugänglichkeit* Das System soll für so viele Leute wie möglich gut bedienbar sein. Das wird unter anderem durch klare Kontraste und die Unterstützung mehrerer Sprachen realisiert.
+|Wartbarkeit a|
+* *Modularität* Die Anwendung besteht aus möglichst eigenständigen Bestandteilen, sodass Änderungen eines Bestandteils wenig Auswirkungen auf den Rest der Anwendung haben.
+* *Wiederverwendbarkeit* Bestandteile der Anwendung können mit wenig Aufwand in anderen Bereichen wiederverwendet werden.
+* *Modifizierbarkeit* Die Anwendung kann ohne Qualitätsverlust verändert und erweitert werden.
 |===
 
 === Softwarearchitektur
