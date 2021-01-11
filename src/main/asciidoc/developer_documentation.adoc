@@ -120,7 +120,7 @@ image::./models/analysis/top_level_architecture_eng.png[Top-Level-Architektur,10
  * LKWCatalog
  * LKWService
  * ItemOrder
-|salespointframework.corea a|
+|salespointframework.core a|
  * ItemDataInitializer
  * ItemController
  * LKWDataInitializer
@@ -202,7 +202,7 @@ image::./models/analysis/top_level_architecture_eng.png[Top-Level-Architektur,10
  * LKWDataInitilizer
  * LKWService
  * LKWType
- * ContactInformation#
+ * ContactInformation
  * Delivery
  * ItemOrder
  * ItemOrderEntry
