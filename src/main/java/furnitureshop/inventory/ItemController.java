@@ -137,7 +137,7 @@ public class ItemController {
 			return String.format("redirect:/admin/supplier/%s/sets/add", suppId);
 		}
 
-		model.addAttribute("itemForm", new ItemForm(0, 0, "", "", "", 0, Category.CHAIR, new ArrayList<>()));
+		model.addAttribute("itemForm", new ItemForm(0, 0, "", "", "", 0, null, new HashMap<>()));
 		model.addAttribute("suppId", suppId);
 		model.addAttribute("categories", Category.values());
 		model.addAttribute("edit", false);
@@ -257,13 +257,20 @@ public class ItemController {
 			return String.format("redirect:/admin/supplier/%s/items/add", suppId);
 		}
 
-		final Map<Category, Streamable<Item>> itemMap = new EnumMap<>(Category.class);
+		final Map<Category, Streamable<Item>> itemCategoryMap = new EnumMap<>(Category.class);
 
 		for (Category category : Category.values()) {
-			itemMap.put(category, Streamable.of(itemService.findAllByCategory(category).stream().sorted().toArray(Item[]::new)));
+			itemCategoryMap.put(category, Streamable.of(itemService.findAllByCategory(category).stream().sorted().toArray(Item[]::new)));
 		}
 
-		model.addAttribute("itemMap", itemMap);
+		final Map<Item, Integer> itemMap = new HashMap<>();
+
+		for (Item item : itemService.findAll()) {
+			itemMap.put(item, 0);
+		}
+
+		model.addAttribute("setForm", new ItemForm(0, 0, "", "", "", 0, Category.SET, itemMap));
+		model.addAttribute("itemCategoryMap", itemCategoryMap);
 		model.addAttribute("suppId", suppId);
 
 		return "supplierSetitems";
@@ -274,25 +281,28 @@ public class ItemController {
 	 * Creates a new {@link ItemForm} with the given list of items and binds it to the {@link Model}.
 	 *
 	 * @param suppId   The id of a {@link Supplier}
-	 * @param itemList A {@link List} of selected {@link Item}s to be added to the {@link Set}
+	 * @param form   A {@link ItemForm} with the information about a new {@link Set}
 	 * @param model    The {@code Spring} Page {@link Model}
 	 *
 	 * @return Either redirects to the supplier overview when {@link Supplier} is not found or the template for
 	 * inserting the set information
 	 */
 	@PostMapping("/admin/supplier/{suppId}/sets/add")
-	String getSetForm(@PathVariable("suppId") long suppId, @RequestParam("itemList") Optional<List<Item>> itemList, Model model) {
+	String getSetForm(@PathVariable("suppId") long suppId, @ModelAttribute("setForm") ItemForm form, Model model) {
 		final Optional<Supplier> supplier = itemService.findSupplierById(suppId);
 
-		if (itemList.isEmpty()) {
-			final Map<Category, Streamable<Item>> itemMap = new EnumMap<>(Category.class);
+		form.getItems().entrySet().removeIf(entry -> entry.getValue() == 0);
+
+		if (Collections.frequency(form.getItems().values(), 0) == form.getItems().size()) {
+			final Map<Category, Streamable<Item>> itemCategoryMap = new EnumMap<>(Category.class);
 
 			for (Category category : Category.values()) {
-				itemMap.put(category, Streamable.of(itemService.findAllByCategory(category).stream().sorted().toArray(Item[]::new)));
+				itemCategoryMap.put(category, Streamable.of(itemService.findAllByCategory(category).stream().sorted().toArray(Item[]::new)));
 			}
 
 			model.addAttribute("lempty", true);
-			model.addAttribute("itemMap", itemMap);
+			model.addAttribute("itemCategoryMap", itemCategoryMap);
+			model.addAttribute("setForm", form);
 			model.addAttribute("suppId", suppId);
 
 			return "supplierSetitems";
@@ -307,13 +317,14 @@ public class ItemController {
 		}
 
 		MonetaryAmount maxPrice = Currencies.ZERO_EURO;
-		for (Item item : itemList.get()) {
-			maxPrice = maxPrice.add(item.getPrice());
+		for (Item item : form.getItems().keySet()) {
+			int quant = form.getItems().get(item);
+			maxPrice = maxPrice.add(item.getPrice()).multiply(quant);
 		}
 
-		model.addAttribute("setForm", new ItemForm(0, 0, "", "", "", 0, Category.SET, itemList.get()));
 		model.addAttribute("image", null);
 		model.addAttribute("maxPrice", maxPrice.getNumber());
+		model.addAttribute("setForm", form);
 		model.addAttribute("suppId", suppId);
 		return "supplierSetform";
 	}
@@ -383,6 +394,16 @@ public class ItemController {
 			e.printStackTrace();
 		}
 
+		List<Item> setItems = new ArrayList<>();
+
+		for (Item item : form.getItems().keySet()) {
+			int quantity = form.getItems().get(item);
+			while (quantity > 0) {
+				setItems.add(item);
+				quantity--;
+			}
+		}
+
 		final Set set = new Set(
 				form.getGroupId(),
 				form.getName(),
@@ -391,7 +412,7 @@ public class ItemController {
 				form.getVariant(),
 				form.getDescription(),
 				supplier.get(),
-				form.getItems()
+				setItems
 		);
 
 		itemService.addOrUpdateItem(set);
@@ -426,7 +447,7 @@ public class ItemController {
 			model.addAttribute("maxPrice", set.getPartTotal().getNumber());
 		}
 
-		model.addAttribute("itemForm", new ItemForm(item.getGroupId(), item.getWeight(), item.getName(), item.getVariant(), item.getDescription(), item.getSupplierPrice().getNumber().doubleValue(), item.getCategory(), new ArrayList<>()));
+		model.addAttribute("itemForm", new ItemForm(item.getGroupId(), item.getWeight(), item.getName(), item.getVariant(), item.getDescription(), item.getSupplierPrice().getNumber().doubleValue(), item.getCategory(), new HashMap<>()));
 		model.addAttribute("image", null);
 		model.addAttribute("suppId", suppId);
 		model.addAttribute("itemId", item.getId());

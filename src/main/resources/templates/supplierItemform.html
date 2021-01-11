@@ -82,17 +82,17 @@
 
     <div class="container mt-3 mb-3" th:if="${edit}">
         <div class="row">
-            <div class="col-lg-2 col-md-6 mb-4" th:each="item : ${items}">
+            <div class="col-lg-2 col-md-6 mb-4 d-flex align-items-stretch" th:each="item : ${items}">
                 <div class="card bg-light">
                     <a class="card-img-top">
                         <img class="img-fluid" th:src="@{'/catalog/image/' + ${item.getId().getIdentifier()}}"
                              src="../static/resources/img/inventory/chair_1.jpg" alt="Artikel"/>
                     </a>
-                    <div class="card-body">
+                    <div class="card-body d-flex flex-column">
                         <h5 class="card-title" th:text="${item.getName()}">Name</h5>
-                        <h5 class="text-dark" th:text="${item.getPrice().query(T(furnitureshop.FurnitureShop).MONETARY_QUERY)}">999,99€</h5>
+                        <h5 class="text-dark mt-auto" th:text="${item.getPrice().query(T(furnitureshop.FurnitureShop).MONETARY_QUERY)}">999,99€</h5>
                         <div class="ml-3">
-                            <input type="hidden" class="form-check-input" name="items" th:value="${item.getId()}" th:id="${item.getId()}" required/>
+                            <input type="hidden" name="items" th:value="${item.getId()}" th:id="${item.getId()}"/>
                         </div>
                     </div>
                 </div>
