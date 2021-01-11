@@ -317,9 +317,9 @@ public class ItemController {
 		}
 
 		MonetaryAmount maxPrice = Currencies.ZERO_EURO;
-		for (Item item : form.getItems().keySet()) {
-			int quant = form.getItems().get(item);
-			maxPrice = maxPrice.add(item.getPrice()).multiply(quant);
+		for (Map.Entry<Item, Integer> entry : form.getItems().entrySet()) {
+			MonetaryAmount itemPrice = entry.getKey().getPrice().multiply(entry.getValue());
+			maxPrice = maxPrice.add(itemPrice);
 		}
 
 		model.addAttribute("image", null);
@@ -374,8 +374,9 @@ public class ItemController {
 		}
 
 		MonetaryAmount maxPrice = Currencies.ZERO_EURO;
-		for (Item item : form.getItems()) {
-			maxPrice = maxPrice.add(item.getPrice());
+		for (Map.Entry<Item, Integer> entry : form.getItems().entrySet()) {
+			MonetaryAmount itemPrice = entry.getKey().getPrice().multiply(entry.getValue());
+			maxPrice = maxPrice.add(itemPrice);
 		}
 
 		if (form.getPrice() < 0 || form.getPrice() > maxPrice.getNumber().doubleValue()) {
