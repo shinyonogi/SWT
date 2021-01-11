@@ -1,13 +1,21 @@
 package furnitureshop.lkw;
 
+import furnitureshop.FurnitureShop;
+import furnitureshop.order.OrderService;
+import furnitureshop.order.ShopOrder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.salespointframework.order.OrderManagement;
+import org.salespointframework.time.BusinessTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -16,18 +24,48 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@ContextConfiguration(classes = FurnitureShop.class)
 class LKWControllerIntegrationTests {
 
 	@Autowired
 	MockMvc mvc;
 
+	@Autowired
+	LKWCatalog lkwCatalog;
+
+	@Autowired
+	OrderManagement<ShopOrder> orderManagement;
+
+	@Autowired
+	OrderService orderService;
+
+	@Autowired
+	BusinessTime businessTime;
+
 	LocalDate oldDate, weekendDate, validDate;
 
 	@BeforeEach
 	void setUp() {
+		for (ShopOrder order : orderService.findAll()) {
+			orderManagement.delete(order);
+		}
+
+		lkwCatalog.deleteAll();
+
 		this.oldDate = LocalDate.of(2000, 1, 1);
 		this.weekendDate = LocalDate.of(2023, 3, 19);
 		this.validDate = LocalDate.of(2023, 3, 20);
+
+		for (LKWType type : LKWType.values()) {
+			for (int i = 0; i < 2; i++) {
+				lkwCatalog.save(new LKW(type));
+			}
+		}
+
+		// Reset Time
+		final LocalDateTime time = LocalDateTime.of(2020, 12, 20, 0, 0);
+		final Duration delta = Duration.between(businessTime.getTime(), time);
+		businessTime.forward(delta);
 	}
 
 	@Test

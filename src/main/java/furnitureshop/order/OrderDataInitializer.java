@@ -43,7 +43,7 @@ public class OrderDataInitializer implements DataInitializer {
 	}
 
 	/**
-	 * This method initializes an (dummy-)user.
+	 * This method initializes an (dummy-)user and creates a bunch of dummy orders.
 	 * It returns if a dummy user already exists, creates a new dummy user if it doesn't exist
 	 */
 	@Override
@@ -61,7 +61,7 @@ public class OrderDataInitializer implements DataInitializer {
 				new ContactInformation("Fred", "Dorfteich 7", "hans@wurst.de")
 		};
 
-		for (int i = 0; i < 15; i++) {
+		for (int i = 0; i < 30; i++) {
 			final Cart cart = new Cart();
 			final int max = random.nextInt(5) + 2;
 
@@ -89,7 +89,7 @@ public class OrderDataInitializer implements DataInitializer {
 				}
 			}
 
-			businessTime.forward(Duration.of(-80, ChronoUnit.HOURS));
+			businessTime.forward(Duration.of(-288673, ChronoUnit.SECONDS));
 		}
 
 		businessTime.forward(businessTime.getOffset().negated());

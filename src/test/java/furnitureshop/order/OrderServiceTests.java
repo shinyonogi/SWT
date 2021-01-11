@@ -6,21 +6,29 @@ import furnitureshop.inventory.Item;
 import furnitureshop.inventory.ItemCatalog;
 import furnitureshop.inventory.Piece;
 import furnitureshop.lkw.LKW;
+import furnitureshop.lkw.LKWCatalog;
 import furnitureshop.lkw.LKWService;
 import furnitureshop.lkw.LKWType;
 import furnitureshop.supplier.Supplier;
 import furnitureshop.supplier.SupplierRepository;
+import furnitureshop.supplier.SupplierService;
 import org.javamoney.moneta.Money;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.salespointframework.catalog.Product;
 import org.salespointframework.core.Currencies;
-import org.salespointframework.order.*;
+import org.salespointframework.order.Cart;
+import org.salespointframework.order.CartItem;
+import org.salespointframework.order.OrderLine;
+import org.salespointframework.order.OrderManagement;
 import org.salespointframework.time.BusinessTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 
+import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
@@ -33,13 +41,22 @@ import static org.junit.jupiter.api.Assertions.*;
 public class OrderServiceTests {
 
 	@Autowired
-	OrderManagement<ShopOrder> orderManagement;
-
-	@Autowired
 	ItemCatalog itemCatalog;
 
 	@Autowired
 	SupplierRepository supplierRepository;
+
+	@Autowired
+	LKWCatalog lkwCatalog;
+
+	@Autowired
+	OrderManagement<ShopOrder> orderManagement;
+
+	@Autowired
+	SupplierService supplierService;
+
+	@Autowired
+	LKWService lkwService;
 
 	@Autowired
 	OrderService orderService;
@@ -47,19 +64,23 @@ public class OrderServiceTests {
 	@Autowired
 	BusinessTime businessTime;
 
-	@Autowired
-	LKWService lkwService;
-
 	Cart exampleCart;
 
 	@BeforeEach
 	void setUp() {
-		for (ShopOrder order : orderManagement.findBy(orderService.getDummyUser())) {
+		for (ShopOrder order : orderService.findAll()) {
 			orderManagement.delete(order);
 		}
 
+		lkwCatalog.deleteAll();
 		itemCatalog.deleteAll();
 		supplierRepository.deleteAll();
+
+		for (LKWType type : LKWType.values()) {
+			for (int i = 0; i < 2; i++) {
+				lkwCatalog.save(new LKW(LKWType.SMALL));
+			}
+		}
 
 		final Supplier supplier = new Supplier("test", 0.2);
 		supplierRepository.save(supplier);
@@ -75,119 +96,262 @@ public class OrderServiceTests {
 		this.exampleCart = new Cart();
 
 		exampleCart.addOrUpdateItem(stuhl1, 1);
-		exampleCart.addOrUpdateItem(sofa1_green, 10);
+		exampleCart.addOrUpdateItem(sofa1_green, 2);
+
+		// Reset Time
+		final LocalDateTime time = LocalDateTime.of(2020, 12, 21, 0, 0);
+		final Duration delta = Duration.between(businessTime.getTime(), time);
+		businessTime.forward(delta);
 	}
 
-	/**
-	 * testFindById method
-	 * Tests if u find the matching {@link Order} for a specific Id
-	 */
 	@Test
-	public void testFindById() {
-		ContactInformation exampleContactInformation = new ContactInformation("testName", "testAdresse", "testEmail");
+	void testOrderPickupItemWithInvalidType() {
+		final ContactInformation info = new ContactInformation("testName", "testAdresse", "testEmail");
 
-		Order order = orderService.orderPickupItem(exampleCart, exampleContactInformation);
-		assertEquals(this.orderService.findById(order.getId().getIdentifier()).get(), order, "Die Methode findById" +
-				"returned nicht die richtige Order für eine gegebene ID");
+		assertThrows(IllegalArgumentException.class, () -> orderService.orderPickupItem(null, info),
+				"orderPickupItem() should throw an IllegalArgumentException if the cart argument is invalid!"
+		);
 
-		assertEquals(Optional.empty(), orderService.findById("thisisatestid"), "Es wird kein leeres Optional returned" +
-				" wenn keine Order gefunden wird");
-
+		assertThrows(IllegalArgumentException.class, () -> orderService.orderPickupItem(exampleCart, null),
+				"orderPickupItem() should throw an IllegalArgumentException if the contactInformation argument is invalid!"
+		);
 	}
 
-	/**
-	 * testFindAll method
-	 * Tests if all {@link Order} that are saved in the repository are returned
-	 */
 	@Test
-	public void testFindAll() {
-		for (int i = 0; i < 10; i++) {
-			ContactInformation exampleContactInformation = new ContactInformation("testName", "testAdresse", "testEmail");
-			orderService.orderPickupItem(exampleCart, exampleContactInformation);
-		}
-		assertEquals(this.orderService.findAll().toList().size(), 10, "Es werden nicht alle Bestellungen gefunden und ausgegeben");
+	void testOrderPickupItem() {
+		final ContactInformation info = new ContactInformation("testName", "testAdresse", "testEmail");
 
-	}
+		final Pickup order = orderService.orderPickupItem(exampleCart, info);
 
-	/**
-	 * testOrderDeliveryItem method
-	 * Tests if a {@link Delivery} is booked for the correct delivery date, if all properties of the Order are correctly
-	 * mapped to the Delivery and that the correct Lkw is booked for a specific order
-	 */
-	@Test
-	public void testOrderDeliveryItem() {
-		ContactInformation exampleContactInformation = new ContactInformation("testName", "testAdresse", "testEmail");
-		LocalDate deliveryDate = lkwService.findNextAvailableDeliveryDate(this.businessTime.getTime().toLocalDate().plusDays(2), LKWType.SMALL);
-		LKW lkw = lkwService.createDeliveryLKW(deliveryDate, LKWType.SMALL).get();
+		final Pickup goalOrder = new Pickup(orderService.getDummyUser(), info);
+		exampleCart.addItemsTo(goalOrder);
 
-		Delivery order = orderService.orderDelieveryItem(exampleCart, exampleContactInformation);
+		assertEquals(info, order.getContactInformation(), "orderPickupItem() should use the correct ContactInformation!");
 
-		Delivery goalOrder = (Delivery) exampleCart.addItemsTo(new Delivery(this.orderService.getDummyUser(), exampleContactInformation,
-				lkw, deliveryDate));
-		assertEquals(order.getDeliveryDate(), goalOrder.getDeliveryDate(),
-				"Das Lieferdatum sollte übereinstimmen");
-		Iterator<OrderLine> goalOrderLineIterator = goalOrder.getOrderLines().get().iterator();
-		Iterator<OrderLine> orderOrderLineIterator = order.getOrderLines().get().iterator();
+		final Iterator<OrderLine> goalOrderLineIterator = goalOrder.getOrderLines().get().iterator();
+		final Iterator<OrderLine> orderOrderLineIterator = order.getOrderLines().get().iterator();
+
 		for (int i = 0; i < goalOrder.getOrderLines().get().count(); i++) {
-			OrderLine goalOrderEntry = goalOrderLineIterator.next();
-			OrderLine orderOrderEntry = orderOrderLineIterator.next();
-			assertEquals(goalOrderEntry.getProductName(), orderOrderEntry.getProductName(),
-					"Der Produktname der OrderEntrys sollte übereinstimmen");
-			assertEquals(goalOrderEntry.getPrice(), orderOrderEntry.getPrice(),
-					"Der Preis der OrderEntrys sollte übereinstimmen");
-			assertEquals(goalOrderEntry.getQuantity(), orderOrderEntry.getQuantity(),
-					"Die Anzahl der Produkte in den OrderEntrys sollte übereinstimmen");
+			final OrderLine goalOrderEntry = goalOrderLineIterator.next();
+			final OrderLine orderOrderEntry = orderOrderLineIterator.next();
+
+			assertEquals(goalOrderEntry.getProductName(), orderOrderEntry.getProductName(), "orderPickupItem() should add the correct Item!");
+			assertEquals(goalOrderEntry.getPrice(), orderOrderEntry.getPrice(), "orderPickupItem() should add the correct Item!");
+			assertEquals(goalOrderEntry.getQuantity(), orderOrderEntry.getQuantity(), "orderPickupItem() should add the correct Item!");
 		}
-		assertEquals(order.getContactInformation(), goalOrder.getContactInformation(),
-				"Die Kontaktinformationen sollten übereinstimmen");
-		assertEquals(order.getLkw(), goalOrder.getLkw(), "Die gemieteten LKWs sollten übereinstimmen");
 	}
 
-	/**
-	 * testCancelLKW method
-	 * Tests if a {@link LKW} is properly cancelled
-	 */
 	@Test
-	public void testCancelLKW() {
-		ContactInformation exampleContactInformation = new ContactInformation("testName", "testAdresse", "testEmail");
-		LocalDate deliveryDate = lkwService.findNextAvailableDeliveryDate(this.businessTime.getTime().toLocalDate().plusDays(2), LKWType.SMALL);
-		LKW lkw = lkwService.createDeliveryLKW(deliveryDate, LKWType.SMALL).get();
-		LKWCharter lkwCharter = lkwService.createLKWOrder(lkw, deliveryDate, exampleContactInformation);
-		String lkwCharterIdentifier = lkwCharter.getId().getIdentifier();
-		assertTrue(orderService.cancelLKW(lkwCharter), "Irgendetwas lief beim stornieren des LKWs schief");
-		assertEquals(Optional.empty(), orderService.findById(lkwCharterIdentifier), "Der LKWCharter wurde nicht richtig gelöscht");
+	void testOrderDeliveryItemWithInvalidType() {
+		final ContactInformation info = new ContactInformation("testName", "testAdresse", "testEmail");
+
+		assertThrows(IllegalArgumentException.class, () -> orderService.orderDelieveryItem(null, info),
+				"orderDelieveryItem() should throw an IllegalArgumentException if the cart argument is invalid!"
+		);
+
+		assertThrows(IllegalArgumentException.class, () -> orderService.orderPickupItem(exampleCart, null),
+				"orderDelieveryItem() should throw an IllegalArgumentException if the contactInformation argument is invalid!"
+		);
 	}
 
-	/**
-	 * testRemoveItemFromOrders method
-	 * Tests if {@link Item} are properly removed out of all existing {@link ItemOrder} and that resulting empty {@link ItemOrder}
-	 * are deleted respectively
-	 */
 	@Test
-	public void testRemoveItemFromOrders() {
-		ContactInformation exampleContactInformation = new ContactInformation("testName", "testAdresse", "testEmail");
+	void testOrderDeliveryItem() {
+		final ContactInformation info = new ContactInformation("testName", "testAdresse", "testEmail");
 
-		List<CartItem> itemList = exampleCart.get().collect(Collectors.toList());
+		final LocalDate deliveryDate = businessTime.getTime().toLocalDate().plusDays(2);
 
-		Item item = (Item) itemList.get(0).getProduct();
+		final LKW lkw = lkwService.createDeliveryLKW(deliveryDate, LKWType.SMALL).orElse(null);
+		final Delivery order = orderService.orderDelieveryItem(exampleCart, info);
 
-		Pickup order = orderService.orderPickupItem(exampleCart, exampleContactInformation);
+		final Delivery goalOrder = new Delivery(orderService.getDummyUser(), info, lkw, deliveryDate);
+		exampleCart.addItemsTo(goalOrder);
+
+		assertEquals(deliveryDate, order.getDeliveryDate(), "orderDelieveryItem() should use the correct DeliveryDate!");
+		assertEquals(info, order.getContactInformation(), "orderDelieveryItem() should use the correct ContactInformation!");
+		assertEquals(lkw, order.getLkw(), "orderDelieveryItem() should use the correct LKW!");
+
+		final Iterator<OrderLine> goalOrderLineIterator = goalOrder.getOrderLines().get().iterator();
+		final Iterator<OrderLine> orderOrderLineIterator = order.getOrderLines().get().iterator();
+
+		for (int i = 0; i < goalOrder.getOrderLines().get().count(); i++) {
+			final OrderLine goalOrderEntry = goalOrderLineIterator.next();
+			final OrderLine orderOrderEntry = orderOrderLineIterator.next();
+
+			assertEquals(goalOrderEntry.getProductName(), orderOrderEntry.getProductName(), "orderDelieveryItem() should add the correct Item!");
+			assertEquals(goalOrderEntry.getPrice(), orderOrderEntry.getPrice(), "orderDelieveryItem() should add the correct Item!");
+			assertEquals(goalOrderEntry.getQuantity(), orderOrderEntry.getQuantity(), "orderDelieveryItem() should add the correct Item!");
+		}
+	}
+
+	@Test
+	void testOrderLKWWithInvalidType() {
+		final ContactInformation info = new ContactInformation("testName", "testAdresse", "testEmail");
+		final LocalDate date = businessTime.getTime().toLocalDate();
+		final LKW lkw = lkwService.createCharterLKW(date, LKWType.SMALL).orElse(null);
+
+		assertThrows(IllegalArgumentException.class, () -> orderService.orderLKW(null, date, info),
+				"orderLKW() should throw an IllegalArgumentException if the lkw argument is invalid!"
+		);
+
+		assertThrows(IllegalArgumentException.class, () -> orderService.orderLKW(lkw, null, info),
+				"orderLKW() should throw an IllegalArgumentException if the date argument is invalid!"
+		);
+
+		assertThrows(IllegalArgumentException.class, () -> orderService.orderLKW(lkw, date, null),
+				"orderLKW() should throw an IllegalArgumentException if the contactInformation argument is invalid!"
+		);
+	}
+
+	@Test
+	void testOrderLKW() {
+		final ContactInformation info = new ContactInformation("testName", "testAdresse", "testEmail");
+
+		final LocalDate date = businessTime.getTime().toLocalDate();
+		final LKW lkw = lkwService.createCharterLKW(date, LKWType.SMALL).orElse(null);
+
+		final LKWCharter order = orderService.orderLKW(lkw, date, info);
+
+		assertEquals(date, order.getRentDate(), "orderLKW() should use the correct RentDate!");
+		assertEquals(info, order.getContactInformation(), "orderLKW() should use the correct ContactInformation!");
+		assertEquals(lkw, order.getLkw(), "orderLKW() should use the correct LKW!");
+	}
+
+	@Test
+	void testChangeItemEntryStatusWithInvalidType() {
+		final ContactInformation info = new ContactInformation("testName", "testAdresse", "testEmail");
+
+		final Pickup order = new Pickup(orderService.getDummyUser(), info);
+
+		assertThrows(IllegalArgumentException.class, () -> orderService.changeItemEntryStatus(null, 0, OrderStatus.CANCELLED),
+				"changeItemEntryStatus() should throw an IllegalArgumentException if the order argument is invalid!"
+		);
+
+		assertThrows(IllegalArgumentException.class, () -> orderService.changeItemEntryStatus(order, 0, null),
+				"changeItemEntryStatus() should throw an IllegalArgumentException if the status argument is invalid!"
+		);
+	}
+
+	@Test
+	void testChangeItemEntryStatus() {
+		final ContactInformation info = new ContactInformation("testName", "testAdresse", "testEmail");
+
+		Pickup order = orderService.orderPickupItem(exampleCart, info);
+		order = (Pickup) orderService.findById(order.getId().getIdentifier()).orElse(null);
+
+		final long id = order.getOrderEntries().get(0).getId();
+
+		assertTrue(orderService.changeItemEntryStatus(order, id, OrderStatus.COMPLETED), "changeItemEntryStatus() should change the status!");
+		assertEquals(OrderStatus.COMPLETED, order.getOrderEntries().get(0).getStatus(), "changeItemEntryStatus() should change the status!");
+
+		assertFalse(orderService.changeItemEntryStatus(order, -1, OrderStatus.COMPLETED), "changeItemEntryStatus() should not change the status!");
+	}
+
+	@Test
+	void testCancelLKWWithInvalidType() {
+		assertThrows(IllegalArgumentException.class, () -> orderService.cancelLKW(null),
+				"cancelLKW() should throw an IllegalArgumentException if the order argument is invalid!"
+		);
+	}
+
+	@Test
+	void testCancelLKW() {
+		final ContactInformation info = new ContactInformation("testName", "testAdresse", "testEmail");
+
+		final LocalDate date = businessTime.getTime().toLocalDate();
+		final LKW lkw = lkwService.createCharterLKW(date, LKWType.SMALL).orElse(null);
+
+		final LKWCharter order = orderService.orderLKW(lkw, date, info);
+		final String id = order.getId().getIdentifier();
+
+		assertTrue(orderService.cancelLKW(order), "cancelLKW() should return the correct value!");
+		assertTrue(orderService.findById(id).isEmpty(), "cancelLKW() should cancel the Order!");
+	}
+
+	@Test
+	void testRemoveItemFromOrdersWithInvalidType() {
+		assertThrows(IllegalArgumentException.class, () -> orderService.removeItemFromOrders(null),
+				"cancelLKW() should throw an IllegalArgumentException if the item argument is invalid!"
+		);
+	}
+
+	@Test
+	void testRemoveItemFromOrders() {
+		final ContactInformation info = new ContactInformation("testName", "testAdresse", "testEmail");
+		final List<Product> items = exampleCart.get().map(CartItem::getProduct).collect(Collectors.toList());
+		final Item item = (Item) items.get(0);
+
+		final String id = orderService.orderPickupItem(exampleCart, info).getId().getIdentifier();
 		orderService.removeItemFromOrders(item);
 
-		assertTrue(() -> {
-			for (ItemOrderEntry entry : ((ItemOrder) (orderService.findById(order.getId().getIdentifier()).get())).getOrderEntries()) {
-				if (entry.getItem() == item) {
-					return false;
-				}
-			}
-			return true;
-		}, "Die Items wurden nicht richtig aus der Bestellung gelöscht");
+		final ItemOrder itemOrder = (ItemOrder) orderService.findById(id).get();
+		assertTrue(() -> itemOrder.getOrderEntries().stream().noneMatch(entry -> entry.getItem().equals(item)), "removeItemFromOrders() should remove simular Items!");
 
-		Item item2 = (Item) itemList.get(1).getProduct();
-		assertNotEquals(item, item2, "Die Items sind gleich");
+		final Item item2 = (Item) items.get(1);
 
 		orderService.removeItemFromOrders(item2);
-		assertEquals(Optional.empty(), orderService.findById(order.getId().getIdentifier()), "Die leere Order wurde nicht entfernt");
-
+		assertTrue(orderService.findById(id).isEmpty(), "removeItemFromOrders() should remove empty Orders!");
 	}
+
+	@Test
+	void testGetStatusWithInvalidType() {
+		assertThrows(IllegalArgumentException.class, () -> orderService.getStatus(null),
+				"cancelLKW() should throw an IllegalArgumentException if the order argument is invalid!"
+		);
+	}
+
+	@Test
+	void testGetStatus() {
+		final ContactInformation info = new ContactInformation("testName", "testAdresse", "testEmail");
+		final LKW lkw = new LKW(LKWType.SMALL);
+
+		LocalDate date = businessTime.getTime().toLocalDate().minusDays(1);
+		LKWCharter lkwOrder = new LKWCharter(orderService.getDummyUser(), info, lkw, date);
+		assertEquals(OrderStatus.COMPLETED, orderService.getStatus(lkwOrder), "getStatus() should return the correct OrderStatus!");
+
+		date = businessTime.getTime().toLocalDate().plusDays(1);
+		lkwOrder = new LKWCharter(orderService.getDummyUser(), info, lkw, date);
+		assertEquals(OrderStatus.PAID, orderService.getStatus(lkwOrder), "getStatus() should return the correct OrderStatus!");
+
+		final Pickup itemOrder = new Pickup(orderService.getDummyUser(), info);
+		assertEquals(OrderStatus.OPEN, orderService.getStatus(itemOrder), "getStatus() should return the correct OrderStatus!");
+
+		exampleCart.addItemsTo(itemOrder);
+		assertEquals(OrderStatus.OPEN, orderService.getStatus(itemOrder), "getStatus() should return the correct OrderStatus!");
+
+		itemOrder.changeAllStatus(OrderStatus.PAID);
+		assertEquals(OrderStatus.PAID, orderService.getStatus(itemOrder), "getStatus() should return the correct OrderStatus!");
+
+		itemOrder.changeStatus(0, OrderStatus.COMPLETED);
+		assertEquals(OrderStatus.PAID, orderService.getStatus(itemOrder), "getStatus() should return the correct OrderStatus!");
+	}
+
+	@Test
+	void testFindByIdWithInvalidType() {
+		assertThrows(IllegalArgumentException.class, () -> orderService.findById(null),
+				"findById() should throw an IllegalArgumentException if the identifier argument is invalid!"
+		);
+	}
+
+	@Test
+	void testFindById() {
+		final ContactInformation info = new ContactInformation("testName", "testAdresse", "testEmail");
+		final Pickup order = orderService.orderPickupItem(exampleCart, info);
+
+		final Optional<ShopOrder> shopOrder = orderService.findById(order.getId().getIdentifier());
+		assertTrue(shopOrder.isPresent(), "findById() should find the correct Order!");
+		assertEquals(order, shopOrder.get(), "findById() should find the correct Order!");
+
+		assertTrue(orderService.findById("id").isEmpty(), "findById() should not find an Order!");
+	}
+
+	@Test
+	void testFindAll() {
+		for (int i = 0; i < 10; i++) {
+			final ContactInformation info = new ContactInformation("testName", "testAdresse", "testEmail");
+			orderService.orderPickupItem(exampleCart, info);
+		}
+
+		assertEquals(10L, orderService.findAll().stream().count(), "findAll() should find all Orders!");
+	}
+
 }

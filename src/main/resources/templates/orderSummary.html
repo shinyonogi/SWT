@@ -10,6 +10,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <link th:href="@{/resources/css/style.css}" rel="stylesheet"
           href="../static/resources/css/style.css" type="text/css"/>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css">
 </head>
 <body>
 
@@ -28,7 +29,7 @@
                             <h6 th:text="#{order.name}"></h6>
                             <div th:text="${order.getContactInformation().getName()}"></div>
                         </div>
-                        <div class="d-flex flex-row align-items-baseline justify-content-between">
+                        <div class="d-flex flex-row align-items-baseline justify-content-between" th:if="${!order.getContactInformation().getAddress().isEmpty()}">
                             <h6 th:text="#{order.address}"></h6>
                             <div th:text="${order.getContactInformation().getAddress()}"></div>
                         </div>

@@ -5,7 +5,6 @@ import org.springframework.util.Assert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import java.time.LocalDate;
 
 /**
  * This class represents the {@link ContactInformation} of the customer which is needed for an order
@@ -40,7 +39,7 @@ public class ContactInformation {
 	public ContactInformation(String name, String address, String email) {
 		Assert.hasText(name, "Name must not be null!");
 		Assert.notNull(address, "Address must not be null!");
-		Assert.notNull(email, "Email must not be null!");
+		Assert.hasText(email, "Email must not be null!");
 
 		this.name = name;
 		this.address = address;

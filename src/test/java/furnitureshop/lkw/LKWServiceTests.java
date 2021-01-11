@@ -23,10 +23,10 @@ public class LKWServiceTests {
 	LKWCatalog lkwCatalog;
 
 	@Autowired
-	LKWService lkwService;
+	OrderManagement<ShopOrder> orderManagement;
 
 	@Autowired
-	OrderManagement<ShopOrder> orderManagement;
+	LKWService lkwService;
 
 	@Autowired
 	OrderService orderService;
@@ -36,14 +36,16 @@ public class LKWServiceTests {
 
 	@BeforeEach
 	void setUp() {
-		for (ShopOrder order : orderManagement.findBy(orderService.getDummyUser())) {
+		for (ShopOrder order : orderService.findAll()) {
 			orderManagement.delete(order);
 		}
+
+		lkwCatalog.deleteAll();
+
 		this.weekendDate = LocalDate.of(2023, 3, 19);
 		this.validDate = LocalDate.of(2023, 3, 20);
 		this.type = LKWType.SMALL;
 
-		lkwCatalog.deleteAll();
 		for (LKWType type : LKWType.values()) {
 			for (int i = 0; i < 2; i++) {
 				lkwCatalog.save(new LKW(type));

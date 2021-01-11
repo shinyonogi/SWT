@@ -1,17 +1,22 @@
 package furnitureshop.supplier;
 
 import furnitureshop.FurnitureShop;
+import furnitureshop.inventory.Category;
 import furnitureshop.inventory.Item;
 import furnitureshop.inventory.ItemCatalog;
+import furnitureshop.inventory.Piece;
+import furnitureshop.order.OrderService;
 import furnitureshop.order.ShopOrder;
+import org.javamoney.moneta.Money;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.salespointframework.core.Currencies;
 import org.salespointframework.order.OrderManagement;
-import org.salespointframework.useraccount.UserAccountManagement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 
+import java.util.Arrays;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -21,25 +26,26 @@ import static org.junit.jupiter.api.Assertions.*;
 public class SupplierServiceTests {
 
 	@Autowired
-	SupplierRepository supplierRepository;
-
-	@Autowired
-	SupplierService supplierService;
-
-	@Autowired
 	ItemCatalog itemCatalog;
+
+	@Autowired
+	SupplierRepository supplierRepository;
 
 	@Autowired
 	OrderManagement<ShopOrder> orderManagement;
 
 	@Autowired
-	UserAccountManagement userAccountManagement;
+	SupplierService supplierService;
+
+	@Autowired
+	OrderService orderService;
 
 	Supplier testSupplier, defaultSupplier, defaultSupplier2;
+	Item item;
 
 	@BeforeEach
 	void setUp() {
-		for (ShopOrder order : orderManagement.findBy(userAccountManagement.findByUsername("Dummy").get())) {
+		for (ShopOrder order : orderService.findAll()) {
 			orderManagement.delete(order);
 		}
 
@@ -50,8 +56,12 @@ public class SupplierServiceTests {
 		defaultSupplier2 = new Supplier("default2", 0.2);
 		testSupplier = new Supplier("test", 1);
 
-		supplierRepository.save(defaultSupplier);
-		supplierRepository.save(defaultSupplier2);
+		item = new Piece(10, "Sofa 3", Money.of(10, Currencies.EURO), new byte[0], "rot",
+				"", defaultSupplier, 80, Category.COUCH);
+
+		supplierRepository.saveAll(Arrays.asList(defaultSupplier, defaultSupplier2));
+
+		itemCatalog.save(item);
 	}
 
 	@Test
@@ -72,7 +82,7 @@ public class SupplierServiceTests {
 		supplierService.addSupplier(testSupplier);
 		boolean testSupplierFound = false;
 		for (Supplier supplier : supplierRepository.findAll()) {
-			if (supplier.getName().contentEquals(testSupplier.getName())) {
+			if (supplier.getName().equals(testSupplier.getName())) {
 				assertFalse(testSupplierFound, "addSupplier() should not store the same supplier twice!");
 				testSupplierFound = true;
 			}
@@ -99,32 +109,26 @@ public class SupplierServiceTests {
 				"findByName() should throw an IllegalArgumentException if the name argument is invalid!"
 		);
 
-		Supplier foundSupplier = supplierService.findByName(defaultSupplier.getName()).get();
+		final Supplier foundSupplier = supplierService.findByName(defaultSupplier.getName()).orElse(null);
 		assertEquals(defaultSupplier.getId(), foundSupplier.getId(), "findByName() should return the correct supplier!");
 	}
 
 	@Test
 	void testEquals() {
-		assertEquals(defaultSupplier, defaultSupplier);
-		assertNotEquals(defaultSupplier, defaultSupplier2);
+		assertEquals(defaultSupplier, defaultSupplier, "equals() should return the correct value!");
+		assertNotEquals(defaultSupplier, defaultSupplier2, "equals() should return the correct value!");
 	}
 
 	@Test
 	void testChangeSupplierSurcharge() {
-		Long id = supplierRepository.findAll().stream().findAny().get().getId();
-		assertTrue(supplierService.changeSupplierSurcharge(id, 0.3));
-		assertFalse(supplierService.changeSupplierSurcharge(999999999, 0.1));
+		assertTrue(supplierService.changeSupplierSurcharge(defaultSupplier.getId(), 0.3), "changeSupplierSurcharge() should change the surcharge!");
+		assertFalse(supplierService.changeSupplierSurcharge(-1, 0.1), "changeSupplierSurcharge() should not change the surcharge!");
 	}
 
 	@Test
 	void testIllegalArgumentExceptionWhenYouSurchargeNegative() {
-		Long id = supplierRepository.findAll().stream().findAny().get().getId();
-		Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-			supplierService.changeSupplierSurcharge(id, -1);
-		});
-		String expectedMessage = "Surcharge must be greater equal to 0!";
-		String actualMessage = exception.getMessage();
-
-		assertEquals(actualMessage, expectedMessage);
+		assertThrows(IllegalArgumentException.class, () -> supplierService.changeSupplierSurcharge(defaultSupplier.getId(), -1),
+				"changeSupplierSurcharge() should throw an IllegalArgumentException if the surcharge argument is invalid!"
+		);
 	}
 }

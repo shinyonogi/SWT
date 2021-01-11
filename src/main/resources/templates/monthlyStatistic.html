@@ -10,6 +10,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <link th:href="@{/resources/css/style.css}" rel="stylesheet"
           href="../static/resources/css/style.css" type="text/css"/>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css">
     <script>
         function toggle(e, b) {
             let elements = document.getElementsByClassName(e)
@@ -58,7 +59,7 @@
                         <option th:each="month : ${months}" th:selected="${compareDate.equals(month)}" th:text="${#temporals.format(month, 'MMMM yyyy')}"></option>
                     </select>
                 </div>
-                <div class="col-lg-4 align-baseline mb-2">
+                <div class="col-lg-4 align-baseline mb-2 text-right">
                     <button type="submit" class="btn btn-primary" th:text="#{statistic.submit}"></button>
                 </div>
             </form>

@@ -10,6 +10,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <link th:href="@{/resources/css/style.css}" rel="stylesheet"
           href="../static/resources/css/style.css" type="text/css"/>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css">
 </head>
 <body>
 
@@ -28,7 +29,7 @@
                             <h6 th:text="#{order.name}"></h6>
                             <div th:text="${order.getContactInformation().getName()}"></div>
                         </div>
-                        <div class="d-flex flex-row align-items-baseline justify-content-between">
+                        <div class="d-flex flex-row align-items-baseline justify-content-between" th:if="${!order.getContactInformation().getAddress().isEmpty()}">
                             <h6 th:text="#{order.address}"></h6>
                             <div th:text="${order.getContactInformation().getAddress()}"></div>
                         </div>
@@ -109,6 +110,18 @@
             </div>
         </div>
 
+        <div class="btn-group btn-block mb-4" th:if="${items}" sec:authorize="hasRole('EMPLOYEE')">
+            <button class="btn btn-secondary btn-lg btn-block dropdown-toggle" th:text="#{order.overview.change.whole.status}" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Large button
+            </button>
+            <div class="dropdown-menu">
+                <form class="dropdown-entry" th:each="status : ${T(furnitureshop.order.OrderStatus).values()}" method="post" th:action="@{/order/{orderId}/changeWholeStatus (orderId=${order.getId().getIdentifier()})}">
+                    <input type="hidden" name="status" th:value="${status}"/>
+                    <button type="submit" class="dropdown-item" th:text="${#messages.msgOrNull('order.overview.status.' + status.name().toLowerCase())}">eingegangen</button>
+                </form>
+            </div>
+        </div>
+
         <table th:if="${items}" class="table table-hover">
             <thead class="thead-light">
             <tr class="text-center">
@@ -131,12 +144,41 @@
                 <td class="align-middle">
                     <h5 th:text="${item.getItem().getPrice().query(T(furnitureshop.FurnitureShop).MONETARY_QUERY)}">999,99€</h5>
                 </td>
-                <td class="align-middle">
-                    <h5 th:text="${#messages.msgOrNull('order.overview.status.' + item.getStatus().name().toLowerCase())}">paid</h5>
+                <td class="align-middle" style="width: 20%">
+                    <div class="progress" th:if="${item.getStatus().toString() == 'OPEN'}" style="height: 25px">
+                        <div class="progress-bar progress-bar-striped bg-info" role="progressbar"
+                             aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width:25%">
+                            <span th:text="${#messages.msgOrNull('order.overview.status.' + item.getStatus().name().toLowerCase())}">PAID</span>
+                        </div>
+                    </div>
+                    <div class="progress" th:if="${item.getStatus().toString() == 'PAID'}" style="height: 25px">
+                        <div class="progress-bar progress-bar-striped bg-success" role="progressbar"
+                             aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width:50%">
+                            <span th:text="${#messages.msgOrNull('order.overview.status.' + item.getStatus().name().toLowerCase())}">PAID</span>
+                        </div>
+                    </div>
+                    <div class="progress" th:if="${item.getStatus().toString() == 'STORED'}" style="height: 25px">
+                        <div class="progress-bar bg-success progress-bar-striped" role="progressbar"
+                             aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width:75%">
+                            <span th:text="${#messages.msgOrNull('order.overview.status.' + item.getStatus().name().toLowerCase())}">PAID</span>
+                        </div>
+                    </div>
+                    <div class="progress" th:if="${item.getStatus().toString() == 'COMPLETED'}" style="height: 25px">
+                        <div class="progress-bar bg-success progress-bar-striped" role="progressbar"
+                             aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%">
+                            <span th:text="${#messages.msgOrNull('order.overview.status.' + item.getStatus().name().toLowerCase())}">PAID</span>
+                        </div>
+                    </div>
+                    <div class="progress" th:if="${item.getStatus().toString() == 'CANCELLED'}" style="height: 25px">
+                        <div class="progress-bar bg-danger progress-bar-striped" role="progressbar"
+                             aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%">
+                            <span th:text="${#messages.msgOrNull('order.overview.status.' + item.getStatus().name().toLowerCase())}">PAID</span>
+                        </div>
+                    </div>
                 </td>
                 <td class="align-middle">
                     <div class="dropdown" sec:authorize="hasRole('EMPLOYEE')">
-                        <button class="btn btn-outline-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <button class="btn btn-outline-primary dropdown-toggle" th:text="#{order.overview.change.status}" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Status ändern
                         </button>
                         <div class="dropdown-menu">

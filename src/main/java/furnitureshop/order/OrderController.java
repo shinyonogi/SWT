@@ -7,7 +7,6 @@ import org.salespointframework.order.CartItem;
 import org.salespointframework.quantity.Quantity;
 import org.salespointframework.time.BusinessTime;
 import org.springframework.data.util.Pair;
-import org.springframework.data.util.Streamable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -16,9 +15,8 @@ import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Stream;
 
 /**
  * This class manages all HTTP Requests for Order and Cart
@@ -144,7 +142,7 @@ class OrderController {
 	 */
 	@GetMapping("/checkout")
 	String checkout(@ModelAttribute("cart") Cart cart, Model model) {
-		model.addAttribute("orderform", new OrderForm("", "", "", 0));
+		model.addAttribute("orderform", new OrderForm("", "", "", 1));
 
 		if (cart.isEmpty()) {
 			return "redirect:/cart";
@@ -175,8 +173,6 @@ class OrderController {
 	 */
 	@PostMapping("/checkout")
 	String buy(@ModelAttribute("cart") Cart cart, @ModelAttribute("orderform") OrderForm form, Model model) {
-		final ContactInformation contactInformation = new ContactInformation(form.getName(), form.getAddress(), form.getEmail());
-
 		final int weight = cart.get()
 				.filter(c -> c.getProduct() instanceof Item)
 				.mapToInt(c -> ((Item) c.getProduct()).getWeight() * c.getQuantity().getAmount().intValue())
@@ -193,8 +189,14 @@ class OrderController {
 			model.addAttribute("result", 1);
 			return "orderCheckout";
 		}
+		// Check order type is invalid
+		if (form.getIndex() != 0 && form.getIndex() != 1) {
+			// Display error message
+			model.addAttribute("result", 4);
+			return "orderCheckout";
+		}
 		// Check if address is invalid
-		if (!StringUtils.hasText(form.getAddress())) {
+		if (form.getIndex() == 1 && !StringUtils.hasText(form.getAddress())) {
 			// Display error message
 			model.addAttribute("result", 2);
 			return "orderCheckout";
@@ -206,6 +208,12 @@ class OrderController {
 			return "orderCheckout";
 		}
 
+		final ContactInformation contactInformation = new ContactInformation(
+				form.getName(),
+				form.getAddress() != null ? form.getAddress() : "",
+				form.getEmail()
+		);
+
 		final ItemOrder order;
 
 		// Pickup
@@ -213,17 +221,11 @@ class OrderController {
 			order = orderService.orderPickupItem(cart, contactInformation);
 		}
 		// Delivery
-		else if (form.getIndex() == 1) {
+		else {
 			order = orderService.orderDelieveryItem(cart, contactInformation);
 
 			model.addAttribute("lkw", ((Delivery) order).getLkw());
 			model.addAttribute("deliveryDate", ((Delivery) order).getDeliveryDate());
-		}
-		// Unknown
-		else {
-			// Display error message
-			model.addAttribute("result", 4);
-			return "orderCheckout";
 		}
 
 		final List<Pair<Item, Integer>> items = new ArrayList<>();
@@ -315,7 +317,6 @@ class OrderController {
 			model.addAttribute("cancelable", ((LKWCharter) order).getRentDate().isAfter(businessTime.getTime().toLocalDate()));
 			model.addAttribute("charterDate", ((LKWCharter) order).getRentDate());
 		} else {
-			model.addAttribute("result", 1);
 			return "redirect:/order";
 		}
 
@@ -330,14 +331,13 @@ class OrderController {
 	 *
 	 * @param orderId        The Identifier of the {@link ItemOrder}
 	 * @param itemEntryId    The Identifier of the {@link ItemOrderEntry}
-	 * @param model          The {@code Spring} Page {@link Model}
 	 * @param authentication The {@code Spring} {@link Authentication}
 	 *
 	 * @return The updates Orderoverview Page
 	 */
 	@PostMapping("/order/{orderId}/cancelItem")
 	String cancelItemOrder(@PathVariable("orderId") String orderId, @RequestParam("itemEntryId") long itemEntryId,
-			Model model, Authentication authentication) {
+			Authentication authentication) {
 		final Optional<ShopOrder> order = orderService.findById(orderId);
 
 		if (order.isEmpty() || !(order.get() instanceof ItemOrder)) {
@@ -358,25 +358,20 @@ class OrderController {
 	 * Handles all POST-Request for '/order/{orderId}/changeStatus'.
 	 * Changes the {@link OrderStatus} of an {@link ItemOrderEntry}
 	 *
-	 * @param orderId        The Identifier of the order
-	 * @param status         The new {@link OrderStatus} of the order
-	 * @param itemEntryId    The Identifier of the {@link ItemOrderEntry}
-	 * @param model          The {@code Spring} Page {@link Model}
-	 * @param authentication The {@code Spring} {@link Authentication}
+	 * @param orderId     The Identifier of the order
+	 * @param status      The new {@link OrderStatus} of the order
+	 * @param itemEntryId The Identifier of the {@link ItemOrderEntry}
 	 *
 	 * @return The updates Orderoverview Page
 	 */
 	@PreAuthorize("hasRole('EMPLOYEE')")
 	@PostMapping("/order/{orderId}/changeStatus")
 	String changeOrder(@PathVariable("orderId") String orderId, @RequestParam("status") OrderStatus status,
-			@RequestParam("itemEntryId") long itemEntryId, Model model, Authentication authentication) {
+			@RequestParam("itemEntryId") long itemEntryId) {
 		final Optional<ShopOrder> order = orderService.findById(orderId);
 
 		if (order.isEmpty() || !(order.get() instanceof ItemOrder)) {
-			if (authentication != null && authentication.isAuthenticated()) {
-				return "redirect:/admin/orders";
-			}
-			return "redirect:/order";
+			return "redirect:/admin/orders";
 		}
 
 		final ItemOrder itemOrder = ((ItemOrder) order.get());
@@ -387,17 +382,49 @@ class OrderController {
 	}
 
 	/**
+	 * Handles all POST-Request for '/order/{orderId}/changeWholeStatus'.
+	 * Changes the {@link OrderStatus} of an {@link ItemOrderEntry}
+	 *
+	 * @param orderId 	The Identifier of the order
+	 * @param status	The new {@link OrderStatus} of the order
+	 *
+	 * @return	The updates Orderoverview Page
+	 */
+
+
+	@PreAuthorize("hasRole('EMPLOYEE')")
+	@PostMapping("/order/{orderId}/changeWholeStatus")
+	String changeWholeOrder(@PathVariable("orderId") String orderId, @RequestParam("status") OrderStatus status) {
+		final Optional<ShopOrder> order = orderService.findById(orderId);
+
+		if (order.isEmpty() || !(order.get() instanceof ItemOrder)) {
+			return "redirect:/admin/orders";
+		}
+
+		final ItemOrder itemOrder = ((ItemOrder) order.get());
+		final List<ItemOrderEntry> entries = itemOrder.getOrderEntries();
+
+		if (entries.size() > 0) {
+			for (int i = 0; i < entries.size() - 1; i++) {
+				itemOrder.changeStatus(entries.get(i).getId(), status);
+			}
+			orderService.changeItemEntryStatus(itemOrder, entries.get(entries.size() - 1).getId(), status);
+		}
+
+		return String.format("redirect:/order/%s", orderId);
+	}
+
+	/**
 	 * Handles all POST-Request for '/order/{orderId}/cancelLkw'.
 	 * Cancel a LKWCharter and deletes the Order.
 	 *
 	 * @param orderId        The Identifier of the order
-	 * @param model          The {@code Spring} Page {@link Model}
 	 * @param authentication The {@code Spring} {@link Authentication}
 	 *
 	 * @return Redirects to Orderlist (Employee) or Index
 	 */
 	@PostMapping("/order/{orderId}/cancelLkw")
-	String cancelLkwOrder(@PathVariable("orderId") String orderId, Model model, Authentication authentication) {
+	String cancelLkwOrder(@PathVariable("orderId") String orderId, Authentication authentication) {
 		final Optional<ShopOrder> order = orderService.findById(orderId);
 
 		if (order.isEmpty() || !(order.get() instanceof LKWCharter)) {
@@ -427,14 +454,75 @@ class OrderController {
 	 */
 	@GetMapping("/admin/orders")
 	String getCustomerOrders(Model model) {
-		final Streamable<Pair<ShopOrder, OrderStatus>> orders = orderService.findAll()
-				.map(o -> Pair.of(o, orderService.getStatus(o)));
+		final Pair<ShopOrder, OrderStatus>[] orders = createFilteredAndSortedOrders("", 0, 1, true);
 
-		model.addAttribute("orders", orders.stream()
-				.sorted((p1, p2) -> p2.getFirst().getCreated().compareTo(p1.getFirst().getCreated()))
-				.toArray(Pair[]::new)
-		);
+		model.addAttribute("orders", orders);
+		model.addAttribute("filterText", "");
+		model.addAttribute("filterId", 0);
+		model.addAttribute("sortId", 1);
+		model.addAttribute("reversed", true);
+
 		return "customerOrders";
+	}
+
+	@PostMapping("/admin/orders")
+	String sortAndFilterCustomerOrders(@RequestParam("text") String filterText, @RequestParam("filter") int filterId,
+			@RequestParam("sort") int sortId, @RequestParam("reverse") boolean reversed, Model model) {
+		final Pair<ShopOrder, OrderStatus>[] orders = createFilteredAndSortedOrders(filterText, filterId, sortId, reversed);
+
+		model.addAttribute("orders", orders);
+		model.addAttribute("filterText", filterText);
+		model.addAttribute("filterId", filterId);
+		model.addAttribute("sortId", sortId);
+		model.addAttribute("reversed", reversed);
+
+		return "customerOrders";
+	}
+
+	@SuppressWarnings("unchecked")
+	private Pair<ShopOrder, OrderStatus>[] createFilteredAndSortedOrders(String filterText, int filter, int sort, boolean reversed) {
+		Stream<ShopOrder> orders = orderService.findAll().stream();
+
+		if (filter == 1) {
+			orders = orders.filter(o -> o instanceof ItemOrder);
+		} else if (filter == 2) {
+			orders = orders.filter(o -> o instanceof LKWCharter);
+		}
+
+		final String text = filterText.trim().toLowerCase();
+		if (!text.isEmpty()) {
+			orders = orders.filter(o -> o.getId().getIdentifier().toLowerCase().contains(text)
+					|| o.getContactInformation().getName().toLowerCase().contains(text)
+					|| o.getContactInformation().getAddress().toLowerCase().contains(text)
+					|| o.getContactInformation().getEmail().toLowerCase().contains(text)
+			);
+		}
+
+		Comparator<Pair<ShopOrder, OrderStatus>> sorting;
+
+		if (sort == 0) {
+			// Order Number
+			sorting = Comparator.comparing(p -> p.getFirst().getId().getIdentifier());
+		} else if (sort == 2) {
+			// Price
+			sorting = Comparator.comparing(p -> p.getFirst().getTotal());
+		} else if (sort == 3) {
+			// Status
+			sorting = Comparator.comparing(Pair::getSecond);
+		} else {
+			// Order Date
+			sorting = Comparator.comparing(p -> p.getFirst().getCreated());
+		}
+
+		if (reversed) {
+			sorting = sorting.reversed();
+		}
+
+		Stream<Pair<ShopOrder, OrderStatus>> orderWithStatus = orders
+				.map(o -> Pair.of(o, orderService.getStatus(o)))
+				.sorted(sorting);
+
+		return orderWithStatus.toArray(Pair[]::new);
 	}
 
 }
