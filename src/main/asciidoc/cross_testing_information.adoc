@@ -1,0 +1,8 @@
+= Test Informationen
+
+== Anmeldedaten
+- Benutzername: _admin_
+- Password: _admin_
+
+== Bekannte Bugs
+- gelegentliche UTF-8 Probleme bei der Eingabe von Kontaktinformationen bei einer Bestellung
