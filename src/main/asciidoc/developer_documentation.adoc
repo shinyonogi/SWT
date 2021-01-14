@@ -117,6 +117,8 @@ image::./models/analysis/top_level_architecture_eng.png[Top-Level-Architektur,10
 ....
 * Benutzeroberfläche
 - Benutzung von Bootstrap für die Webseitengestaltung
+image:models/analysis/UserInterface.png[Benutzeroberfläschendiagramm]
+
 
 * Verwendung externer Frameworks
 
