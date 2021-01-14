@@ -45,24 +45,43 @@
     <div class="container mt-3 mb-3">
         <h4 class="mt-2" th:text="#{statistic.title.page}">Statistik für April 2021</h4>
 
-        <div class="row">
-            <form class="form-inline w-100 m-2" method="post" th:action="@{/admin/statistic}">
+        <div class="row w-100">
+            <form class="form-inline m-2 col" method="post" th:action="@{/admin/statistic}">
                 <div class="col-lg-4 d-flex mb-2">
                     <label class="control-label mr-2" for="init" th:text="#{statistic.init}"></label>
                     <select class="custom-select" id="init" name="init">
-                        <option th:each="month : ${months}" th:selected="${initDate.equals(month)}" th:text="${#temporals.format(month, 'MMMM yyyy')}"></option>
+                        <option th:each="month : ${months}" th:selected="${initDate.equals(month)}" th:text="${#temporals.format(month, 'MMMM yyyy')}" th:value="${#temporals.format(month, 'MM yyyy')}"></option>
                     </select>
                 </div>
                 <div class="col-lg-4 align-baseline d-flex mb-2">
                     <label class="control-label mr-2" for="compare" th:text="#{statistic.compare}"></label>
                     <select class="custom-select" id="compare" name="compare">
-                        <option th:each="month : ${months}" th:selected="${compareDate.equals(month)}" th:text="${#temporals.format(month, 'MMMM yyyy')}"></option>
+                        <option th:each="month : ${months}" th:selected="${compareDate.equals(month)}" th:text="${#temporals.format(month, 'MMMM yyyy')}" th:value="${#temporals.format(month, 'MM yyyy')}"></option>
                     </select>
                 </div>
                 <div class="col-lg-4 align-baseline mb-2 text-right">
                     <button type="submit" class="btn btn-primary" th:text="#{statistic.submit}"></button>
                 </div>
             </form>
+
+            <div class="d-inline mt-2">
+                <button class="btn btn-secondary dropdown-toggle" th:text="#{statistic.export}" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Button
+                </button>
+                <div class="dropdown-menu">
+                    <form method="get" class="dropdown-entry" th:action="@{/admin/statistic/export/json}">
+                        <input type="hidden" name="init" th:value="${#temporals.format(initDate, 'MM yyyy')}">
+                        <input type="hidden" name="compare" th:value="${#temporals.format(compareDate, 'MM yyyy')}">
+                        <button type="submit" class="dropdown-item">Json</button>
+                    </form>
+
+                    <form method="get" class="dropdown-entry" th:action="@{/admin/statistic/export/csv}">
+                        <input type="hidden" name="init" th:value="${#temporals.format(initDate, 'MM yyyy')}">
+                        <input type="hidden" name="compare" th:value="${#temporals.format(compareDate, 'MM yyyy')}">
+                        <button type="submit" class="dropdown-item">CSV</button>
+                    </form>
+                </div>
+            </div>
         </div>
 
         <table class="table table-hover">
@@ -95,7 +114,7 @@
                          src="../static/resources/img/inventory/chair_1.jpg" alt="Artikel"/>
                     <label th:text="${item.getItem().getName()}">Müller Möbel</label>
                 </td>
-                <td class="align-middle"  th:text="${item.getInitProfit().query(T(furnitureshop.FurnitureShop).MONETARY_QUERY)}">123.456,01€</td>
+                <td class="align-middle" th:text="${item.getInitProfit().query(T(furnitureshop.FurnitureShop).MONETARY_QUERY)}">123.456,01€</td>
                 <td class="align-middle text-danger" th:if="${dif.isNegative()}" th:text="${dif.query(T(furnitureshop.FurnitureShop).MONETARY_QUERY)}">+5.034,01€</td>
                 <td class="align-middle text-success" th:if="${dif.isPositive()}" th:text="'+' + ${dif.query(T(furnitureshop.FurnitureShop).MONETARY_QUERY)}">+5.034,01€</td>
                 <td class="align-middle text-dark" th:if="${dif.isZero()}" th:text="${dif.query(T(furnitureshop.FurnitureShop).MONETARY_QUERY)}">+5.034,01€</td>

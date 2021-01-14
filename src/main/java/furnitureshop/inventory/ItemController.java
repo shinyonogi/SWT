@@ -1,5 +1,8 @@
 package furnitureshop.inventory;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import furnitureshop.supplier.Supplier;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.javamoney.moneta.Money;
@@ -18,12 +21,14 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoField;
 import java.time.temporal.TemporalAccessor;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * This class manages all HTTP Requests for Items
@@ -153,12 +158,13 @@ public class ItemController {
 	 *
 	 * @param suppId The id of a {@link Supplier}
 	 * @param form   The {@link ItemForm} with the information about new {@link Item}
+	 *
 	 * @return Returns a redirect to '/admin/supplier/{id}/items' when everything was successfully created. Otherwise
 	 * returns the user created {@link ItemForm} and the corresponding view.
 	 */
 	@PostMapping(value = "/admin/supplier/{id}/items/add", consumes = {"multipart/form-data"})
 	String addItemForSupplier(@PathVariable("id") long suppId, @ModelAttribute("itemForm") ItemForm form,
-							  @RequestParam("image") MultipartFile file, Model model) {
+			@RequestParam("image") MultipartFile file, Model model) {
 		final Optional<Supplier> supplier = itemService.findSupplierById(suppId);
 
 		if (supplier.isEmpty()) {
@@ -280,9 +286,9 @@ public class ItemController {
 	 * Handles all POST-Requests for '/admin/supplier/{id}/sets/add'.
 	 * Creates a new {@link ItemForm} with the given list of items and binds it to the {@link Model}.
 	 *
-	 * @param suppId   The id of a {@link Supplier}
+	 * @param suppId The id of a {@link Supplier}
 	 * @param form   A {@link ItemForm} with the information about a new {@link Set}
-	 * @param model    The {@code Spring} Page {@link Model}
+	 * @param model  The {@code Spring} Page {@link Model}
 	 *
 	 * @return Either redirects to the supplier overview when {@link Supplier} is not found or the template for
 	 * inserting the set information
@@ -341,7 +347,7 @@ public class ItemController {
 	 */
 	@PostMapping(value = "/admin/supplier/{suppId}/sets/add/set", consumes = {"multipart/form-data"})
 	String addSetForSupplier(@PathVariable("suppId") long suppId, @ModelAttribute("setForm") ItemForm form,
-							 @RequestParam("image") MultipartFile file, Model model) {
+			@RequestParam("image") MultipartFile file, Model model) {
 		final Optional<Supplier> supplier = itemService.findSupplierById(suppId);
 
 		if (supplier.isEmpty()) {
@@ -615,7 +621,6 @@ public class ItemController {
 		return "monthlyStatistic";
 	}
 
-
 	/**
 	 * Handles all POST-Requests for '/admin/statistic'.
 	 *
@@ -627,12 +632,12 @@ public class ItemController {
 	 */
 	@PostMapping("/admin/statistic")
 	String setMonthlyStatisticValue(@RequestParam("init") String init, @RequestParam("compare") String compare, Model model) {
-		final TemporalAccessor initAccessor = DateTimeFormatter.ofPattern("MMMM yyyy").parse(init);
+		final TemporalAccessor initAccessor = DateTimeFormatter.ofPattern("MM yyyy").parse(init);
 		final int initMonth = initAccessor.get(ChronoField.MONTH_OF_YEAR);
 		final int initYear = initAccessor.get(ChronoField.YEAR);
 		final LocalDate initDate = LocalDate.of(initYear, initMonth, 1);
 
-		final TemporalAccessor compareAccessor = DateTimeFormatter.ofPattern("MMMM yyyy").parse(compare);
+		final TemporalAccessor compareAccessor = DateTimeFormatter.ofPattern("MM yyyy").parse(compare);
 		final int compareMonth = compareAccessor.get(ChronoField.MONTH_OF_YEAR);
 		final int compareYear = compareAccessor.get(ChronoField.YEAR);
 		final LocalDate compareDate = LocalDate.of(compareYear, compareMonth, 1);
@@ -650,6 +655,163 @@ public class ItemController {
 		model.addAttribute("statistic", statisticEntries);
 
 		return "monthlyStatistic";
+	}
+
+	@GetMapping("/admin/statistic/export/{type}")
+	void exportMonthlyStatistic(@RequestParam("init") String init, @RequestParam("compare") String compare,
+			@PathVariable("type") String type, HttpServletResponse response, Model model) throws IOException {
+		final TemporalAccessor initAccessor = DateTimeFormatter.ofPattern("MM yyyy").parse(init);
+		final int initMonth = initAccessor.get(ChronoField.MONTH_OF_YEAR);
+		final int initYear = initAccessor.get(ChronoField.YEAR);
+		final LocalDate initDate = LocalDate.of(initYear, initMonth, 1);
+
+		final TemporalAccessor compareAccessor = DateTimeFormatter.ofPattern("MM yyyy").parse(compare);
+		final int compareMonth = compareAccessor.get(ChronoField.MONTH_OF_YEAR);
+		final int compareYear = compareAccessor.get(ChronoField.YEAR);
+		final LocalDate compareDate = LocalDate.of(compareYear, compareMonth, 1);
+
+		final List<StatisticEntry> statisticEntries = itemService.analyseProfits(initDate, compareDate);
+
+		InputStream stream;
+		if (type.equals("json")) {
+			final ObjectMapper mapper = new ObjectMapper();
+
+			final ArrayNode arr = mapper.createArrayNode();
+
+			for (StatisticEntry entry : statisticEntries) {
+				final ObjectNode sup = mapper.createObjectNode();
+
+				sup.put("id", entry.getSupplier().getId());
+				sup.put("supplier", entry.getSupplier().getName());
+
+				sup.put("initMonth", initDate.getMonthValue());
+				sup.put("initYear", initDate.getYear());
+				sup.put("initProfit", entry.getInitProfit().getNumber().doubleValue());
+
+				sup.put("compareMonth", compareDate.getMonthValue());
+				sup.put("compareYear", compareDate.getYear());
+				sup.put("compareProfit", entry.getCompareProfit().getNumber().doubleValue());
+
+				sup.put("difference", entry.getDifference().getNumber().doubleValue());
+
+				final ArrayNode items = mapper.createArrayNode();
+
+				for (StatisticItemEntry itemEntry : entry.getStatisticItemEntries()) {
+					final ObjectNode item = mapper.createObjectNode();
+
+					item.put("id", itemEntry.getItem().getId().getIdentifier());
+					item.put("name", itemEntry.getItem().getName());
+
+					item.put("initProfit", itemEntry.getInitProfit().getNumber().doubleValue());
+					item.put("compareProfit", itemEntry.getCompareProfit().getNumber().doubleValue());
+					item.put("difference", itemEntry.getDifference().getNumber().doubleValue());
+
+					items.add(item);
+				}
+
+				sup.set("items", items);
+				arr.add(sup);
+			}
+
+			final byte[] bytes = mapper.writerWithDefaultPrettyPrinter().writeValueAsBytes(arr);
+			stream = new ByteArrayInputStream(bytes);
+		} else if (type.equals("csv")) {
+			final List<String[]> lines = new ArrayList<>();
+
+			String[] line;
+			for (StatisticEntry entry : statisticEntries) {
+				line = new String[]{
+						"ID", "Name", "", "", ""
+				};
+				lines.add(line);
+
+				line = new String[]{
+						String.valueOf(entry.getSupplier().getId()),
+						entry.getSupplier().getName(),
+						"", "", ""
+				};
+				lines.add(line);
+
+				lines.add(new String[]{"", "", "", "", ""});
+
+				line = new String[]{
+						"Monat", "Vergleich", "Differenz", "", ""
+				};
+				lines.add(line);
+
+				line = new String[]{
+						initDate.getMonthValue() + "/" + initDate.getYear(),
+						compareDate.getMonthValue() + "/" + compareDate.getYear(),
+						"", "", ""
+				};
+				lines.add(line);
+
+				line = new String[]{
+						String.valueOf(entry.getInitProfit().getNumber().doubleValue()),
+						String.valueOf(entry.getCompareProfit().getNumber().doubleValue()),
+						String.valueOf(entry.getDifference().getNumber().doubleValue()),
+						"", ""
+				};
+				lines.add(line);
+
+				lines.add(new String[]{"", "", "", "", ""});
+
+				line = new String[]{
+						"Artikel", "", "", "", ""
+				};
+				lines.add(line);
+
+				line = new String[]{
+						"ID", "Name", "Monat", "Vergleich", "Differenz"
+				};
+				lines.add(line);
+
+				for (StatisticItemEntry itemEntry : entry.getStatisticItemEntries()) {
+					line = new String[]{
+							itemEntry.getItem().getId().getIdentifier(),
+							itemEntry.getItem().getName(),
+							String.valueOf(itemEntry.getInitProfit().getNumber().doubleValue()),
+							String.valueOf(itemEntry.getCompareProfit().getNumber().doubleValue()),
+							String.valueOf(itemEntry.getDifference().getNumber().doubleValue())
+					};
+					lines.add(line);
+				}
+
+				lines.add(new String[]{"", "", "", "", ""});
+				lines.add(new String[]{"", "", "", "", ""});
+			}
+
+			final byte[] bytes = lines.stream()
+					.map(this::escapeChars)
+					.map(s -> String.join(",", s))
+					.collect(Collectors.joining("\n"))
+					.getBytes(StandardCharsets.UTF_8);
+
+			stream = new ByteArrayInputStream(bytes);
+		} else {
+			return;
+		}
+
+		IOUtils.copy(stream, response.getOutputStream());
+		response.setContentType("application/" + type);
+		response.setHeader("Content-disposition", "attachment;filename=statistic." + type);
+		response.flushBuffer();
+	}
+
+	private String[] escapeChars(String[] data) {
+		final String[] newData = new String[data.length];
+
+		for (int i = 0; i < data.length; i++) {
+			String s = data[i].replaceAll("\\R", " ");
+
+			if (s.contains(",") || s.contains("\"") || s.contains("'")) {
+				s = s.replace("\"", "\"\"");
+				s = "\"" + s + "\"";
+			}
+			newData[i] = s;
+		}
+
+		return newData;
 	}
 
 	/**

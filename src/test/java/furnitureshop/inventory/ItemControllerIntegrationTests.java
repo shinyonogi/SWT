@@ -803,12 +803,8 @@ public class ItemControllerIntegrationTests {
 	@Test
 	@WithMockUser(roles = "EMPLOYEE")
 	void returnsModelAndViewOfRequestMonthlyStatistic() throws Exception {
-		final DateTimeFormatter pattern = DateTimeFormatter.ofPattern("MMMM yyyy");
-		final String dec = LocalDate.of(2020, 12, 1).format(pattern);
-		final String nov = LocalDate.of(2020, 11, 1).format(pattern);
-
 		mvc.perform(post("/admin/statistic")
-				.param("init", dec).param("compare", nov))
+				.param("init", "12 2020").param("compare", "11 2020"))
 				.andExpect(status().isOk())
 				.andExpect(model().attributeExists("statistic"))
 				.andExpect(view().name("monthlyStatistic"));
