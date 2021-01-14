@@ -11,27 +11,30 @@
     <link th:href="@{/resources/css/style.css}" rel="stylesheet"
           href="../static/resources/css/style.css" type="text/css"/>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css">
+
+    <style>
+        .hiddenField {
+            display: none !important;
+        }
+    </style>
+
     <script>
         function toggle(b) {
-            let add = document.getElementById('address')
-
             for (let s of ['delivery', 'items', 'sum1', 'sum2']) {
                 let e = document.getElementById(s)
 
                 let vis = s === 'sum2' ? !b : b
 
                 if (vis) {
-                    e.style.removeProperty('content-visibility')
-                    e.style.removeProperty('padding')
-                    e.style.removeProperty('border')
+                    e.classList.remove('hiddenField')
+                    e.classList.add('d-flex')
                 } else {
-                    e.style.setProperty('content-visibility', 'hidden')
-                    e.style.setProperty('padding', '0')
-                    e.style.setProperty('border', '0')
+                    e.classList.add('hiddenField')
+                    e.classList.remove('d-flex')
                 }
             }
 
-            add.required = b
+            document.getElementById('address').required = b
         }
     </script>
 </head>
@@ -84,7 +87,7 @@
                         <span th:text="#{checkout.total}">Total (EUR)</span>
                         <strong th:text="${cart.getPrice().add(lkwtype.getDelieveryPrice()).query(T(furnitureshop.FurnitureShop).MONETARY_QUERY)}">20€</strong>
                     </li>
-                    <li class="list-group-item d-flex justify-content-between" id="sum2" style="content-visibility: hidden; padding: 0; border: 0;">
+                    <li class="list-group-item justify-content-between hiddenField" id="sum2">
                         <span th:text="#{checkout.total}">Total (EUR)</span>
                         <strong th:text="${cart.getPrice().query(T(furnitureshop.FurnitureShop).MONETARY_QUERY)}">20€</strong>
                     </li>

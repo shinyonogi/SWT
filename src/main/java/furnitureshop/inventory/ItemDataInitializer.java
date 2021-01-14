@@ -9,11 +9,13 @@ import org.javamoney.moneta.Money;
 import org.salespointframework.core.Currencies;
 import org.salespointframework.core.DataInitializer;
 import org.springframework.core.annotation.Order;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ResourceUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
@@ -27,21 +29,25 @@ public class ItemDataInitializer implements DataInitializer {
 
 	private final ItemCatalog itemCatalog;
 	private final SupplierRepository supplierRepository;
+	private final ResourceLoader resourceLoader;
 
 	/**
 	 * Creates a new instance of an {@link ItemDataInitializer}
 	 *
 	 * @param itemCatalog        The {@link ItemCatalog} for all {@link Item}s
 	 * @param supplierRepository The Repository of the suppliers
+	 * @param resourceLoader	 The {@link ResourceLoader} used for resource file loading
 	 *
 	 * @throws IllegalArgumentException If the {@code itemCatalog} or {@code supplierRepository} is {@code null}
 	 */
-	ItemDataInitializer(ItemCatalog itemCatalog, SupplierRepository supplierRepository) {
+	ItemDataInitializer(ItemCatalog itemCatalog, SupplierRepository supplierRepository, ResourceLoader resourceLoader) {
 		Assert.notNull(itemCatalog, "ItemCatalog must not be null!");
 		Assert.notNull(supplierRepository, "SupplierRepository must not be null!");
+		Assert.notNull(resourceLoader, "ResourceLoader must not be null!");
 
 		this.itemCatalog = itemCatalog;
 		this.supplierRepository = supplierRepository;
+		this.resourceLoader = resourceLoader;
 	}
 
 	/**
@@ -55,8 +61,8 @@ public class ItemDataInitializer implements DataInitializer {
 
 		final JsonNode root;
 		try {
-			final File file = ResourceUtils.getFile("classpath:items.json");
-			root = new ObjectMapper().readTree(file);
+			InputStream inputStream = resourceLoader.getResource("classpath:items.json").getInputStream();
+			root = new ObjectMapper().readTree(inputStream);
 		} catch (IOException e) {
 			e.printStackTrace();
 			return;
@@ -84,8 +90,7 @@ public class ItemDataInitializer implements DataInitializer {
 
 			final byte[] image;
 			try {
-				final File file = ResourceUtils.getFile("classpath:static/resources/img/inventory/" + imageName);
-				image = Files.readAllBytes(Path.of(file.toURI()));
+				image = resourceLoader.getResource("classpath:static/resources/img/inventory/" + imageName).getInputStream().readAllBytes();
 			} catch (IOException e) {
 				e.printStackTrace();
 				return;
@@ -121,8 +126,7 @@ public class ItemDataInitializer implements DataInitializer {
 
 			final byte[] image;
 			try {
-				final File file = ResourceUtils.getFile("classpath:static/resources/img/inventory/" + imageName);
-				image = Files.readAllBytes(Path.of(file.toURI()));
+				image = resourceLoader.getResource("classpath:static/resources/img/inventory/" + imageName).getInputStream().readAllBytes();
 			} catch (IOException e) {
 				e.printStackTrace();
 				return;
