@@ -671,27 +671,29 @@ public class ItemController {
 		final LocalDate compareDate = LocalDate.of(compareYear, compareMonth, 1);
 
 		final List<StatisticEntry> statisticEntries = itemService.analyseProfits(initDate, compareDate);
+		statisticEntries.sort(Comparator.comparing(s -> s.getSupplier().getId()));
 
 		InputStream stream;
 		if (type.equals("json")) {
 			final ObjectMapper mapper = new ObjectMapper();
 
-			final ArrayNode arr = mapper.createArrayNode();
+			final ObjectNode root = mapper.createObjectNode();
+
+			root.put("initMonth", initDate.getMonthValue());
+			root.put("initYear", initDate.getYear());
+			root.put("compareMonth", compareDate.getMonthValue());
+			root.put("compareYear", compareDate.getYear());
+
+			final ArrayNode suppliers = mapper.createArrayNode();
 
 			for (StatisticEntry entry : statisticEntries) {
 				final ObjectNode sup = mapper.createObjectNode();
 
 				sup.put("id", entry.getSupplier().getId());
-				sup.put("supplier", entry.getSupplier().getName());
+				sup.put("name", entry.getSupplier().getName());
 
-				sup.put("initMonth", initDate.getMonthValue());
-				sup.put("initYear", initDate.getYear());
 				sup.put("initProfit", entry.getInitProfit().getNumber().doubleValue());
-
-				sup.put("compareMonth", compareDate.getMonthValue());
-				sup.put("compareYear", compareDate.getYear());
 				sup.put("compareProfit", entry.getCompareProfit().getNumber().doubleValue());
-
 				sup.put("difference", entry.getDifference().getNumber().doubleValue());
 
 				final ArrayNode items = mapper.createArrayNode();
@@ -710,64 +712,61 @@ public class ItemController {
 				}
 
 				sup.set("items", items);
-				arr.add(sup);
+				suppliers.add(sup);
 			}
 
-			final byte[] bytes = mapper.writerWithDefaultPrettyPrinter().writeValueAsBytes(arr);
+			root.set("suppliers", suppliers);
+
+			final byte[] bytes = mapper.writerWithDefaultPrettyPrinter().writeValueAsBytes(root);
 			stream = new ByteArrayInputStream(bytes);
 		} else if (type.equals("csv")) {
 			final List<String[]> lines = new ArrayList<>();
-
 			String[] line;
-			for (StatisticEntry entry : statisticEntries) {
-				line = new String[]{
-						"ID", "Name", "", "", ""
-				};
-				lines.add(line);
 
+			line = new String[]{
+					"Lieferantenübersicht", "", "", "", "", ""
+			};
+			lines.add(line);
+
+			line = new String[]{
+					"ID", "Name",
+					"Monat: " + initDate.getMonthValue() + "/" + initDate.getYear(),
+					"Vergleich: " + compareDate.getMonthValue() + "/" + compareDate.getYear(),
+					"Differenz", ""
+			};
+			lines.add(line);
+
+			for (StatisticEntry entry : statisticEntries) {
 				line = new String[]{
 						String.valueOf(entry.getSupplier().getId()),
 						entry.getSupplier().getName(),
-						"", "", ""
-				};
-				lines.add(line);
-
-				lines.add(new String[]{"", "", "", "", ""});
-
-				line = new String[]{
-						"Monat", "Vergleich", "Differenz", "", ""
-				};
-				lines.add(line);
-
-				line = new String[]{
-						initDate.getMonthValue() + "/" + initDate.getYear(),
-						compareDate.getMonthValue() + "/" + compareDate.getYear(),
-						"", "", ""
-				};
-				lines.add(line);
-
-				line = new String[]{
 						String.valueOf(entry.getInitProfit().getNumber().doubleValue()),
 						String.valueOf(entry.getCompareProfit().getNumber().doubleValue()),
 						String.valueOf(entry.getDifference().getNumber().doubleValue()),
-						"", ""
+						""
 				};
 				lines.add(line);
+			}
 
-				lines.add(new String[]{"", "", "", "", ""});
+			lines.add(new String[]{"", "", "", "", "", ""});
 
-				line = new String[]{
-						"Artikel", "", "", "", ""
-				};
-				lines.add(line);
+			line = new String[]{
+					"Artikelübersicht", "", "", "", "", ""
+			};
+			lines.add(line);
 
-				line = new String[]{
-						"ID", "Name", "Monat", "Vergleich", "Differenz"
-				};
-				lines.add(line);
+			line = new String[]{
+					"Lieferant", "ID", "Name",
+					"Monat: " + initDate.getMonthValue() + "/" + initDate.getYear(),
+					"Vergleich: " + compareDate.getMonthValue() + "/" + compareDate.getYear(),
+					"Differenz"
+			};
+			lines.add(line);
 
+			for (StatisticEntry entry : statisticEntries) {
 				for (StatisticItemEntry itemEntry : entry.getStatisticItemEntries()) {
 					line = new String[]{
+							String.valueOf(entry.getSupplier().getId()),
 							itemEntry.getItem().getId().getIdentifier(),
 							itemEntry.getItem().getName(),
 							String.valueOf(itemEntry.getInitProfit().getNumber().doubleValue()),
@@ -776,9 +775,6 @@ public class ItemController {
 					};
 					lines.add(line);
 				}
-
-				lines.add(new String[]{"", "", "", "", ""});
-				lines.add(new String[]{"", "", "", "", ""});
 			}
 
 			final byte[] bytes = lines.stream()
