@@ -17,12 +17,9 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Map;
 
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.is;
@@ -588,10 +585,6 @@ public class ItemControllerIntegrationTests {
 	@Test
 	@WithMockUser(roles = "EMPLOYEE")
 	void returnsModelAndViewAddSetWithInvalidImage() throws Exception {
-		final List<String> itemList = Arrays.asList(stuhl.getId().toString(), sofa_black.getId().toString());
-		final MultiValueMap<String, String> itemMap = new LinkedMultiValueMap<>();
-		itemMap.put("items", itemList);
-
 		ItemForm form = new ItemForm(0, 100, "Set Name", "Variante", "Beschreibung",
 				50, Category.SET, Map.of(stuhl, 1, sofa_black, 1));
 
@@ -808,6 +801,32 @@ public class ItemControllerIntegrationTests {
 				.andExpect(status().isOk())
 				.andExpect(model().attributeExists("statistic"))
 				.andExpect(view().name("monthlyStatistic"));
+	}
+
+	@Test
+	@WithMockUser(roles = "EMPLOYEE")
+	void returnFileForStatisticJson() throws Exception {
+		mvc.perform(get("/admin/statistic/export/json")
+				.param("init", "12 2020").param("compare", "01 2021"))
+				.andExpect(status().isOk())
+				.andExpect(content().contentType("application/json"));
+	}
+
+	@Test
+	@WithMockUser(roles = "EMPLOYEE")
+	void returnFileForStatisticCSV() throws Exception {
+		mvc.perform(get("/admin/statistic/export/csv")
+				.param("init", "12 2020").param("compare", "01 2021"))
+				.andExpect(status().isOk())
+				.andExpect(content().contentType("application/csv"));
+	}
+
+	@Test
+	@WithMockUser(roles = "EMPLOYEE")
+	void returnFileForStatisticUnknown() throws Exception {
+		mvc.perform(get("/admin/statistic/export/unknown")
+				.param("init", "12 2020").param("compare", "01 2021"))
+				.andExpect(status().is4xxClientError());
 	}
 
 	@Test

@@ -392,7 +392,7 @@ public class ItemController {
 
 		byte[] image = new byte[0];
 		try {
-			if (file.getBytes().length == 0) {
+			if (file == null || file.getBytes().length == 0) {
 				model.addAttribute("result", 7);
 				return "supplierSetform";
 			}
@@ -785,6 +785,7 @@ public class ItemController {
 
 			stream = new ByteArrayInputStream(bytes);
 		} else {
+			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 			return;
 		}
 
