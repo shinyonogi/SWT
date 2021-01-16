@@ -217,6 +217,12 @@ public abstract class ItemOrder extends ShopOrder {
 		return itemAmountMap;
 	}
 
+	/**
+	 * Creates the body of an email to notify the customer about the items which are currently in stock
+	 * and may if {@link ItemOrder Order} is {@link Pickup} able to be picked up.
+	 *
+	 * @return The body of email
+	 */
 	public String createMailContent() {
 		final StringBuilder builder = new StringBuilder();
 
@@ -244,13 +250,15 @@ public abstract class ItemOrder extends ShopOrder {
 
 		// Preset
 		String message = "Sehr geehrte(r) %t,\n\n" +
-				"wir möchten Ihnen mitteilen, das folgende Artikel bei uns im Hauptlager eingetroffen%f sind:\n\n" +
+				"wir möchten Ihnen mitteilen, das folgende Artikel ihrer Bestellung (%o) " +
+				"bei uns im Hauptlager eingetroffen%f sind:\n\n" +
 				"%s\n" +
 				"Mit freundlichen Grüßen Ihr\n" +
-				"MöbelHier Mitarbeiter";
+				"Möbel-Hier Mitarbeiter";
 
 		// Replace message and return
 		message = message.replace("%t", getContactInformation().getName())
+				.replace("%o", getId().getIdentifier())
 				.replace("%s", builder.toString());
 
 		if (this instanceof Pickup) {

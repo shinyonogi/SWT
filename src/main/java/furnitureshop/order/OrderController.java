@@ -388,10 +388,10 @@ class OrderController {
 	 * Handles all POST-Request for '/order/{orderId}/changeWholeStatus'.
 	 * Changes the {@link OrderStatus} of an {@link ItemOrderEntry}
 	 *
-	 * @param orderId 	The Identifier of the order
-	 * @param status	The new {@link OrderStatus} of the order
+	 * @param orderId The Identifier of the order
+	 * @param status  The new {@link OrderStatus} of the order
 	 *
-	 * @return	The updates Orderoverview Page
+	 * @return The updates Orderoverview Page
 	 */
 
 
@@ -484,24 +484,23 @@ class OrderController {
 
 	@PreAuthorize("hasRole('EMPLOYEE')")
 	@PostMapping("/order/{orderId}/sendUpdate")
-	String sendUpdate(@PathVariable("orderId") String orderId, Authentication authentication) {
+	String sendUpdate(@PathVariable("orderId") String orderId) {
 		final Optional<ShopOrder> order = orderService.findById(orderId);
 
 		if (order.isEmpty() || !(order.get() instanceof ItemOrder)) {
-			if (authentication != null && authentication.isAuthenticated()) {
-				return "redirect:/admin/orders";
-			}
-			return "redirect:/order";
+			return "redirect:/admin/orders";
 		}
 
 		final ItemOrder itemOrder = (ItemOrder) order.get();
 		final String content = itemOrder.createMailContent();
 
 		if (content != null) {
-			final String subject = "MöbelHier Bestellinformation";
+			final String subject = "Möbel-Hier Bestellinformation";
 			final String target = itemOrder.getContactInformation().getEmail();
 
 			final boolean success = sendMail(subject, target, content);
+
+			//TODO Handle errors
 		}
 
 		return String.format("redirect:/order/%s", orderId);

@@ -104,7 +104,7 @@ public class OrderControllerIntegrationTests {
 		cart.addOrUpdateItem(item, 5);
 		cartItem = cart.get().findAny().orElse(null);
 
-		contactInformation = new ContactInformation("Max Mustermann", "Musterstr. 1", "muster@muster.de");
+		contactInformation = new ContactInformation("Max Mustermann", "Musterstr. 1", "praxis.ecg2020@gmail.com");
 
 		// Reset Time
 		final LocalDateTime time = LocalDateTime.of(2020, 12, 21, 0, 0);
@@ -330,6 +330,7 @@ public class OrderControllerIntegrationTests {
 	@Test
 	void returnsModelAndViewOrderOverviewWithNotExistingOrderId() throws Exception {
 		mvc.perform(get("/order/someRandomId"))
+				.andExpect(status().is3xxRedirection())
 				.andExpect(redirectedUrl("/order"));
 	}
 
@@ -385,6 +386,7 @@ public class OrderControllerIntegrationTests {
 
 		mvc.perform(post("/order/{id}/cancelItem", pickup.getId().getIdentifier())
 				.param("itemEntryId", String.valueOf(itemEntryId)))
+				.andExpect(status().is3xxRedirection())
 				.andExpect(redirectedUrl(String.format("/order/%s", pickup.getId().getIdentifier())));
 
 		final Optional<ShopOrder> orderPostCancelOptional = orderService.findById(orderId);
@@ -423,6 +425,7 @@ public class OrderControllerIntegrationTests {
 		mvc.perform(post("/order/{id}/changeStatus", pickup.getId().getIdentifier())
 				.param("itemEntryId", String.valueOf(itemEntryId))
 				.param("status", String.valueOf(OrderStatus.STORED)))
+				.andExpect(status().is3xxRedirection())
 				.andExpect(redirectedUrl(String.format("/order/%s", pickup.getId().getIdentifier())));
 
 		final Optional<ShopOrder> orderPostCancelOptional = orderService.findById(orderId);
@@ -458,6 +461,7 @@ public class OrderControllerIntegrationTests {
 		final LKWCharter charter = lkwService.createLKWOrder(olkw.orElse(null), businessTime.getTime().toLocalDate(), contactInformation);
 
 		mvc.perform(post("/order/{id}/cancelLkw", charter.getId().getIdentifier()))
+				.andExpect(status().is3xxRedirection())
 				.andExpect(redirectedUrl("/"));
 
 		assertTrue(orderService.findById(charter.getId().getIdentifier()).isEmpty(), "Die Order wurde nicht gelöscht");
@@ -472,6 +476,7 @@ public class OrderControllerIntegrationTests {
 		final LKWCharter charter = lkwService.createLKWOrder(olkw.orElse(null), businessTime.getTime().toLocalDate(), contactInformation);
 
 		mvc.perform(post("/order/{id}/cancelLkw", charter.getId().getIdentifier()))
+				.andExpect(status().is3xxRedirection())
 				.andExpect(redirectedUrl("/admin/orders"));
 
 		assertTrue(orderService.findById(charter.getId().getIdentifier()).isEmpty(), "Die Order wurde nicht gelöscht");
@@ -488,6 +493,38 @@ public class OrderControllerIntegrationTests {
 	@WithMockUser(username = "admin", roles = "EMPLOYEE")
 	void redirectOrderOverviewCancelLkwWithInvalidOrderWithAuthentication() throws Exception {
 		mvc.perform(post("/order/{id}/cancelLkw", "random"))
+				.andExpect(status().is3xxRedirection())
+				.andExpect(redirectedUrl("/admin/orders"));
+	}
+
+	@Test
+	@WithMockUser(username = "admin", roles = "EMPLOYEE")
+	void returnsModelAndViewOrderOverviewSendMail() throws Exception {
+		Pickup order = orderService.orderPickupItem(cart, contactInformation);
+
+		mvc.perform(post("/order/{id}/sendUpdate", order.getId().getIdentifier()))
+				.andExpect(status().is3xxRedirection())
+				.andExpect(redirectedUrl("/order/" + order.getId()));
+
+		order = (Pickup) orderService.findById(order.getId().getIdentifier()).orElse(null);
+
+		orderService.changeItemEntryStatus(order, order.getOrderEntries().get(0).getId(), OrderStatus.STORED);
+
+		mvc.perform(post("/order/{id}/sendUpdate", order.getId().getIdentifier()))
+				.andExpect(status().is3xxRedirection())
+				.andExpect(redirectedUrl("/order/" + order.getId()));
+	}
+
+	@Test
+	void redirectOrderOverviewSendMailWithoutAuthentication() throws Exception {
+		mvc.perform(post("/order/{id}/sendUpdate", "random"))
+				.andExpect(status().is3xxRedirection());
+	}
+
+	@Test
+	@WithMockUser(username = "admin", roles = "EMPLOYEE")
+	void redirectOrderOverviewSendMailWithInvalidOrderWithAuthentication() throws Exception {
+		mvc.perform(post("/order/{id}/sendUpdate", "random"))
 				.andExpect(status().is3xxRedirection())
 				.andExpect(redirectedUrl("/admin/orders"));
 	}
