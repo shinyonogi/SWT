@@ -16,12 +16,12 @@ public enum LKWType {
 	SMALL(
 			"1,5t", 500, "smalllkw.jpg",
 			Money.of(20.00, Currencies.EURO), Money.of(5.00, Currencies.EURO),
-			"Ein kleiner LKW für alle die mal schnell was umräumen wollen."
+			"Ein kleiner LKW für alle, die mal schnell was umräumen wollen."
 	),
 	MEDIUM(
 			"3,5t", 2000, "mediumlkw.jpg",
 			Money.of(50.00, Currencies.EURO), Money.of(10.00, Currencies.EURO),
-			"Ein mittelgroßer LKW für alle ihr Büro umverlegen wollen."
+			"Ein mittelgroßer LKW für alle, die ihr Büro umverlegen wollen."
 	),
 	LARGE(
 			"7,5t", 6000, "largelkw.jpg",

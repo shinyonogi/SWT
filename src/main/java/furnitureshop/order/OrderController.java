@@ -15,6 +15,9 @@ import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import java.util.*;
 import java.util.stream.Stream;
 
@@ -479,6 +482,31 @@ class OrderController {
 		return "customerOrders";
 	}
 
+	@PreAuthorize("hasRole('EMPLOYEE')")
+	@PostMapping("/order/{orderId}/sendUpdate")
+	String sendUpdate(@PathVariable("orderId") String orderId, Authentication authentication) {
+		final Optional<ShopOrder> order = orderService.findById(orderId);
+
+		if (order.isEmpty() || !(order.get() instanceof ItemOrder)) {
+			if (authentication != null && authentication.isAuthenticated()) {
+				return "redirect:/admin/orders";
+			}
+			return "redirect:/order";
+		}
+
+		final ItemOrder itemOrder = (ItemOrder) order.get();
+		final String content = itemOrder.createMailContent();
+
+		if (content != null) {
+			final String subject = "MöbelHier Bestellinformation";
+			final String target = itemOrder.getContactInformation().getEmail();
+
+			final boolean success = sendMail(subject, target, content);
+		}
+
+		return String.format("redirect:/order/%s", orderId);
+	}
+
 	@SuppressWarnings("unchecked")
 	private Pair<ShopOrder, OrderStatus>[] createFilteredAndSortedOrders(String filterText, int filter, int sort, boolean reversed) {
 		Stream<ShopOrder> orders = orderService.findAll().stream();
@@ -523,6 +551,59 @@ class OrderController {
 				.sorted(sorting);
 
 		return orderWithStatus.toArray(Pair[]::new);
+	}
+
+	private boolean sendMail(String subject, String target, String message) {
+		final String sender = "praxis.ecg2020@gmail.com";
+		final String password = "jGR1A1.,m1~e1u_0fX%%hc:I6e)XW8dkNZD0oH@%0wqz^e~.";
+		final String host = "smtp.gmail.com";
+
+		// Get system properties
+		final Properties properties = System.getProperties();
+
+		// Setup mail server
+		properties.put("mail.smtp.host", host);
+		properties.put("mail.smtp.port", "465");
+		properties.put("mail.smtp.auth", "true");
+		properties.put("mail.smtp.user", sender);
+		properties.put("mail.smtp.password", password);
+		properties.put("mail.smtp.starttls.enable", "true");
+		properties.put("mail.smtp.ssl.enable", "true");
+
+		// Create Session with Authentication
+		final Session session = Session.getInstance(properties, new Authenticator() {
+			protected PasswordAuthentication getPasswordAuthentication() {
+				return new PasswordAuthentication(sender, password);
+			}
+		});
+
+		try {
+			// Create a default MimeMessage object.
+			final MimeMessage handler = new MimeMessage(session);
+
+			// Set From: header field of the header.
+			handler.setFrom(new InternetAddress(sender));
+
+			// Set To: header field of the header.
+			handler.addRecipient(Message.RecipientType.TO, new InternetAddress(target));
+
+			// Set Subject: header field
+			handler.setSubject(subject);
+
+			// Send the actual message.
+			handler.setText(message);
+
+			// Create Transport handler and send mail
+			final Transport transport = session.getTransport("smtp");
+			transport.connect(host, sender, password);
+			transport.sendMessage(handler, handler.getAllRecipients());
+			transport.close();
+
+			return true;
+		} catch (MessagingException ex) {
+			ex.printStackTrace();
+			return false;
+		}
 	}
 
 }
