@@ -454,6 +454,39 @@ public class OrderControllerIntegrationTests {
 	}
 
 	@Test
+	@WithMockUser(username = "admin", roles = "EMPLOYEE")
+	void returnsModelAndViewOrderOverviewChangeWholeStatus() throws Exception {
+		Pickup pickup = orderService.orderPickupItem(cart, contactInformation);
+
+		mvc.perform(post("/order/{id}/changeWholeStatus", pickup.getId().getIdentifier())
+				.param("status", String.valueOf(OrderStatus.STORED)))
+				.andExpect(status().is3xxRedirection())
+				.andExpect(redirectedUrl(String.format("/order/%s", pickup.getId().getIdentifier())));
+
+		pickup = (Pickup) orderService.findById(pickup.getId().getIdentifier()).orElse(null);
+
+		for (ItemOrderEntry entry : pickup.getOrderEntries()) {
+			assertSame(OrderStatus.STORED, entry.getStatus(), "Status should be correct!");
+		}
+	}
+
+	@Test
+	void redirectOrderOverviewChangeWholeStatusWithoutAuthentication() throws Exception {
+		mvc.perform(post("/order/{id}/changeWholeStatus", "random")
+				.param("status", String.valueOf(OrderStatus.STORED)))
+				.andExpect(status().is3xxRedirection());
+	}
+
+	@Test
+	@WithMockUser(username = "admin", roles = "EMPLOYEE")
+	void redirectOrderOverviewChangeWholeStatusWithInvalidOrderWithAuthentication() throws Exception {
+		mvc.perform(post("/order/{id}/changeWholeStatus", "random")
+				.param("status", String.valueOf(OrderStatus.STORED)))
+				.andExpect(status().is3xxRedirection())
+				.andExpect(redirectedUrl("/admin/orders"));
+	}
+
+	@Test
 	void returnsModelAndViewOrderOverviewCancelLkw() throws Exception {
 		final Optional<LKW> olkw = lkwService.createCharterLKW(businessTime.getTime().toLocalDate(), LKWType.SMALL);
 		Assert.isTrue(olkw.isPresent(), "LKW Charter konnte nicht erstellt werden");
