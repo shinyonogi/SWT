@@ -45,7 +45,8 @@ public class Set extends Item {
 	 *
 	 * @throws IllegalArgumentException If any of the arguments is {@code null}
 	 */
-	public Set(int groupId, String name, MonetaryAmount customerPrice, byte[] image, String variant, String description, Supplier supplier, List<Item> items) {
+	public Set(int groupId, String name, MonetaryAmount customerPrice, byte[] image, String variant,
+			String description, Supplier supplier, List<Item> items) {
 		super(groupId, name, customerPrice, image, variant, description, supplier, Category.SET);
 
 		Assert.notNull(items, "Items must not be null!");

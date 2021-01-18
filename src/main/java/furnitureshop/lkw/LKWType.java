@@ -57,7 +57,8 @@ public enum LKWType {
 	 * @param delieveryPrice The price for a customer for a delivery
 	 * @param description    The short description of the type
 	 */
-	LKWType(String name, int weight, String picture, MonetaryAmount charterPrice, MonetaryAmount delieveryPrice, String description) {
+	LKWType(String name, int weight, String picture, MonetaryAmount charterPrice,
+			MonetaryAmount delieveryPrice, String description) {
 		this.name = name;
 		this.weight = weight;
 		this.picture = "/resources/img/lkw/" + picture;

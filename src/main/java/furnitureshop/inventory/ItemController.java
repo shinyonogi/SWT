@@ -103,7 +103,8 @@ public class ItemController {
 	 * to '/catalog' if no {@code category} is given or to '/catalog/ + category' if the Item is missing.
 	 */
 	@GetMapping("/catalog/{category}/{itemId}")
-	String getItemDetails(@PathVariable("category") String category, @PathVariable("itemId") Optional<Item> item, Model model) {
+	String getItemDetails(@PathVariable("category") String category, @PathVariable("itemId") Optional<Item> item,
+			Model model) {
 		if (item.isEmpty()) {
 			return "redirect:/catalog/" + category;
 		}
@@ -266,7 +267,12 @@ public class ItemController {
 		final Map<Category, Streamable<Item>> itemCategoryMap = new EnumMap<>(Category.class);
 
 		for (Category category : Category.values()) {
-			itemCategoryMap.put(category, Streamable.of(itemService.findAllByCategory(category).stream().sorted().toArray(Item[]::new)));
+			itemCategoryMap.put(category,
+					Streamable.of(itemService.findAllByCategory(category).stream()
+							.sorted()
+							.toArray(Item[]::new)
+					)
+			);
 		}
 
 		final Map<Item, Integer> itemMap = new HashMap<>();
@@ -303,7 +309,12 @@ public class ItemController {
 			final Map<Category, Streamable<Item>> itemCategoryMap = new EnumMap<>(Category.class);
 
 			for (Category category : Category.values()) {
-				itemCategoryMap.put(category, Streamable.of(itemService.findAllByCategory(category).stream().sorted().toArray(Item[]::new)));
+				itemCategoryMap.put(category,
+						Streamable.of(itemService.findAllByCategory(category).stream()
+								.sorted()
+								.toArray(Item[]::new)
+						)
+				);
 			}
 
 			model.addAttribute("lempty", true);
@@ -454,7 +465,16 @@ public class ItemController {
 			model.addAttribute("maxPrice", set.getPartTotal().getNumber());
 		}
 
-		model.addAttribute("itemForm", new ItemForm(item.getGroupId(), item.getWeight(), item.getName(), item.getVariant(), item.getDescription(), item.getSupplierPrice().getNumber().doubleValue(), item.getCategory(), new HashMap<>()));
+		model.addAttribute("itemForm", new ItemForm(
+				item.getGroupId(),
+				item.getWeight(),
+				item.getName(),
+				item.getVariant(),
+				item.getDescription(),
+				item.getSupplierPrice().getNumber().doubleValue(),
+				item.getCategory(),
+				new HashMap<>())
+		);
 		model.addAttribute("image", null);
 		model.addAttribute("suppId", suppId);
 		model.addAttribute("itemId", item.getId());
@@ -631,7 +651,8 @@ public class ItemController {
 	 * @return Returns the montly statistic page with custom months.
 	 */
 	@PostMapping("/admin/statistic")
-	String setMonthlyStatisticValue(@RequestParam("init") String init, @RequestParam("compare") String compare, Model model) {
+	String setMonthlyStatisticValue(@RequestParam("init") String init, @RequestParam("compare") String compare,
+			Model model) {
 		final TemporalAccessor initAccessor = DateTimeFormatter.ofPattern("MM yyyy").parse(init);
 		final int initMonth = initAccessor.get(ChronoField.MONTH_OF_YEAR);
 		final int initYear = initAccessor.get(ChronoField.YEAR);

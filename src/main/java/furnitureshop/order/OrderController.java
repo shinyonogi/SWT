@@ -80,7 +80,8 @@ class OrderController {
 	 * @return the view index
 	 */
 	@PostMapping("/cart/add/{id}")
-	String addItem(@PathVariable("id") Item item, @RequestParam("number") int quantity, @ModelAttribute("cart") Cart cart) {
+	String addItem(@PathVariable("id") Item item, @RequestParam("number") int quantity,
+			@ModelAttribute("cart") Cart cart) {
 		int amount = 0;
 		for (CartItem cartItem : cart) {
 			if (cartItem.getProduct().equals(item)) {
@@ -105,7 +106,8 @@ class OrderController {
 	 * @return the view cart
 	 */
 	@PostMapping("/cart/change/{id}")
-	String editItem(@PathVariable("id") String cartItemId, @RequestParam("amount") int amount, @ModelAttribute("cart") Cart cart) {
+	String editItem(@PathVariable("id") String cartItemId, @RequestParam("amount") int amount,
+			@ModelAttribute("cart") Cart cart) {
 		return cart.getItem(cartItemId).map(it -> {
 			if (amount <= 0) {
 				cart.removeItem(cartItemId);
@@ -507,7 +509,8 @@ class OrderController {
 	}
 
 	@SuppressWarnings("unchecked")
-	private Pair<ShopOrder, OrderStatus>[] createFilteredAndSortedOrders(String filterText, int filter, int sort, boolean reversed) {
+	private Pair<ShopOrder, OrderStatus>[] createFilteredAndSortedOrders(String filterText, int filter,
+			int sort, boolean reversed) {
 		Stream<ShopOrder> orders = orderService.findAll().stream();
 
 		if (filter == 1) {
