@@ -19,27 +19,23 @@ Möbelgeschäft von Möbel-Hier.
 | Mitarbeiter -> Alle Bestellungen | - | Bestellung umfasst 1x bequemes Bett in braun und 1x bequemes Bett in beige. Wenn man den Bezahltstatus des Bequemen Bett in braun ändert, ändert sich auch der Bezahltstatus des bequemen Bettes in beige. | Änderung von 2 Bezahlstatus statt nur einem
 | Mitarbeiter -> Alle Bestellungen | - | Bestellung umfasst 1x modernes Bett in grau und 1x modernes Bett in beige. Wenn man den Bestellstatus des modernem Bett in grau ändert, ändert sich auch der Bestellstatus des modernen Bettes in beige. | Änderung von 2 Bestellstatus statt einem
 | Mitarbeiter -> Produkte bearbeiten -> Modernes Bett entfernen | - | Das moderne Bett soll aus dem Katalog entfernt werden | org.springframework.dao. DataIntegrityViolationException (referential integrity contrainst violation)
-| Warenkorb | - | Wenn man einen Artikel in den Warenkorb tut, der dort schon drin ist, wird die Anzahl nicht verändert, sondern ein neuer Eintrag hinzugefügt. Jedoch ist keine allgemeine Änderung der Anzahl im Warenkorb möglich, so könnte es ach gewollt sein. | Warenkorb mit doppelten Eintrag
+| Warenkorb | - | Wenn man einen Artikel in den Warenkorb legt, der dort schon drin ist, wird die Anzahl nicht verändert, sondern ein neuer Eintrag hinzugefügt. Jedoch ist keine allgemeine Änderung der Anzahl im Warenkorb möglich, so könnte es ach gewollt sein. | Warenkorb mit doppelten Eintrag
 |Warenkorb| -| UC0120 nicht implementiert (Angebotspreis erfragen)| -
 | Warenkorb -> Checkout | Items im Warenkorb | Unzulässige Daten (Telefonummer oder leere Felder (' ') möglich | Bestätigungsseite
 | LKW Mieten | Gültige Kontaktdaten | Es ist möglich einen LKW in der Vergangenheit zu mieten | Erfolgreiche Mietung
 |Mitarbeiter -> Produkt bearbeiten | - | Der Button 'Artikel entfernen' oben rechts macht nichts | -
 | Mitarbeiter -> Produkt hinzufügen -> Set | - | Fügt man einen Artikel zu einem Set hinzu, welche bereits drin ist, wird dieser überschrieben anstatt die Anzahl zu erhöhen. z.B. Alt 1, Neu 10 -> 10 Enthalten | Der neue Wert
-| Set -> 'Setname' | Neues Set besteht aus Set+Artikel (Schlafgemach, modernes Bett) | Ein Beschreibungsseite öffnen, wo ein Set in einem Set enthalten ist | java.lang. NullPointerException: null
-| Meine Bestellung -> 'Id eingeben' | Keine Artikel mehr in der Bestellung, da alle storniert sind | es ist möglich eine Bestellung, die keine Artikel mehr beinhaltet zu stornieren, welche erst dann gelöscht wird | -
-| Mitarbeiter -> Monatliche Abrechnung -> Ansehen | - | Nach einer Änderung des Lieferanten eines Artikels wird dieser nicht in den Monatsstatistiken aktualisiert, taucht dort nicht auf und der alte Name jedoch immer noch, obwohl kein Artikel mehr mit dem Lieferanten existiert (z.B. Artikel mit Lieferant 'test' anlegen -> Artikel bestellen -> Lieferant ändern zu 'test2' -> Statistiken anzeigen) | falsche Statistik
+| Set -> 'Setname' | Neues Set bestehend aus Set+Artikel (Schlafgemach, modernes Bett) | Die Beschreibungsseite des neu hinzugefügten Sets soll aufgerufen werden | java.lang. NullPointerException: null
+| Meine Bestellung -> 'Id eingeben' | Keine Artikel mehr in der Bestellung, da alle storniert sind | Es ist möglich eine Bestellung, die keine Artikel mehr beinhaltet zu stornieren, welche erst dann gelöscht wird | -
+| Mitarbeiter -> Monatliche Abrechnung -> Ansehen | - | Nach einer Änderung des Lieferanten eines Artikels wird dieser nicht in den Monatsstatistiken aktualisiert. Der neue Lieferant taucht dort nicht auf und der alte Lieferant taucht jedoch immer noch auf, obwohl kein Artikel mehr mit dem Lieferanten existiert (z.B. Artikel mit Lieferant 'test' anlegen -> Artikel bestellen -> Lieferant ändern zu 'test2' -> Statistiken anzeigen) | falsche Statistik
 | Checkout | leerer Warenkorb | Wenn man direkt zum Checkout über die URL geht kann man eine leere Bestellung aufgeben.
 Leere Bestellung wird unter "Meine Bestellungen" angezeigt, aber nicht unter "Mitarbeiter" ->"Alle Bestellungen". | gültige Bestellung/Bestellnummer
 | /item/wrongItemID | - | Bei Eingabe einer falschen Item ID in der URL wird man nicht zur vorherigen Seite umgeleitet, sondern man kommt zu eine Error Page. 
 Allgemein wird man nicht umgeleitet, wenn man eine falsche URL angibt. | java.lang.NullPointerException
 | Mitarbeiter -> Produkt hinzufügen -> Set hinzufügen | Anzahl: 2147483648 | Eingaben bei Anzahl bis 2^31 - 1 möglich, danach Error Page. | Failed to convert value of type 'java.lang.String' to required type 'int' 
 | Meine Bestellungen | - | Website crasht wenn die Eingabe leer ist | Whitelabel Error Page
-| LKW Mieten -> Gewicht angeben | Zahl > Integergrenze 2^32-1 | Website crasht wenn Eingabe zu groß ist | Failed to convert value of type 'java.lang.String' to required type 'int' 
+| LKW Mieten -> Gewicht angeben | Zahl > Integergrenze 2^31-1 | Website crasht wenn Eingabe zu groß ist | Failed to convert value of type 'java.lang.String' to required type 'int' 
 |===
-
-* Optik der Anwendung
-* Fehlende Features
-* Interaktion mit der Anwendung (Usability)
 
 == Sonstiges
 - Bestellung/Artikel stornieren löscht den ganzen Artikel/ die Bestellung anstatt den Status zu ändern
