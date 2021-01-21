@@ -319,7 +319,7 @@ class OrderController {
 			}
 		} else if (order instanceof LKWCharter) {
 			model.addAttribute("lkw", ((LKWCharter) order).getLkw());
-			model.addAttribute("cancelable", ((LKWCharter) order).getRentDate().isAfter(businessTime.getTime().toLocalDate()));
+			model.addAttribute("cancelable", !((LKWCharter) order).getRentDate().isBefore(businessTime.getTime().toLocalDate()));
 			model.addAttribute("charterDate", ((LKWCharter) order).getRentDate());
 		} else {
 			return "redirect:/order";

@@ -113,7 +113,7 @@ public class LKWController {
 		model.addAttribute("type", type.get());
 
 		// Check if date is invalid or before current date
-		if (form.getDate() == null || !form.getDate().isAfter(businessTime.getTime().toLocalDate())) {
+		if (form.getDate() == null || form.getDate().isBefore(businessTime.getTime().toLocalDate())) {
 			// Display error message
 			model.addAttribute("result", 4);
 			return "lkwCheckout";
@@ -177,7 +177,7 @@ public class LKWController {
 			return "lkwCheckout";
 		}
 		// Check if date is invalid or before current date
-		if (form.getDate() == null || !form.getDate().isAfter(businessTime.getTime().toLocalDate())) {
+		if (form.getDate() == null || form.getDate().isBefore(businessTime.getTime().toLocalDate())) {
 			// Display error message
 			model.addAttribute("result", 4);
 			return "lkwCheckout";

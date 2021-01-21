@@ -371,7 +371,7 @@ public class OrderControllerIntegrationTests {
 				//.andExpect(model().attribute("items", ((ItemOrder) pickup).getOrderEntries()))
 				.andExpect(model().attribute("order", charter))
 				.andExpect(model().attribute("lkw", charter.getLkw()))
-				.andExpect(model().attribute("cancelable", false))
+				.andExpect(model().attribute("cancelable", true))
 				.andExpect(model().attribute("charterDate", charter.getRentDate()))
 				.andExpect(status().isOk());
 	}
