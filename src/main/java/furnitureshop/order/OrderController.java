@@ -1,5 +1,6 @@
 package furnitureshop.order;
 
+import furnitureshop.util.MailUtils;
 import furnitureshop.inventory.Item;
 import furnitureshop.lkw.LKWType;
 import org.salespointframework.order.Cart;
@@ -500,7 +501,7 @@ class OrderController {
 			final String subject = "Möbel-Hier Bestellinformation";
 			final String target = itemOrder.getContactInformation().getEmail();
 
-			final boolean success = sendMail(subject, target, content);
+			final boolean success = MailUtils.sendMail(subject, target, content);
 
 			//TODO Handle errors
 		}
@@ -557,59 +558,6 @@ class OrderController {
 				.sorted(sorting);
 
 		return orderWithStatus.toArray(Pair[]::new);
-	}
-
-	private boolean sendMail(String subject, String target, String message) {
-		final String sender = "praxis.ecg2020@gmail.com";
-		final String password = "jGR1A1.,m1~e1u_0fX%%hc:I6e)XW8dkNZD0oH@%0wqz^e~.";
-		final String host = "smtp.gmail.com";
-
-		// Get system properties
-		final Properties properties = System.getProperties();
-
-		// Setup mail server
-		properties.put("mail.smtp.host", host);
-		properties.put("mail.smtp.port", "465");
-		properties.put("mail.smtp.auth", "true");
-		properties.put("mail.smtp.user", sender);
-		properties.put("mail.smtp.password", password);
-		properties.put("mail.smtp.starttls.enable", "true");
-		properties.put("mail.smtp.ssl.enable", "true");
-
-		// Create Session with Authentication
-		final Session session = Session.getInstance(properties, new Authenticator() {
-			protected PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication(sender, password);
-			}
-		});
-
-		try {
-			// Create a default MimeMessage object.
-			final MimeMessage handler = new MimeMessage(session);
-
-			// Set From: header field of the header.
-			handler.setFrom(new InternetAddress(sender));
-
-			// Set To: header field of the header.
-			handler.addRecipient(Message.RecipientType.TO, new InternetAddress(target));
-
-			// Set Subject: header field
-			handler.setSubject(subject);
-
-			// Send the actual message.
-			handler.setText(message);
-
-			// Create Transport handler and send mail
-			final Transport transport = session.getTransport("smtp");
-			transport.connect(host, sender, password);
-			transport.sendMessage(handler, handler.getAllRecipients());
-			transport.close();
-
-			return true;
-		} catch (MessagingException ex) {
-			ex.printStackTrace();
-			return false;
-		}
 	}
 
 }
