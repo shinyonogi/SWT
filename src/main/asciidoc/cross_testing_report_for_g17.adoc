@@ -1,0 +1,35 @@
+= Cross-Testing Feedback
+
+__Durchführende Gruppe:__ 18
+__Anwendung von Gruppe:__ 17
+
+== Getestetes System
+Bei dem getesteten System handelt es sich um eine Kundensoftware, die für ein Möbelgeschäft entwickelt wurde, welche für die Bestellverwaltung, das Warenlager und  den Auslieferungsservice verantwortlich ist
+
+== Fehler-Report
+// See http://asciidoctor.org/docs/user-manual/#tables
+[options="header"]
+|===
+|Pfad |Parameter |Beschreibung |Rückgabe
+| /cart | price |bestellt man im Extremfall 99 mal den "Classic Chair" für jeweils 54,99€ wird einem die Summe 5443.91€, anstelle von 5444.01€ angezeigt. Somit beträgt die Differenz 10 Cent| … 
+|/checkout| Delivery costs |betätigt man eine Großbestellung, bei der man auf ein Gesamtgewicht von über 7.5 Tonnen kommt, wird einem bei dem Bestellvorgang weiterhin der Preis für einen 7.5 Tonner angezeigt. Somit bleiben die Maximalen Liefergebühren bei 20€, was dem Unternehmen Verluste bei der Lieferung einbringen könnte| … 
+|/admin/supplier/{id}/items/edit/{item}|Picture|wenn man anstatt eines Fotos bspw. eine *.pdf wählt. Das könnte man kurz checken| Whitelabel Page Error
+|/order/{orderNumber}|Deliverycosts |Bei einer Stornierung einer Bestellung mit Lieferung werden einem die Lieferkosten nicht zurückerstattet. Da für das Unternehmen bis zum Zeitpunkt der Auslieferung keine Kosten anfallen, macht es keinen Sinn, die Gebühren nicht auf die Gutschrift zu übertragen| …
+|/admin/statistic|"Statistik anzeigen"| Jedoch tritt dieser Fehler nur auf der deutschen Version der Software auf| Whitelabel Page Error
+|/checkout| Checkout |Wenn ein Kunde ein Produkt dem Warenkorb hinzugefügt wurde, im Anschluss das Produkt von einem Mitarbeiter aus dem Sortiment genommen wird, bekommt der Kunde einen Fehler beim anschließenden Bestellvorgang| Whitelabel Page Error
+|/admin/suppliers|"Remove supplier"|Wenn man Lieferanten aus dem Sortiment nimmt, dann werden die dazu gehörigen Bestellungen gelöscht|…
+|/order/{orderNumber}|…|Wenn ein Produkt, welches von einem Kunden bereits bestellt wurde, aus dem Sortiment genommen wird, fehlt das Produkt in der Bestellübersicht des Kunden. Der Preis ist jedoch reduziert |…
+
+|===
+
+== Sonstiges
+* In der englischen Version der Website sind alle Beschreibungen, also in LKW Vermietung und Katalog, weiterhin in deutsch. Somit kann auch jmd. ohne Deutschkenntnisse die Seite schwer benutzen
+* Muss Kriterium [F0022] nicht eingehalten: laut den Muss-Kriterien muss ein Kunde die Möglichkeit haben seine "gesamte Bestellung" zu stornieren. Dies ist hier nur durch die einzelne Stornierung aller Produkte möglich
+* Man kann als Kunde für den heutigen Tag keinen LKW mieten. Es kann ja sein, dass ein Kunde bspw. einen zu kleinen LKW gemietet hat, für den Transport jedoch spontan einen größeren mieten möchte. Selbst ein Mitarbeiter könnte dieses Problem nicht lösen.
+* Es ist unklar, welche "Additional costs" beim Mieten eines LKWs enstehen können. Egal was man eingibt werden keine "Additional costs" angegeben.
+* Wenn ein Kunde die Bestellung anschaut, wird nicht angegeben, ob die Bestellung geliefert wird oder ob pick-up.
+* Beim pick-up bräuchte beim Bestellvorgang keine Adresse angegeben werden. 
+* Es ist möglich genau das gleiche Produkt mehrmals hinzuzufügen.
+
+== Verbesserungsvorschläge
+* Nachdem ein Kunde ein Produkt in den Warenkorb hinzugefügt hat, wird er zurück auf die Startseite geleitet. Dies fördert unserer Meinung nach nicht gerade die Kauflust. Anstelle dessen sollte er, nachdem er  bspw. einen Stuhl dem Warenkorb hinzugefügt hat, zurück auf den Katalog in die Kategorie Stühle weitergeleitet werden
