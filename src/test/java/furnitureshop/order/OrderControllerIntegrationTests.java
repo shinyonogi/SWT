@@ -134,7 +134,7 @@ public class OrderControllerIntegrationTests {
 				.param("number", "5")
 				.flashAttr("cart", cart))
 				.andExpect(status().is3xxRedirection())
-				.andExpect(header().string("Location", endsWith("/")));
+				.andExpect(header().string("Location", endsWith("/catalog")));
 	}
 
 	/**

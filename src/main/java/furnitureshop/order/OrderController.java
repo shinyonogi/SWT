@@ -92,7 +92,7 @@ class OrderController {
 		final int additional = Math.min(99, amount + quantity) - amount;
 		cart.addOrUpdateItem(item, Quantity.of(additional));
 
-		return "redirect:/";
+		return "redirect:/catalog";
 	}
 
 	/**
