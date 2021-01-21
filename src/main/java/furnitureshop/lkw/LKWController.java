@@ -81,6 +81,7 @@ public class LKWController {
 		// Add attributes to model to display form with default values and no errors
 		model.addAttribute("lkwform", new LKWCharterForm("", "", "", businessTime.getTime().toLocalDate()));
 		model.addAttribute("type", type.get());
+		model.addAttribute("date", businessTime.getTime().toLocalDate());
 		model.addAttribute("result", 0);
 
 		return "lkwCheckout";
@@ -111,6 +112,7 @@ public class LKWController {
 		// Add old attributes to model to keep input
 		model.addAttribute("lkwform", form);
 		model.addAttribute("type", type.get());
+		model.addAttribute("date", businessTime.getTime().toLocalDate());
 
 		// Check if date is invalid or before current date
 		if (form.getDate() == null || form.getDate().isBefore(businessTime.getTime().toLocalDate())) {
@@ -157,6 +159,7 @@ public class LKWController {
 		// Add old attributes to model to keep input
 		model.addAttribute("lkwform", form);
 		model.addAttribute("type", type.get());
+		model.addAttribute("date", businessTime.getTime().toLocalDate());
 
 		// Check if name is invalid
 		if (!StringUtils.hasText(form.getName())) {

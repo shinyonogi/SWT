@@ -81,7 +81,7 @@
 					<div class="form-group mb-3">
 						<label for="date" th:text="#{order.date}">Datum:</label>
 						<div class="d-flex">
-							<input type="date" name="date" th:value="*{date}" class="form-control form-control-lg rounded-pill" id="date" required>
+							<input type="date" name="date" th:value="*{date}" th:min="${#temporals.format(date, 'yyyy-MM-dd')}" class="form-control form-control-lg rounded-pill" id="date" required>
 							<button type="submit" th:text="#{lkw.check}" formnovalidate name="check" class="btn btn-outline-primary ml-3">Prüfen</button>
 						</div>
 					</div>

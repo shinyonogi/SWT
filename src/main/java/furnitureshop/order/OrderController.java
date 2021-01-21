@@ -516,6 +516,10 @@ class OrderController {
 		if (filter == 1) {
 			orders = orders.filter(o -> o instanceof ItemOrder);
 		} else if (filter == 2) {
+			orders = orders.filter(o -> o instanceof Pickup);
+		} else if (filter == 3) {
+			orders = orders.filter(o -> o instanceof Delivery);
+		} else if (filter == 4) {
 			orders = orders.filter(o -> o instanceof LKWCharter);
 		}
 

@@ -26,7 +26,9 @@
                         <select class="custom-select" id="filter" name="filter">
                             <option th:selected="${filterId == 0}" th:value="0" th:text="#{order.overview.filter.all}"></option>
                             <option th:selected="${filterId == 1}" th:value="1" th:text="#{order.overview.filter.item}"></option>
-                            <option th:selected="${filterId == 2}" th:value="2" th:text="#{order.overview.filter.lkw}"></option>
+                            <option th:selected="${filterId == 2}" th:value="2" th:text="#{order.overview.filter.pickup}"></option>
+                            <option th:selected="${filterId == 3}" th:value="3" th:text="#{order.overview.filter.delivery}"></option>
+                            <option th:selected="${filterId == 4}" th:value="4" th:text="#{order.overview.filter.lkw}"></option>
                         </select>
                     </div>
 
