@@ -1,0 +1,31 @@
+= Protokoll Gruppe 17
+
+Treffen am 14.01.2021
+
+Ort:      Discord +
+Beginn:   13:00 Uhr +
+Ende:     13:50 Uhr
+
+__Schriftführer:__ David Schroth
+
+*Nächstes Treffen:* +
+18.01.2021, 18:00 Uhr, Discord
+
+__Teilnehmer:__
+//Tabellarisch oder Aufzählung, Kennzeichnung von Teilnehmern mit besonderer Rolle (z.B. Kunde)
+
+- Markus Richter
+- David Schroth
+- Marc Albrecht
+- Sebastian Jaster
+- Edgar Wolfert
+- Johannes Kaufmann
+- Shintaro Onogi
+
+== Bemerkungen
+- Meilenstein erfüllt
+- Besprechung kann-Kriterien
+* E-Mail Benachrichtigung einrichten, am besten mit Button
+- Besprechung Developer-Dokumentation
+- Crosstesting Fehler dokumentieren
+- Generierung einer csv oder JSON Datei der monatlichen Statistik (min. für einen Monat)
