@@ -17,6 +17,7 @@ public class ItemForm {
 
 	/**
 	 * Creates a new instance of an {@link ItemForm}
+	 *
 	 * @param groupId     The groupId of the item
 	 * @param weight      The weight of the item
 	 * @param name        The name of the item
@@ -26,7 +27,8 @@ public class ItemForm {
 	 * @param category    The {@link Category} of the item
 	 * @param items       Collection of {@link Item} needed for {@link Set}
 	 */
-	public ItemForm(int groupId, int weight, String name, String variant, String description, double price, Category category, Map<Item, Integer> items) {
+	public ItemForm(int groupId, int weight, String name, String variant, String description, double price,
+			Category category, Map<Item, Integer> items) {
 		this.groupId = groupId;
 		this.weight = weight;
 		this.name = name;

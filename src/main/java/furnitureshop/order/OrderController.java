@@ -15,6 +15,9 @@ import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import java.util.*;
 import java.util.stream.Stream;
 
@@ -77,7 +80,8 @@ class OrderController {
 	 * @return the view index
 	 */
 	@PostMapping("/cart/add/{id}")
-	String addItem(@PathVariable("id") Item item, @RequestParam("number") int quantity, @ModelAttribute("cart") Cart cart) {
+	String addItem(@PathVariable("id") Item item, @RequestParam("number") int quantity,
+			@ModelAttribute("cart") Cart cart) {
 		int amount = 0;
 		for (CartItem cartItem : cart) {
 			if (cartItem.getProduct().equals(item)) {
@@ -102,7 +106,8 @@ class OrderController {
 	 * @return the view cart
 	 */
 	@PostMapping("/cart/change/{id}")
-	String editItem(@PathVariable("id") String cartItemId, @RequestParam("amount") int amount, @ModelAttribute("cart") Cart cart) {
+	String editItem(@PathVariable("id") String cartItemId, @RequestParam("amount") int amount,
+			@ModelAttribute("cart") Cart cart) {
 		return cart.getItem(cartItemId).map(it -> {
 			if (amount <= 0) {
 				cart.removeItem(cartItemId);
@@ -385,10 +390,10 @@ class OrderController {
 	 * Handles all POST-Request for '/order/{orderId}/changeWholeStatus'.
 	 * Changes the {@link OrderStatus} of an {@link ItemOrderEntry}
 	 *
-	 * @param orderId 	The Identifier of the order
-	 * @param status	The new {@link OrderStatus} of the order
+	 * @param orderId The Identifier of the order
+	 * @param status  The new {@link OrderStatus} of the order
 	 *
-	 * @return	The updates Orderoverview Page
+	 * @return The updates Orderoverview Page
 	 */
 
 
@@ -479,8 +484,33 @@ class OrderController {
 		return "customerOrders";
 	}
 
+	@PreAuthorize("hasRole('EMPLOYEE')")
+	@PostMapping("/order/{orderId}/sendUpdate")
+	String sendUpdate(@PathVariable("orderId") String orderId) {
+		final Optional<ShopOrder> order = orderService.findById(orderId);
+
+		if (order.isEmpty() || !(order.get() instanceof ItemOrder)) {
+			return "redirect:/admin/orders";
+		}
+
+		final ItemOrder itemOrder = (ItemOrder) order.get();
+		final String content = itemOrder.createMailContent();
+
+		if (content != null) {
+			final String subject = "Möbel-Hier Bestellinformation";
+			final String target = itemOrder.getContactInformation().getEmail();
+
+			final boolean success = sendMail(subject, target, content);
+
+			//TODO Handle errors
+		}
+
+		return String.format("redirect:/order/%s", orderId);
+	}
+
 	@SuppressWarnings("unchecked")
-	private Pair<ShopOrder, OrderStatus>[] createFilteredAndSortedOrders(String filterText, int filter, int sort, boolean reversed) {
+	private Pair<ShopOrder, OrderStatus>[] createFilteredAndSortedOrders(String filterText, int filter,
+			int sort, boolean reversed) {
 		Stream<ShopOrder> orders = orderService.findAll().stream();
 
 		if (filter == 1) {
@@ -523,6 +553,59 @@ class OrderController {
 				.sorted(sorting);
 
 		return orderWithStatus.toArray(Pair[]::new);
+	}
+
+	private boolean sendMail(String subject, String target, String message) {
+		final String sender = "praxis.ecg2020@gmail.com";
+		final String password = "jGR1A1.,m1~e1u_0fX%%hc:I6e)XW8dkNZD0oH@%0wqz^e~.";
+		final String host = "smtp.gmail.com";
+
+		// Get system properties
+		final Properties properties = System.getProperties();
+
+		// Setup mail server
+		properties.put("mail.smtp.host", host);
+		properties.put("mail.smtp.port", "465");
+		properties.put("mail.smtp.auth", "true");
+		properties.put("mail.smtp.user", sender);
+		properties.put("mail.smtp.password", password);
+		properties.put("mail.smtp.starttls.enable", "true");
+		properties.put("mail.smtp.ssl.enable", "true");
+
+		// Create Session with Authentication
+		final Session session = Session.getInstance(properties, new Authenticator() {
+			protected PasswordAuthentication getPasswordAuthentication() {
+				return new PasswordAuthentication(sender, password);
+			}
+		});
+
+		try {
+			// Create a default MimeMessage object.
+			final MimeMessage handler = new MimeMessage(session);
+
+			// Set From: header field of the header.
+			handler.setFrom(new InternetAddress(sender));
+
+			// Set To: header field of the header.
+			handler.addRecipient(Message.RecipientType.TO, new InternetAddress(target));
+
+			// Set Subject: header field
+			handler.setSubject(subject);
+
+			// Send the actual message.
+			handler.setText(message);
+
+			// Create Transport handler and send mail
+			final Transport transport = session.getTransport("smtp");
+			transport.connect(host, sender, password);
+			transport.sendMessage(handler, handler.getAllRecipients());
+			transport.close();
+
+			return true;
+		} catch (MessagingException ex) {
+			ex.printStackTrace();
+			return false;
+		}
 	}
 
 }

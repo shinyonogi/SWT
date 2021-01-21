@@ -115,8 +115,10 @@ public class ItemService {
 		boolean initFlag, compareFlag;
 
 		for (ItemOrder order : orderService.findAllItemOrders()) {
-			initFlag = order.getCreated().getMonth() == initDate.getMonth() && order.getCreated().getYear() == initDate.getYear();
-			compareFlag = order.getCreated().getMonth() == compareDate.getMonth() && order.getCreated().getYear() == compareDate.getYear();
+			initFlag = order.getCreated().getMonth() == initDate.getMonth()
+					&& order.getCreated().getYear() == initDate.getYear();
+			compareFlag = order.getCreated().getMonth() == compareDate.getMonth()
+					&& order.getCreated().getYear() == compareDate.getYear();
 
 			if (!initFlag && !compareFlag) {
 				continue;

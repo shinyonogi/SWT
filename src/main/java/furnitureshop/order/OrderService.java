@@ -48,8 +48,8 @@ public class OrderService {
 	 *
 	 * @throws IllegalArgumentException if any argument is {@code null}
 	 */
-	OrderService(UserAccountManagement userAccountManagement, BusinessTime businessTime, OrderManagement<ShopOrder> orderManagement,
-			ItemService itemService, LKWService lkwService) {
+	OrderService(UserAccountManagement userAccountManagement, BusinessTime businessTime,
+			OrderManagement<ShopOrder> orderManagement, ItemService itemService, LKWService lkwService) {
 		Assert.notNull(userAccountManagement, "UserAccountManagement must not be null");
 		Assert.notNull(businessTime, "BusinessTime must not be null");
 		Assert.notNull(orderManagement, "OrderManagement must not be null");

@@ -195,18 +195,43 @@ public class ItemOrderTests {
 	void testItemOrderEntries() {
 		order.addOrderLine(item1, Quantity.of(1));
 
-		assertEquals(1, order.getOrderEntries().size(), "getOrderEntries() must contain 1 element");
+		assertEquals(1, order.getOrderEntries().size(), "getOrderEntries() must contain 1 element!");
 
 		final ItemOrderEntry entry = order.getOrderEntries().get(0);
-		assertEquals(item1, entry.getItem(), "getOrderEntries() must contain the correct Item");
-		assertEquals(OrderStatus.OPEN, entry.getStatus(), "getOrderEntries() must contain the correct itemstatus");
+		assertEquals(item1, entry.getItem(), "getOrderEntries() must contain the correct Item!");
+		assertEquals(OrderStatus.OPEN, entry.getStatus(), "getOrderEntries() must contain the correct itemstatus!");
 
 		entry.setStatus(OrderStatus.CANCELLED);
-		assertEquals(OrderStatus.CANCELLED, entry.getStatus(), "getOrderEntries() must contain the correct itemstatus");
+		assertEquals(OrderStatus.CANCELLED, entry.getStatus(), "getOrderEntries() must contain the correct itemstatus!");
 
 		order.addOrderLine(item2, Quantity.of(2));
 
-		assertEquals(3, order.getOrderEntries().size(), "getOrderEntries() must contain 3 elements");
+		assertEquals(3, order.getOrderEntries().size(), "getOrderEntries() must contain 3 elements!");
+	}
+
+	@Test
+	void testCreateMailContent() {
+		order.addOrderLine(item1, Quantity.of(3));
+
+		final String template = "Sehr geehrte(r) %t,\n\n" +
+				"wir möchten Ihnen mitteilen, das folgende Artikel ihrer Bestellung (%o) " +
+				"bei uns im Hauptlager eingetroffen%f sind:\n\n" +
+				"%s\n" +
+				"Mit freundlichen Grüßen Ihr\n" +
+				"Möbel-Hier Mitarbeiter";
+
+		assertNull(order.createMailContent(), "createMailContent() should return the correct value!");
+
+		order.changeAllStatus(OrderStatus.STORED);
+
+		String items = " > " + item1.getName() + " (3x)\n";
+
+		String message = template.replace("%t", order.getContactInformation().getName())
+				.replace("%o", order.getId().getIdentifier())
+				.replace("%s", items)
+				.replace("%f", "");
+
+		assertEquals(message, order.createMailContent(), "createMailContent() should return the correct value!");
 	}
 
 	@Test

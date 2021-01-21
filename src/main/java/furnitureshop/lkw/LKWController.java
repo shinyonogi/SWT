@@ -98,7 +98,8 @@ public class LKWController {
 	 * @return The checkout page with information about the availability of {@link LKW}s
 	 */
 	@PostMapping(value = "/lkw/checkout/{lkwtype}", params = "check")
-	String checkLKWDate(@PathVariable("lkwtype") String typeName, @ModelAttribute("lkwform") LKWCharterForm form, Model model) {
+	String checkLKWDate(@PathVariable("lkwtype") String typeName, @ModelAttribute("lkwform") LKWCharterForm form,
+			Model model) {
 		// Get type by name, used to ensure case insensitivity
 		final Optional<LKWType> type = LKWType.getByName(typeName);
 
@@ -143,7 +144,8 @@ public class LKWController {
 	 * @return Redirect to the Order Summary if information are correct or displays Error message
 	 */
 	@PostMapping(value = "/lkw/checkout/{lkwtype}", params = "buy")
-	String checkoutLKW(@PathVariable("lkwtype") String typeName, @ModelAttribute("lkwform") LKWCharterForm form, Model model) {
+	String checkoutLKW(@PathVariable("lkwtype") String typeName, @ModelAttribute("lkwform") LKWCharterForm form,
+			Model model) {
 		// Get type by name, used to ensure case insensitivity
 		final Optional<LKWType> type = LKWType.getByName(typeName);
 
@@ -192,7 +194,9 @@ public class LKWController {
 		}
 
 		// Create the contact information
-		final ContactInformation contactInformation = new ContactInformation(form.getName(), form.getAddress(), form.getEmail());
+		final ContactInformation contactInformation = new ContactInformation(
+				form.getName(), form.getAddress(), form.getEmail()
+		);
 
 		// Create the LKW Order
 		final LKWCharter order = lkwService.createLKWOrder(lkw.get(), form.getDate(), contactInformation);

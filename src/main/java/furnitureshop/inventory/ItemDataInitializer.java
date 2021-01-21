@@ -90,7 +90,8 @@ public class ItemDataInitializer implements DataInitializer {
 
 			final byte[] image;
 			try {
-				image = resourceLoader.getResource("classpath:static/resources/img/inventory/" + imageName).getInputStream().readAllBytes();
+				image = resourceLoader.getResource("classpath:static/resources/img/inventory/" + imageName)
+						.getInputStream().readAllBytes();
 			} catch (IOException e) {
 				e.printStackTrace();
 				return;
@@ -126,7 +127,8 @@ public class ItemDataInitializer implements DataInitializer {
 
 			final byte[] image;
 			try {
-				image = resourceLoader.getResource("classpath:static/resources/img/inventory/" + imageName).getInputStream().readAllBytes();
+				image = resourceLoader.getResource("classpath:static/resources/img/inventory/" + imageName)
+						.getInputStream().readAllBytes();
 			} catch (IOException e) {
 				e.printStackTrace();
 				return;

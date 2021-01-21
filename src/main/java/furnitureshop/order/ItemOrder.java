@@ -18,6 +18,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import java.util.*;
+import java.util.Map.Entry;
 
 @Entity
 public abstract class ItemOrder extends ShopOrder {
@@ -214,6 +215,59 @@ public abstract class ItemOrder extends ShopOrder {
 		}
 
 		return itemAmountMap;
+	}
+
+	/**
+	 * Creates the body of an email to notify the customer about the items which are currently in stock
+	 * and may if {@link ItemOrder Order} is {@link Pickup} able to be picked up.
+	 *
+	 * @return The body of email
+	 */
+	public String createMailContent() {
+		final StringBuilder builder = new StringBuilder();
+
+		final Map<Item, Integer> items = new HashMap<>();
+		for (ItemOrderEntry entry : orderWithStatus) {
+			if (entry.getStatus() != OrderStatus.STORED) {
+				continue;
+			}
+
+			if (items.containsKey(entry.getItem())) {
+				items.put(entry.getItem(), items.get(entry.getItem()) + 1);
+			} else {
+				items.put(entry.getItem(), 1);
+			}
+		}
+
+		if (items.isEmpty()) {
+			return null;
+		}
+
+		// Build page part
+		for (Entry<Item, Integer> entry : items.entrySet()) {
+			builder.append(" > ").append(entry.getKey().getName()).append(" (").append(entry.getValue()).append("x)\n");
+		}
+
+		// Preset
+		String message = "Sehr geehrte(r) %t,\n\n" +
+				"wir möchten Ihnen mitteilen, das folgende Artikel ihrer Bestellung (%o) " +
+				"bei uns im Hauptlager eingetroffen%f sind:\n\n" +
+				"%s\n" +
+				"Mit freundlichen Grüßen Ihr\n" +
+				"Möbel-Hier Mitarbeiter";
+
+		// Replace message and return
+		message = message.replace("%t", getContactInformation().getName())
+				.replace("%o", getId().getIdentifier())
+				.replace("%s", builder.toString());
+
+		if (this instanceof Pickup) {
+			message = message.replace("%f", " und nun abholbereit");
+		} else {
+			message = message.replace("%f", "");
+		}
+
+		return message;
 	}
 
 }
