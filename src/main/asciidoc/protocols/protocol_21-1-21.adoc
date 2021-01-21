@@ -1,0 +1,46 @@
+= Protokoll Gruppe 17
+
+Treffen am 21.01.2021
+
+Ort:      BBB +
+Beginn:   13:00 Uhr +
+Ende:     13:45 Uhr
+
+__Schriftführer:__ Shintaro Onogi
+
+*Nächstes Treffen:* +
+25.01.2021, 18:00 Uhr, Discord 
+
+__Teilnehmer:__
+//Tabellarisch oder Aufzählung, Kennzeichnung von Teilnehmern mit besonderer Rolle (z.B. Kunde)
+
+- Markus Richter
+- David Schroth
+- Marc Albrecht
+- Sebastian Jaster
+- Edgar Wolfert
+- Johannes Kaufmann
+- Shintaro Onogi
+
+== Bemerkungen
+- Software funktional fertig ✅
+- Crosstesting Fehler-Report -> Fix 
+- Einige Sachen fixen/verbessern (Issues) 
+- Technische Schulden (Develop Doc.)
+- Abschlusspräsentation 
+- Feedback zum Praktikum 
+- Umfrage 
+
+== Planung des nächsten Sprints
+*Issue referenziert die Issue ID von GitHub*
+
+// See http://asciidoctor.org/docs/user-manual/=tables
+[option="headers"]
+|===
+|Issue |Titel |Beschreibung |Verantwortlicher |Status
+|#52     |Frontend Design                       |Einige Seiten brauchen noch Frontend-Styling     |Shintaro   |Open
+|#53     |Update Class Diagramm                 |Klassendiagramm up-to-date halten                |Sebastian  |Open
+|#68     |Email Notification                    |Email Benachrichtigung implementieren            |Marc       |Open
+|#74     |Sonarqube Smell Checks                |Smells checken und fixen                         |           |Open
+|#94     |Fixing or improving with Crosstesting |Einige Features fixen anhand Crosstesting Report |           |Open      
+|===
