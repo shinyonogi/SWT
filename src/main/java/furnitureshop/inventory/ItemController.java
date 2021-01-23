@@ -36,6 +36,10 @@ import java.util.stream.Collectors;
 @Controller
 public class ItemController {
 
+	private static final List<String> VALID_IMAGE_TYPES = Arrays.asList(
+			"png", "jpg", "jpeg", "gif", "bmp"
+	);
+
 	private final ItemService itemService;
 
 	// A refernce to the BusinessTime to access the current system time
@@ -220,6 +224,16 @@ public class ItemController {
 				model.addAttribute("result", 7);
 				return "supplierItemform";
 			}
+
+			final String extention = file.getOriginalFilename()
+					.substring(file.getOriginalFilename().lastIndexOf(".") + 1)
+					.toLowerCase();
+
+			if (!VALID_IMAGE_TYPES.contains(extention)) {
+				model.addAttribute("result", 7);
+				return "supplierItemform";
+			}
+
 			image = file.getBytes();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -407,12 +421,21 @@ public class ItemController {
 				model.addAttribute("result", 7);
 				return "supplierSetform";
 			}
+
+			final String extention = file.getOriginalFilename()
+					.substring(file.getOriginalFilename().lastIndexOf(".") + 1)
+					.toLowerCase();
+			if (!VALID_IMAGE_TYPES.contains(extention)) {
+				model.addAttribute("result", 7);
+				return "supplierSetform";
+			}
+
 			image = file.getBytes();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
-		List<Item> setItems = new ArrayList<>();
+		final List<Item> setItems = new ArrayList<>();
 
 		for (Item item : form.getItems().keySet()) {
 			int quantity = form.getItems().get(item);
@@ -548,6 +571,14 @@ public class ItemController {
 		item.setDescription(form.getDescription());
 
 		if (!file.isEmpty()) {
+			final String extention = file.getOriginalFilename()
+					.substring(file.getOriginalFilename().lastIndexOf(".") + 1)
+					.toLowerCase();
+			if (!VALID_IMAGE_TYPES.contains(extention)) {
+				model.addAttribute("result", 7);
+				return "supplierItemform";
+			}
+
 			try {
 				item.setImage(file.getBytes());
 			} catch (IOException e) {
