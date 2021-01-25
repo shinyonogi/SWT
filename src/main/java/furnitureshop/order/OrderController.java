@@ -1,8 +1,8 @@
 package furnitureshop.order;
 
-import furnitureshop.util.MailUtils;
 import furnitureshop.inventory.Item;
 import furnitureshop.lkw.LKWType;
+import furnitureshop.util.MailUtils;
 import org.salespointframework.order.Cart;
 import org.salespointframework.order.CartItem;
 import org.salespointframework.quantity.Quantity;
@@ -16,10 +16,10 @@ import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-import javax.mail.*;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 /**
@@ -398,12 +398,12 @@ class OrderController {
 	 */
 
 
-	@PreAuthorize("hasRole('EMPLOYEE')")
 	@PostMapping("/order/{orderId}/changeWholeStatus")
 	String changeWholeOrder(@PathVariable("orderId") String orderId, @RequestParam("status") OrderStatus status) {
 		final Optional<ShopOrder> order = orderService.findById(orderId);
 
 		if (order.isEmpty() || !(order.get() instanceof ItemOrder)) {
+			System.out.println(String.format("isEmpty: %s \n instanceof: %s", order.isEmpty(), (order.get() instanceof ItemOrder)));
 			return "redirect:/admin/orders";
 		}
 
