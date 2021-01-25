@@ -434,7 +434,7 @@ public class OrderControllerIntegrationTests {
 		final ShopOrder orderPostCancel = orderPostCancelOptional.get();
 		assertSame(OrderStatus.STORED, ((ItemOrder) orderPostCancel).getOrderEntries().get(0).getStatus(), "Der Status des Items wurde nicht erfolgreich geändert");
 	}
-	/* @TODO review whether or not its a good idea to remove that role protection
+
 	@Test
 	void redirectOrderOverviewChangeOrderWithInvalidOrderWithoutAuthentication() throws Exception {
 		mvc.perform(post("/order/{id}/changeStatus", "random")
@@ -453,7 +453,6 @@ public class OrderControllerIntegrationTests {
 				.andExpect(redirectedUrl("/admin/orders"));
 	}
 
-	 */
 
 	@Test
 	@WithMockUser(username = "admin", roles = "EMPLOYEE")
@@ -472,13 +471,14 @@ public class OrderControllerIntegrationTests {
 		}
 	}
 
+	/* @TODO review whether or not its a good idea to remove that role protection
 	@Test
 	void redirectOrderOverviewChangeWholeStatusWithoutAuthentication() throws Exception {
 		mvc.perform(post("/order/{id}/changeWholeStatus", "random")
 				.param("status", String.valueOf(OrderStatus.STORED)))
 				.andExpect(status().is3xxRedirection());
 	}
-
+	*/
 	@Test
 	@WithMockUser(username = "admin", roles = "EMPLOYEE")
 	void redirectOrderOverviewChangeWholeStatusWithInvalidOrderWithAuthentication() throws Exception {

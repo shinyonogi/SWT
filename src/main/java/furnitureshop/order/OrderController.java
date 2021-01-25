@@ -403,7 +403,6 @@ class OrderController {
 		final Optional<ShopOrder> order = orderService.findById(orderId);
 
 		if (order.isEmpty() || !(order.get() instanceof ItemOrder)) {
-			System.out.println(String.format("isEmpty: %s \n instanceof: %s", order.isEmpty(), (order.get() instanceof ItemOrder)));
 			return "redirect:/admin/orders";
 		}
 
