@@ -1,11 +1,15 @@
 package furnitureshop.inventory;
 
 import furnitureshop.supplier.Supplier;
+import org.javamoney.moneta.Money;
 import org.salespointframework.catalog.Product;
+import org.salespointframework.core.Currencies;
 import org.springframework.util.Assert;
 
 import javax.money.MonetaryAmount;
 import javax.persistence.*;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 /**
  * This class represents an Item.
@@ -82,7 +86,12 @@ public abstract class Item extends Product {
 	@Override
 	@SuppressWarnings("NullableProblems")
 	public MonetaryAmount getPrice() {
-		return getSupplierPrice().multiply(1.0 + supplier.getSurcharge());
+		final MonetaryAmount temp = getSupplierPrice().multiply(1.0 + supplier.getSurcharge());
+
+		final BigDecimal price = temp.getNumber().numberValue(BigDecimal.class)
+				.setScale(2, RoundingMode.HALF_EVEN);
+
+		return Money.of(price, Currencies.EURO);
 	}
 
 	/**

@@ -21,15 +21,15 @@
             </div>
             <div class="col-4">
                 <div class="alert alert-danger" th:if="${result > 0}">
-                <h4 class="alert-heading" th:text="#{supplier.items.status}">Fehler!</h4>
+                    <h4 class="alert-heading" th:text="#{supplier.items.status}">Fehler!</h4>
 
-                <div th:if="${result == 1}" th:text="#{supplier.items.status.name}">Ungültiger Name</div>
-                <div th:if="${result == 2}" th:text="#{supplier.items.status.variant}">Ungültige Variante</div>
-                <div th:if="${result == 3}" th:text="#{supplier.items.status.description}">Ungültige Beschreibung</div>
-                <div th:if="${result == 4}" th:text="#{supplier.items.status.weight}">Ungültiges Gewicht</div>
-                <div th:if="${result == 5}" th:text="#{supplier.items.status.price}">Ungültiger Preis</div>
-                <div th:if="${result == 6}" th:text="#{supplier.items.status.category}">Ungültige Kategorie</div>
-                <div th:if="${result == 7}" th:text="#{supplier.items.status.image}">Ungültiges Bild</div>
+                    <div th:if="${result == 1}" th:text="#{supplier.items.status.name}">Ungültiger Name</div>
+                    <div th:if="${result == 2}" th:text="#{supplier.items.status.variant}">Ungültige Variante</div>
+                    <div th:if="${result == 3}" th:text="#{supplier.items.status.description}">Ungültige Beschreibung</div>
+                    <div th:if="${result == 4}" th:text="#{supplier.items.status.weight}">Ungültiges Gewicht</div>
+                    <div th:if="${result == 5}" th:text="#{supplier.items.status.price}">Ungültiger Preis</div>
+                    <div th:if="${result == 6}" th:text="#{supplier.items.status.category}">Ungültige Kategorie</div>
+                    <div th:if="${result == 7}" th:text="#{supplier.items.status.image}">Ungültiges Bild</div>
                 </div>
             </div>
             <div class="col-4">
@@ -54,7 +54,7 @@
             </div>
             <div class="form-group">
                 <label for="image" th:text="#{supplier.items.add.picture}">Bild</label>
-                <input type="file" name="image" class="form-control-file" id="image" required>
+                <input type="file" name="image" class="form-control-file" id="image" accept="image/*" required>
             </div>
             <div class="form-group">
                 <label for="variant" th:text="#{supplier.items.add.variant}">Variante</label>
@@ -98,7 +98,7 @@
                 </div>
             </div>
         </div>
-        <form  class="form" enctype="multipart/form-data" th:object="${itemForm}" th:method="post" th:action="@{/admin/supplier/{suppId}/items/edit/{itemId}(suppId=${suppId}, itemId=${itemId})}">
+        <form class="form" enctype="multipart/form-data" th:object="${itemForm}" th:method="post" th:action="@{/admin/supplier/{suppId}/items/edit/{itemId}(suppId=${suppId}, itemId=${itemId})}">
             <div class="form-group">
                 <label for="name" th:text="#{supplier.items.add.name}">Artikelname</label>
                 <input type="text" name="name" th:value="*{name}" class="form-control" th:id="name" required th:placeholder="#{supplier.items.add.name.placeholder}">
@@ -113,7 +113,7 @@
             </div>
             <div class="form-group">
                 <label th:for="image" th:text="#{supplier.items.add.picture}">Bild</label>
-                <input type="file" name="image" class="form-control-file" th:id="image">
+                <input type="file" name="image" class="form-control-file" accept="image/*" th:id="image">
             </div>
             <div class="form-group">
                 <label for="variant" th:text="#{supplier.items.add.variant}">Variante</label>

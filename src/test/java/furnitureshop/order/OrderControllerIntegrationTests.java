@@ -134,7 +134,7 @@ public class OrderControllerIntegrationTests {
 				.param("number", "5")
 				.flashAttr("cart", cart))
 				.andExpect(status().is3xxRedirection())
-				.andExpect(header().string("Location", endsWith("/")));
+				.andExpect(header().string("Location", endsWith("/catalog")));
 	}
 
 	/**
@@ -371,7 +371,7 @@ public class OrderControllerIntegrationTests {
 				//.andExpect(model().attribute("items", ((ItemOrder) pickup).getOrderEntries()))
 				.andExpect(model().attribute("order", charter))
 				.andExpect(model().attribute("lkw", charter.getLkw()))
-				.andExpect(model().attribute("cancelable", false))
+				.andExpect(model().attribute("cancelable", true))
 				.andExpect(model().attribute("charterDate", charter.getRentDate()))
 				.andExpect(status().isOk());
 	}
@@ -453,6 +453,7 @@ public class OrderControllerIntegrationTests {
 				.andExpect(redirectedUrl("/admin/orders"));
 	}
 
+
 	@Test
 	@WithMockUser(username = "admin", roles = "EMPLOYEE")
 	void returnsModelAndViewOrderOverviewChangeWholeStatus() throws Exception {
@@ -484,6 +485,21 @@ public class OrderControllerIntegrationTests {
 				.param("status", String.valueOf(OrderStatus.STORED)))
 				.andExpect(status().is3xxRedirection())
 				.andExpect(redirectedUrl("/admin/orders"));
+	}
+
+	@Test
+	void returnsModelAndViewOrderOverviewCancelAll() throws Exception {
+		Pickup pickup = orderService.orderPickupItem(cart, contactInformation);
+
+		mvc.perform(post("/order/{id}/cancelAll", pickup.getId().getIdentifier()))
+				.andExpect(status().is3xxRedirection())
+				.andExpect(redirectedUrl(String.format("/order/%s", pickup.getId().getIdentifier())));
+
+		pickup = (Pickup) orderService.findById(pickup.getId().getIdentifier()).orElse(null);
+
+		for (ItemOrderEntry entry : pickup.getOrderEntries()) {
+			assertSame(OrderStatus.CANCELLED, entry.getStatus(), "Status should be correct!");
+		}
 	}
 
 	@Test

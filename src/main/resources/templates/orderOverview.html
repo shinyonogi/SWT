@@ -47,6 +47,23 @@
                         <h5 th:text="#{order.overview.information.order}">Bestellinformationen</h5>
                     </div>
                     <div class="card-body d-flex flex-column">
+                        <div th:if="${charterDate}">
+                            <div class="d-flex flex-row align-items-baseline justify-content-between">
+                                <h6 th:text="#{order.overview.information.orderType}"></h6>
+                                <div class="text-right" th:text="#{order.overview.information.charter}"></div>
+                            </div>
+                        </div>
+                        <div th:unless="${charterDate}">
+                            <div th:if="${deliveryDate}" class="d-flex flex-row align-items-baseline justify-content-between">
+                                <h6 th:text="#{order.overview.information.orderType}"></h6>
+                                <div class="text-right" th:text="#{order.overview.information.delivery}"></div>
+                            </div>
+                            <div th:unless="${deliveryDate}" class="d-flex flex-row align-items-baseline justify-content-between">
+                                <h6 th:text="#{order.overview.information.orderType}"></h6>
+                                <div class="text-right" th:text="#{order.overview.information.pickup}"></div>
+                            </div>
+                        </div>
+
                         <div class="d-flex flex-row align-items-baseline justify-content-between">
                             <h6 th:text="#{order.overview.information.number}"></h6>
                             <div class="text-right" th:text="${order.getId()}"></div>
@@ -60,11 +77,11 @@
                             <div class="text-right" th:text="${#temporals.format(order.getUpdated(), 'dd.MM.yyyy HH:mm:ss')}"></div>
                         </div>
                         <div th:if="${charterDate}" class="d-flex flex-row align-items-baseline justify-content-between">
-                            <h6 th:text="#{order.overview.information.charter}"></h6>
+                            <h6 th:text="#{order.overview.information.charterDate}"></h6>
                             <div class="text-right" th:text="${#temporals.format(charterDate, 'dd.MM.yyyy')}"></div>
                         </div>
                         <div th:if="${deliveryDate}" class="d-flex flex-row align-items-baseline justify-content-between">
-                            <h6 th:text="#{order.overview.information.delivery}"></h6>
+                            <h6 th:text="#{order.overview.information.deliveryDate}"></h6>
                             <div class="text-right" th:text="${#temporals.format(deliveryDate, 'dd.MM.yyyy')}"></div>
                         </div>
                         <div th:unless="${order.getMissingPayment().isZero()}" class="d-flex flex-row align-items-baseline justify-content-between">
@@ -110,20 +127,47 @@
             </div>
         </div>
 
-        <div class="row m-2" sec:authorize="hasRole('EMPLOYEE')" th:if="${items}">
-            <div class="col pl-0 mb-3">
+        <div class="row" th:if="${mailSuccess}">
+            <div class="col-4"></div>
+            <div class="col-4"></div>
+            <div class="col-4">
+            <div class="alert alert-success" th:if="${mailSuccess == 1}">
+                <div th:text="#{order.overview.mailsuccess}">Mail wurde erfolgreich verschickt!</div>
+            </div>
+            <div class="alert alert-danger" th:if="${mailSuccess == -1}">
+                <div th:text="#{order.overview.mailfail}">Mail konnte nicht verschickt werden!</div>
+            </div>
+            </div>
+        </div>
+
+        <div class="row" sec:authorize="hasRole('EMPLOYEE')" th:if="${items}">
+            <div class="col-8 mb-3">
                 <button class="btn btn-secondary btn-block dropdown-toggle" th:text="#{order.overview.change.whole.status}" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Button
                 </button>
                 <div class="dropdown-menu">
                     <form class="dropdown-entry" th:each="status : ${T(furnitureshop.order.OrderStatus).values()}" method="post" th:action="@{/order/{orderId}/changeWholeStatus (orderId=${order.getId().getIdentifier()})}">
                         <input type="hidden" name="status" th:value="${status}"/>
-                        <button type="submit" class="dropdown-item" th:text="${#messages.msgOrNull('order.overview.status.' + status.name().toLowerCase())}">eingegangen</button>
+                        <button type="submit" class="dropdown-item" th:text="${#messages.msgOrNull('order.overview.status.' + status.name().toLowerCase())}">
+                            eingegangen
+                        </button>
                     </form>
                 </div>
             </div>
-            <form class="mb-3" method="post" th:action="@{/order/{orderId}/sendUpdate (orderId=${order.getId().getIdentifier()})}">
-                <button type="submit" class="btn btn-outline-danger" th:text="#{order.overview.sendUpdate}">Senden</button>
+            <div class="col-4">
+            <form class="mb-3 text-right" method="post" th:action="@{/order/{orderId}/sendUpdate (orderId=${order.getId().getIdentifier()})}">
+                <button type="submit" class="btn btn-outline-danger btn-block" th:text="#{order.overview.sendUpdate}">
+                    Senden
+                </button>
+            </form>
+            </div>
+        </div>
+
+        <div class="row m-2 mb-3" sec:authorize="!hasRole('EMPLOYEE')" th:if="${items != null && cancelable}">
+            <form class="col" method="post" th:action="@{/order/{orderId}/cancelAll (orderId=${order.getId().getIdentifier()})}">
+                <button type="submit" class="btn btn-outline-danger btn-block" th:text="#{order.overview.cancelOrder}">Bestellung
+                    stornieren
+                </button>
             </form>
         </div>
 

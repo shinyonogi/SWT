@@ -374,6 +374,13 @@ public class ItemControllerIntegrationTests {
 				.flashAttr("itemForm", form))
 				.andExpect(model().attribute("result", is(7)))
 				.andExpect(view().name("supplierItemform"));
+
+		mvc.perform(multipart("/admin/supplier/{id}/items/add", supplier.getId())
+				.file(new MockMultipartFile("image", "test.abc",
+						"image/png", new byte[] {1}))
+				.flashAttr("itemForm", form))
+				.andExpect(model().attribute("result", is(7)))
+				.andExpect(view().name("supplierItemform"));
 	}
 
 	@Test
@@ -594,6 +601,13 @@ public class ItemControllerIntegrationTests {
 				.flashAttr("setForm", form))
 				.andExpect(model().attribute("result", is(7)))
 				.andExpect(view().name("supplierSetform"));
+
+		mvc.perform(multipart("/admin/supplier/{id}/sets/add/set", setSupplier.getId())
+				.file(new MockMultipartFile("image", "test.abc",
+						"image/png", new byte[] {1}))
+				.flashAttr("setForm", form))
+				.andExpect(model().attribute("result", is(7)))
+				.andExpect(view().name("supplierSetform"));
 	}
 
 	@Test
@@ -743,6 +757,20 @@ public class ItemControllerIntegrationTests {
 				.file(multipartFile)
 				.flashAttr("itemForm", form))
 				.andExpect(model().attribute("result", is(5)))
+				.andExpect(view().name("supplierItemform"));
+	}
+
+	@Test
+	@WithMockUser(roles = "EMPLOYEE")
+	void returnsModelAndViewEditItemWithInvalidImage() throws Exception {
+		ItemForm form = new ItemForm(sofa_black.getGroupId(), sofa_black.getWeight(), "Name", sofa_black.getVariant(), "New",
+				10, Category.COUCH, Map.of());
+
+		mvc.perform(multipart("/admin/supplier/{suppId}/items/edit/{itemId}", sofa_black.getSupplier().getId(), sofa_black.getId())
+				.file(new MockMultipartFile("image", "test.abc",
+						"image/png", new byte[] {1}))
+				.flashAttr("itemForm", form))
+				.andExpect(model().attribute("result", is(7)))
 				.andExpect(view().name("supplierItemform"));
 	}
 

@@ -13,7 +13,6 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css">
 </head>
 <body>
-
     <nav th:include="navigation :: navigation"></nav>
 
     <div class="container mt-3 mb-3">
@@ -29,24 +28,24 @@
                     <div th:if="${result == 7}" th:text="#{supplier.items.status.image}">Ungültiges Bild</div>
                 </div>
             </div>
-            <div class="col-4"> </div>
+            <div class="col-4"></div>
         </div>
 
         <form class="form" enctype="multipart/form-data" method="post" th:object="${setForm}" th:action="@{/admin/supplier/{suppId}/sets/add/set(suppId=${suppId})}">
             <div class="row">
-            <div class="col-lg-2 col-md-6 mb-4 d-flex align-items-stretch" th:each="item : *{items.keySet()}">
-                <div class="card bg-light">
-                    <a class="card-img-top">
-                        <img class="img-fluid" th:src="@{'/catalog/image/' + ${item.getId().getIdentifier()}}"
-                             src="../static/resources/img/inventory/chair_1.jpg" alt="Artikel"/>
-                    </a>
-                    <div class="card-body d-flex flex-column">
-                        <h5 class="card-title" th:text="${item.getName()}">Name</h5>
-                        <h5 class="text-dark" th:text="${item.getPrice().query(T(furnitureshop.FurnitureShop).MONETARY_QUERY)}">999,99€</h5>
-                        <input type="number" class="mt-auto" th:field="*{items['__${item.getId()}__']}" readonly/>
+                <div class="col-lg-2 col-md-6 mb-4 d-flex align-items-stretch" th:each="item : *{items.keySet()}">
+                    <div class="card bg-light">
+                        <a class="card-img-top">
+                            <img class="img-fluid" th:src="@{'/catalog/image/' + ${item.getId().getIdentifier()}}"
+                                 src="../static/resources/img/inventory/chair_1.jpg" alt="Artikel"/>
+                        </a>
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title" th:text="${item.getName()}">Name</h5>
+                            <h5 class="text-dark" th:text="${item.getPrice().query(T(furnitureshop.FurnitureShop).MONETARY_QUERY)}">999,99€</h5>
+                            <input type="number" class="mt-auto" th:field="*{items['__${item.getId()}__']}" readonly/>
+                        </div>
                     </div>
                 </div>
-            </div>
             </div>
             <div class="row">
                 <div class="col-lg-3"></div>
@@ -65,7 +64,7 @@
                     </div>
                     <div class="form-group">
                         <label for="image" th:text="#{supplier.items.add.picture}">Bild</label>
-                        <input type="file" name="image" class="form-control-file" id="image" required>
+                        <input type="file" name="image" class="form-control-file" id="image" accept="image/*" required>
                     </div>
                     <div class="form-group">
                         <label for="variant" th:text="#{supplier.items.add.variant}">Variante</label>

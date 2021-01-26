@@ -26,7 +26,9 @@
                         <select class="custom-select" id="filter" name="filter">
                             <option th:selected="${filterId == 0}" th:value="0" th:text="#{order.overview.filter.all}"></option>
                             <option th:selected="${filterId == 1}" th:value="1" th:text="#{order.overview.filter.item}"></option>
-                            <option th:selected="${filterId == 2}" th:value="2" th:text="#{order.overview.filter.lkw}"></option>
+                            <option th:selected="${filterId == 2}" th:value="2" th:text="#{order.overview.filter.pickup}"></option>
+                            <option th:selected="${filterId == 3}" th:value="3" th:text="#{order.overview.filter.delivery}"></option>
+                            <option th:selected="${filterId == 4}" th:value="4" th:text="#{order.overview.filter.lkw}"></option>
                         </select>
                     </div>
 
@@ -68,6 +70,7 @@
             <tr>
                 <th scope="col" th:text="#{order.overview.number}" style="width: 30%">Bestell-Nr.</th>
                 <th scope="col" th:text="#{order.overview.date}">Bestelldatum</th>
+                <th scope="col" th:text="#{order.overview.orderType}" style="width: 15%">Bestelltyp</th>
                 <th scope="col" th:text="#{order.overview.total}">Betrag</th>
                 <th scope="col" th:text="#{order.overview.status}" style="width: 15%">Status</th>
                 <th scope="col"></th>
@@ -76,13 +79,30 @@
             <tbody>
             <tr class="mt-3 mb-3 table-light align-items-baseline" th:each="order : ${orders}">
                 <td th:text="${order.getFirst().getId()}">5318008</td>
-                <td th:text=" ${#temporals.format(order.getFirst().getDateCreated(), 'dd.MM.yyyy HH:mm:ss')}">23.03.2021</td>
-                <td th:text="${order.getFirst().getTotal().query(T(furnitureshop.FurnitureShop).MONETARY_QUERY)}">999,99€</td>
+                <td th:text=" ${#temporals.format(order.getFirst().getDateCreated(), 'dd.MM.yyyy HH:mm:ss')}">
+                    23.03.2021
+                </td>
+                <th:block th:unless="${order.getFirst() instanceof T(furnitureshop.order.LKWCharter)}">
+                    <td th:if="${order.getFirst() instanceof T(furnitureshop.order.Delivery)}"
+                        th:text="#{order.overview.information.delivery}">Lieferung
+                    </td>
+                    <td th:unless="${order.getFirst() instanceof T(furnitureshop.order.Delivery)}"
+                        th:text="#{order.overview.information.pickup}">Abholung
+                    </td>
+                </th:block>
+                <td th:if="${order.getFirst() instanceof T(furnitureshop.order.LKWCharter)}"
+                    th:text="#{order.overview.information.charter}">LKW Mietung
+                </td>
+                <td th:text="${order.getFirst().getTotal().query(T(furnitureshop.FurnitureShop).MONETARY_QUERY)}">
+                    999,99€
+                </td>
                 <td th:text="${#messages.msgOrNull('order.overview.status.' + order.getSecond().name().toLowerCase())}"></td>
                 <td>
                     <form th:action="@{/order}" method="post">
                         <input type="hidden" th:value="${order.getFirst().getId()}" id="orderId" name="orderId"/>
-                        <button type="submit" class="btn btn-outline-primary" role="button" th:text="#{order.overview.check}">Bestellung ansehen</button>
+                        <button type="submit" class="btn btn-outline-primary" role="button"
+                                th:text="#{order.overview.check}">Bestellung ansehen
+                        </button>
                     </form>
                 </td>
             </tr>
