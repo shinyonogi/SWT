@@ -26,7 +26,6 @@ public abstract class CalendarEntry {
 	 * @deprecated
 	 */
 	@Deprecated
-	@SuppressWarnings("DeprecatedIsStillUsed")
 	protected CalendarEntry() {}
 
 	/**

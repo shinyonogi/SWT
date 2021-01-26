@@ -56,6 +56,8 @@ public abstract class ItemOrder extends ShopOrder {
 	 * @param quantity The quantity of the product
 	 *
 	 * @return the created order line
+	 *
+	 * @throws IllegalArgumentException if {@link Product} isn't an {@link Item}
 	 */
 	@Override
 	@SuppressWarnings("NullableProblems")
@@ -96,6 +98,8 @@ public abstract class ItemOrder extends ShopOrder {
 	 * @param newStatus The new {@link OrderStatus} of the {@link ItemOrderEntry}
 	 *
 	 * @return boolean true if the change of status is successful, boolean false if unsuccessful
+	 *
+	 * @throws IllegalArgumentException if {@code newStatus} is {@code null}
 	 */
 	public boolean changeStatus(long entryId, OrderStatus newStatus) {
 		Assert.notNull(newStatus, "OrderStatus must not be null!");
@@ -122,6 +126,8 @@ public abstract class ItemOrder extends ShopOrder {
 	 * This function is used to change the order status of all order entries.
 	 *
 	 * @param newStatus The new {@link OrderStatus}
+	 *
+	 * @throws IllegalArgumentException if {@code newStatus} is {@code null}
 	 */
 	public void changeAllStatus(OrderStatus newStatus) {
 		Assert.notNull(newStatus, "OrderStatus must not be null!");
@@ -180,6 +186,11 @@ public abstract class ItemOrder extends ShopOrder {
 		return price;
 	}
 
+	/**
+	 * Calulates the total cost of all {@link Item}s
+	 *
+	 * @return The calculated amount
+	 */
 	public MonetaryAmount getItemTotal() {
 		return super.getTotal();
 	}
@@ -194,10 +205,26 @@ public abstract class ItemOrder extends ShopOrder {
 		return Collections.unmodifiableList(orderWithStatus);
 	}
 
+	/**
+	 * Creates a {@link List} of all Entries with the specific {@link Item}
+	 *
+	 * @return The created {@link List}
+	 *
+	 * @throws IllegalArgumentException if {@code Item} is {@code null}
+	 */
 	public List<ItemOrderEntry> getOrderEntriesByItem(Item item) {
+		Assert.notNull(item, "Item must not be null!");
+
 		return Streamable.of(orderWithStatus).filter(e -> e.getItem().equals(item)).toList();
 	}
 
+	/**
+	 * Calulates the total amount of profit of this {@link ItemOrder} per {@link Item}.
+	 * It only uses {@link ItemOrderEntry}s which are completed.
+	 * {@link Set}s will be split up into {@link Piece}s and the profit will be calculated.
+	 *
+	 * @return A {@link Map} with all profits per {@link Item}
+	 */
 	public Map<Item, MonetaryAmount> getProfits() {
 		HashMap<Item, MonetaryAmount> itemAmountMap = new HashMap<>();
 

@@ -16,19 +16,30 @@ import java.util.Properties;
 
 public class MailUtils {
 
+	// Static fields to access mail server
 	private static final String
 			TOKEN_URL = "https://www.googleapis.com/oauth2/v4/token",
 			EMAIL_ADDRESS = "praxis.ecg2020@gmail.com",
 
-			OAUTHCLIENT_ID = "909218273569-2s7og2iu3acc9tfjic6ai4ab7t5ulngb.apps.googleusercontent.com",
+	OAUTHCLIENT_ID = "909218273569-2s7og2iu3acc9tfjic6ai4ab7t5ulngb.apps.googleusercontent.com",
 			OAUTH_SECRET = "VM4NeqolYWvboiC5aOHTaaVg",
 			REFRESH_TOKEN = "1//09tMqvPNkXADbCgYIARAAGAkSNwF-L9IrPpjLKmwJtDRtHzctPr5qUoUH" +
 					"-H5HqXjEu8OgQi0hvBEScUHYyBgA1m_tvW3H4jjeQcU";
 
+	// Dynamic fields which can change if token get invalid over time
 	private static String ACCESS_TOKEN = "ya29.a0AfH6SMCGdM0Z6O6Srghiec1sEDVfvhRt7zwaTNzqhRxytoo6EQbMkVZTRX8ayhPZqqY" +
 			"MsQFsrcqxE0nRMiNB2T869uJaVYEm7cGr5dChKp7GY-NACOY7spuayrhTc9USAf0yBCJjdB0_uoyAsrcG7egBowDrVAwqNtA5DrQAl9U";
 	private static long TOKEN_EXPIRES = 0L;
 
+	/**
+	 * Sends an E-Mail to the {@code target} with a {@code subject} and a specific {@code message}
+	 *
+	 * @param subject The subject of the E-Mail
+	 * @param target  The target E-Mail
+	 * @param message The content of the E-Mail
+	 *
+	 * @return {@code true} if the E-Mail was successfully send
+	 */
 	public static boolean sendMail(String subject, String target, String message) {
 		renewToken();
 
@@ -65,6 +76,9 @@ public class MailUtils {
 		return true;
 	}
 
+	/**
+	 * This helper Method checks and renews the access token for sending E-Mails
+	 */
 	private static void renewToken() {
 		if (System.currentTimeMillis() <= TOKEN_EXPIRES) {
 			return;

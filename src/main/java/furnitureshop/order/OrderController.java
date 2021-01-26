@@ -16,7 +16,6 @@ import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -426,6 +425,14 @@ class OrderController {
 		return String.format("redirect:/order/%s", orderId);
 	}
 
+	/**
+	 * Handles all POST-Request for '/order/{orderId}/cancelAll'.
+	 * Cancel all Items of an ItemOrder
+	 *
+	 * @param orderId The Identifier of the order
+	 *
+	 * @return The updates Orderoverview Page
+	 */
 	@PostMapping("/order/{orderId}/cancelAll")
 	String cancelOrder(@PathVariable("orderId") String orderId) {
 		final Optional<ShopOrder> order = orderService.findById(orderId);
@@ -498,6 +505,18 @@ class OrderController {
 		return "customerOrders";
 	}
 
+	/**
+	 * Handles all POST-Request for '/admin/orders'.
+	 * Displays all availble Orders in a {@link List} with Price and {@link OrderStatus} sorted and filted
+	 *
+	 * @param filterText The String content which the order have to contain (Id, Name, Address, E-Mail)
+	 * @param filterId   An id of the filter (ItemOrder, LKWCharter, All, ...)
+	 * @param sortId     An id to sort the List (per Id, Price, Status, Orderdate, ...)
+	 * @param reversed   If the sorting direction should be reversed
+	 * @param model      The {@code Spring} Page {@link Model}
+	 *
+	 * @return The Orderslist page
+	 */
 	@PostMapping("/admin/orders")
 	String sortAndFilterCustomerOrders(@RequestParam("text") String filterText, @RequestParam("filter") int filterId,
 			@RequestParam("sort") int sortId, @RequestParam("reverse") boolean reversed, Model model) {
@@ -512,11 +531,17 @@ class OrderController {
 		return "customerOrders";
 	}
 
+	/**
+	 * Handles all POST-Request for '/order/{orderId}/sendUpdate'.
+	 * Sends the customer an E-Mail which contains information about which Items are currently in stock
+	 * and may be picked up.
+	 *
+	 * @param orderId The Identifier of the order
+	 */
 	@PreAuthorize("hasRole('EMPLOYEE')")
 	@PostMapping("/order/{orderId}/sendUpdate")
 	String sendUpdate(@PathVariable("orderId") String orderId, RedirectAttributes reAttr) {
 		final Optional<ShopOrder> order = orderService.findById(orderId);
-		int success = 0;
 
 		if (order.isEmpty() || !(order.get() instanceof ItemOrder)) {
 			return "redirect:/admin/orders";
@@ -525,6 +550,7 @@ class OrderController {
 		final ItemOrder itemOrder = (ItemOrder) order.get();
 		final String content = itemOrder.createMailContent();
 
+		int success;
 		if (content != null) {
 			final String subject = "Möbel-Hier Bestellinformation";
 			final String target = itemOrder.getContactInformation().getEmail();
@@ -535,9 +561,20 @@ class OrderController {
 		}
 
 		reAttr.addFlashAttribute("mailSuccess", success);
+
 		return String.format("redirect:/order/%s", orderId);
 	}
 
+	/**
+	 * The helper Method creates a List which contains a filtered and sorted representation of all Orders.
+	 *
+	 * @param filterText The String content which the order have to contain (Id, Name, Address, E-Mail)
+	 * @param filter     An id of the filter (ItemOrder, LKWCharter, All, ...)
+	 * @param sort       An id to sort the List (per Id, Price, Status, Orderdate, ...)
+	 * @param reversed   If the sorting direction should be reversed
+	 *
+	 * @return A filtered and sorted List of Orders
+	 */
 	@SuppressWarnings("unchecked")
 	private Pair<ShopOrder, OrderStatus>[] createFilteredAndSortedOrders(String filterText, int filter,
 			int sort, boolean reversed) {

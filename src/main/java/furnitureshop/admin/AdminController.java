@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 /**
  * Spring MVC Controller to manage the login and admin routes.
  * Admin route is secured by {@link PreAuthorize} clause.
- *
- * @author Sebastian Jaster
  */
 @Controller
 public class AdminController {
@@ -27,11 +25,12 @@ public class AdminController {
 	 * then it redirects to {@code getAdminInterface()}
 	 *
 	 * @param authentication provides the current authentication context
+	 *
 	 * @return login view or redirect to admin overview when logged in
 	 */
 	@GetMapping("/login")
 	String getLogin(Authentication authentication) {
-		if(authentication != null && authentication.isAuthenticated()) {
+		if (authentication != null && authentication.isAuthenticated()) {
 			return "redirect:/admin/overview";
 		}
 		return "login";
@@ -48,4 +47,5 @@ public class AdminController {
 	String getAdminInterface() {
 		return "admin";
 	}
+
 }
