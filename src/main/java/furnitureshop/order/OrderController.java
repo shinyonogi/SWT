@@ -15,6 +15,8 @@ import org.springframework.ui.Model;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -512,8 +514,9 @@ class OrderController {
 
 	@PreAuthorize("hasRole('EMPLOYEE')")
 	@PostMapping("/order/{orderId}/sendUpdate")
-	String sendUpdate(@PathVariable("orderId") String orderId) {
+	String sendUpdate(@PathVariable("orderId") String orderId, RedirectAttributes reAttr) {
 		final Optional<ShopOrder> order = orderService.findById(orderId);
+		int success = 0;
 
 		if (order.isEmpty() || !(order.get() instanceof ItemOrder)) {
 			return "redirect:/admin/orders";
@@ -526,11 +529,12 @@ class OrderController {
 			final String subject = "Möbel-Hier Bestellinformation";
 			final String target = itemOrder.getContactInformation().getEmail();
 
-			final boolean success = MailUtils.sendMail(subject, target, content);
-
-			//TODO Handle errors
+			success = MailUtils.sendMail(subject, target, content) ? 1 : -1;
+		} else {
+			success = -1;
 		}
 
+		reAttr.addFlashAttribute("mailSuccess", success);
 		return String.format("redirect:/order/%s", orderId);
 	}
 

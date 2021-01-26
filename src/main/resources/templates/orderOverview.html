@@ -127,8 +127,21 @@
             </div>
         </div>
 
-        <div class="row m-2" sec:authorize="hasRole('EMPLOYEE')" th:if="${items}">
-            <div class="col pl-0 mb-3">
+        <div class="row" th:if="${mailSuccess}">
+            <div class="col-4"></div>
+            <div class="col-4"></div>
+            <div class="col-4">
+            <div class="alert alert-success" th:if="${mailSuccess == 1}">
+                <div th:text="#{order.overview.mailsuccess}">Mail wurde erfolgreich verschickt!</div>
+            </div>
+            <div class="alert alert-danger" th:if="${mailSuccess == -1}">
+                <div th:text="#{order.overview.mailfail}">Mail konnte nicht verschickt werden!</div>
+            </div>
+            </div>
+        </div>
+
+        <div class="row" sec:authorize="hasRole('EMPLOYEE')" th:if="${items}">
+            <div class="col-8 mb-3">
                 <button class="btn btn-secondary btn-block dropdown-toggle" th:text="#{order.overview.change.whole.status}" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Button
                 </button>
@@ -141,11 +154,13 @@
                     </form>
                 </div>
             </div>
-            <form class="mb-3" method="post" th:action="@{/order/{orderId}/sendUpdate (orderId=${order.getId().getIdentifier()})}">
-                <button type="submit" class="btn btn-outline-danger" th:text="#{order.overview.sendUpdate}">
+            <div class="col-4">
+            <form class="mb-3 text-right" method="post" th:action="@{/order/{orderId}/sendUpdate (orderId=${order.getId().getIdentifier()})}">
+                <button type="submit" class="btn btn-outline-danger btn-block" th:text="#{order.overview.sendUpdate}">
                     Senden
                 </button>
             </form>
+            </div>
         </div>
 
         <div class="row m-2 mb-3" sec:authorize="!hasRole('EMPLOYEE')" th:if="${items != null && cancelable}">
