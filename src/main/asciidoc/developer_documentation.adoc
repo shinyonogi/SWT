@@ -404,5 +404,5 @@ image::./models/design/sequence/viewCategorySeq.png[seqCatalogCat,100%,100%,pdfw
 image::./models/design/sequence/viewCustomerOrdersSeq.png[seqCustomerOrders,100%,100%,pdfwidth=100%,title= "Sequenzdiagramm - View Customer Orders",align=center]
 
 == Technische Schulden
-* Auflistung der nicht erreichten Quality Gates und der zugehörigen SonarQube Issues zum Zeitpunkt der Abgabe
+Es sind keine offenen Sonarqube-Issues vorhanden. Das Projekt hat ein A-Rating in Sonarqube und eine Test-Coverage von 95%.
 
