@@ -314,6 +314,12 @@ class OrderController {
 		if (order instanceof ItemOrder) {
 			model.addAttribute("items", ((ItemOrder) order).getOrderEntries());
 
+			final long count = ((ItemOrder) order).getOrderEntries().stream()
+					.filter(e -> e.getStatus() != OrderStatus.CANCELLED && e.getStatus() != OrderStatus.COMPLETED)
+					.count();
+
+			model.addAttribute("cancelable", count > 0L);
+
 			if (order instanceof Delivery) {
 				model.addAttribute("lkw", ((Delivery) order).getLkw());
 				model.addAttribute("deliveryDate", ((Delivery) order).getDeliveryDate());
@@ -396,8 +402,7 @@ class OrderController {
 	 *
 	 * @return The updates Orderoverview Page
 	 */
-
-
+	@PreAuthorize("hasRole('EMPLOYEE')")
 	@PostMapping("/order/{orderId}/changeWholeStatus")
 	String changeWholeOrder(@PathVariable("orderId") String orderId, @RequestParam("status") OrderStatus status) {
 		final Optional<ShopOrder> order = orderService.findById(orderId);
@@ -414,6 +419,27 @@ class OrderController {
 				itemOrder.changeStatus(entries.get(i).getId(), status);
 			}
 			orderService.changeItemEntryStatus(itemOrder, entries.get(entries.size() - 1).getId(), status);
+		}
+
+		return String.format("redirect:/order/%s", orderId);
+	}
+
+	@PostMapping("/order/{orderId}/cancelAll")
+	String cancelOrder(@PathVariable("orderId") String orderId) {
+		final Optional<ShopOrder> order = orderService.findById(orderId);
+
+		if (order.isEmpty() || !(order.get() instanceof ItemOrder)) {
+			return "redirect:/admin/orders";
+		}
+
+		final ItemOrder itemOrder = ((ItemOrder) order.get());
+		final List<ItemOrderEntry> entries = itemOrder.getOrderEntries();
+
+		if (entries.size() > 0) {
+			for (int i = 0; i < entries.size() - 1; i++) {
+				itemOrder.changeStatus(entries.get(i).getId(), OrderStatus.CANCELLED);
+			}
+			orderService.changeItemEntryStatus(itemOrder, entries.get(entries.size() - 1).getId(), OrderStatus.CANCELLED);
 		}
 
 		return String.format("redirect:/order/%s", orderId);

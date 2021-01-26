@@ -104,7 +104,11 @@ public abstract class ItemOrder extends ShopOrder {
 			if (orderEntry.getId() == entryId) {
 				final OrderStatus old = orderEntry.getStatus();
 
-				orderEntry.setCancelFee(newStatus == OrderStatus.CANCELLED && old == OrderStatus.STORED);
+				if (newStatus == OrderStatus.CANCELLED && old == OrderStatus.STORED) {
+					orderEntry.setCancelFee(true);
+				} else if (newStatus != OrderStatus.CANCELLED && old == OrderStatus.CANCELLED) {
+					orderEntry.setCancelFee(false);
+				}
 				orderEntry.setStatus(newStatus);
 
 				return true;
@@ -125,7 +129,12 @@ public abstract class ItemOrder extends ShopOrder {
 		for (ItemOrderEntry orderEntry : orderWithStatus) {
 			final OrderStatus old = orderEntry.getStatus();
 
-			orderEntry.setCancelFee(newStatus == OrderStatus.CANCELLED && old == OrderStatus.STORED);
+			if (newStatus == OrderStatus.CANCELLED && old == OrderStatus.STORED) {
+				orderEntry.setCancelFee(true);
+			} else if (old == OrderStatus.CANCELLED && newStatus != OrderStatus.CANCELLED) {
+				orderEntry.setCancelFee(false);
+			}
+
 			orderEntry.setStatus(newStatus);
 		}
 	}
@@ -164,7 +173,7 @@ public abstract class ItemOrder extends ShopOrder {
 
 		for (ItemOrderEntry entry : orderWithStatus) {
 			if (entry.getStatus() == OrderStatus.CANCELLED && entry.hasCancelFee()) {
-				price = price.add(entry.getItem().getPrice()).multiply(0.2);
+				price = price.add(entry.getItem().getPrice().multiply(0.2));
 			}
 		}
 

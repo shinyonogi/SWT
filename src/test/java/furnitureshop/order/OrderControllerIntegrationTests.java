@@ -471,14 +471,13 @@ public class OrderControllerIntegrationTests {
 		}
 	}
 
-	/* @TODO review whether or not its a good idea to remove that role protection
 	@Test
 	void redirectOrderOverviewChangeWholeStatusWithoutAuthentication() throws Exception {
 		mvc.perform(post("/order/{id}/changeWholeStatus", "random")
 				.param("status", String.valueOf(OrderStatus.STORED)))
 				.andExpect(status().is3xxRedirection());
 	}
-	*/
+
 	@Test
 	@WithMockUser(username = "admin", roles = "EMPLOYEE")
 	void redirectOrderOverviewChangeWholeStatusWithInvalidOrderWithAuthentication() throws Exception {
@@ -486,6 +485,21 @@ public class OrderControllerIntegrationTests {
 				.param("status", String.valueOf(OrderStatus.STORED)))
 				.andExpect(status().is3xxRedirection())
 				.andExpect(redirectedUrl("/admin/orders"));
+	}
+
+	@Test
+	void returnsModelAndViewOrderOverviewCancelAll() throws Exception {
+		Pickup pickup = orderService.orderPickupItem(cart, contactInformation);
+
+		mvc.perform(post("/order/{id}/cancelAll", pickup.getId().getIdentifier()))
+				.andExpect(status().is3xxRedirection())
+				.andExpect(redirectedUrl(String.format("/order/%s", pickup.getId().getIdentifier())));
+
+		pickup = (Pickup) orderService.findById(pickup.getId().getIdentifier()).orElse(null);
+
+		for (ItemOrderEntry entry : pickup.getOrderEntries()) {
+			assertSame(OrderStatus.CANCELLED, entry.getStatus(), "Status should be correct!");
+		}
 	}
 
 	@Test

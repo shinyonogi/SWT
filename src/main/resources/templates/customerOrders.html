@@ -70,7 +70,7 @@
             <tr>
                 <th scope="col" th:text="#{order.overview.number}" style="width: 30%">Bestell-Nr.</th>
                 <th scope="col" th:text="#{order.overview.date}">Bestelldatum</th>
-                <th scope="col" th:text="#{order.overview.information.orderType}" style="width: 15%">Bestelltyp</th>
+                <th scope="col" th:text="#{order.overview.orderType}" style="width: 15%">Bestelltyp</th>
                 <th scope="col" th:text="#{order.overview.total}">Betrag</th>
                 <th scope="col" th:text="#{order.overview.status}" style="width: 15%">Status</th>
                 <th scope="col"></th>
@@ -82,14 +82,14 @@
                 <td th:text=" ${#temporals.format(order.getFirst().getDateCreated(), 'dd.MM.yyyy HH:mm:ss')}">
                     23.03.2021
                 </td>
-                <div th:unless="${order.getFirst() instanceof T(furnitureshop.order.LKWCharter)}">
+                <th:block th:unless="${order.getFirst() instanceof T(furnitureshop.order.LKWCharter)}">
                     <td th:if="${order.getFirst() instanceof T(furnitureshop.order.Delivery)}"
                         th:text="#{order.overview.information.delivery}">Lieferung
                     </td>
                     <td th:unless="${order.getFirst() instanceof T(furnitureshop.order.Delivery)}"
                         th:text="#{order.overview.information.pickup}">Abholung
                     </td>
-                </div>
+                </th:block>
                 <td th:if="${order.getFirst() instanceof T(furnitureshop.order.LKWCharter)}"
                     th:text="#{order.overview.information.charter}">LKW Mietung
                 </td>
