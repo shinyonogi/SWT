@@ -9,19 +9,14 @@ Adminsicht: Sebastian Jaster +
 == Kundensicht
 
 - Startseite
-  * Ersteindruck gewinnen
-- Katalog durchstöbern
-  * Schauen was verfügbar
-- Artikel auswählen -> In den Warenkorb
-  * Sofa (Classic): 1x
+- Katalog öffen
+  * Küchen-Set-1: 1x
 - Weiteren Artikel hinzufügen über Kategorien
   * Stuhl (Basic+): 3x
-- Anzahlanzahl im Warenkorb reduzieren
-  * Stuhl (Basic+): 3x -> 2x
 - Bestellen mit _Lieferung_
-  * Hans Müller
+  * Marc Albrecht
   * Teststraße 1
-  * hans@mueller.de
+  * marc.albrecht@mailbox.tu-dresden.de
 - Bestellzusammenfassung ansehen
   * Lieferdatum ansehen
   * Bestellnummer kopieren
@@ -31,39 +26,36 @@ Adminsicht: Sebastian Jaster +
   * Stuhl (Basic+): 1x stornieren
 - LKW prüfen und mieten
   * 3,5t LKW mieten
-    ** Hans Müller
+    ** Marc Albrecht
     ** Teststraße 1
-    ** hans@mueller.de
-  * An einem Samstag prüfen (19.12.20) -> Fehler
-  * An einem Montag prüfen (21.12.20) -> Verfügbar
+    ** marc.albrecht@mailbox.tu-dresden.de
+  * An einem Samstag prüfen (06.02.20) -> Fehler
+  * An einem Montag prüfen (08.02.20) -> Verfügbar
   * LKW mieten
 
 == Adminsicht
 
 - Als Admin anmelden
   * Name/Passwort: admin
-- Bestellungen Übersicht
-  * Liste aller Bestellungen durchscrollen
+- Bestellungen Übersicht öffnen
 - Bestellstatus ändern
   * Bestellung anhand des Preises identifizieren
-  * Bestellstatus von einem Artikel ändern
-- Monatsstatistiken beurteilen
-  * Übersicht öffnen
-  * Gewinne/Verluste beurteilen
+  * Bestellstatus von 2 Artikeln auf _Lagernd_ ändern
+  * Benachrichtigungs E-Mail senden
+  * E-Mail ansehen
+- Monatsstatistiken öffnen
+  * Anschauen und mini Auswertung
+  * Exportieren als CSV
+  * In Excel importieren und anzeigen
 - Lieferanten anzeigen
   * Übersicht öffnen
-  * Auswahl schlechter Lieferant
-    ** Artikel anzeigen
-    ** Lieferant entfernen
-- Lieferant hinzufügen
-  * Name: MultiSofa
-  * Aufschlag: 15%
-- Artikel hinzufügen zu neuen Lieferant
-  * Name: Big Classic
-  * Preis: 715.99€
-  * Variante: weiß
-  * Gewicht: 70kg
-  * Gruppennummer: 20
-  * Beschreibung: Ein großes aber einfaches weißes Sofa
-  * Kategorie: COUCH
+- Set hinzufügen
+  * Items:
+    ** Focus 2x
+    ** Ceramic 1x
+  * Name: Designer-Set
+  * Preis: 519.99€
+  * Variante: modern
+  * Gruppennummer: 43
+  * Beschreibung: Moderne Ausstattung für alle
 - Änderungen im Katalog ansehen

@@ -286,7 +286,7 @@ public abstract class ItemOrder extends ShopOrder {
 
 		// Preset
 		String message = "Sehr geehrte(r) %t,\n\n" +
-				"wir möchten Ihnen mitteilen, das folgende Artikel ihrer Bestellung (%o) " +
+				"wir möchten Ihnen mitteilen, dass folgende Artikel ihrer Bestellung (%o) " +
 				"bei uns im Hauptlager eingetroffen%f sind:\n\n" +
 				"%s\n" +
 				"Mit freundlichen Grüßen Ihr\n" +
