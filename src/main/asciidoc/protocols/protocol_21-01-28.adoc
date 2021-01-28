@@ -1,0 +1,33 @@
+= Protokoll Gruppe 17
+
+Treffen am 28.01.2021
+
+Ort:      Big Blue Button +
+Beginn:   13:00 Uhr +
+Ende:     13:45 Uhr
+
+__Schriftführer:__ Edgar Wolfert
+
+*Nächstes Treffen:* +
+4.02.2021 Abschlusspräsentation
+
+__Teilnehmer:__
+//Tabellarisch oder Aufzählung, Kennzeichnung von Teilnehmern mit besonderer Rolle (z.B. Kunde)
+
+- Markus Richter
+- David Schroth
+- Marc Albrecht
+- Sebastian Jaster
+- Edgar Wolfert
+- Johannes Kaufmann
+- Shintaro Onogi
+
+== Bemerkungen
+- Entwicklerdoku "sieht gut aus"
+- Zeiterfassung besprochen:
+    ** Summe und Durchschnitt ausrechnen und eintragen
+- Ascidoc -> Evaluations:
+    ** Feedback von jedem Gruppenmitglied bis vor Endpräsentation ausfüllen
+- Fragebogen erhalten -> wird nach Präsentation gemeinsam ausgefüllt
+- Einverständniserklärung zur digitalen Prüfung
+- Ablauf Präsentation besprochen
