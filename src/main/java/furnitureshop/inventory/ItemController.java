@@ -36,6 +36,7 @@ import java.util.stream.Collectors;
 @Controller
 public class ItemController {
 
+	// All valid image types
 	private static final List<String> VALID_IMAGE_TYPES = Arrays.asList(
 			"png", "jpg", "jpeg", "gif", "bmp"
 	);
@@ -709,9 +710,18 @@ public class ItemController {
 		return "monthlyStatistic";
 	}
 
+	/**
+	 * Handles all GET-Requests for '/admin/statistic/export/{type}'.
+	 * Creates an export of all sales of all {@link furnitureshop.order.ItemOrder ItemOrders}
+	 *
+	 * @param init     The String representing the month
+	 * @param compare  The String representing the month to compare
+	 * @param type     The Type of the Export
+	 * @param response The Resonse written to
+	 */
 	@GetMapping("/admin/statistic/export/{type}")
 	void exportMonthlyStatistic(@RequestParam("init") String init, @RequestParam("compare") String compare,
-			@PathVariable("type") String type, HttpServletResponse response, Model model) throws IOException {
+			@PathVariable("type") String type, HttpServletResponse response) throws IOException {
 		final TemporalAccessor initAccessor = DateTimeFormatter.ofPattern("MM yyyy").parse(init);
 		final int initMonth = initAccessor.get(ChronoField.MONTH_OF_YEAR);
 		final int initYear = initAccessor.get(ChronoField.YEAR);
@@ -847,6 +857,13 @@ public class ItemController {
 		response.flushBuffer();
 	}
 
+	/**
+	 * Helper Method to format String into CSV valid syntax
+	 *
+	 * @param data The original String data
+	 *
+	 * @return The formated data
+	 */
 	private String[] escapeChars(String[] data) {
 		final String[] newData = new String[data.length];
 

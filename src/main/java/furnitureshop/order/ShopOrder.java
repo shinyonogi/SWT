@@ -48,10 +48,25 @@ public abstract class ShopOrder extends Order {
 		return contactInformation;
 	}
 
+	/**
+	 * Calculates the amount of money the customer still have to pay
+	 *
+	 * @return The calculated amount
+	 */
 	public abstract MonetaryAmount getMissingPayment();
 
+	/**
+	 * Calculates the amount of money the customer will get for canceling {@link furnitureshop.inventory.Item Items}
+	 *
+	 * @return The calculated amount
+	 */
 	public abstract MonetaryAmount getRefund();
 
+	/**
+	 * Calculates the amount of money the customer have to pay for canceling stored {@link furnitureshop.inventory.Item Items}
+	 *
+	 * @return The calculated amount
+	 */
 	public abstract MonetaryAmount getCancelFee();
 
 	public LocalDateTime getCreated() {
