@@ -1,0 +1,48 @@
+= Persönliches Feedback eines Teammitgliedes des Softwarepraktikums 2020/21
+// Auch wenn der Bogen nicht anonymisiert ist, dürfen Sie gern Ihre Meinung offen kundtun.
+// Sowohl positive als auch negative Anmerkungen werden gern gesehen und zur stetigen Verbesserung genutzt.
+// Versuchen Sie in dieser Auswertung also stets sowohl Positives wie auch Negatives zu erwähnen.
+
+**Von:** Marc Albrecht
+
+**Gruppe:** 17
+
+== Was habe ich gelernt / was habe ich nicht gelernt?
+// Ausführung der positiven und negativen Erfahrungen, die im Softwarepraktikum gesammelt wurden
+- Positives:
+* Arbeiten in einem Team
+* Praxisnahes verwenden eines Versionsverwaltungstools
+* Strukturieres Vorgehen bei Erstellung einer Software
+* Planen der eigenen Arbeit in Etappen
+
+- Negatives:
+* Logische und einfache Sachen können meist nicht so gelöst werden, wie man selber es für richtig erachtet, sondern wie der meist unwissende Kunde es für richtig erachtet
+* Stylen von Webseiten ist meist sehr aufwendig und nervig wegen den unterschiedlichen Browsern
+
+== Welche Erfahrungen habe ich mit der Zusammenarbeit im Team gemacht?
+// Kurze Beschreibung der Zusammenarbeit im Team. Was lief gut? Was war verbesserungswürdig? Was würden Sie das nächste Mal anders machen?
+Die Zusammenarbeit im Team lief im Allgemeinen sehr gut, jeder hatte seine Aufgabe und hat sie zeitnah erfüllt, wodurch es keine Schwierigkeiten in Bezug auf Deadlines gab.
+
+Es fand ein guter Austausch statt, um schnell Lösungen für Probleme zu finden. Auch merkte man schnell, dass es einfacher war, wenn zwei oder mehr Leute zu einer Lösung eines Problems beitragen und dadurch zu einer noch besseren Lösung kam.
+
+Jedoch hat man leider gemerkt, dass vor allem in den letzten Wochen des Praktikums die Motivation und damit verbunden die Arbeitslust ein wenig abnahm und viele kleine, offene Sachen oft lange rumlagen und erst auf Nachfrage erfüllt wurden.
+
+Für das nächste Mal würde ich im Allgemeinen solch eine Strukur und Arbeitsteilung beibehalten und auch interne Deadline festlegen und einen konstanten Arbeitsfortschritt zu erziehlen. Auch sollte man regelmäßig was für die Motivation tuen, um einen Burnout von dem Projekt zu vermeiden.
+
+== Welche Erfahrungen habe ich bei der Wiederverwendung von Bibliotheken/Frameworks (insbesondere SalesPoint) gemacht?
+// Einschätzung der Arbeit mit den bereitgestellten und zusätzlich genutzten Frameworks. Was War gut? Was war verbesserungswürdig?
+Die Arbeit mir Frameworks ist für mich nicht neu und so kenne ich schon einige alternative Ansätze dazu. Im Allgemeinen war die Nutzung sehr freundlich, nur gab es an einigen Stellen das Problem der Erweiterung, vor allem bei Salespoint. So war es nicht so einfach möglich eigene Strukturen einzupflegen ohne viel redundanten Code zu erzeugen und es somit zu unnötigen Mehraufwand kam. Trotzdem muss man sagen, dass ich/wir sehr Dankbar waren, dass wir überhaupt solch eine Grundlage hatten und nicht alles von neu erschaffen mussten.
+
+== Welche Vorschläge zur weiteren Verbesserung des Softwarepraktikums gibt es?
+// Möglichst mit Beschreibung, warum die Umsetzung des von Ihnen angebrachten Vorschlages nötig ist.
+Das Praktikum hat bereits eine sehr gute Strukur und mithilfe des Tutors ist es auch recht einfach möglich kleine Probleme zu lösen, außerdem gibt es ja auch noch andere Informations- und Austauschquellen. Es war auch sehr gut, dass es den Videoshop als Beispiel gab, woran man sich sehr gut Orientieren konnte.
+
+Somit habe ich erstmal keine Verbesserungsvorschläge, außer, dass die Kommunikation ein wenig verbessert werden sollte, wenn es um die Prüfung und Einschreibung geht, weil das ein wenig kurzfristig war.
+
+== Feedback für den Tutor
+// Fühlten Sie sich durch den vom Lehrstuhl bereitgestellten Tutor gut betreut? Was war positiv? Was war verbesserungswürdig?
+Die Arbeit mit meinem Tutor hat mir sehr gefallen. Er war stets nett und hilfsbereits und hat gelegentlich auch Feedback zu möglichen Verbesserungen oder Unklarheiten gegeben. Er hat uns auch die Möglichkeit gegeben komplexe Fragen zum Projekt oder zu Aufgabenstellungen genau zu beantworten.
+
+== Sonstiges und Anmerkungen
+// Welche Aspekte fanden in den oben genannten Punkten keine Erwähnung?
+Das Praktikum hat mir im Allgemeinen sehr gut gefallen, nur fande ich es in manchen Teilen sehr anstrengend und Zeitintensiv und knapp, welches durch das verkürzte Semester ja auch nicht gerade verbessert wurde.
