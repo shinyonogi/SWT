@@ -1,0 +1,38 @@
+= Persönliches Feedback eines Teammitgliedes des Softwarepraktikums 2020/21
+// Auch wenn der Bogen nicht anonymisiert ist, dürfen Sie gern Ihre Meinung offen kundtun.
+// Sowohl positive als auch negative Anmerkungen werden gern gesehen und zur stetigen Verbesserung genutzt.
+// Versuchen Sie in dieser Auswertung also stets sowohl Positives wie auch Negatives zu erwähnen.
+
+**Von:** Sebastian Jaster
+
+**Gruppe:** 17
+
+== Was habe ich gelernt / was habe ich nicht gelernt?
+// Ausführung der positiven und negativen Erfahrungen, die im Softwarepraktikum gesammelt wurden
+Ich habe gut gelernt wie viel ich mir in einer Woche an Arbeit zumuten kann und auch wie ich meine Zeit effektiv in Projekten gestalte. Genauso habe ich meine Kenntnisse im Umgang mit Frameworks weiterverbessert und auch mal die Java Seite der Webentwicklung kennen gelernt. Das war sehr hilfreich.
+
+Wirklich nennenswerte negative Erfahrungen habe ich nicht gesammelt.
+
+== Welche Erfahrungen habe ich mit der Zusammenarbeit im Team gemacht?
+// Kurze Beschreibung der Zusammenarbeit im Team. Was lief gut? Was war verbesserungswürdig? Was würden Sie das nächste Mal anders machen?
+Teamarbeit ist nicht immer einfach aber dennoch war ich recht zufrieden mit dem Ablauf in der Gruppe. Die Aufgabenverteilung hat immer gut funktioniert und die es wurden nie Aufgaben komplett vernachlässigt. Die unterschiedliche Last zwischen den Teammitgliedern hing auch teilweise am unterschiedlichen Wissensstand über bestimmte Details der verwendeten Frameworks. Wäre dort der Wissensstand überall einheitlich gewesen, hätte es sicherlich weniger Zeitaufwändige Wochen gegeben.
+
+== Welche Erfahrungen habe ich bei der Wiederverwendung von Bibliotheken/Frameworks (insbesondere SalesPoint) gemacht?
+// Einschätzung der Arbeit mit den bereitgestellten und zusätzlich genutzten Frameworks. Was War gut? Was war verbesserungswürdig?
+Im Groben und Ganzen würde ich die als recht angenehm beschreiben. Es gab hier und da einige Ärgernisse bei den Designentscheidungen, bei denen das Framework uns etwas in die Quere gekommen ist. Aber wir haben ganz gut gelernt wie man solche Probleme z.B. durch eigene Wrapperklassen lösen kann. 
+
+Die Lernkurve bei den Frameworks war sehr steil und umfangreich. Es gab viel was man sich anschauen konnte und in das man sich vertiefen konnte. Dafür fehlte an manchen Stellen einfach die Zeit. Gleichzeitig führte das auch dazu das ein unterschiedlicher Wissensstand über verschiedene Aspekte der einzelnen Komponenten herrschte, was in unserem Fall jetzt aber nicht fundamental schlimm war, da wir dann meist Probleme in kleineren Teams und gemeinsam gelöst haben.
+
+Ich finde es auch sehr angenehm, dass man Kontakt zu Leuten ermöglicht, die an der Programmierung des Frameworks beteiligt sind, um so auch direkt brauchbare Informationen von der "Quelle" zu bekommen (z.B. bei Bugs im Framework).
+
+== Welche Vorschläge zur weiteren Verbesserung des Softwarepraktikums gibt es?
+// Möglichst mit Beschreibung, warum die Umsetzung des von Ihnen angebrachten Vorschlages nötig ist.
+Ich hatte das Gefühl, dass die Handhabung von Aufgaben von Tutor zu Tutor sehr unterschiedlich ist im Praktikum (zumindest was ich im Rahmen von anderen Teilnehmern mitbekommen habe). Das finde ich etwas schade, da dadurch die Wahrnehmung des Praktikums sehr unterschiedlich ist und dann teilweise auch negative Erfahrungen hinterlässt die nicht sein müssten. Vielleicht könnte man hier in Zukunft einen etwas einheitlichere Linie finden.
+
+== Feedback für den Tutor
+// Fühlten Sie sich durch den vom Lehrstuhl bereitgestellten Tutor gut betreut? Was war positiv? Was war verbesserungswürdig?
+Mit unserem Tutor war ich sehr zufrieden. Wir hatten die Freiheiten uns unsere Aufgaben selbst einzuteilen und wirklich als Team Probleme anzugehen. Er stand immer für Fragen sowohl inhalticher als auch technischer Natur und hat uns dort gut unterstützt. Was ich auch sehr angenehm fand, war das wir über Anforderungen oder bestimmte Aufgaben diskutieren konnten. Also ob die Implementierung eines spezifischen Features in der Form wirklich sinnvoll ist oder ob das anders nicht viel mehr Sinn macht. Das hat zum einen dafür gesorgt, dass wir keine unnötigen Aufgaben angefangen haben und auch meist unsere Features nach Fertigstellung auch wirklich fertig waren.
+
+== Sonstiges und Anmerkungen
+// Welche Aspekte fanden in den oben genannten Punkten keine Erwähnung?
+Ich hatte sehr viel Spaß während des Praktikums :)
