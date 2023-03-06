@@ -1,13 +1,7 @@
-image:https://github.com/st-tu-dresden-praktikum/swt20w17/workflows/CI%20build/badge.svg["CI Build", link="https://github.com/st-tu-dresden-praktikum/swt20w17/actions"]
-image:https://img.shields.io/badge/SonarQube-checked-blue?logo=sonarqube["SonarQube status", link="https://st-lab-ci.inf.tu-dresden.de/sonarqube/"]
-
 // Hi there! We've already included some generally useful information in here.
 // Feel free to edit the first section to add a short description of your task and your project.
 
 = Möbelgeschäft
-
-== JAR Cross Testing
-The zip for cross testing can be found link:https://cloudstore.zih.tu-dresden.de/index.php/s/3k8YirJp3nobijF[here].
 
 == Information about kickstart module
 
